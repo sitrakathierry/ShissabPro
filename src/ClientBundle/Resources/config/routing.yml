@@ -1,0 +1,218 @@
+client_homepage:
+    path:     /client
+    defaults: { _controller: ClientBundle:Client:index }
+
+client_liste:
+    path:     /client/liste
+    defaults: { _controller: ClientBundle:Client:liste }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_editeur:
+    path:     /client/show_edit
+    defaults: { _controller: ClientBundle:Client:editeur }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_edit:
+    path:     /client/edit
+    defaults: { _controller: ClientBundle:Client:edit }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_grid:
+    path:   /client/grid
+    defaults: { _controller: ClientBundle:Client:clientOne }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_add:
+    path:     /client/add
+    defaults: { _controller: ClientBundle:Client:add }
+    options:
+        expose: true
+
+client_save:
+    path:    /client/save
+    defaults: { _controller: ClientBundle:Client:save }
+    options:
+        expose: true
+    methods: [POST]
+# 
+client_list:
+    path:     /client/list
+    defaults: { _controller: ClientBundle:Client:clientList }
+
+client_find:
+    path:    /client/find
+    defaults: { _controller: ClientBundle:Client:find }
+    options:
+        expose: true
+    methods: [POST]
+
+client_show:
+    path:     /client/show/{id}
+    defaults: { _controller: ClientBundle:Client:show }
+    options:
+        expose: true
+
+client_dashboard:
+    path:     /client/dashboard
+    defaults: { _controller: ClientBundle:Client:dashboard }
+
+client_adresse:
+    path:    /client/adresse/{id}
+    defaults: { _controller: ClientBundle:Client:clientAdresse }
+    options:
+        expose: true
+    methods: [GET]
+
+client_delete:
+    path:    /client/delete/{id}/{ajax}
+    defaults: { _controller: ClientBundle:Client:delete, ajax: 0 }
+    options:
+        expose: true
+    methods: [GET]
+
+client_archived_list:
+    path:     /client/archived/list
+    defaults: { _controller: ClientBundle:Client:clientArchivedList }
+
+client_find_archived:
+    path:    /client/find/archived
+    defaults: { _controller: ClientBundle:Client:findArchived }
+    options:
+        expose: true
+    methods: [POST]
+
+client_delete_definitively:
+    path:    /client/delete-definitively/{id}/{ajax}
+    defaults: { _controller: ClientBundle:Client:deleteDefinitively, ajax: 0 }
+    options:
+        expose: true
+    methods: [GET]
+
+client_exist:
+    path:     /client/exist/{id}
+    defaults: { _controller: ClientBundle:Client:exist }
+
+client_restore:
+    path:    /client/restore/{id}/{ajax}
+    defaults: { _controller: ClientBundle:Client:restore, ajax: 0 }
+    options:
+        expose: true
+    methods: [GET]
+
+# TYPE SOCIETE
+typesociete_add:
+    path:     /client/typesociete/add
+    defaults: { _controller: ClientBundle:Type:addTypeSociete }
+
+typesociete_save:
+    path:    /client/typesociete/save
+    defaults: { _controller: ClientBundle:Type:saveTypeSociete }
+    options:
+        expose: true
+    methods: [POST]
+
+typesociete_show:
+    path:     /client/typesociete/show/{id}
+    defaults: { _controller: ClientBundle:Type:showTypeSociete }
+
+typesociete_list:
+    path:     /client/typesociete/list
+    defaults: { _controller: ClientBundle:Type:listTypeSociete }
+
+typesociete_get_list:
+    path:     /client/typesociete/get-list
+    defaults: { _controller: ClientBundle:Type:getListeTypeSociete }
+    methods:  [POST]
+    options:
+        expose: true
+
+typesociete_editor:
+    path:     /client/typesociete/editor
+    defaults: { _controller: ClientBundle:Type:editorTypeSociete }
+    methods:  [POST]
+    options:
+        expose: true
+
+typesociete_delete:
+    path:    /client/typesociete/delete/{id}
+    defaults: { _controller: ClientBundle:Type:deleteTypeSociete}
+    options:
+        expose: true
+    methods: [GET]
+
+# TYPE SOCIALE
+typesocial_add:
+    path:     /client/typesocial/add
+    defaults: { _controller: ClientBundle:Type:addTypeSocial }
+
+typesocial_save:
+    path:    /client/typesocial/save
+    defaults: { _controller: ClientBundle:Type:saveTypeSocial }
+    options:
+        expose: true
+    methods: [POST]
+
+typesocial_show:
+    path:     /client/typesocial/show/{id}
+    defaults: { _controller: ClientBundle:Type:showTypeSocial }
+
+typesocial_list:
+    path:     /client/typesocial/list
+    defaults: { _controller: ClientBundle:Type:listTypeSocial }
+
+typesocial_get_list:
+    path:     /client/typesocial/get-list
+    defaults: { _controller: ClientBundle:Type:getListeTypeSocial }
+    methods:  [POST]
+    options:
+        expose: true
+
+typesocial_delete:
+    path:    /client/typesocial/delete/{id}
+    defaults: { _controller: ClientBundle:Type:deleteTypeSocial}
+    options:
+        expose: true
+    methods: [GET]
+
+typesocial_editor:
+    path:     /client/typesocial/editor
+    defaults: { _controller: ClientBundle:Type:editorTypeSocial }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_morale_list:
+    path:     /client/morale/list
+    defaults: { _controller: ClientBundle:Client:clientMoraleList }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_physique_list:
+    path:     /client/physique/list
+    defaults: { _controller: ClientBundle:Client:clientPhysiqueList }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_tous_list:
+    path:     /client/tous/list
+    defaults: { _controller: ClientBundle:Client:clientTousList }
+    methods:  [POST]
+    options:
+        expose: true
+
+client_details:
+    path:    /client/details/{id}
+    defaults: { _controller: ClientBundle:Client:getClientDetails }
+    options:
+        expose: true
+    methods: [GET]

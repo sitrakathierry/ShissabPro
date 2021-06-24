@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+
+ {% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/client/js/list-type-societe.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 style="font-size:20px">
+                            <i class="fa fa-home"></i>
+                            LISTE DES TYPES DE SOCIETE
+                        </h5>
+                        <div class="ibox-tools">
+                            <a href="{{ path('typesociete_add') }}" class="btn btn-primary btn-xs" type="reset">
+                                <i class="fa fa-plus"></i>
+                                CREATION
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                    	<table id="list_type_societe"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

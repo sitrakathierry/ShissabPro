@@ -1,0 +1,45 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                     <span>
+                        <img alt="image" class="img-circle" src="{{ asset('img/gap-150.png') }}" style="width: 75px !important;height: 75px !important;"/>
+                     </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> 
+                            <strong class="font-bold">
+                                {{ nomSociete }}
+                            </strong>
+                             </span>
+                             	<span class="text-muted text-xs block">
+                             		{{ email }}
+                             	</span>
+                             </span>
+                    </a>
+                </div>
+                <div class="logo-element">
+                    <!-- AM -->
+                        <img alt="image" class="img-circle" src="{{ asset('img/gap-150.png') }}" style="width: 50px !important;height: 50px !important;"/>
+
+                </div>
+            </li>
+
+            {# {{ dump(app.request.query.all['id']) }} #}
+
+            
+
+            <li class="item-menu" data-name="Formulaire d'adhesion">
+                <a href="{{ path('client_maladie_homepage') }}?id={{ id }}"><i class="fa fa-edit"></i> <span class="nav-label">Formulaire d'adhesion</span> 
+                </a>
+            </li>
+
+            <li class="item-menu" data-name="Formulaire d'adhesion">
+                <a href="{{ path('client_maladie_agent_list') }}?id={{ id }}"><i class="fa fa-list"></i> <span class="nav-label">Liste des agents</span> 
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+</nav>

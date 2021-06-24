@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+ {% endblock  %}
+
+{% block contenu %}
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+            	<div class="ibox-title">
+                    <h1>
+                        <i class="fa fa-warning"></i>
+                    	FICHE CLIENT EXISTANT
+                    </h1>
+                    <div class="ibox-tools">
+                        <a href="{{ path('client_add') }}" class="btn btn-primary">
+                        	<i class="fa fa-plus"></i>
+                        	CREER
+                        </a>
+                    </div>
+            	</div>
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="full-height-scroll" id="tb-result">
+
+                            	<div class="row">
+                            		<div class="col-lg-8">
+		                               <table class="table">
+		                               		<tr>
+		                               			<td>
+		                               				{{ client.nom }}
+		                               				{% if client.type == 0 %}
+		                               					{{ client.prenom }}
+		                               				{% else %}
+		                               				    {{ client.formeJuridique }}
+		                               				{% endif %}
+		                               			</td>
+
+		                               			<td>
+		                               				{% if client.type == 0 %}
+		                               					INDIVIDUELLE
+		                               				{% else %}
+		                               				    SOCIETE
+		                               				{% endif %}
+		                               			</td>
+
+		                               			{% if client.archive == 1 %}
+		                               				<td>
+		                               					<span class="badge badge-warning">Fiche Client Archivé</span>
+		                               				</td>
+		                               			{% endif %}
+		                               			<td>
+		                               				<a href="{{ path('client_show', {id: client.id}) }}" class="btn btn-xs btn-primary btn-outline">
+							                            <i class="fa fa-eye"></i> Voir
+							                        </a>
+
+							                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+
+				                               			{% if client.archive == 0 %}
+					                               				<a href="{{ path('client_delete', {id: client.id}) }}" class="btn btn-xs btn-danger btn-outline">
+										                            <i class="fa fa-trash"></i> Archiver
+										                        </a>
+				                               			{% endif %}
+
+				                               			{% if client.archive == 1 %}
+				                               					<a href="{{ path('client_restore', {id: client.id}) }}" class="btn btn-xs btn-info btn-outline">
+										                            <i class="fa fa-refresh"></i> Restaurer
+										                        </a>
+				                               					<a href="{{ path('client_delete_definitively', {id: client.id}) }}" class="btn btn-xs btn-danger">
+										                            <i class="fa fa-warning"></i> Supprimer Définitivement
+										                        </a>
+				                               			{% endif %}
+							                        {% endif %}
+
+		                               			</td>
+		                               		</tr>
+		                               </table>
+                            		</div>
+                            	</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

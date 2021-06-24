@@ -1,0 +1,184 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+ {% endblock  %}
+
+{% block contenu %}
+
+    <div class="ibox ibox-shadow float-e-margins">
+        <div class="ibox-title">
+            <h5>
+              Gestion des menus
+            </h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-lg-5">
+                    <form class="form-horizontal">
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="access_role" class="control-label col-lg-3">
+                                <span>Type de compte </span>
+                            </label>
+                            <div class="col-lg-9">
+                                <select id="access_role" data-placeholder="Séléctionner un dossier" class="form-control select-dossier-details">
+                                    <option value=""></option>
+                                    <option value="ROLE_ADMIN">UTILISATEUR SHISSAB</option>
+                                    <option value="ROLE_RESPONSABLE">RESPONSABLE AGENCE</option>
+                                    <option value="ROLE_AGENT">AGENT</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-primary" id="btn_save">
+                        <i class="fa fa-save"></i>
+                        Enregistrer
+                    </button>
+                </div>
+
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-7 menu-list">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <textarea id="nestable2-output" class="hidden"></textarea>
+
+    <input type="hidden" name="" id="checked_menus">
+    <input type="hidden" name="" id="unchecked_menus">
+
+{% endblock %}
+
+{% block scripts %}
+   {{ parent() }}
+   <script type="text/javascript">
+
+   		
+
+   		$(document).on('change','#access_role', function(event) {
+
+   			var role = $(this).val();
+
+   			var url = Routing.generate('menu_access_role', {
+   				role: role
+   			});
+
+   			$.ajax({
+   				url: url,
+   				type: 'GET',
+   				success: function(data) {
+   					$('.menu-list').html(data);
+
+
+            var updateOutput = function (e) {
+               var list = e.length ? e : $(e.target),
+                       output = list.data('output');
+               if (window.JSON) {
+                   output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+               } else {
+                   output.val('JSON browser support required for this demo.');
+               }
+           };
+
+   					$('#nestable2').nestable({
+		            group: 1,
+		            maxDepth: 0,
+                  	noDragClass:'no-drag'
+		         })
+   					// .on('change', updateOutput);
+			     	updateOutput($('#nestable2').data('output', $('#nestable2-output')));
+
+            
+
+   				}
+   			});
+   		});
+
+
+      $(document).on('click','#btn_save',function(event) {
+        event.preventDefault();
+
+        var checked_menus = [];
+        var unchecked_menus = [];
+
+        $('.check-menu').each(function() { 
+          // this.checked = true; 
+          var checked = $(this).is(":checked");
+
+          var menu_id = $(this).data('menu')
+
+          if (checked) {
+            checked_menus.push(menu_id);
+          } else {
+            unchecked_menus.push(menu_id);
+          }
+        });
+
+        $('#checked_menus').val(JSON.stringify(checked_menus));
+        $('#unchecked_menus').val(JSON.stringify(unchecked_menus));
+        
+        var url = Routing.generate('menu_access_role_save');
+
+        var post = {
+          access_role : $('#access_role').val(),
+          checked_menus : $('#checked_menus').val(),
+          unchecked_menus : $('#unchecked_menus').val()
+        };
+
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: post,
+          success: function(data) {
+            if (data == 200) {
+              show_info("Succes", 'Menu Enregistré','success');
+            }
+          }
+
+        });
+      });
+
+      $(document).on('change', '.check-menu', function () {
+          var checkbox = $(this);
+          var state = checkbox.prop('checked');
+          var level = checkbox.attr('data-level');
+
+          /* MAJ descendant */
+          checkbox.closest('.dd-item')
+              .find('.check-menu')
+              .prop('checked', state);
+
+          /* MAJ ascendant  */
+          if (state === true) {
+              if (level === '1') {
+                  //Pas de parent
+              } else if (level === '2') {
+                  //On cocher parent N+1
+                  checkbox.closest('.dd-list')
+                      .closest('.dd-item')
+                      .find('.check-menu[data-level="1"]')
+                      .prop('checked', state);
+              } else if (level === '3') {
+                  //On cocher parent N+1 et N+2
+                  checkbox.closest('.dd-list')
+                      .closest('.dd-item')
+                      .find('.check-menu[data-level="2"]')
+                      .prop('checked', state);
+                  checkbox.closest('.dd-list')
+                      .closest('.dd-item')
+                      .find('.check-menu[data-level="2"]')
+                      .closest('.dd-list')
+                      .closest('.dd-item')
+                      .find('.check-menu[data-level="1"]')
+                      .prop('checked', state);
+              }
+          }
+      });
+   </script>
+{% endblock %}

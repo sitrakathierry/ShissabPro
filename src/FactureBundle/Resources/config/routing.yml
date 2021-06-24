@@ -1,0 +1,21 @@
+facture_homepage:
+    path:     /facture/index
+    defaults: { _controller: FactureBundle:Default:index }
+
+facture_add:
+    path:     /facture/add
+    defaults: { _controller: FactureBundle:Default:add }
+
+facture_save:
+    path:    /facture/save
+    defaults: { _controller: FactureBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+facture_show:
+    path:     /facture/show/{id}
+    defaults: { _controller: FactureBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]

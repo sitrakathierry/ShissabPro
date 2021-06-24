@@ -1,0 +1,40 @@
+<div class="dd" id="nestable2">
+    <ol class="dd-list">
+
+    	{% for menu in menus %}
+    	    
+	        <li class="dd-item no-drag" data-id="{{ menu.id }}">
+	            <div class="dd-handle">
+	                <input type="checkbox" class="check-menu" data-menu="{{ menu.id }}" data-level="1" name="" {% if menu.has == true %}checked=""{% endif %}>
+	                <span class="label label-info"><i class="fa {{ menu.icon }}"></i></span> {{ menu.label }}
+	            </div>
+	            {% if menu.child|length > 0 %}
+		            <ol class="dd-list">
+
+		            	{% for child in menu.child %}
+			                <li class="dd-item no-drag" data-id="{{ child.id }}">
+			                    <div class="dd-handle">
+			                        <input type="checkbox" class="check-menu" data-menu="{{ child.id }}" data-level="2" name="" {% if child.has == true %}checked=""{% endif %}> {{ child.label }}
+			                    </div>
+				                {% if child.child|length > 0 %}
+		            				<ol class="dd-list">
+		            					{% for item in child.child %}
+		            					    <li class="dd-item no-drag" data-id="{{ item.id }}">
+							                    <div class="dd-handle">
+							                        <input type="checkbox" class="check-menu" data-menu="{{ item.id }}" data-level="3" name="" {% if item.has == true %}checked=""{% endif %}> {{ item.label }}
+							                    </div>
+							                </li>
+		            					{% endfor %}
+		            				</ol>
+				                {% endif %}
+			                </li>
+
+		            	{% endfor %}
+		               
+		            </ol>
+	            {% endif %}
+	        </li>
+    	{% endfor %}
+
+    </ol>
+</div>

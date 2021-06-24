@@ -1,0 +1,358 @@
+<div class="row">
+	<div class="col-lg-6">
+		<h3 class=""><u>FICHE CLIENT</u></h3>
+
+		<div class="row">
+			<div class="col-lg-12">
+        		<div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                    	<input type="checkbox" class="js-switch" id="client_create" {% if permissions is defined %} {% if permissions.client.create %} checked="" {% endif %}{% endif %} >
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+        		<div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                    	<input type="checkbox" class="js-switch" id="client_edit"  {% if permissions is defined %} {% if permissions.client.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+        		<div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                    	<input type="checkbox" class="js-switch" id="client_delete"  {% if permissions is defined %} {% if permissions.client.delete %} checked="" {% endif %}{% endif %}> 
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+
+    <div class="col-lg-6">
+        <h3 class=""><u>FACTURE</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="facture_create" {% if permissions is defined %} {% if permissions.facture.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="facture_edit" {% if permissions is defined %} {% if permissions.facture.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="facture_delete" {% if permissions is defined %} {% if permissions.facture.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+	
+    <div class="col-lg-6">
+        <h3 class=""><u>COTATION</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="cotation_create" {% if permissions.cotation is defined %} {% if permissions.cotation.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="cotation_edit" {% if permissions.cotation is defined %} {% if permissions.cotation.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="cotation_delete" {% if permissions.cotation is defined %} {% if permissions.cotation.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-6">
+        <h3 class=""><u>ASSURANCE AUTO</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="assurance_auto_create" {% if permissions.assurance_auto is defined %} {% if permissions.assurance_auto.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="assurance_auto_edit" {% if permissions.assurance_auto is defined %} {% if permissions.assurance_auto.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="assurance_auto_delete" {% if permissions.assurance_auto is defined %} {% if permissions.assurance_auto.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    
+    <div class="col-lg-6">
+        <h3 class=""><u>ASSURANCE MALADIE</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="assurance_maladie_create" {% if permissions.assurance_maladie is defined %} {% if permissions.assurance_maladie.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="assurance_maladie_edit" {% if permissions.assurance_maladie is defined %} {% if permissions.assurance_maladie.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="assurance_maladie_delete" {% if permissions.assurance_maladie is defined %} {% if permissions.assurance_maladie.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-6">
+        <h3 class=""><u>SINISTRE</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="sinistre_create" {% if permissions.sinistre is defined %} {% if permissions.sinistre.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="sinistre_edit" {% if permissions.sinistre is defined %} {% if permissions.sinistre.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="sinistre_delete" {% if permissions.sinistre is defined %} {% if permissions.sinistre.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    
+    <div class="col-lg-6">
+        <h3 class=""><u>CAISSE</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="caisse_create" {% if permissions.caisse is defined %} {% if permissions.caisse.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="caisse_edit" {% if permissions.caisse is defined %} {% if permissions.caisse.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="caisse_delete" {% if permissions.caisse is defined %} {% if permissions.caisse.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-6">
+        <h3 class=""><u>COMPTABILITE</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="comptabilite_create" {% if permissions.comptabilite is defined %} {% if permissions.comptabilite.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="comptabilite_edit" {% if permissions.comptabilite is defined %} {% if permissions.comptabilite.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="comptabilite_delete" {% if permissions.comptabilite is defined %} {% if permissions.comptabilite.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <h3 class=""><u>IARD</u></h3>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">CREATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="iard_create" {% if permissions.iard is defined %} {% if permissions.iard.create %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">MODIFICATION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="iard_edit" {% if permissions.iard is defined %} {% if permissions.iard.edit %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="col-sm-6 control-label nom">SUPPRESSION</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="js-switch" id="iard_delete" {% if permissions.iard is defined %} {% if permissions.iard.delete %} checked="" {% endif %}{% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+
+ {% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/client/js/list-type-social.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            CREATION SITUATION SOCIAL
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Désignation</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="designation" required="" id="designation">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                            <div class="row ">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Déscription</label>
+                                        <div class="col-sm-10" >
+                                            <textarea class="form-control" name="description" id="description">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                        <button class="btn btn-white" type="reset">
+                                            <i class="fa fa-times"></i>
+                                            Annuler
+                                        </button>
+                                        <button class="btn btn-primary" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                </div>
+                                
+                            </div>
+                            <input type="hidden" name="" id="id-row" value="0">
+                            <input type="hidden" name="f_a_payer" id="id-row" value="0" id="f_a_payer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            LISTE DES SITUATIONS SOCIAL
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table id="list_type_social"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

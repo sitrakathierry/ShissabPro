@@ -1,0 +1,9 @@
+dashboard_homepage:
+    path:     /dashboard
+    defaults: { _controller: DashboardBundle:Default:index }
+
+dashboard_test:
+    path: /test
+    defaults: { _controller: 'DashboardBundle:Default:test' }
+    options:
+        expose: true

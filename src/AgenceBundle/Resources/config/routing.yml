@@ -1,0 +1,61 @@
+agence_homepage:
+    path:     /agence
+    defaults: { _controller: AgenceBundle:Default:index }
+
+agence_add:
+    path:     /agence/add
+    defaults: { _controller: AgenceBundle:Default:add }
+
+agence_save:
+    path:    /agence/save
+    defaults: { _controller: AgenceBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+agence_details:
+    path:     /agence/details
+    defaults: { _controller: AgenceBundle:Default:details }
+    options:
+        expose: true
+
+agence_user_list:
+    path:     /agence/user/list
+    defaults: { _controller: AgenceBundle:Default:userList }
+    options:
+        expose: true
+
+agence_add_user:
+    path:     /agence/add/userer
+    defaults: { _controller: AgenceBundle:Default:addUser }
+    options:
+        expose: true
+
+agence_show:
+    path:     /agence/show/{id}
+    defaults: { _controller: AgenceBundle:Default:show }
+
+agence_list:
+    path:     /agence/list
+    defaults: { _controller: AgenceBundle:Default:list }
+
+agence_get_list:
+    path:     /agence/get-list
+    defaults: { _controller: AgenceBundle:Default:getList }
+    methods:  [POST]
+    options:
+        expose: true
+
+agence_editor:
+    path:     /agence/editor
+    defaults: { _controller: AgenceBundle:Default:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+agence_delete:
+    path:     /agence/delete/{id}
+    defaults: { _controller: AgenceBundle:Default:delete }
+    methods:  [GET]
+    options:
+        expose: true

@@ -1,0 +1,25 @@
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+
+            <a href="{{ path('dashboard_homepage') }}" class="btn btn-primary btn-outline" style="padding: 4px 12px;margin: 14px 5px 5px 20px;font-size: 14px;float: left;">
+                <i class="fa fa-th"></i>
+                Tableau de Bord
+            </a>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <span class="m-r-sm text-muted welcome-message"><b style="color:#1ab394;">GENERALEE D'ASSURANCE ET PREVOYANCE</b></span>
+            </li>
+            <li>
+                {# {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %} #}
+                    <a href="#" id="close_window" style="opacity: 0">
+                        <i class="fa fa-sign-out"></i> Quitter
+                    </a>
+               {# {% endif %} #}
+            </li>
+        </ul>
+
+    </nav>
+</div>

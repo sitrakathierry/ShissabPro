@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+ {% endblock  %}
+
+{% block contenu %}
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h1>
+                        <i class="fa fa-trash"></i>
+                        FICHE CLIENT ARCHIVE
+                    </h1>
+                    <div class="hr-line-dashed"></div>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <form class="form-horizontal">
+                                <div class="form-group" style="margin-bottom: 10px;">
+                                    <div class="col-lg-12">
+                                        <input type="text" id="search_value" name="" class="form-control" placeholder="Texte à Rechercher...">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <button class="btn btn-primary" id="btn_search">
+                                <i class="fa fa-search"></i>
+                                Rechecher
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="full-height-scroll" id="tb-result">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+   {{ parent() }}
+    <script src="{{ asset('bundles/client/js/archived.js') }}"></script>
+{% endblock %}

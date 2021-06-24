@@ -1,0 +1,406 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/client/css/bootstrap-tagsinput.css') }}">
+ {% endblock  %}
+
+ {% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/client/js/add.js') }}"></script>
+    <script src="{{ asset('bundles/client/js/bootstrap-tagsinput.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            CREATION FICHE CLIENT
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="POST" action="{{ path('client_save') }}" class="form-horizontal" id="form">
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Agence</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b statut" name="agence">
+                                                {# <option></option> #}
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    {% for agence in agences %}
+                                                        {% if agence.id != 1 %}
+                                                            <option value="{{agence.id}}">{{agence.nom}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option value="{{userAgence.agence.id}}" selected="">{{userAgence.agence.nom}}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Statut *</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b statut" name="statut">
+                                                <option value="1">PERSONNE MORALE</option>
+                                                <option value="2">PERSONNE PHYSIQUE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="client_morale"><u>INFORMATION SOCIETE</u></h3>
+                        	<div class="row client_morale">
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label nom">Nom Société *</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_nom_societe">
+		                                </div>
+		                            </div>
+                        		</div>
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label prenom">Nom et Prénom Gérant *</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_nom_gerant">
+		                                </div>
+		                            </div>
+                        		</div>
+                        	</div>
+
+                        	<div class="row client_morale">
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label">Adresse</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_adresse" id="adresse">
+		                                </div>
+		                            </div>
+                        		</div>
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label">Téléphone fixe *</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_tel_fixe">
+		                                </div>
+		                            </div>
+                        		</div>
+                        	</div>
+
+                        	<div class="row client_morale">
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label">Fax</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_fax">
+		                                </div>
+		                            </div>
+                        		</div>
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label">Email</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_email">
+		                                </div>
+		                            </div>
+                        		</div>
+                        	</div>
+
+                        	<div class="row client_morale">
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label">Domaine d’intervention</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_domaine">
+		                                </div>
+		                            </div>
+                        		</div>
+                        		<div class="col-lg-6">
+                        			<div class="form-group">
+		                            	<label class="col-sm-2 control-label">N° de registre</label>
+		                                <div class="col-sm-10">
+		                                	<input type="text" class="form-control" name="clm_num_registre">
+		                                </div>
+		                            </div>
+                        		</div>
+                        	</div>
+
+                            <div class="row client_morale">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Type de Société</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b type" name="clm_type_societe">
+                                                {% for typesociete in typeSocieteList %}
+                                                    <option value="{{typesociete.id}}" >{{typesociete.designation}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="client_morale"><u>PERSONNE A CONTACTER</u></h3>
+                            <div class="row client_morale">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Nom et Prénom *</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clm_nom_pers_contact">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Téléphone *</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clm_tel_contact" data-role="tagsinput" id="clm_tel_contact">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row client_morale">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clm_email_contact" data-role="tagsinput">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="client_physique"><u>INFORMATION CLIENT</u></h3>
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Nom et Prénom *</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_nom">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prenom">NIN</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_nin">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Adresse *</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_adresse">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prenom">Quartier</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_quartier">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Téléphone *</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_tel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prenom">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Sexe *</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b type" name="clp_sexe">
+                                                <option value="1">HOMME</option>
+                                                <option value="2">FEMME</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prenom">Situation matrimonial</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b type" name="clp_situation">
+                                                <option value="1">CELIBATAIRE</option>
+                                                <option value="2">MARIE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Situation social</label>
+                                        <div class="col-sm-10">
+                                            <!-- <select class="form-control m-b type" name="clp_situation">
+                                            </select> -->
+                                            <select class="form-control m-b type" name="clp_type_social">
+                                                {% for typesocial in typeSocialList %}
+                                                    <option value="{{typesocial.id}}" >{{typesocial.designation}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prenom">Lieux de travail</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_lieu_travail">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Date de naissance</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-datepicker" name="clp_ddn">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prenom">Lieu de naissance</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_ldn">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Profession</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_profession">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="client_physique"><u>PERSONNE A CONTACTER</u></h3>
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Nom et Prénom</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_nom_pers_contact">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Téléphone</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_tel_pers_contact" data-role="tagsinput">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_email_pers_contact" data-role="tagsinput">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Adresse</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_adresse_pers_contact">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Lien de parenté</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_lien_parente">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Observation</label>
+                                        <div class="col-sm-10" >
+                                            <textarea class="form-control" name="clp_observation">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- <div class=""> -->
+                                        <button class="btn btn-white" type="reset">
+                                            <i class="fa fa-times"></i>
+                                            Annuler
+                                        </button>
+                                        <button class="btn btn-primary" type="submit" id="btn-save-cl">
+                                            <i class="fa fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                            <input type="hidden" name="" id="id-row" value="0">
+                            <input type="hidden" name="f_a_payer" id="id-row" value="0" id="f_a_payer">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

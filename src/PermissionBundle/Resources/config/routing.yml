@@ -1,0 +1,3 @@
+permission_homepage:
+    path:     /permission/homepage
+    defaults: { _controller: PermissionBundle:Default:index }

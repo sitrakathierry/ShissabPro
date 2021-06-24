@@ -1,0 +1,4 @@
+services:
+#    agence.example:
+#        class: AgenceBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

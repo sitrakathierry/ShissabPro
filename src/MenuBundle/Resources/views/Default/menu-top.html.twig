@@ -1,0 +1,49 @@
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+
+            <a href="{{ path('dashboard_homepage') }}" class="btn btn-primary btn-outline" style="padding: 4px 12px;margin: 14px 5px 5px 20px;font-size: 14px;float: left;">
+                <i class="fa fa-th"></i>
+                Tableau de Bord
+            </a>
+            {# <form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                </div>
+            </form> #}
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <span class="m-r-sm text-muted welcome-message"><b style="color:#fd9597;">
+                    SHISSAB SYSTEM
+                </b></span>
+            </li>
+
+            {% set class = 'hidden' %}
+            {% if is_granted('ROLE_ADMIN') %}
+                {% set class = '' %}
+            {% endif %}
+
+            <li class="dropdown {{ class }}" id="notif-bientot-expire">
+            </li>
+            <li class="dropdown {{ class }}" id="notif-ordonnance">
+            </li>
+            <li>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <a href="{{ path('fos_user_security_logout') }}">
+                        <i class="fa fa-sign-out"></i> Se déconnecter
+                    </a>
+               {% endif %}
+            </li>
+            <li>
+                {# <a class="right-sidebar-toggle">
+                    <i class="fa fa-tasks"></i>
+                </a> #}
+                <!-- <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg') }}" /> -->
+                
+            </li>
+        </ul>
+
+    </nav>
+</div>

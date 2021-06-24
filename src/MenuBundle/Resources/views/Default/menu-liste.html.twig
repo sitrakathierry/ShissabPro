@@ -1,0 +1,59 @@
+{#{{ dump(menus_complet) }}#}
+<div class="dd nestable-menu">
+    <ol class="dd-list">
+        {% for menu in menus_complet if menu.id in menus_id %}
+            {% set loop1 = loop.index %}
+            <li class="dd-item" data-id="{{ menu.id }}">
+                <div class="dd-handle dd-nodrag">
+                    {% if menu.icon == '' %}
+                        {% set menu_icon = 'fa-navicon' %}
+                    {% else %}
+                        {% set menu_icon = menu.icon %}
+                    {% endif %}
+                    <input type="checkbox" class="menu-select" data-menu-id="{{ menu.id }}" data-level="1">
+                    <span class="label label-primary"><i class="fa {{ menu_icon }}"></i></span>
+                    {{ menu.name|title }}
+                </div>
+                {% if menu.children|length > 0 %}
+                    <ol class="dd-list">
+                        {% for child1 in menu.children if child1.id in menus_id %}
+                            <li class="dd-item" data-id="{{ child1.id }}">
+                                <div class="dd-handle dd-nodrag">
+                                    <input type="checkbox" class="menu-select" data-menu-id="{{ child1.id }}"
+                                           data-level="2">
+                                    {{ child1.name }}
+                                </div>
+                                {% if child1.children|length > 0 %}
+                                    <ol class="dd-list">
+                                        {% for child2 in child1.children if child2.id in menus_id %}
+                                            <li class="dd-item" data-id="{{ child2.id }}">
+                                                <div class="dd-handle dd-nodrag">
+                                                    <input type="checkbox" class="menu-select"
+                                                           data-menu-id="{{ child2.id }}" data-level="3">
+                                                    {{ child2.name }}
+                                                </div>
+                                                {% if child2.children|length > 0 %}
+                                                    <ol class="dd-list">
+                                                        {% for child3 in child2.children if child3.id in menus_id %}
+                                                            <li class="dd-item" data-id="{{ child3.id }}">
+                                                                <div class="dd-handle dd-nodrag">
+                                                                    <input type="checkbox" class="menu-select"
+                                                                           data-menu-id="{{ child3.id }}" data-level="4">
+                                                                    {{ child3.name }}
+                                                                </div>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ol>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+</div>

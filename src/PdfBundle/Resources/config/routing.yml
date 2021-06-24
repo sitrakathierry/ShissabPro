@@ -1,0 +1,47 @@
+pdf_homepage:
+    path:     /pdf/index
+    defaults: { _controller: PdfBundle:Default:index }
+
+pdf_add:
+    path:     /pdf/add
+    defaults: { _controller: PdfBundle:Default:add }
+
+pdf_save:
+    path:     /pdf/save
+    defaults: { _controller: PdfBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+pdf_consultation:
+    path:     /pdf/consultation
+    defaults: { _controller: PdfBundle:Default:consultation }
+    options:
+        expose: true
+
+pdf_list:
+    path:     /pdf/list
+    defaults: { _controller: PdfBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
+
+pdf_show:
+    path:     /pdf/show/{id}
+    defaults: { _controller: PdfBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]
+
+pdf_pdf:
+    path:     /pdf/pdf/{id}
+    defaults: { _controller: PdfBundle:Default:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+pdf_attribution:
+    path:     /pdf/attribution
+    defaults: { _controller: PdfBundle:Default:attribution }
+    options:
+        expose: true

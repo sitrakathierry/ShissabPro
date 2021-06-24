@@ -1,0 +1,432 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/client/css/bootstrap-tagsinput.css') }}">
+ {% endblock  %}
+
+ {% block scripts %}
+    {{ parent() }}
+     <script src="{{ asset('bundles/client/js/show.js') }}"></script>
+   <script src="{{ asset('bundles/client/js/bootstrap-tagsinput.js') }}"></script>
+   <script type="text/javascript">
+    $('#form').on('keyup keypress', function(e) {
+      var keyCode = e.keyCode || e.which;
+      if (keyCode === 13) { 
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // $(document).on('click','#delete',function(event) {
+    //   event.preventDefault();
+    // });
+
+   </script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            FICHE CLIENT <span class="badge-warning">{{client.formattedNum}}/{{client.agence.code}}</span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="POST" action="{{ path('client_save') }}" class="form-horizontal" id="form">
+
+                          <input type="hidden" name="num_police" id="num_police" value="{{client.numPolice}}">
+                          <input type="hidden" name="statut" value="{{client.statut}}">
+
+                          <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Agence</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b statut" name="agence">
+                                                <option></option>
+                                                {% for agence in agences %}
+                                                    <option value="{{agence.id}}" {% if agence.id == client.agence.id %}selected=""{% endif %} >{{agence.nom}} : {{agence.code}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Statut</label>
+                                        <div class="col-sm-10">
+                                            {% if client.statut == 1 %}
+                                                <input type="text" class="form-control" name="" readonly="" value="PERSONNE MORALE">
+                                            {% else %}
+                                                <input type="text" class="form-control" name="" readonly="" value="PERSONNE PHYSIQUE">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">N° Police</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="" readonly="" value="{{client.formattedNum}}/{{client.agence.code}} ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if client.statut == 1 %}
+
+                                <div class="row client_morale">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label nom">Nom Société *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_nom_societe" value="{{client_morale.nomSociete}}"  >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label prenom">Nom et Prénom Gérant *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_nom_gerant" value="{{client_morale.nomGerant}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row client_morale">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Adresse</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_adresse" id="adresse" value="{{client_morale.adresse}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Téléphone fixe *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_tel_fixe" value="{{client_morale.telFixe}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row client_morale">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Fax</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_fax" value="{{client_morale.fax}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Email *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_email" value="{{client_morale.email}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row client_morale">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Domaine d’intervention</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_domaine" value="{{client_morale.domaine}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">N° de registre</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_num_registre" value="{{client_morale.numRegistre}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row client_morale">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Type de Société</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control m-b type" name="clm_type_societe">
+                                                    {% for typesociete in typeSocieteList %}
+
+                                                      {% if typesociete.id == client_morale.idTypeSociete.id %}
+                                                        <option value="{{typesociete.id}}" selected="">{{typesociete.designation}}</option>
+                                                      {% else %}
+                                                          <option value="{{typesociete.id}}" >{{typesociete.designation}}</option>
+                                                      {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3 class="client_morale"><u>PERSONNE A CONTACTER</u></h3>
+                                <div class="row client_morale">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Nom et Prénom *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_nom_pers_contact" value="{{client_morale.nomPersContact}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Téléphone *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="clm_tel_contact" value="{{client_morale.telPersContact}}" data-role="tagsinput">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row client_morale">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label">Email</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clm_email_contact" data-role="tagsinput" value="{{client_morale.EmailPersContact}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                                
+                            {% else %}
+                            
+                              <div class="row client_physique">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label nom">Nom et Prénom *</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_nom" value="{{client_physique.nom}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label prenom">NIN</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_nin" value="{{client_physique.nin}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row client_physique">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label nom">Adresse *</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_adresse" value="{{client_physique.adresse}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label prenom">Quartier</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_quartier" value="{{client_physique.quartier}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="row client_physique">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label nom">Téléphone *</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_tel" value="{{client_physique.tel}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label prenom">Email</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_email" value="{{client_physique.email}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="row client_physique">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label nom">Sexe *</label>
+                                          <div class="col-sm-10">
+                                              <select class="form-control m-b type" name="clp_sexe">
+                                                  <option value="1" {% if client_physique.sexe == 1 %}selected=""{% endif %} >HOMME</option>
+                                                  <option value="2" {% if client_physique.sexe == 2 %}selected=""{% endif %} >FEMME</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label prenom">Situation</label>
+                                          <div class="col-sm-10">
+                                              <select class="form-control m-b type" name="clp_situation">
+                                                  <option value="1" {% if client_physique.situation == 1 %}selected=""{% endif %} >CELIBATAIRE</option>
+                                                  <option value="2" {% if client_physique.situation == 2 %}selected=""{% endif %} >MARIE</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              
+
+                              <div class="row client_physique">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label nom">Type de social</label>
+                                          <div class="col-sm-10">
+                                              <select class="form-control m-b type" name="clp_type_social">
+                                                <option value=""></option>
+                                                {% for type in typeSocialList %}
+                                                    {% if type == client_physique.idTypeSocial %}
+                                                      <option value="{{type.id}}" selected="">
+                                                        {{type.designation}}
+                                                      </option>
+                                                    {% else %}
+                                                      <option value="{{type.id}}">
+                                                        {{type.designation}}
+                                                      </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label prenom">Lieux de travail</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_lieu_travail" value="{{client_physique.lieuTravail}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Date de naissance</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-datepicker" name="clp_ddn" value="{{client_physique.ddn ? client_physique.ddn | date('d/m/Y') : ''}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prenom">Lieu de naissance</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_ldn" value="{{client_physique.ldn}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row client_physique">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Profession</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="clp_profession" value="{{ client_physique.profession }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                              <div class="row client_physique">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label">Nom et Prénom</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_nom_pers_contact" value="{{client_physique.nomPersContact}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label">Lien de parente</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="clp_lien_parente" value="{{client_physique.lienParente}}">
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+
+                              <div class="row client_physique">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <label class="col-sm-2 control-label">Observation</label>
+                                          <div class="col-sm-10" >
+                                            <input type="text" class="form-control" name="clp_observation" value="{{client_physique.observation}}">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                            {% endif %}
+
+
+
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                              {% if permissions.client.delete %}
+                              <div class="col-lg-6">
+                                  <a href="{{ path('client_delete', {id: client.numPolice}) }}" class="btn btn-danger" id="delete">
+                                    <i class="fa fa-trash"></i>
+                                    Supprimer
+                                  </a>
+                              </div>
+                              {% endif %}
+                              {% if permissions.client.edit %}
+                                <div class="col-lg-6">
+                                    <!-- <div class=""> -->
+                                        <button class="btn btn-white" type="reset">
+                                            <i class="fa fa-times"></i>
+                                            Annuler
+                                        </button>
+                                        <button class="btn btn-primary" type="submit" id="btn-save-cl">
+                                            <i class="fa fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                    <!-- </div> -->
+                                </div>
+                              {% endif %}
+                            </div>
+                            <input type="hidden" name="" id="id-row" value="0">
+                            <input type="hidden" name="f_a_payer" id="id-row" value="0" id="f_a_payer">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

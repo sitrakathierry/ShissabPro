@@ -1,0 +1,17 @@
+permission_user_homepage:
+    path:     /permission/user
+    defaults: { _controller: PermissionUserBundle:Default:index }
+
+permission_user_list:
+    path: /permission/user/list/{user_id}
+    defaults: { _controller: PermissionUserBundle:Default:list}
+    methods: [GET]
+    options:
+        expose: true
+
+permission_user_save:
+    path: /permission/user/save
+    defaults: { _controller: PermissionUserBundle:Default:save}
+    methods: [POST]
+    options:
+        expose: true

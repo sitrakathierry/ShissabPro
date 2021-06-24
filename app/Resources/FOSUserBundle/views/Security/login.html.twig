@@ -1,0 +1,24 @@
+{% extends "layout.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block fos_user_content %}
+	{% if error %}
+	   <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	{% endif %}
+	<h3 style="margin: 15px">Bienvenue dans Shissab System</h3>
+    <form class="m-t" role="form" action="{{ path("fos_user_security_check") }}" method="post">
+	    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Nom d'utilisateur" id="username" name="_username" value="{{ last_username }}" required="required">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Mot de passe" id="password" name="_password" required="required">
+        </div>
+        <button type="submit" class="btn btn-primary block full-width m-b" id="_submit" name="_submit">Se connecter</button>
+
+        <!-- <a href="#"><small>Mot de passe oublié?</small></a>
+        <p class="text-muted text-center"><small>Vous n'avez pas de compte?</small></p>
+        <a class="btn btn-sm btn-white btn-block" href="#">Créer un compte</a> -->
+    </form>
+    <p class="m-t"> <small>Hikamsocietemultiple­ &copy; <script>document.write(new Date().getFullYear())</script></small> </p>
+	
+{% endblock fos_user_content %}

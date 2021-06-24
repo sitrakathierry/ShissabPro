@@ -1,0 +1,109 @@
+$('input:radio[name=modele]').change(function () {
+
+	var id = $(this).attr('id');
+
+	if (id == 'modele1') {
+		$('.logo-gauche').removeClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').removeClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(1)
+	}
+
+	if (id == 'modele2') {
+		$('.logo-gauche').removeClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').addClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(2)
+
+
+	}
+
+	if (id == 'modele3') {
+		$('.logo-gauche').addClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').removeClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(3)
+
+	}
+
+	if (id == 'modele4') {
+		$('.logo-gauche').addClass('hidden')
+		$('.logo-centre').removeClass('hidden')
+		$('.logo-droite').addClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(4)
+
+	}
+
+	if (id == 'modele5') {
+		$('.logo-gauche').addClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').addClass('hidden')
+		$('.logo').addClass('hidden')
+		$('#type_modele').val(5)
+
+	}
+
+});
+
+$(document).on('change','#logo-gauche',function(event) {
+  var file = document.querySelector('#logo-gauche').files[0];
+  getBase64(file).then((src)=>{
+      $('#logo_gauche_img').attr('src',src);
+  });
+});
+
+$(document).on('change','#logo-centre',function(event) {
+  var file = document.querySelector('#logo-centre').files[0];
+  getBase64(file).then((src)=>{
+      $('#logo_centre_img').attr('src',src);
+  });
+});
+
+$(document).on('change','#logo-droite',function(event) {
+  var file = document.querySelector('#logo-droite').files[0];
+  getBase64(file).then((src)=>{
+      $('#logo_droite_img').attr('src',src);
+  });
+});
+
+function getBase64(file) {
+  return new Promise((resolve)=>{
+     var reader = new FileReader();
+     reader.readAsDataURL(file);
+     reader.onload = function () {
+       resolve(reader.result);
+     };
+     reader.onerror = function (error) {
+       resolve(false)
+     };
+  })
+}
+
+$(document).on('click', '#btn-save-modele', function(event) {
+	event.preventDefault();
+
+	var data = {
+		nom : $('#nom').val(),
+		type_modele : $('#type_modele').val(),
+		logo_gauche_img : $('#logo_gauche_img').attr('src'),
+		logo_centre_img : $('#logo_centre_img').attr('src'),
+		logo_droite_img : $('#logo_droite_img').attr('src'),
+		texte_haut : $('#texte_haut').code(),
+	}
+
+	var url = Routing.generate('pdf_save');
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: data,
+		success: function(res) {
+			show_info('Succès', 'Modèle enregistré');
+			// location.reload();
+		}
+	})
+})

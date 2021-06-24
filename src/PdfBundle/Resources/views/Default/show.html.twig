@@ -1,0 +1,226 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+  	ul {
+	  list-style-type: none;
+	}
+
+	li {
+	  display: inline-block;
+	}
+
+	input[type="radio"][id^="modele"] {
+	  display: none;
+	}
+
+	label.label-modele {
+	  border: 1px solid #fff;
+	  padding: 10px;
+	  display: block;
+	  position: relative;
+	  margin: 10px;
+	  cursor: pointer;
+	}
+
+	label.label-modele:before {
+	  background-color: white;
+	  color: white;
+	  content: " ";
+	  display: block;
+	  border-radius: 50%;
+	  border: 1px solid grey;
+	  position: absolute;
+	  top: -5px;
+	  left: -5px;
+	  width: 25px;
+	  height: 25px;
+	  text-align: center;
+	  line-height: 28px;
+	  transition-duration: 0.4s;
+	  transform: scale(0);
+	}
+
+	label.label-modele img {
+	  height: 150px;
+	  width: 300px;
+	  transition-duration: 0.2s;
+	  transform-origin: 50% 50%;
+	}
+
+	:checked + label.label-modele {
+	  border-color: #ddd;
+	}
+
+	:checked + label.label-modele:before {
+	  content: "✓";
+	  background-color: grey;
+	  transform: scale(1);
+	}
+
+	:checked + label.label-modele img {
+	  transform: scale(0.9);
+	  /* box-shadow: 0 0 5px #333; */
+	  z-index: -1;
+	}
+
+	.up{
+		text-transform: uppercase;
+	}
+  </style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+  <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('bundles/pdf/js/show.js') }}"></script>
+  <script type="text/javascript">
+  	$('.summernote').summernote()
+  </script>
+{% endblock %}
+{% block contenu %}
+<div class="wrapper wrapper-content">
+<input type="hidden" id="id" value="{{ modelePdf.id }}">
+
+<div class="row">
+	<div class="col-lg-12">
+	  <div class="ibox float-e-margins">
+	    <div class="ibox-title">
+	      <h5>
+	        Création Modèle PDF
+	      </h5>
+	    </div>
+	    <div class="ibox-content">
+
+	    	<div class="row">
+        		<div class="col-lg-6">
+        			<div class="form-group">
+                    	<label class="col-sm-2 control-label nom">Nom Modèle</label>
+                        <div class="col-sm-10">
+                        	<input type="text" class="form-control" name="nom" id="nom" value="{{ modelePdf.nom }}">
+                        </div>
+                    </div>
+        		</div>
+        	</div>
+
+        	<br>
+            <h3 class="up"><u>Modèle entête</u></h3>
+            <input type="hidden" id="type_modele" value="{{ modelePdf.modele }}">
+	    	<div class="row">
+	    		<div class="col-lg-12">
+			    	<ul>
+					  <li>
+					    <input type="radio" id="modele1" name="modele" {% if modelePdf.modele == 1 %} checked=""  {% endif %}/>
+					    <label class="label-modele" for="modele1"><img src="{{ asset('img/pdf/modele-1.png') }}" /></label>
+					  </li>
+					  <li>
+
+					    <input type="radio" id="modele2" name="modele" {% if modelePdf.modele == 2 %} checked=""  {% endif %}/>
+					    <label class="label-modele" for="modele2"><img src="{{ asset('img/pdf/modele-2.png') }}" /></label>
+					  </li>
+					  <li>
+
+					    <input type="radio" id="modele3" name="modele" {% if modelePdf.modele == 3 %} checked=""  {% endif %}/>
+					    <label class="label-modele" for="modele3"><img src="{{ asset('img/pdf/modele-3.png') }}" /></label>
+					  </li>
+
+					  <li>
+
+					    <input type="radio" id="modele4" name="modele" {% if modelePdf.modele == 4 %} checked=""  {% endif %}/>
+					    <label class="label-modele" for="modele4"><img src="{{ asset('img/pdf/modele-4.png') }}" /></label>
+					  </li>
+
+					  <li>
+
+					    <input type="radio" id="modele5" name="modele" {% if modelePdf.modele == 5 %} checked=""  {% endif %}/>
+					    <label class="label-modele" for="modele5"><img src="{{ asset('img/pdf/modele-5.png') }}" /></label>
+					  </li>
+					  
+					</ul>
+	    		</div>
+	    	</div>
+
+	    	<br>
+            <h3 class="up logo"><u>Logo</u></h3>
+
+	    	<div class="row logo-gauche form-horizontal">
+        		<div class="col-lg-6">
+        			<div class="form-group">
+                    	<label class="col-sm-2 control-label nom">Gauche</label>
+                        <div class="col-sm-10">
+                        	<input type="file" class="form-control" id="logo-gauche">
+                        </div>
+                    </div>
+        		</div>
+        		<div class="col-lg-6 align-left">
+			      <img src="{{ modelePdf.logoGauche }}" id="logo_gauche_img" class="img-thumbnail photo-avatar">
+			    </div>
+        	</div>
+
+        	<div class="row logo-centre hidden form-horizontal">
+        		<div class="col-lg-6">
+        			<div class="form-group">
+                    	<label class="col-sm-2 control-label nom">Centre</label>
+                        <div class="col-sm-10">
+                        	<input type="file" class="form-control" id="logo-centre">
+                        </div>
+                    </div>
+        		</div>
+        		<div class="col-lg-6 align-left">
+			      <img src="{{ modelePdf.logoCentre }}" id="logo_centre_img" class="img-thumbnail photo-avatar">
+			    </div>
+        	</div>
+
+        	<div class="row logo-droite form-horizontal">
+        		<div class="col-lg-6">
+        			<div class="form-group">
+                    	<label class="col-sm-2 control-label nom">Droite</label>
+                        <div class="col-sm-10">
+                        	<input type="file" class="form-control" id="logo-droite">
+                        </div>
+                    </div>
+        		</div>
+        		<div class="col-lg-6 align-left">
+			      <img src="{{ modelePdf.logoDroite }}" id="logo_droite_img" class="img-thumbnail photo-avatar">
+			    </div>
+        	</div>
+
+        	<br>
+            <h3 class="up"><u>Texte haut</u></h3>
+        	<div class="row">
+        		<div class="col-lg-12">
+        			<div class="form-group">
+                        <div class="col-sm-12">
+                        	<textarea class="summernote" id="texte_haut">
+                        		{{ modelePdf.texteHaut | raw }}
+                        	</textarea>
+                        </div>
+                    </div>
+        		</div>
+        	</div>
+
+        	<div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- <div class=""> -->
+                        <button class="btn btn-primary" type="submit" id="btn-save-modele">
+                            <i class="fa fa-save"></i>
+                            Enregistrer les modificati
+                        </button>
+                        
+                        <a href="{{ path('pdf_pdf', { id: modelePdf.id }) }}" class="btn btn-info" target="_blank">
+                            <i class="fa fa-print"></i>
+                            Apperçu
+                        </a>
+                    <!-- </div> -->
+                </div>
+            </div>
+
+        	
+
+	    </div>
+	  </div>
+	</div>
+</div>
+
+</div>
+{% endblock %}

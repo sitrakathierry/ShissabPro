@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+    	.tile-menu {
+		    height: 250px;
+		    margin: 10px 0;
+		    background-color: #fff;
+		    box-shadow: 1px 2px 1px 1px #e4e4e4;
+		    border-top: 10px solid transparent;
+		    -webkit-transition: box-shadow 0.5s, transform 0.5s, color 1s;
+		    transition: box-shadow 0.5s, transform 0.5s, color 1s;
+		}
+
+		.tile-menu .tile-title {
+		    color: #5a778f;
+		    font-size: 24px;
+		    font-weight: bold;
+		    text-align: center;
+		    padding: 40px 5px 10px;
+		    text-transform: uppercase;
+		    -webkit-transition: box-shadow 0.5s, transform 0.2s, color 1s;
+		    transition: box-shadow 0.5s, transform 0.2s, color 1s;
+		}
+
+		.tile-menu .tile-icon {
+		    text-align: center;
+		    font-size: 46px;
+		    -webkit-transition: box-shadow 0.5s, transform 0.2s, color 1s;
+		    transition: box-shadow 0.5s, transform 0.2s, color 1s;
+		}
+
+		.tile-menu:hover {
+		    box-shadow: 2px 2px 2px 2px #ccc;
+		    transform: scale(1.1);
+		}
+
+		.tile-menu:hover .tile-title {
+		    color: #a7b1c2;
+		}
+
+		.tile-menu:hover .tile-icon {
+		    color: #5a778f;
+		}
+
+		.tile-link, .tile-link:hover, .tile-link:active, .tile-link:visited {
+		    color: #1ab394;
+		    text-decoration: none;
+		    display: block;
+		}
+
+    </style>
+ {% endblock  %}
+
+{% block contenu %}
+    <div class="row" id="dash-square-menu">
+    	<div class="col-sm-6 col-md-4">
+    		<a href="{{ path('typesociete_add') }}" class="tile-link">
+    			<div class="tile-menu">
+    				<h2 class="tile-title">CREATION TYPE DE SOCIETE</h2>
+    				<div class="tile-icon"><i class="fa fa-plus"></i>
+    					
+    				</div>
+    			</div>
+    		</a>
+    	</div>
+
+    	<div class="col-sm-6 col-md-4">
+    		<a href="{{ path('typesociete_list') }}" class="tile-link">
+    			<div class="tile-menu">
+    				<h2 class="tile-title">LISTE TYPE DE SOCIETE</h2>
+    				<div class="tile-icon"><i class="fa fa-list"></i>
+    					
+    				</div>
+    			</div>
+    		</a>
+    	</div>
+    	
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+    	$('#side-menu li a').each(function(n,v){
+
+    		if ($(this).parent().data('name') == "Type de société") {
+    			var ul = $(this).parent().children('ul');
+    			ul.children('li').each(function(a,b) {
+					var icon    = $(this).data('icon');
+					var libelle = $(this).data('name');
+					var lien    = $(this).children('a').attr('href');
+					var menu    = '<div class="col-sm-6 col-md-4">';
+			        
+			        menu += '<a href=" '+ lien +'" class="tile-link">';
+			        menu += '<div class="tile-menu">';
+			        menu += '<h2 class="tile-title">' + libelle + '</h2>';
+			        menu += '<div class="tile-icon">';
+			        menu += '<i class="fa '+ icon +'"></i>';
+			        menu += '</div>';
+			        menu += '</div>';
+			        menu += '</a>';
+			        menu += '</div>';	
+
+    				$('#dash-square-menu').append(menu);
+    			});
+    		}
+
+	    });
+    </script>
+{% endblock %}

@@ -1,0 +1,100 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header text-center">
+                <div class="dropdown profile-element">
+                     <span>
+                        <img alt="image" class="img-circle" src="{{ asset('img/shissab.png') }}" style="width: 75px !important;height: 75px !important;"/>
+                        {# <img class="img-thumbnail" src="{{ asset('img/gap-150.png') }}" style="width: 150px !important;height: 150px !important;" /> #}
+                     </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        {# <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg') }}" /> #}
+                            <span class="clear"> <span class="block m-t-xs"> 
+                            <strong class="font-bold capitalize">
+                                {{ user.username }}
+                            </strong>
+                             </span> <span class="text-muted text-xs block">{{ user.email }}<b class="caret"></b></span> </span> </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a href="{{ path('user_show', { id: user.id }) }}">Profile</a></li>
+                        <!-- <li><a href="contacts.html">Paramètre</a></li> -->
+                        <li class="divider"></li>
+                        <li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    <!-- AM -->
+                        <img alt="image" class="img-circle" src="{{ asset('img/shissab.png') }}" style="width: 50px !important;height: 50px !important;"/>
+
+                </div>
+            </li>
+
+            {% for menu in menus %}
+                {% if menu.disabled != 1 %}
+                    <li class="item-menu" data-name="{{ menu.name }}">
+                        <a href="{{ path(menu.route) }}"><i class="fa {{ menu.icon }}"></i> <span class="nav-label">{{ menu.name }}</span> 
+                            {% if menu.child|length > 0 %}
+                                <span class="fa arrow"></span>
+                            {% endif %}
+                        </a>
+                        {% if menu.child|length > 0 %}
+                            <ul class="nav nav-second-level collapse">
+                                {% for menu_item in menu.child %}
+                                    {% if menu_item.disabled != 1 %}
+                                        <li class="child-menu-level-1" data-name="{{ menu_item.name }}" data-icon="{{ menu_item.icon }}">
+                                            <a href="{{ path(menu_item.route) }}">
+                                                
+                                                {{ menu_item.name }}
+                                                {% if menu_item.child|length > 0 %}
+                                                     <i class="fa arrow"></i>
+                                                {% endif %}
+                                            </a>
+                                            {% if menu_item.child|length > 0 %}
+                                                <ul class="nav nav-third-level collapse " >
+                                                    {% for menu_item_2 in menu_item.child %}
+                                                        {% if menu_item_2.disabled != 1 %}
+                                                            <li data-name="{{ menu_item_2.name }}" data-icon="{{ menu_item_2.icon }}">
+                                                                <a href="{{ path(menu_item_2.route) }}">
+                                                                    {{ menu_item_2.name }}
+                                                                    {% if menu_item_2.child|length > 0 %}
+                                                                        <i class="fa arrow"></i>
+                                                                    {% endif %}
+                                                                </a>
+                                                                {% if menu_item_2.child|length > 0 %}
+                                                                    <ul class="nav nav-four-level collapse " >
+                                                                        {% for menu_item_3 in menu_item_2.child %}
+                                                                            {% if menu_item_3.disabled != 1 %}
+                                                                                <li data-name="{{ menu_item_3.name }}" data-icon="{{ menu_item_3.icon }}">
+                                                                                    <a href="{{ path(menu_item_3.route) }}">{{ menu_item_3.name }}
+                                                                                        {% if menu_item_3.child|length > 0 %}
+                                                                                            <i class="fa arrow"></i>
+                                                                                        {% endif %}
+                                                                                    </a>
+                                                                                </li>
+                    
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </ul>
+                                                                {% endif %}
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </li>
+                    
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+
+                        {% endif %}
+                    </li>
+                    
+                {% endif %}
+
+            {% endfor %}
+
+
+        </ul>
+
+    </div>
+</nav>

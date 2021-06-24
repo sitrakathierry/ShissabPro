@@ -1,0 +1,61 @@
+user_homepage:
+    path:     /user
+    defaults: { _controller: UserBundle:Default:index }
+
+user_add:
+    path:     /user/add
+    defaults: { _controller: UserBundle:Default:add }
+    options:
+        expose: true
+
+user_save:
+    path:    /user/save
+    defaults: { _controller: UserBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+user_agence_list:
+    path:     /user/agence/list/{agence_id}
+    defaults: { _controller: UserBundle:Default:listUserAgence }
+    options:
+        expose: true
+
+user_show:
+    path:     /user/show/{id}
+    defaults: { _controller: UserBundle:Default:show }
+    options:
+        expose: true
+
+user_delete:
+    path:     /user/delete/{id}
+    defaults: { _controller: UserBundle:Default:delete }
+
+user_list:
+    path:     /user/list
+    defaults: { _controller: UserBundle:Default:listUser }
+    options:
+        expose: true
+
+# user_log:
+#     path:     /user/logs
+#     defaults: { _controller: UserBundle:Default:logs }
+#     options:
+#         expose: true
+
+# user_agent_add:
+#     path:     /user/agent/add
+#     defaults: { _controller: UserBundle:Default:addAgent }
+#     options:
+#         expose: true
+
+# user_save_agent:
+#     path:    /user/agent/save
+#     defaults: { _controller: UserBundle:Default:saveAgent }
+#     options:
+#         expose: true
+#     methods: [POST]
+
+# user_agent_list:
+#     path:     /user/agent/list
+#     defaults: { _controller: UserBundle:Default:listAgent }

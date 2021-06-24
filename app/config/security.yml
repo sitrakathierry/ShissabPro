@@ -1,0 +1,60 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        # ROLE_ADMIN:       ROLE_USER
+        # ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_ADMIN      : ROLE_RESPONSABLE
+        ROLE_RESPONSABLE       : ROLE_AGENT
+        ROLE_AGENT       : ROLE_USER
+        ROLE_USER       : ROLE_USER
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        main:
+            pattern: ^/
+            # user_checker: fos_user.user_checker
+            form_login:
+                provider: fos_userbundle
+                success_handler: authentication_handler
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: /dashboard
+
+            logout:       
+                path:   /logout
+                success_handler: authentication_handler
+            anonymous:    true
+
+            remember_me:
+                secret:   '%secret%'
+                lifetime: 20
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/client-maladie, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/app, role: ROLE_USER }
+        - { path: ^/dashboard, role: ROLE_USER }
+        - { path: ^/user, role: ROLE_USER }
+        - { path: ^/consultation, role: ROLE_USER }
+        - { path: ^/dossier, role: ROLE_USER }
+        - { path: ^/facture, role: ROLE_USER }
+        - { path: ^/sinistre, role: ROLE_USER }
+        - { path: ^/menu, role: ROLE_USER }
+        - { path: ^/client, role: ROLE_USER }
+        - { path: ^/garantie, role: ROLE_USER }
+        - { path: ^/prestation, role: ROLE_USER }
+        - { path: ^/assurance, role: ROLE_USER }
+        - { path: ^/cotation, role: ROLE_USER }
+        - { path: ^/caisse, role: ROLE_USER }
+        - { path: ^/reassureur, role: ROLE_USER }
+        - { path: ^/tarification, role: ROLE_USER }
+

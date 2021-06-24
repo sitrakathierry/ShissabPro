@@ -1,0 +1,16 @@
+parametre_homepage:
+    path:     /parametre/dashboard
+    defaults: { _controller: ParametreBundle:Default:index }
+
+parametre_client:
+    path:     /parametre/client
+    defaults: { _controller: ParametreBundle:Default:ficheClient }
+
+parametre_type_societe:
+    path:     /parametre/type-societe
+    defaults: { _controller: ParametreBundle:Default:typeSociete }
+
+parametre_type_social:
+    path:     /parametre/type-social
+    defaults: { _controller: ParametreBundle:Default:typeSocial }
+    

@@ -1,0 +1,124 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Facture
+ *
+ * @ORM\Table(name="facture", indexes={@ORM\Index(name="fk_facture_client_idx", columns={"client"}), @ORM\Index(name="fk_facture_agence_idx", columns={"agence"})})
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FactureRepository")
+ */
+class Facture
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="type", type="integer", nullable=true)
+     */
+    private $type = '';
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_creation", type="date", nullable=true)
+     */
+    private $dateCreation = '';
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=true)
+     */
+    private $date = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="num", type="integer", nullable=true)
+     */
+    private $num = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montant = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="remise_pourcentage", type="integer", nullable=true)
+     */
+    private $remisePourcentage = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="remise_valeur", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $remiseValeur = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $total = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="somme", type="text", nullable=true)
+     */
+    private $somme = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\Client
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Client")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="client", referencedColumnName="num_police")
+     * })
+     */
+    private $client;
+
+    private $formattedNum;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descr", type="text", nullable=true)
+     */
+    private $descr = '';
+
+    /**
+     * @var \AppBundle\Entity\Agence
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agence")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agence", referencedColumnName="id")
+     * })
+     */
+    private $agence;
+
+    public function getFormattedNum()
+    {
+
+        $this->formattedNum = "MC-" . str_pad($this->num, 3, '0', STR_PAD_LEFT) . "/F" . $this->dateCreation->format('y');
+
+        return $this->formattedNum;
+    }
+
+}
