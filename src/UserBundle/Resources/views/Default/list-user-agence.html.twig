@@ -80,7 +80,7 @@
                     <i class="fa fa-eye"></i> 
                     Voir
                     </a>
-                    <a class="btn btn-xs btn-danger btn-outline demo4" data-action=""><i class="fa fa-trash"></i>
+                    <a class="btn btn-xs btn-danger btn-outline cl_delete_user" data-action=""><i class="fa fa-trash"></i>
                     Suppr.
                     </a>
                   </td>
@@ -177,7 +177,7 @@
   	$('#u_username').val('');
   });
   
-  var u_username = document.getElementById('u_username');
+  /*var u_username = document.getElementById('u_username');
   
   u_username.addEventListener('keyup', makeDebounce(function(e) {
   
@@ -199,7 +199,7 @@
       
   
   
-  },500));
+  },500));*/
   
   function makeDebounce(callback, delay){
    var timer;
@@ -213,8 +213,7 @@
    }
   }
   
-  $('.demo4').click(function (event) {
-          event.preventDefault();
+  $('.cl_delete_user').click(function () {
           var action = $(this).data('action');
           swal({
               title: "Êtes-vous sûr?",

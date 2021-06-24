@@ -183,7 +183,7 @@
   
   var u_username = document.getElementById('u_username');
   
-  u_username.addEventListener('keyup', makeDebounce(function(e) {
+  /*u_username.addEventListener('keyup', makeDebounce(function(e) {
   
       var search_text = e.target.value.toLowerCase();
   
@@ -203,7 +203,7 @@
       
   
   
-  },500));
+  },500));*/
   
   function makeDebounce(callback, delay){
    var timer;
@@ -217,8 +217,7 @@
    }
   }
   
-  $('.cl_delete_user').click(function (event) {
-          event.preventDefault();
+  $('.cl_delete_user').click(function () {
           var action = $(this).data('action');
           swal({
               title: "Êtes-vous sûr?",

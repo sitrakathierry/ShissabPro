@@ -151,7 +151,7 @@
                                         <i class="fa fa-save"></i>
                                         Enregistrer
                                     </button>
-                                    <button class="btn btn-danger demo4" data-action="{{ path('user_delete', {id: user.id }) }}">
+                                    <button class="btn btn-danger cl_delete_user" data-action="{{ path('user_delete', {id: user.id }) }}">
                                         <i class="fa fa-trash"></i>
                                         Supprimer
                                     </button>
@@ -174,8 +174,7 @@
             var switchery = new Switchery(elem, { color: '#1AB394' });
         });
 
-        $('.demo4').click(function (event) {
-            event.preventDefault();
+        $('.cl_delete_user').click(function () {
             var action = $(this).data('action');
             swal({
                 title: "Êtes-vous sûr?",
