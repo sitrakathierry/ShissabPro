@@ -154,7 +154,7 @@ class MenuController extends Controller
                 ->getAllMenu();
 
         } else{
-            /*$menus = $this->getDoctrine()
+           /* $menus = $this->getDoctrine()
                           ->getRepository('AppBundle:MenuUtilisateur')
                           ->getMenuUtilisateur($this->getUser());
             foreach ( $menus as $menu ) {

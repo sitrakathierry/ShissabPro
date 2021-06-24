@@ -10,12 +10,11 @@ namespace AppBundle\Repository;
  */
 class AgenceRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function list()
+	public function getList()
 	{
-
 		$em = $this->getEntityManager();
 		
-		$query = "	select a.nom, a.region, a.code, '' as action , a.id as id
+		$query = "	select a.nom, a.region, a.code, a.capacite, '' as action , a.id as id
 					from agence a
 					order by a.nom asc";
 
@@ -26,6 +25,5 @@ class AgenceRepository extends \Doctrine\ORM\EntityRepository
         $result = $statement->fetchAll();
 
         return $result;
-
 	}
 }

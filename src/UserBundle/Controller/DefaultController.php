@@ -57,6 +57,23 @@ class DefaultController extends Controller
             $userAgence = new UserAgence();
         }
 
+        if ($u_role != 'ROLE_ADMIN') {
+            $agence = $this->getDoctrine()
+                    ->getRepository('AppBundle:Agence')
+                    ->find($u_agence);
+
+            $userAgences = $this->getDoctrine()
+                                ->getRepository('AppBundle:UserAgence')
+                                ->countUserByAgence($agence);
+            if(count($userAgences) >= $agence->getCapacite() && $u_status == "on"){
+                return new Response(-1);
+            }
+        } else {
+            $agence = $this->getDoctrine()
+                    ->getRepository('AppBundle:Agence')
+                    ->find(1);
+        }
+
         $user->setUserName($u_nom);
         $user->setUserNameCanonical($u_nom);
         $user->setEmail($u_email);
@@ -83,17 +100,6 @@ class DefaultController extends Controller
          * user agence
          */
 
-        if ($u_role != 'ROLE_ADMIN') {
-            $agence = $this->getDoctrine()
-                    ->getRepository('AppBundle:Agence')
-                    ->find($u_agence);
-
-        } else {
-            $agence = $this->getDoctrine()
-                    ->getRepository('AppBundle:Agence')
-                    ->find(1);
-        }
-
         $userAgence->setAgence($agence);
         $userAgence->setUser($user);
         $userAgence->setResponsable($u_responsable);
@@ -101,8 +107,8 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($userAgence);
         $em->flush();
-
-
+        
+        
         // return ($isNew) ? $this->redirectToRoute('user_add') : $this->redirectToRoute('user_list');
 
         return new Response( $user->getId() );
@@ -158,15 +164,10 @@ class DefaultController extends Controller
                 ->getRepository('AppBundle:User')
                 ->find($id);
 
-        $userType = $this->getDoctrine()
-                ->getRepository('AppBundle:UserType')
-                ->findOneBy(array(
-                    'user' => $user
-                ));
-
         if($user){
             $user->setEnabled(0);
         }
+        $em = $this->getDoctrine()->getManager();
         $em->flush();
 
         return $this->redirectToRoute('user_list');

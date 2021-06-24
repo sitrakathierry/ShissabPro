@@ -18,8 +18,12 @@ $('#user-form').on('submit', function (e) {
     	type: 'POST',
     	data: data,
     	success: function(res) {
-    		show_info('Succès', 'Utilisateur enregistré');
-    		location.reload();
+            if(res == -1)
+    		    show_info('Erreur','Capacité compte atteint','error');
+            else{
+                show_info('Succès', 'Utilisateur enregistré');
+                location.reload();
+            }    		
     	}
     })
 })

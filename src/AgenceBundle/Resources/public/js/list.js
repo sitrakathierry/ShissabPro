@@ -5,7 +5,7 @@ $(document).ready(function(){
 	load_list();
 
 	function instance_grid() {
-        var colNames = ['Nom','Région',''];
+        var colNames = ['Nom','Région', 'Capacite', ''];
         
         var colModel = [{ 
             name:'nom',
@@ -15,6 +15,11 @@ $(document).ready(function(){
         { 
             name:'region',
             index:'region',
+            align: 'center'
+        },
+        { 
+            name:'capacite',
+            index:'capacite',
             align: 'center'
         },
         {
@@ -95,6 +100,7 @@ $(document).ready(function(){
 			nom : $('#nom').val(),
 			region : $('#region').val(),
             code : $('#code').val(),
+            capacite : $('#capacite').val()
 		}
 
 		var url = Routing.generate('agence_save');
@@ -181,7 +187,8 @@ $(document).ready(function(){
         var nom = $('#id_nom').val(),
             region = $('#id_region').val(),
             code = $('#id_code').val(),
-            id = $('#id_agence_edit').val();
+            id = $('#id_agence_edit').val(),
+            capacite = $('#id_capacite').val();
 
         // if (designation === '')
         // {
@@ -194,6 +201,7 @@ $(document).ready(function(){
             nom : nom,
             region : region,
             code : code,
+            capacite: capacite,
             ajax: true
         }
 

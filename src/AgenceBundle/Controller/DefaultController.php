@@ -17,7 +17,14 @@ class DefaultController extends Controller
 
     public function addAction()
     {
-        return $this->render('AgenceBundle:Default:add.html.twig');
+        $user = $this->getUser();
+        $role = null;
+        if ($user) {
+            $role = $user->getRoles()[0];
+        }else{
+            return 'IS_AUTHENTICATED_ANONYMOUSLY';
+        }        
+        return $this->render('AgenceBundle:Default:add.html.twig', ['role' => $role]);
     }
 
     public function saveAction(Request $request)
@@ -26,6 +33,7 @@ class DefaultController extends Controller
         $region = $request->request->get('region');
         $code = $request->request->get('code');
         $id = $request->request->get('id');
+        $capacite = $request->request->get('capacite');
 
         if ($id) {
             $agence = $this->getDoctrine()
@@ -35,11 +43,12 @@ class DefaultController extends Controller
             $agence = new Agence();
         }
 
-
         $agence->setNom($nom);
         $agence->setRegion($region);
-        $agence->setCode($code);
-
+        if($code)
+            $agence->setCode($code);
+        if($capacite)
+            $agence->setCapacite($capacite);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($agence);
@@ -88,12 +97,21 @@ class DefaultController extends Controller
 
     public function showAction($id)
     {
+        $user = $this->getUser();
+        $role = null;
+        if ($user) {
+            $role = $user->getRoles()[0];
+        }else{
+            return 'IS_AUTHENTICATED_ANONYMOUSLY';
+        }
+
         $agence  = $this->getDoctrine()
                         ->getRepository('AppBundle:Agence')
                         ->find($id);
 
         return $this->render('AgenceBundle:Default:show.html.twig', array(
             'agence' => $agence,
+            'role' => $role
         ));
     }
 
@@ -107,20 +125,28 @@ class DefaultController extends Controller
 
         $agences = $this->getDoctrine()
                 ->getRepository('AppBundle:Agence')
-                ->list();
+                ->getList();
 
         return new JsonResponse($agences);
     }
 
     public function editorAction(Request $request)
-    {
+    {        
+        $user = $this->getUser();
+        $role = null;
+        if ($user) {
+            $role = $user->getRoles()[0];
+        }else{
+            return 'IS_AUTHENTICATED_ANONYMOUSLY';
+        }
         $id = $request->request->get('id');
 
         $agence = $this->getDoctrine()->getRepository('AppBundle:Agence')
             ->find($id);
 
         return $this->render('AgenceBundle:Default:editor.html.twig',array(
-            'agence' => $agence
+            'agence' => $agence,
+            'role' => $role
         ));
     }
 

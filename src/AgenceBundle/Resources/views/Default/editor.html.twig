@@ -11,6 +11,14 @@
             <input type="text" placeholder="Région" class="form-control" id="id_region" value="{{ agence ? agence.region : '' }}">
         </div>
     </div>
+    {% if role == 'ROLE_SUPER_ADMIN' %}                                
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="id_nom">Capacité</label>
+            <div class="col-lg-10">
+                <input type="number" placeholder="Capacité" class="form-control" id="id_capacite" value="{{ agence ? agence.capacite : 0 }}">
+            </div>
+        </div>
+    {% endif %}
     {# <div class="form-group">
         <label class="col-lg-2 control-label" for="id_nom">Code</label>
         <div class="col-lg-10">

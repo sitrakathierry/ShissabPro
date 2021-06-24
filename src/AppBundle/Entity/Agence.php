@@ -17,21 +17,28 @@ class Agence
      *
      * @ORM\Column(name="nom", type="string", length=45, nullable=true)
      */
-    private $nom = 'NULL';
+    private $nom;
 
     /**
      * @var string
      *
      * @ORM\Column(name="region", type="string", length=45, nullable=true)
      */
-    private $region = 'NULL';
+    private $region;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="code", type="integer", nullable=true)
      */
-    private $code = 'NULL';
+    private $code;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="capacite", type="integer", nullable=false)
+     */
+    private $capacite = '0';
 
     /**
      * @var integer
@@ -114,6 +121,30 @@ class Agence
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set capacite
+     *
+     * @param integer $capacite
+     *
+     * @return Agence
+     */
+    public function setCapacite($capacite)
+    {
+        $this->capacite = $capacite;
+
+        return $this;
+    }
+
+    /**
+     * Get capacite
+     *
+     * @return integer
+     */
+    public function getCapacite()
+    {
+        return $this->capacite;
     }
 
     /**
