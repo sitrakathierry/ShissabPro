@@ -24,7 +24,7 @@ class DefaultController extends Controller
     {
     	$permissions = $this->getDoctrine()
                 ->getRepository('AppBundle:PermissionUser')
-                ->list($user_id);
+                ->getList($user_id);
 
         return $this->render('PermissionUserBundle:Default:list.html.twig', array(
             'permissions' => $permissions,

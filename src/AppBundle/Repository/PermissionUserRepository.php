@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class PermissionUserRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function list($user_id)
+	public function getList($user_id)
 	{
 
 		$em = $this->getEntityManager();

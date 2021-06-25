@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/user/css/user.css') }}">
  {% endblock  %}
 
 {% block contenu %}
@@ -16,128 +17,142 @@
                     </div>
                     <div class="ibox-content">
                         <form method="POST" action="{{ path('user_save') }}" class="form-horizontal" id="user-form">
-
                             <input type="hidden" name="u_id" id="u_id" value="{{ user.id }}">
-
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Type de compte</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control m-b type" name="u_role">
-                                                <option value=""></option>
-                                                <option 
-                                                    value="ROLE_SUPER_ADMIN"
-                                                    {% if "ROLE_SUPER_ADMIN" in user.roles %}
-                                                        selected="" 
-                                                    {% endif %}
-                                                >
-                                                    SUPER ADMIN
-                                                </option>
-                                                <option 
-                                                    value="ROLE_ADMIN"
-                                                    {% if "ROLE_ADMIN" in user.roles %}
-                                                        selected="" 
-                                                    {% endif %}
-                                                >
-                                                    UTILISATEUR SHISSAB
-                                                </option>
-                                                <option 
-                                                    value="ROLE_RESPONSABLE"
-                                                    {% if "ROLE_RESPONSABLE" in user.roles %}
-                                                        selected="" 
-                                                    {% endif %}
-                                                >
-                                                    RESPONSABLE AGENCE
-                                                </option>
-                                                <option 
-                                                    value="ROLE_AGENT"
-                                                    {% if "ROLE_AGENT" in user.roles %}
-                                                        selected="" 
-                                                    {% endif %}
-                                                >
-                                                    AGENT
-                                                </option>
-                                                
-                                            </select>
-                                        </div>
+                                <div class="col-lg-2">
+                                    <div class="row">
+                                       <div class="small-12 medium-2 large-2 columns">
+                                         <div class="circle">
+                                           <img class="profile-pic" src="{{ user.logo | to_src }}">
+                                           {#<img class="profile-pic" src="{{ asset('img/logo/' ~ user.logo | to_src) }}">#}
+                                         </div>
+                                         <div class="p-image">
+                                           <i class="fa fa-camera upload-button"></i>
+                                            <input class="file-upload" type="file" accept="image/*"/>
+                                         </div>
+                                      </div>
                                     </div>
-                                </div>
-
-                                {% if agent %}
-                                    <div class="col-lg-6 type_med">
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Agence</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control u_agence" name="u_agence">
-                                                    <option></option>
-                                                    {% for agence in agences %}
+                                </div>  
+                                <div class="col-lg-9">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Type de compte</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b type" name="u_role">
+                                                        <option value=""></option>
                                                         <option 
-                                                            value="{{agence.id}}"
-                                                            {% if agent.agence.id == agence.id %}
-                                                                selected=""
-                                                            {%endif%}
-                                                        >{{agence.nom}}</option>
-                                                    {% endfor %}
-                                                </select>
+                                                            value="ROLE_SUPER_ADMIN"
+                                                            {% if "ROLE_SUPER_ADMIN" in user.roles %}
+                                                                selected="" 
+                                                            {% endif %}
+                                                        >
+                                                            SUPER ADMIN
+                                                        </option>
+                                                        <option 
+                                                            value="ROLE_ADMIN"
+                                                            {% if "ROLE_ADMIN" in user.roles %}
+                                                                selected="" 
+                                                            {% endif %}
+                                                        >
+                                                            UTILISATEUR SHISSAB
+                                                        </option>
+                                                        <option 
+                                                            value="ROLE_RESPONSABLE"
+                                                            {% if "ROLE_RESPONSABLE" in user.roles %}
+                                                                selected="" 
+                                                            {% endif %}
+                                                        >
+                                                            RESPONSABLE AGENCE
+                                                        </option>
+                                                        <option 
+                                                            value="ROLE_AGENT"
+                                                            {% if "ROLE_AGENT" in user.roles %}
+                                                                selected="" 
+                                                            {% endif %}
+                                                        >
+                                                            AGENT
+                                                        </option>
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {% if agent %}
+                                            <div class="col-lg-6 type_med">
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Agence</label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-control u_agence" name="u_agence">
+                                                            <option></option>
+                                                            {% for agence in agences %}
+                                                                <option 
+                                                                    value="{{agence.id}}"
+                                                                    {% if agent.agence.id == agence.id %}
+                                                                        selected=""
+                                                                    {%endif%}
+                                                                >{{agence.nom}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label nom">Nom d'utilisateur</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" name="u_nom" value="{{ user.username }}" required="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Actif</label>
+                                                <div class="col-sm-10">
+                                                    {% if user.enabled == 1 %}
+                                                        <input type="checkbox" id="js-switch" checked="" name="u_status"/>
+                                                    {% else %}
+                                                        <input type="checkbox" id="js-switch" name="u_status"/>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                {% endif %}
 
-                                
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label nom">Nom d'utilisateur</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="u_nom" value="{{ user.username }}" required="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Actif</label>
-                                        <div class="col-sm-10">
-                                            {% if user.enabled == 1 %}
-                                                <input type="checkbox" id="js-switch" checked="" name="u_status"/>
-                                            {% else %}
-                                                <input type="checkbox" id="js-switch" name="u_status"/>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Email</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="u_email" value="{{ user.email }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                {% if agent %}
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Responsabilité</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" name="u_responsable" required="" value="{{ agent.responsable }}">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Email</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" name="u_email" value="{{ user.email }}">
+                                                </div>
                                             </div>
                                         </div>
+                                        {% if agent %}
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Responsabilité</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="u_responsable" required="" value="{{ agent.responsable }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
-                                {% endif %}
-                            </div>
 
-                            <div class="row hidden">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Mot de passe</label>
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" name="u_pass" value="{{ user.plainPassword }}">
+                                    <div class="row hidden">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Mot de passe</label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control" name="u_pass" value="{{ user.plainPassword }}">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -145,7 +160,7 @@
 
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-2">
+                                <div class="col-sm-offset-4">
                                     <!-- <button class="btn btn-white" type="reset">Annuler</button> -->
                                     <button class="btn btn-primary" type="submit">
                                         <i class="fa fa-save"></i>

@@ -70,7 +70,7 @@ class PermissionUserService
 
 		$permissions = $this->em
 				->getRepository('AppBundle:PermissionUser')
-                ->list($user->getId());
+                ->getList($user->getId());
 
         return $permissions;
 		

@@ -37,8 +37,8 @@ class DefaultController extends Controller
         $u_role = $request->request->get('u_role');
         $u_agence = $request->request->get('u_agence');
         $u_responsable = $request->request->get('u_responsable');
+        $image_pic = $request->request->get('image_pic');
         $u_id = $request->request->get('u_id');
-
         $isNew = false;
 
         if ($u_id) {
@@ -78,6 +78,9 @@ class DefaultController extends Controller
         $user->setUserNameCanonical($u_nom);
         $user->setEmail($u_email);
         $user->setEmailCanonical($u_email);
+        
+        if($image_pic)
+            $user->setLogo($image_pic);
 
         if ($u_pass || $u_pass != "" || isset($u_pass)) {
             $user->setPlainPassword($u_pass);
