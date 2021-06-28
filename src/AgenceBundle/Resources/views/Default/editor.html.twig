@@ -13,9 +13,9 @@
     </div>
     {% if role == 'ROLE_SUPER_ADMIN' %}                                
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="id_nom">Capacité</label>
+            <label class="col-lg-2 control-label" for="id_nom">Nb compte</label>
             <div class="col-lg-10">
-                <input type="number" placeholder="Capacité" class="form-control" id="id_capacite" value="{{ agence ? agence.capacite : 0 }}">
+                <input type="number" placeholder="Nb compte" class="form-control" id="id_capacite" value="{{ agence ? agence.capacite : 0 }}">
             </div>
         </div>
     {% endif %}
