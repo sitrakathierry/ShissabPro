@@ -117,17 +117,8 @@ class DefaultController extends Controller
             ->getRepository('AppBundle:ModelePdf')
             ->find($id);
 
-        $img_base64_encoded = $modelePdf->getLogoDroite();
-        $imageContent = file_get_contents($img_base64_encoded);
-        $path = tempnam(sys_get_temp_dir(), 'prefix');
-
-        file_put_contents ($path, $imageContent);
-
-        $img = '<img src="' . $path . '">';
-
         $template = $this->renderView('PdfBundle:Default:pdf.html.twig',array(
             'modelePdf' => $modelePdf,
-            'path' => $path,
         ));
 
         $html2pdf = $this->get('app.html2pdf');
