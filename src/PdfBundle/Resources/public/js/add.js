@@ -103,7 +103,7 @@ $(document).on('click', '#btn-save-modele', function(event) {
 		data: data,
 		success: function(res) {
 			show_info('Succès', 'Modèle enregistré');
-			// location.reload();
+			location.reload();
 		}
 	})
 })
