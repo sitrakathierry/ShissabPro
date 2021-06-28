@@ -18,7 +18,7 @@ class MenuController extends Controller
     {
     	$result  = $this->getDoctrine()
                         ->getRepository('AppBundle:Menu')
-                        ->byRole('ROLE_SUPER_ADMIN');
+                        ->byRole('', null, true);
 
         $menus = [];
 

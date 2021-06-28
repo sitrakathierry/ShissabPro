@@ -57,89 +57,102 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
-	public function byRole($role, User $user = null)
+	public function byRole($role, User $user = null, $all = false)
 	{
 
-		/*if ($role == 'ROLE_SUPER_ADMIN') {
-
-            $parents = $this->getEntityManager()
+		if ($all) {
+			$parents = $this->getEntityManager()
 		        			->getRepository('AppBundle:Menu')
 		        			->createQueryBuilder('m')
 				            ->where('m.menu IS NULL')
 				            ->orderBy('m.rang', 'ASC')
 				            ->getQuery()
 		            		->getResult();
-		} else */if ($role == 'ROLE_AGENT'){
-			$parents = $this->getEntityManager()
-				            ->getRepository('AppBundle:MenuUtilisateur')
-				            ->createQueryBuilder('menu_utilisateur')
-				            ->select('menu_utilisateur')
-				            ->innerJoin('menu_utilisateur.menu', 'menu')
-				            ->addSelect('menu')
-				            ->innerJoin('menu_utilisateur.user', 'user')
-				            ->addSelect('user')
-				            ->where('user = :user')
-				            ->andWhere('menu.menu IS NULL')
-				            ->setParameters(array(
-				                'user' => $user,
-				            ))
-				            ->orderBy('menu.rang', 'ASC')
-				            ->getQuery()
-				            ->getResult();
-		} else {			
-			$parents = $this->getEntityManager()
-				            ->getRepository('AppBundle:AccessRole')
-				            ->createQueryBuilder('access_role')
-				            ->select('access_role')
-				            ->innerJoin('access_role.menu', 'menu')
-				            ->addSelect('menu')
-				            ->where('access_role.role = :role')
-				            ->andWhere('menu.menu IS NULL')
-				            ->setParameters(array(
-				                'role' => $role,
-				            ))
-				            ->orderBy('menu.rang', 'ASC')
-				            ->getQuery()
-				            ->getResult();
+		} else {
+			/*if ($role == 'ROLE_SUPER_ADMIN') {
+
+	            $parents = $this->getEntityManager()
+			        			->getRepository('AppBundle:Menu')
+			        			->createQueryBuilder('m')
+					            ->where('m.menu IS NULL')
+					            ->orderBy('m.rang', 'ASC')
+					            ->getQuery()
+			            		->getResult();
+			} else */if ($role == 'ROLE_AGENT' || $role == 'ROLE_RESPONSABLE'){
+				$parents = $this->getEntityManager()
+					            ->getRepository('AppBundle:MenuUtilisateur')
+					            ->createQueryBuilder('menu_utilisateur')
+					            ->select('menu_utilisateur')
+					            ->innerJoin('menu_utilisateur.menu', 'menu')
+					            ->addSelect('menu')
+					            ->innerJoin('menu_utilisateur.user', 'user')
+					            ->addSelect('user')
+					            ->where('user = :user')
+					            ->andWhere('menu.menu IS NULL')
+					            ->setParameters(array(
+					                'user' => $user,
+					            ))
+					            ->orderBy('menu.rang', 'ASC')
+					            ->getQuery()
+					            ->getResult();
+			} else {			
+				$parents = $this->getEntityManager()
+					            ->getRepository('AppBundle:AccessRole')
+					            ->createQueryBuilder('access_role')
+					            ->select('access_role')
+					            ->innerJoin('access_role.menu', 'menu')
+					            ->addSelect('menu')
+					            ->where('access_role.role = :role')
+					            ->andWhere('menu.menu IS NULL')
+					            ->setParameters(array(
+					                'role' => $role,
+					            ))
+					            ->orderBy('menu.rang', 'ASC')
+					            ->getQuery()
+					            ->getResult();
+			}
+
 		}
+
+
 
 
         $liste_menus = [];
 
         foreach ($parents as $parent) {
 
-         		/*if ($role == 'ROLE_SUPER_ADMIN') {
+         		if ($all) {
          			$level1 = $parent;
-         		} else{*/
+         		} else{
                 	$level1 = $parent->getMenu();
-         		/*}*/
+         		}
 
                 $liste_menus[] = $level1;
 
                  $childs = $this->getEntityManager()
 			                    ->getRepository('AppBundle:Menu')
-			                    ->getMenuChild($level1,$role,$user);
+			                    ->getMenuChild($level1,$role,$user,$all);
 
                 if (count($childs) > 0) {
                     $level1->setChild($childs);
                     foreach ($childs as &$child) {
                     	$childs_2 = $this->getEntityManager()
                             ->getRepository('AppBundle:Menu')
-                            ->getMenuChild($child,$role,$user);
+                            ->getMenuChild($child,$role,$user,$all);
 
                         if (count($childs_2) > 0) {
                             $child->setChild($childs_2);
                             foreach ($childs_2 as &$child_2) {
                             	$childs_3 = $this->getEntityManager()
                                     ->getRepository('AppBundle:Menu')
-                                    ->getMenuChild($child_2,$role,$user);
+                                    ->getMenuChild($child_2,$role,$user,$all);
 
                                 if (count($childs_3) > 0) {
                                     $child_2->setChild($childs_3);
                                     foreach ($childs_3 as &$child_3) {
                                     	$childs_4 = $this->getEntityManager()
                                             ->getRepository('AppBundle:Menu')
-                                            ->getMenuChild($child_3,$role,$user);
+                                            ->getMenuChild($child_3,$role,$user,$all);
                                         if (count($childs_4) > 0) {
                                             $child_3->setChild($childs_3);
                                         }
@@ -156,13 +169,12 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
-	public function getMenuChild(Menu $parent, $role, User $user = null)
+	public function getMenuChild(Menu $parent, $role, User $user = null, $all)
     {
     	$result = [];
 
-        /*if ($role == 'ROLE_SUPER_ADMIN') {
-
-        	$result = $this->getEntityManager()
+    	if ($all) {
+    		$result = $this->getEntityManager()
 		        			->getRepository('AppBundle:Menu')
 		        			->createQueryBuilder('m')
 				            ->where('m.menu = :parent')
@@ -170,48 +182,61 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 			            	->setParameter('parent', $parent)
 				            ->getQuery()
 		            		->getResult();
+    	} else {
+	        /*if ($role == 'ROLE_SUPER_ADMIN') {
 
-    	} else */if ($role == 'ROLE_AGENT'){
-    		$childs = $this->getEntityManager()
-	            ->getRepository('AppBundle:MenuUtilisateur')
-	            ->createQueryBuilder('menu_utilisateur')
-	            ->select('menu_utilisateur')
-	            ->innerJoin('menu_utilisateur.menu', 'menu')
-	            ->addSelect('menu')
-	            ->where('menu_utilisateur.user = :user')
-	            ->andWhere('menu.menu = :parent')
-	            ->setParameters(array(
-	                'user' => $user,
-	                'parent' => $parent
-	            ))
-	            ->orderBy('menu.rang', 'ASC')
-	            ->getQuery()
-	            ->getResult();
+	        	$result = $this->getEntityManager()
+			        			->getRepository('AppBundle:Menu')
+			        			->createQueryBuilder('m')
+					            ->where('m.menu = :parent')
+					            ->orderBy('m.rang', 'ASC')
+				            	->setParameter('parent', $parent)
+					            ->getQuery()
+			            		->getResult();
 
-	        foreach ($childs as &$child) {
-	        	array_push($result, $child->getMenu());
-	        }
-    	}else{
-    		$childs = $this->getEntityManager()
-	            ->getRepository('AppBundle:AccessRole')
-	            ->createQueryBuilder('access_role')
-	            ->select('access_role')
-	            ->innerJoin('access_role.menu', 'menu')
-	            ->addSelect('menu')
-	            ->where('access_role.role = :role')
-	            ->andWhere('menu.menu = :parent')
-	            ->setParameters(array(
-	                'role' => $role,
-	                'parent' => $parent
-	            ))
-	            ->orderBy('menu.rang', 'ASC')
-	            ->getQuery()
-	            ->getResult();
+	    	} else */if ($role == 'ROLE_AGENT' || $role == 'ROLE_RESPONSABLE'){
+	    		$childs = $this->getEntityManager()
+		            ->getRepository('AppBundle:MenuUtilisateur')
+		            ->createQueryBuilder('menu_utilisateur')
+		            ->select('menu_utilisateur')
+		            ->innerJoin('menu_utilisateur.menu', 'menu')
+		            ->addSelect('menu')
+		            ->where('menu_utilisateur.user = :user')
+		            ->andWhere('menu.menu = :parent')
+		            ->setParameters(array(
+		                'user' => $user,
+		                'parent' => $parent
+		            ))
+		            ->orderBy('menu.rang', 'ASC')
+		            ->getQuery()
+		            ->getResult();
 
-	        foreach ($childs as &$child) {
-	        	array_push($result, $child->getMenu());
-	        }
+		        foreach ($childs as &$child) {
+		        	array_push($result, $child->getMenu());
+		        }
+	    	}else{
+	    		$childs = $this->getEntityManager()
+		            ->getRepository('AppBundle:AccessRole')
+		            ->createQueryBuilder('access_role')
+		            ->select('access_role')
+		            ->innerJoin('access_role.menu', 'menu')
+		            ->addSelect('menu')
+		            ->where('access_role.role = :role')
+		            ->andWhere('menu.menu = :parent')
+		            ->setParameters(array(
+		                'role' => $role,
+		                'parent' => $parent
+		            ))
+		            ->orderBy('menu.rang', 'ASC')
+		            ->getQuery()
+		            ->getResult();
+
+		        foreach ($childs as &$child) {
+		        	array_push($result, $child->getMenu());
+		        }
+	    	}
     	}
+    	
 
     	return $result;
     }
