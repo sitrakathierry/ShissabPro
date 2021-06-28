@@ -5,7 +5,7 @@ $(document).ready(function(){
 	load_list();
 
 	function instance_grid() {
-        var colNames = ['Nom','Région', 'Capacite', ''];
+        var colNames = ['Nom','Région', 'Nb compte', ''];
         
         var colModel = [{ 
             name:'nom',
@@ -178,7 +178,7 @@ $(document).ready(function(){
             url: Routing.generate('agence_editor'),
             dataType: 'html',
             success: function(data) {
-                show_modal(data,'Modification Agence');
+                show_modal(data,'Modification Société');
             }
         });
     }
