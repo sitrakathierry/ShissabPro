@@ -37,11 +37,19 @@ class MenuUtilisateurRepository extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        // if (count($menus) == 0) {
-        //     $menus = $this->getEntityManager()
-        //         ->getRepository('AppBundle:MenuParRole')
-        //         ->getMenuParRole($user->getAccesUtilisateur());
-        // }
+        if (count($menus) == 0) {
+            $userAgence  = $this->getEntityManager()
+                                ->getRepository('AppBundle:UserAgence')
+                                ->findOneBy(array(
+                                    'user' => $user
+                                ));
+
+            $agence = $userAgence->getAgence();
+            
+            $menus = $this->getEntityManager()
+                          ->getRepository('AppBundle:Menu')
+                          ->getMenuParAgence($agence);
+        }
 
         return $menus;
     }

@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/permission/js/acces-menu.js') }}"></script>
+{% endblock %}
+{% block title %}
+    {{ parent() }} Permission | Acces menu
+{% endblock %}
+{% block contenu %}
+    <div class="col-lg-12">
+        <div class="tab-content" id="tab-container" style="background: #FFFF;">
+            <div id="acces-role">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <h4 class="bg-info padding-6">Liste des sociétés</h4>
+                                <div class="panel-body">
+                                    <div class="panel-group" id="id_acces_menu_accordion">
+                                        {% for poste in listeSocietes %}
+                                            {% set countUser = 0 %}
+                                            {% set hrefUser = '' %}
+                                            <div class="panel panel-default panel-height-menu" style="margin-bottom: -5.7px;border-radius: 0 !important;">
+                                                <div class="panel-heading">
+                                                    <h5 class="panel-title"><span class="pointer show-menu-societe" data-id="{{ poste.id }}">{{ poste.nom }}</span>
+                                                        {% for key, users in listeUsers %}
+                                                            {% if key == poste.id  %}
+                                                                {% set countUser = users.nb %}
+                                                                {% set hrefUser = '#'~key|trim %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <a data-toggle="collapse" data-parent="#id_acces_menu_accordion" href="{{ hrefUser }}" aria-expanded="true" class="">
+                                                            <span class="badge acces-user-menu pointer" style="float: right;">{{ countUser }}</span>
+                                                        </a>
+                                                    </h5>  
+                                                </div>
+                                                {% if countUser %}
+                                                    <div id="{{ poste.id|trim }}" class="panel-collapse collapse" style="height: 0px;">
+                                                        <div class="panel-body liste-user-menu">
+                                                           {% for key, users in listeUsers %}
+                                                                {% if key == poste.id  %}
+                                                                    {% for user in users.listes %}
+                                                                        <ul class="list-group" style="margin-bottom: 8px;">
+                                                                            <li data-id="{{ user.user.id }}" class="pointer list-group-item show-menu-societe-by-user" data-post-id = "{{ poste.id }}" data-user-id = "{{ user.user.id }}">
+                                                                                {{ user.user.username }}
+                                                                            </li>
+                                                                        </ul>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <h4 class="bg-info padding-6">
+                                Liste des menus
+                                <div class="btn-group pull-right" role="group" aria-label="..."
+                                     style="margin-top: -3px;">
+                                     
+                                    <button id="btn-refresh-menu-acces" type="button" class="btn btn-xs btn-danger hidden">
+                                        <i class="fa fa-refresh"></i> Par défaut
+                                    </button>
+                                    <button id="btn-save-menu-acces" type="button" class="btn btn-xs btn-info">
+                                        <i class="fa fa-save"></i> Enregistrer
+                                    </button>
+                                    <button type="button" data-action="expand-all" data-target="#menu-list"
+                                            class="btn-collapse-list-menu btn btn-xs btn-white">
+                                        <i class="fa fa-expand" title="Ouvrir tout"></i>
+                                    </button>
+                                    <button type="button" data-action="collapse-all"
+                                            data-target="#menu-list"
+                                            class="btn-collapse-list-menu btn btn-xs btn-white">
+                                        <i class="fa fa-compress" title="Réduire tout"></i>
+                                    </button>
+                                </div>
+                            </h4>
+                            <div id="menu-list" class="hidden" style="overflow-y: auto;">
+                                {{ render(controller('MenuBundle:Menu:listeMenu')) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

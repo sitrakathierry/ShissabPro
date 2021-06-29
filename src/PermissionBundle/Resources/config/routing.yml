@@ -1,3 +1,39 @@
 permission_homepage:
     path:     /permission/homepage
     defaults: { _controller: PermissionBundle:Default:index }
+
+permission_acces:
+    path:     /permission/acces
+    defaults: { _controller: PermissionBundle:Default:getAcces }
+
+permission_menu_par_operateur:
+    path: /permission/menu-par-utilisateur/{user}
+    defaults: { _controller: PermissionBundle:Default:operateurMenu }
+    methods: [GET]
+    options:
+        expose: true 
+
+permission_menu_par_poste:
+    path: /permission/menu-par-societe/{agence}
+    defaults: { _controller: PermissionBundle:Default:accesOperateurMenu }
+    methods: [GET]
+    options:
+        expose: true
+    requirements:
+        role: \d+ 
+
+permission_acces_menu_par_poste_edit:
+    path: /acces/menu-par-societe-edit/{agence}
+    defaults: { _controller: PermissionBundle:Default:societeAccesMenuEdit }
+    methods: [POST]
+    options:
+        expose: true
+    requirements:
+        role: \d+ 
+
+permission_menu_par_operateur_edit:
+    path: /acces/menu-par-utilisateur-edit/{user}
+    defaults: { _controller: PermissionBundle:Default:utilisateurMenuEdit}
+    methods: [POST]
+    options:
+        expose: true 
