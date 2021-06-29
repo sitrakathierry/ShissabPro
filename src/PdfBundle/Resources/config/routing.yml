@@ -45,3 +45,10 @@ pdf_attribution:
     defaults: { _controller: PdfBundle:Default:attribution }
     options:
         expose: true
+
+pdf_attribution_save:
+    path:     /pdf/attribution/save
+    defaults: { _controller: PdfBundle:Default:saveAttribution }
+    options:
+        expose: true
+    methods: [POST]

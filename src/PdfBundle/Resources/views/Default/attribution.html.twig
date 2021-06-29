@@ -1,1 +1,87 @@
-attribution.html.twig
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+{% endblock  %}
+
+{% block scripts %}
+   {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/pdf/js/attribution.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+
+	<input type="hidden" id="id" value="{{ pdfAgence ? pdfAgence.id : '' }}">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Attribution des modèle
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                    	<div class="col-lg-12">
+                    		<table class="table table-bordered">
+                    			<thead>
+                    				<th>OBJET</th>
+                    				<th>MODELE</th>
+                    			</thead>
+                    			<tbody>
+                    				<tr>
+                    					<td>FACTURE</td>
+                    					<td>
+                    						<div class="col-sm-6">
+					                        	<select class="form-control" id="facture">
+					                        		<option></option>
+					                        		{% for modele in modeles %}
+					                        			<option 
+					                        				value="{{modele.id}}"
+					                        				{% if pdfAgence %}
+					                        					{% if pdfAgence.facture %}
+					                        						{% if pdfAgence.facture == modele %}
+					                        							selected=""
+					                        						{% endif %} 
+					                        					{% endif %}
+					                        				{% endif %}
+					                        			>
+					                        				{{ modele.nom }}
+					                        			</option>
+					                        		{% endfor %}
+					                        	</select>
+					                        </div>
+                    					</td>
+                    				</tr>
+                    			</tbody>
+                    		</table>
+                    	</div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+			            <div class="row">
+			                <div class="col-lg-12">
+			                    <!-- <div class=""> -->
+			 {#                        <button class="btn btn-white" type="reset">
+			                            <i class="fa fa-times"></i>
+			                            Annuler
+			                        </button> #}
+			                        <button class="btn btn-primary" id="btn-save">
+			                            <i class="fa fa-save"></i>
+			                            Enregistrer
+			                        </button>
+			                    <!-- </div> -->
+			                </div>
+			            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

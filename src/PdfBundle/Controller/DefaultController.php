@@ -5,6 +5,7 @@ namespace PdfBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\ModelePdf;
+use AppBundle\Entity\PdfAgence;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
@@ -130,6 +131,65 @@ class DefaultController extends Controller
 
     public function attributionAction()
     {
-        return $this->render('PdfBundle:Default:attribution.html.twig');
+        $modeles = $this->getDoctrine()
+                ->getRepository('AppBundle:ModelePdf')
+                ->findAll();
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findOneBy(array(
+                        'agence' => $agence
+                    ));
+
+        return $this->render('PdfBundle:Default:attribution.html.twig',array(
+            'modeles' => $modeles,
+            'pdfAgence' => $pdfAgence
+        ));
+    }
+
+    public function saveAttributionAction(Request $request)
+    {
+        $id = $request->request->get('id');
+        $facture = $request->request->get('facture');
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        if ($id) {
+            $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->find($id);
+        } else {
+            $pdfAgence = new PdfAgence();
+        }
+
+        $facture = $this->getDoctrine()
+                    ->getRepository('AppBundle:ModelePdf')
+                    ->find($facture);
+
+        $pdfAgence->setFacture($facture);
+        $pdfAgence->setAgence($agence);
+
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($pdfAgence);
+        $em->flush();
+
+        return new JsonResponse(array(
+            'id' => $pdfAgence->getId()
+        ));
     }
 }
