@@ -93,9 +93,18 @@ class DefaultController extends Controller
 
     public function listAction(Request $request)
     {
+
+        $agence = $request->request->get('agence');
+        $recherche_par = $request->request->get('recherche_par');
+        $a_rechercher = $request->request->get('a_rechercher');
+
         $modeles  = $this->getDoctrine()
                         ->getRepository('AppBundle:ModelePdf')
-                        ->list();
+                        ->list(
+                            $agence,
+                            $recherche_par,
+                            $a_rechercher
+                        );
 
         return new JsonResponse($modeles);
     }
@@ -131,9 +140,6 @@ class DefaultController extends Controller
 
     public function attributionAction()
     {
-        $modeles = $this->getDoctrine()
-                ->getRepository('AppBundle:ModelePdf')
-                ->findAll();
 
         $user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -142,6 +148,12 @@ class DefaultController extends Controller
                         'user' => $user
                     ));
         $agence = $userAgence->getAgence();
+
+        $modeles = $this->getDoctrine()
+                ->getRepository('AppBundle:ModelePdf')
+                ->findBy(array(
+                    'agence' => $agence
+                ));
 
         $pdfAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:PdfAgence')

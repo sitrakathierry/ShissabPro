@@ -10,14 +10,29 @@ namespace AppBundle\Repository;
  */
 class ModelePdfRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function list()
+	public function list(
+		$agence,
+        $recherche_par,
+        $a_rechercher
+	)
 	{
 
 		$em = $this->getEntityManager();
 		
 		$query = "	select *
 					from modele_pdf mp
-					order by mp.nom asc";
+					where mp.nom is not null
+					";
+
+		if ($agence) {
+			$query .= "	and mp.agence = " . $agence ;
+		}
+
+		if ($recherche_par == 1) {
+			$query .= "	and mp.nom like '%" . $a_rechercher . "%'";
+		}
+
+		$query .= "	order by mp.nom asc";
 
         $statement = $em->getConnection()->prepare($query);
 

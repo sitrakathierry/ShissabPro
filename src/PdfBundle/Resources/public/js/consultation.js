@@ -70,7 +70,11 @@ $(document).ready(function(){
     function load_list() {
     	
         var url = Routing.generate('pdf_list')
-        var data = {};
+        var data = {
+            agence: $('#agence').val(),
+            recherche_par: $('#recherche_par').val(),
+            a_rechercher: $('#a_rechercher').val(),
+        };
 
         $.ajax({
             type: 'POST',
@@ -105,5 +109,10 @@ $(document).ready(function(){
         window.location.href = Routing.generate('pdf_show', { id : id })
     });
 
+    $(document).on('click', '#btn_search', function(event) {
+        event.preventDefault();
+
+        load_list();
+    })
 
 });
