@@ -127,7 +127,7 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 			                    ));
 
 	        $agence = $userAgence->getAgence();
-	        
+
             $parents = $this->getEntityManager()
                 ->getRepository('AppBundle:MenuParAgence')
                 ->createQueryBuilder('menuParAgence')
@@ -137,6 +137,8 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
                 ->innerJoin('menuParAgence.agence', 'agence')
                 ->addSelect('agence')
                 ->where('menu.menu IS NULL')
+                ->andWhere('agence = :agence')
+                ->setParameter('agence', $agence)
                 ->orderBy('menu.rang', 'ASC')
                 ->getQuery()
                 ->getResult();
@@ -407,6 +409,14 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
                 ->getQuery()
                 ->getResult();
             if (count($parents) == 0) {
+		    	$userAgence  = $this->getEntityManager()
+				                    ->getRepository('AppBundle:UserAgence')
+				                    ->findOneBy(array(
+				                        'user' => $user
+				                    ));
+
+		        $agence = $userAgence->getAgence();
+		        
                 $parents = $this->getEntityManager()
                     ->getRepository('AppBundle:MenuParAgence')
                     ->createQueryBuilder('menuParAgence')
@@ -416,6 +426,8 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
                     ->innerJoin('menuParAgence.agence', 'agence')
                     ->addSelect('agence')
                     ->where('menu.menu IS NULL')
+	                ->andWhere('agence = :agence')
+	                ->setParameter('agence', $agence)
                     ->orderBy('menu.rang', 'ASC')
                     ->getQuery()
                     ->getResult();
