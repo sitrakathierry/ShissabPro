@@ -154,12 +154,12 @@ class MenuController extends Controller
                 ->getAllMenu();
 
         } else{
-           /* $menus = $this->getDoctrine()
+            $menus = $this->getDoctrine()
                           ->getRepository('AppBundle:MenuUtilisateur')
                           ->getMenuUtilisateur($this->getUser());
             foreach ( $menus as $menu ) {
                 $menus_id[] = $menu->getMenu()->getId();
-            }*/
+            }
         }
 
         return $this->render('@Menu/Default/menu-liste.html.twig', array(
