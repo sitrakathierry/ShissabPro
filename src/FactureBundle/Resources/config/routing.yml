@@ -19,3 +19,10 @@ facture_show:
     options:
         expose: true
     methods: [GET]
+
+facture_pdf:
+    path:     /facture/pdf/{id}
+    defaults: { _controller: FactureBundle:Default:pdf }
+    options:
+        expose: true
+    methods: [GET]

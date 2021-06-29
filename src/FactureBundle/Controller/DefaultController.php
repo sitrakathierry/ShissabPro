@@ -180,4 +180,46 @@ class DefaultController extends Controller
 
     }
 
+    public function pdfAction($id)
+    {
+        $facture  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Facture')
+                        ->find($id);
+
+        $details = $this->getDoctrine()
+                    ->getRepository('AppBundle:FactureDetails')
+                    ->findBy(array(
+                        'facture' => $facture
+                    ));
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findOneBy(array(
+                        'agence' => $agence
+                    ));
+
+        $modelePdf = $pdfAgence->getFacture();
+
+        $template = $this->renderView('FactureBundle:Default:pdf.html.twig', array(
+            'facture' => $facture,
+            'details' => $details,
+            'modelePdf' => $modelePdf,
+        ));
+
+        $html2pdf = $this->get('app.html2pdf');
+
+        $html2pdf->create();
+
+        return $html2pdf->generatePdf($template, "facture" . $facture->getId());
+
+    }
+
 }
