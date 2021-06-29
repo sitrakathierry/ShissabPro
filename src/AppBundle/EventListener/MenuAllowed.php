@@ -35,34 +35,35 @@ class MenuAllowed
     public function onKernelController(FilterControllerEvent $event)
     {
 
-        $token = $this->token_storage
-            ->getToken();
-        if ($token) {
-            /** @var User $utilisateur */
-            $utilisateur = $token->getUser();
-            if ($utilisateur instanceof User) {
-                $request = $event->getRequest();
+    //     $token = $this->token_storage
+    //         ->getToken();
+    //     if ($token) {
+    //         /** @var User $utilisateur */
+    //         $utilisateur = $token->getUser();
+    //         if ($utilisateur instanceof User) {
+    //             $request = $event->getRequest();
 
-                $route = $request->attributes->get('_route');
+    //             $route = $request->attributes->get('_route');
 
-				$menu  = $this->entity_manager
-		                        ->getRepository('AppBundle:Menu')
-		                        ->findOneBy(array(
-		                        	'route' => $route
-		                        ));
-		        if ($menu || $menu != NULL) {
-			        $role = $this->maxRole($utilisateur);
+				// $menu  = $this->entity_manager
+		  //                       ->getRepository('AppBundle:Menu')
+		  //                       ->findOneBy(array(
+		  //                       	'route' => $route
+		  //                       ));
+		  //       if ($menu || $menu != NULL) {
+			 //        $role = $this->maxRole($utilisateur);
 
-			        $has  = $this->entity_manager
-			                        ->getRepository('AppBundle:Menu')
-			                        ->roleHasMenu($menu,$role,$utilisateur);
-			        if (!$has) {
-	                    throw new AccessDeniedHttpException("Vous n'avez pas accès à cette page/resource.");
-			        }
-		        }
+			 //        $has  = $this->entity_manager
+			 //                        ->getRepository('AppBundle:Menu')
+			 //                        ->roleHasMenu($menu,$role,$utilisateur);
+			 //        if (!$has) {
+	   //                  throw new AccessDeniedHttpException("Vous n'avez pas accès à cette page/resource.");
+			 //        }
+		  //       }
 
-            }
-        }
+    //         }
+    //     }
+        return true;
     }
 
     public function maxRole($user)
