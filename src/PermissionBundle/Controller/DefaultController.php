@@ -32,7 +32,7 @@ class DefaultController extends Controller
             $role = $user->getRoles()[0];
         }
 
-        if($role == 'ROLE_RESPONSABLE')
+        if($role == 'ROLE_AGENT')
             throw new AccessDeniedHttpException("Accès refusé.");
 
         if($role == "ROLE_SUPER_ADMIN"){
