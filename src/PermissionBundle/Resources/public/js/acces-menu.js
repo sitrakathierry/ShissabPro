@@ -207,7 +207,7 @@ $(document).ready(function () {
         }
     });
 
-    function setMenuSettingsUser(data, parent, dataPoste = null) {
+    function setMenuSettingsUser(data, parent, dataPoste) {
         if (typeof data === 'undefined') {
             return;
         }

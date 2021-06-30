@@ -26,12 +26,34 @@ class DefaultController extends Controller
     public function getAccesAction()
     {
     	$listeUsers = [];
-        $listeSocietes = $this->getDoctrine()
+        $user = $this->getUser();
+        $role = '';
+        if ($user) {
+            $role = $user->getRoles()[0];
+        }
+
+        if($role == 'ROLE_RESPONSABLE')
+            throw new AccessDeniedHttpException("Accès refusé.");
+
+        if($role == "ROLE_SUPER_ADMIN"){
+        	$listeSocietes = $this->getDoctrine()
                                 ->getRepository('AppBundle:Agence')
                                 ->findBy(
                                     array(),
                                     array('nom' => 'ASC')
                                 );
+        }else{
+        	$userAgence  = $this->getDoctrine()
+			                    ->getRepository('AppBundle:UserAgence')
+			                    ->findOneBy(array(
+			                        'user' => $user
+			                    ));
+
+        	$agence = $userAgence->getAgence();
+        	$listeSocietes = [];
+        	$listeSocietes[] = $agence;
+        }
+
         foreach ($listeSocietes as $k => $v) {
             $arrayListe = [];
             $arrayListeId = [];
@@ -42,18 +64,21 @@ class DefaultController extends Controller
                     $arrayListe[] = $value;
                 }
             }
-            /*if(count($arrayListe) > 0){
-            	var_dump($arrayListe);die;
-            }*/
             
             $listeUsers[$v->getId()]['listes'] = $arrayListe;
             $listeUsers[$v->getId()]['nb'] = count($listeUsers[$v->getId()]['listes']);
         }
 
-        return $this->render('PermissionBundle:Default:acces-menu.html.twig', array(
-            'listeSocietes' => $listeSocietes,
-            'listeUsers' => $listeUsers,
-        ));
+        if($role == "ROLE_SUPER_ADMIN"){
+        	return $this->render('PermissionBundle:Default:acces-menu.html.twig', array(
+	            'listeSocietes' => $listeSocietes,
+	            'listeUsers' => $listeUsers
+	        ));
+        }else{
+        	return $this->render('PermissionBundle:Default:acces-menu-user.html.twig', array(
+	            'listeUsers' => $listeUsers
+	        ));
+        }
     }
 
     public function operateurMenuAction(Request $request, User $user)
@@ -118,7 +143,7 @@ class DefaultController extends Controller
         if ($request->isXmlHttpRequest()) {
             if ($request->isMethod('POST')) {
                 try {
-                     $menus_id = $request->request->get('menus');
+                     $menus_id =  $request->request->get('menus');
                      $this->getDoctrine()
                           ->getRepository('AppBundle:Menu')
                           ->removeAgenceMenus($agence);

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\AccessRole;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class MenuController extends Controller
 {
@@ -141,6 +142,10 @@ class MenuController extends Controller
     {
         $menus_id = [];
 
+        $menus_complet = $this->getDoctrine()
+            ->getRepository('AppBundle:Menu')
+            ->getAllMenu();
+
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             $menus = $this->getDoctrine()
                 ->getRepository('AppBundle:Menu')
@@ -149,14 +154,23 @@ class MenuController extends Controller
             foreach ($menus as $menu) {
                 $menus_id[] = $menu->getId();
             }
-            $menus_complet = $this->getDoctrine()
-                ->getRepository('AppBundle:Menu')
-                ->getAllMenu();
+        } else{  
+            $userAgence  = $this->getDoctrine()
+                                ->getRepository('AppBundle:UserAgence')
+                                ->findOneBy(array(
+                                    'user' => $this->getUser()
+                                ));
 
-        } else{
+            $agence = $userAgence->getAgence();
+
             $menus = $this->getDoctrine()
-                          ->getRepository('AppBundle:MenuUtilisateur')
-                          ->getMenuUtilisateur($this->getUser());
+                          ->getRepository('AppBundle:Menu')
+                          ->getMenuParAgence($agence);
+
+            if(count($menus) == 0){   
+                $menus = $menus_complet;    
+            }
+
             foreach ( $menus as $menu ) {
                 $menus_id[] = $menu->getMenu()->getId();
             }

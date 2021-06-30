@@ -11,7 +11,7 @@ $(document).on('change', '#u_role', function(event) {
 
 $('#user-form').on('submit', function (e) {
     e.preventDefault();
-    let data = $(this).serializeArray();
+    var data = $(this).serializeArray();
     data.push({name: "image_pic", value: $('.profile-pic').attr('src')});
 
     $.ajax({
