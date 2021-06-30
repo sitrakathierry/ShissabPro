@@ -21,40 +21,43 @@
                                 <div class="panel-body">
                                     <div class="panel-group" id="id_acces_menu_accordion">
                                         {% for poste in listeSocietes %}
-                                            {% set countUser = 0 %}
-                                            {% set hrefUser = '' %}
-                                            <div class="panel panel-default panel-height-menu" style="margin-bottom: -5.7px;border-radius: 0 !important;">
-                                                <div class="panel-heading">
-                                                    <h5 class="panel-title"><span class="pointer show-menu-societe" data-id="{{ poste.id }}">{{ poste.nom }}</span>
-                                                        {% for key, users in listeUsers %}
-                                                            {% if key == poste.id  %}
-                                                                {% set countUser = users.nb %}
-                                                                {% set hrefUser = '#'~key|trim %}
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                        <a data-toggle="collapse" data-parent="#id_acces_menu_accordion" href="{{ hrefUser }}" aria-expanded="true" class="">
-                                                            <span class="badge acces-user-menu pointer" style="float: right;">{{ countUser }}</span>
-                                                        </a>
-                                                    </h5>  
-                                                </div>
-                                                {% if countUser %}
-                                                    <div id="{{ poste.id|trim }}" class="panel-collapse collapse" style="height: 0px;">
-                                                        <div class="panel-body liste-user-menu">
-                                                           {% for key, users in listeUsers %}
+                                            {% if poste.id != 1 %}
+                                                {% set countUser = 0 %}
+                                                {% set hrefUser = '' %}
+                                                <div class="panel panel-default panel-height-menu" style="margin-bottom: -5.7px;border-radius: 0 !important;">
+                                                    <div class="panel-heading">
+                                                        <h5 class="panel-title"><span class="pointer show-menu-societe" data-id="{{ poste.id }}">{{ poste.nom }}</span>
+                                                            {% for key, users in listeUsers %}
                                                                 {% if key == poste.id  %}
-                                                                    {% for user in users.listes %}
-                                                                        <ul class="list-group" style="margin-bottom: 8px;">
-                                                                            <li data-id="{{ user.user.id }}" class="pointer list-group-item show-menu-societe-by-user" data-post-id = "{{ poste.id }}" data-user-id = "{{ user.user.id }}">
-                                                                                {{ user.user.username }}
-                                                                            </li>
-                                                                        </ul>
-                                                                    {% endfor %}
+                                                                    {% set countUser = users.nb %}
+                                                                    {% set hrefUser = '#'~key|trim %}
                                                                 {% endif %}
                                                             {% endfor %}
-                                                        </div>
+                                                            <a data-toggle="collapse" data-parent="#id_acces_menu_accordion" href="{{ hrefUser }}" aria-expanded="true" class="">
+                                                                <span class="badge acces-user-menu pointer" style="float: right;">{{ countUser }}</span>
+                                                            </a>
+                                                        </h5>  
                                                     </div>
-                                                {% endif %}
-                                            </div>
+                                                    {% if countUser %}
+                                                        <div id="{{ poste.id|trim }}" class="panel-collapse collapse" style="height: 0px;">
+                                                            <div class="panel-body liste-user-menu">
+                                                               {% for key, users in listeUsers %}
+                                                                    {% if key == poste.id  %}
+                                                                        {% for user in users.listes %}
+                                                                            <ul class="list-group" style="margin-bottom: 8px;">
+                                                                                <li data-id="{{ user.user.id }}" class="pointer list-group-item show-menu-societe-by-user" data-post-id = "{{ poste.id }}" data-user-id = "{{ user.user.id }}">
+                                                                                    {{ user.user.username }}
+                                                                                </li>
+                                                                            </ul>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+
                                         {% endfor %}
                                     </div>
                             </div>
