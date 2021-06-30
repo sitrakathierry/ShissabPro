@@ -171,11 +171,36 @@ class DefaultController extends Controller
         $user = $this->getUser();
         $permissions = $permission_user->getPermissions($user);
 
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $print = false;
+
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findOneBy(array(
+                        'agence' => $agence
+                    ));
+                    
+        if ($pdfAgence) {
+            $modelePdf = $pdfAgence->getFacture();
+            if ($modelePdf) {
+                $print = true;
+            }
+        }
+
+
         return $this->render('FactureBundle:Default:show.html.twig', array(
             'facture' => $facture,
             'clients' => $clients,
             'details' => $details,
             'permissions' => $permissions,
+            'print' => $print,
         ));
 
     }

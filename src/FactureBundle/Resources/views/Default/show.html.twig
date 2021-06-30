@@ -190,10 +190,21 @@
                         Enregistrer les modifications
                     </button>
 
-                    <a href="{{ path('facture_pdf', { id : facture.id }) }}" class="btn btn-info" target="_blank">
-                        <i class="fa fa-print"></i>
-                        Imprimer
-                    </a>
+                    {% if print %}
+                      <a href="{{ path('facture_pdf', { id : facture.id }) }}" class="btn btn-info" target="_blank">
+                          <i class="fa fa-print"></i>
+                          Imprimer
+                      </a>
+                    {% else %}
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="alert alert-warning">
+                              <i class="fa fa-warning"></i>
+                              Veuillez créer un modèle pour l'impression
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
                     {# <button class="btn btn-danger demo4" data-action="">
                         <i class="fa fa-trash"></i>
 
