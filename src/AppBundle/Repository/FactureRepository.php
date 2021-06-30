@@ -15,7 +15,7 @@ class FactureRepository extends \Doctrine\ORM\EntityRepository
 
 		$em = $this->getEntityManager();
 		
-		$query = "	select f.id as id, IF(f.type = 1,'PROFORMA','DEFINITIVE') as type, f.police, f.garantie, date_format(f.date_creation,'%d/%m/%Y') as date_creation, date_format(f.date,'%d/%m/%Y') as date, IF(f.type_client = 0,IF(c.statut = 1,cm.nom_societe,cp.nom),f.nom)  as client, CONCAT('MC-',LPAD(f.num, 3, '0'),'/F',date_format(f.date_creation,'%y')) as num_fact, ag.nom as agence
+		$query = "	select f.id as id, IF(f.type = 1,'PROFORMA','DEFINITIVE') as type, date_format(f.date_creation,'%d/%m/%Y') as date_creation, date_format(f.date,'%d/%m/%Y') as date, IF(c.statut = 1,cm.nom_societe,cp.nom) as client, CONCAT('MC-',LPAD(f.num, 3, '0'),'/F',date_format(f.date_creation,'%y')) as num_fact, ag.nom as agence
 					from facture f
 					left join client c on (f.client = c.num_police)
 					left join client_morale cm on (c.id_client_morale=cm.id)
@@ -27,9 +27,9 @@ class FactureRepository extends \Doctrine\ORM\EntityRepository
 		if($recherche_par == 1){
 			$where .= "	and (cm.nom_societe LIKE '%" . $a_rechercher . "%'";
 
-			$where .= "	or cp.nom LIKE '%" . $a_rechercher . "%'";
+			$where .= "	or cp.nom LIKE '%" . $a_rechercher . "%')";
 
-			$where .= "	or f.nom LIKE '%" . $a_rechercher . "%')";
+			// $where .= "	or f.nom LIKE '%" . $a_rechercher . "%')";
 		}
 
 		if ($recherche_par == 2) {

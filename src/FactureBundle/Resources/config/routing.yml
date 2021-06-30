@@ -26,3 +26,14 @@ facture_pdf:
     options:
         expose: true
     methods: [GET]
+
+facture_consultation:
+    path:     /facture/consultation
+    defaults: { _controller: FactureBundle:Default:consultation }
+
+facture_list:
+    path:    /facture/list
+    defaults: { _controller: FactureBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
