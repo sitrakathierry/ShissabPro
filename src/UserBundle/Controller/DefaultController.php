@@ -65,7 +65,8 @@ class DefaultController extends Controller
             $userAgences = $this->getDoctrine()
                                 ->getRepository('AppBundle:UserAgence')
                                 ->countUserByAgence($agence);
-            if(count($userAgences) >= $agence->getCapacite() && $u_status == "on"){
+
+            if(count($userAgences) >= $agence->getCapacite() && $u_status == "on" && !!$isNew){
                 return new Response(-1);
             }
         } else {

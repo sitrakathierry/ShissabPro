@@ -23,7 +23,7 @@
                                     <div class="row">
                                        <div class="small-12 medium-2 large-2 columns">
                                          <div class="circle">
-                                           <img class="profile-pic" src="{{ user.logo | to_src }}">
+                                           <img class="profile-pic" src="{{ user.logo ? user.logo : '' }}">
                                            {#<img class="profile-pic" src="{{ asset('img/logo/' ~ user.logo | to_src) }}">#}
                                          </div>
                                          <div class="p-image">
