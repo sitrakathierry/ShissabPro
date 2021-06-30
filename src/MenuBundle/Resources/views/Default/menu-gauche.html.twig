@@ -4,7 +4,7 @@
             <li class="nav-header text-center">
                 <div class="dropdown profile-element">
                      <span>
-                        <img alt="image" class="img-circle" src="{{ asset('img/shissab.png') }}" style="width: 75px !important;height: 75px !important;"/>
+                        <img alt="image" class="img-circle" src="{{ user.logo ? user.logo : asset('img/shissab.png') }}" style="width: 75px !important;height: 75px !important;"/>
                         {# <img class="img-thumbnail" src="{{ asset('img/gap-150.png') }}" style="width: 150px !important;height: 150px !important;" /> #}
                      </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
