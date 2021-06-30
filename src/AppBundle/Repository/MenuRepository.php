@@ -17,7 +17,7 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 
 	public function roleHasMenu(Menu $menu,$role,User $user = null)
 	{
-		if ($role == 'ROLE_SUPER_ADMIN') {
+		if ($role == 'ROLE_SUPER_ADMIN' || $role == 'ROLE_ADMIN') {
 			return true;
 		} else if ($role == 'ROLE_AGENT'){
 			$em = $this->getEntityManager();

@@ -146,7 +146,7 @@ class MenuController extends Controller
             ->getRepository('AppBundle:Menu')
             ->getAllMenu();
 
-        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($this->isGranted('ROLE_ADMIN')) {
             $menus = $this->getDoctrine()
                 ->getRepository('AppBundle:Menu')
                 ->findAll();

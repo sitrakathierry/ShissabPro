@@ -67,7 +67,7 @@ class DefaultController extends Controller
 
         $role = $this->maxRole();
 
-        if ($role == 'ROLE_SUPER_ADMIN') {
+        if ($role == 'ROLE_SUPER_ADMIN' || $role == 'ROLE_ADMIN') {
             $menus = $this->getDoctrine()
                           ->getRepository('AppBundle:Menu')
                           ->findAll();

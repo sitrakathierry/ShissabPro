@@ -35,7 +35,7 @@ class DefaultController extends Controller
         if($role == 'ROLE_AGENT')
             throw new AccessDeniedHttpException("Accès refusé.");
 
-        if($role == "ROLE_SUPER_ADMIN"){
+        if($role == "ROLE_SUPER_ADMIN" || $role == "ROLE_ADMIN"){
         	$listeSocietes = $this->getDoctrine()
                                 ->getRepository('AppBundle:Agence')
                                 ->findBy(
@@ -69,7 +69,7 @@ class DefaultController extends Controller
             $listeUsers[$v->getId()]['nb'] = count($listeUsers[$v->getId()]['listes']);
         }
 
-        if($role == "ROLE_SUPER_ADMIN"){
+        if($role == "ROLE_SUPER_ADMIN" || $role == "ROLE_ADMIN"){
         	return $this->render('PermissionBundle:Default:acces-menu.html.twig', array(
 	            'listeSocietes' => $listeSocietes,
 	            'listeUsers' => $listeUsers

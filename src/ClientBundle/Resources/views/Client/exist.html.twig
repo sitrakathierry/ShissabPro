@@ -57,7 +57,7 @@
 							                            <i class="fa fa-eye"></i> Voir
 							                        </a>
 
-							                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+							                        {% if is_granted('ROLE_ADMIN') %}
 
 				                               			{% if client.archive == 0 %}
 					                               				<a href="{{ path('client_delete', {id: client.id}) }}" class="btn btn-xs btn-danger btn-outline">

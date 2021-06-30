@@ -15,7 +15,7 @@ class PermissionUserService
 
 	public function getPermissions($user)
 	{
-		if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+		if (in_array('ROLE_ADMIN', $user->getRoles())) {
 			$super = array(
 	        	'client' => (Object)array(
 	        		'create' => true,

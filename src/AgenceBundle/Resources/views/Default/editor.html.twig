@@ -11,7 +11,7 @@
             <input type="text" placeholder="Région" class="form-control" id="id_region" value="{{ agence ? agence.region : '' }}">
         </div>
     </div>
-    {% if role == 'ROLE_SUPER_ADMIN' %}                                
+    {% if is_granted('ROLE_ADMIN') %}                                 
         <div class="form-group">
             <label class="col-lg-2 control-label" for="id_nom">Nb compte</label>
             <div class="col-lg-10">

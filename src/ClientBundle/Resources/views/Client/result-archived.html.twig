@@ -42,7 +42,7 @@
                                 Voir
                             </a>
 
-                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if is_granted('ROLE_ADMIN') %}
 
                                 <button class="btn btn-xs btn-info btn-outline btn-restore" data-id="{{ item.id }}" data-nom="{{ item.nom }} {{ item.prenom }}">
                                     <i class="fa fa-refresh"></i> Restaurer
