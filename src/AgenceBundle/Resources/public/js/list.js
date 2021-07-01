@@ -84,6 +84,7 @@ $(document).ready(function(){
                 grid.jqGrid('setGridParam', {
                     data        : $.parseJSON(res),
                     loadComplete: function() {
+                        $('#1').hide()
                     }
                 }).trigger('reloadGrid', [{
                     page: 1,
