@@ -2,7 +2,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
-²{% endblock  %}
+    <link rel="stylesheet" href="{{ asset('bundles/user/css/user.css') }}">
+{% endblock  %}
 
 {% block scripts %}
     {{ parent() }}
@@ -31,87 +32,106 @@
                             <input type="hidden" name="typ_user" value="2">
 
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Type de compte</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control m-b type" name="u_role" required="">
-                                                <option value=""></option>
-                                                {# <option value="ROLE_ADMIN">UTILISATEUR SHISSAB</option> #}
-                                                <option value="ROLE_RESPONSABLE">RESPONSABLE AGENCE</option>
-                                                <option value="ROLE_AGENT">AGENT</option>
-                                            </select>
+                                <div class="col-lg-2">
+                                    <div class="row">
+                                       <div class="small-12 medium-2 large-2 columns">
+                                         <div class="circle">
+                                           <img class="profile-pic">
+                                         </div>
+                                         <div class="p-image">
+                                           <i class="fa fa-camera upload-button"></i>
+                                            <input class="file-upload" type="file" accept="image/*"/>
+                                         </div>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Type de compte</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b type" name="u_role" required="">
+                                                        <option value=""></option>
+                                                        {# <option value="ROLE_ADMIN">UTILISATEUR SHISSAB</option> #}
+                                                        <option value="ROLE_RESPONSABLE">RESPONSABLE AGENCE</option>
+                                                        <option value="ROLE_AGENT">AGENT</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 type_med">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Agence</label>
+                                                <div class="col-sm-10">
+                                                	<input type="hidden" name="u_agence" value="{{agence.id}}">
+                                                	<input type="text" class="form-control" value="{{agence.nom}}" readonly="">
+                                                    {# <select class="form-control u_agence" name="u_agence">
+                                                        <option></option>
+                                                        {% for agence in agences %}
+                                                            <option value="{{agence.id}}">{{agence.nom}}</option>
+                                                        {% endfor %}
+                                                    </select> #}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                	<div class="row">
+                                		<div class="col-lg-6">
+                                			<div class="form-group">
+        		                            	<label class="col-sm-2 control-label nom">Nom d'utilisateur</label>
+        		                                <div class="col-sm-10">
+        		                                	<input type="text" class="form-control u_nom" name="u_nom" required="">
+        		                                </div>
+        		                            </div>
+                                		</div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Actif</label>
+                                                <div class="col-sm-10">
+                                                    <input type="checkbox" id="js-switch" checked name="u_status" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                	</div>
+
+                                	<div class="row">
+                                		<div class="col-lg-6">
+                                			<div class="form-group">
+        		                            	<label class="col-sm-2 control-label">Email</label>
+        		                                <div class="col-sm-10">
+        		                                	<input type="text" class="form-control u_email" name="u_email">
+        		                                </div>
+        		                            </div>
+                                		</div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Mot de passe</label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control" name="u_pass" required="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                	</div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Responsabilité</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" name="u_responsable" required="">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-6 type_med">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Agence</label>
-                                        <div class="col-sm-10">
-                                        	<input type="hidden" name="u_agence" value="{{agence.id}}">
-                                        	<input type="text" class="form-control" value="{{agence.nom}}" readonly="">
-                                            {# <select class="form-control u_agence" name="u_agence">
-                                                <option></option>
-                                                {% for agence in agences %}
-                                                    <option value="{{agence.id}}">{{agence.nom}}</option>
-                                                {% endfor %}
-                                            </select> #}
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
 
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                        			<div class="form-group">
-		                            	<label class="col-sm-2 control-label nom">Nom d'utilisateur</label>
-		                                <div class="col-sm-10">
-		                                	<input type="text" class="form-control u_nom" name="u_nom" required="">
-		                                </div>
-		                            </div>
-                        		</div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Actif</label>
-                                        <div class="col-sm-10">
-                                            <input type="checkbox" id="js-switch" checked name="u_status" />
-                                        </div>
-                                    </div>
-                                </div>
-                        	</div>
-
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                        			<div class="form-group">
-		                            	<label class="col-sm-2 control-label">Email</label>
-		                                <div class="col-sm-10">
-		                                	<input type="text" class="form-control u_email" name="u_email">
-		                                </div>
-		                            </div>
-                        		</div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Mot de passe</label>
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" name="u_pass" required="">
-                                        </div>
-                                    </div>
-                                </div>
-                        	</div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Responsabilité</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="u_responsable" required="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="hr-line-dashed"></div>
 
