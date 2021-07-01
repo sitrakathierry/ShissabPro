@@ -134,7 +134,6 @@ $(document).ready(function () {
     /* Enregistrer Menus par societe */
     $(document).on('click', '#btn-save-menu-acces', function (event) {
         event.preventDefault();
-        console.log($('.show-menu-societe.active').length)
         if ($('.show-menu-societe.active').length > 0) {
             var agence = $('.show-menu-societe.active')
                 .attr('data-id');
@@ -171,7 +170,6 @@ $(document).ready(function () {
 
     $(document).on('click', '#btn-save-menu-user', function (event) {
         event.preventDefault();
-        console.log($('.liste-user-menu').find('.list-group-item.active').length)
         if ($('.liste-user-menu').find('.list-group-item.active').length > 0) {
             var user = $('.liste-user-menu').find('.list-group-item.active')
                 .attr('data-id');
@@ -241,7 +239,6 @@ $(document).ready(function () {
 
         parent.find('.menu-select').removeAttr('disabled');
         $.each(data, function(index, item) {
-            console.log(item)
             if (typeof item.menu !== 'undefined' && item.menu !== null) {
                 var search = parent.find('.menu-select[data-menu-id="' + item.menu.id + '"]');
                 if (search.length > 0) {

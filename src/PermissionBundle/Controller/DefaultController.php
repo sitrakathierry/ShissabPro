@@ -144,6 +144,7 @@ class DefaultController extends Controller
             if ($request->isMethod('POST')) {
                 try {
                      $menus_id =  $request->request->get('menus');
+                     $menuUsersId = [];
                      $this->getDoctrine()
                           ->getRepository('AppBundle:Menu')
                           ->removeAgenceMenus($agence);
@@ -155,6 +156,7 @@ class DefaultController extends Controller
                                          ->getRepository('AppBundle:Menu')
                                          ->find($menu_id['menu']);
                             if ($menu) {
+                                $menuUsersId[] = $menu_id['menu'];
                                 $societe_menu = new MenuParAgence();
                                 $societe_menu
                                     ->setAgence($agence)
@@ -163,6 +165,27 @@ class DefaultController extends Controller
                             }
                         }
                         $em->flush();
+                    }
+
+                    $userAgences = $this->getDoctrine()
+                                        ->getRepository('AppBundle:UserAgence')
+                                        ->findBy(
+                                            array('agence' => $agence)
+                                        );
+                    foreach ($userAgences as $key => $userAgence) {
+                        $menuUsers =  $this->getDoctrine()
+                                           ->getRepository('AppBundle:MenuUtilisateur')
+                                           ->findBy(
+                                                array('user' => $userAgence->getUser())
+                                            );
+                        if(count($menuUsers) > 0){
+                            foreach ($menuUsers as $key => $menuUser) {
+                                if(!in_array($menuUser->getMenu()->getId(), $menuUsersId)){
+                                    $em->remove($menuUser);
+                                }
+                            }
+                            $em->flush();
+                        }
                     }
                     $menus = $this->getDoctrine()
                                       ->getRepository('AppBundle:Menu')

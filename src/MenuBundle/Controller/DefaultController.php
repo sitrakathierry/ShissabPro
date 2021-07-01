@@ -55,10 +55,6 @@ class DefaultController extends Controller
 
     public function getMenuListAction() 
     {
-        $liste_parent_menu = $this->getDoctrine()
-                                  ->getRepository('AppBundle:Menu')
-                                  ->findBy(array('menu' => null));
-
         $menu_complet = $this->getDoctrine()
                              ->getRepository('AppBundle:Menu')
                              ->getMenu($this->getUser());
@@ -76,7 +72,7 @@ class DefaultController extends Controller
             }
         }else{
             $menus = $this->getDoctrine()
-                          ->getRepository('AppBundle:Menu')
+                          ->getRepository('AppBundle:MenuUtilisateur')
                           ->getMenuUtilisateur($this->getUser());
             foreach ( $menus as $menu ) {
                 $menus_id[] = $menu->getMenu()->getId();
