@@ -49,12 +49,13 @@
 	}
 
 	:checked + label.label-modele {
-	  border-color: #ddd;
+	  border-color: #fd9597;
 	}
 
 	:checked + label.label-modele:before {
 	  content: "✓";
-	  background-color: grey;
+	  background-color: #fd9597;
+	  border-color: #fd9597;
 	  transform: scale(1);
 	}
 
@@ -86,7 +87,7 @@
 	  <div class="ibox float-e-margins">
 	    <div class="ibox-title">
 	      <h5>
-	        Création Modèle PDF
+	        Modèle PDF - {{ modelePdf.nom }}
 	      </h5>
 	    </div>
 	    <div class="ibox-content">
