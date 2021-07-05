@@ -4,11 +4,53 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
  {% endblock  %}
-
- {% block scripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
-    <script src="{{ asset('bundles/agence/js/list.js') }}"></script>
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('bundles/agence/js/list.js') }}"></script>
+<script type="text/javascript">
+  
+  var a_rechercher = document.getElementById('a_rechercher');
+  
+  a_rechercher.addEventListener('keyup', makeDebounce(function(e) {
+  
+    var search_text = e.target.value.toLowerCase();
+  
+    var list = $('#list_agence');
+  
+      
+       list.find('tr').each(function(index, _td) {
+            var isFind = false;
+            $(_td).find('td').each(function(index, item) {
+                var item_text = $(item).html().toLowerCase();
+                if (item_text.indexOf(search_text) >= 0) {
+                    isFind = true;
+                    $(item).closest('tr').removeClass('hidden');     
+                } 
+                if(!isFind) {
+                    $(item).closest('tr').addClass('hidden');
+                }
+            });            
+       });
+      
+  
+  
+  },500));
+  
+  function makeDebounce(callback, delay){
+   var timer;
+   return function(){
+       var args = arguments;
+       var context = this;
+       clearTimeout(timer);
+       timer = setTimeout(function(){
+           callback.apply(context, args);
+       }, delay)
+   }
+  } 
+  
+</script>
+</script>
 {% endblock %}
 
 {% block contenu %}
@@ -102,6 +144,37 @@
                         </h5>
                     </div>
                     <div class="ibox-content">
+                        <div class="row cl_list_societe hidden">
+                          <div class="col-lg-4">
+                            <form class="form-horizontal">
+                              <div class="form-group" style="margin-bottom: 10px;">
+                                <label for="recherche_par" class="control-label col-lg-3">
+                                <span>Recherche par</span>
+                                </label>
+                                <div class="col-lg-9">
+                                  <select id="recherche_par" class="form-control">
+                                    <option value="0"></option>
+                                    <option value="1">Nom</option>
+                                    <option value="2">Région</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="col-lg-4">
+                            <form class="form-horizontal">
+                              <div class="form-group" style="margin-bottom: 10px;">
+                                <label for="a_rechercher" class="control-label col-lg-3">
+                                <span>Nom</span>
+                                </label>
+                                <div class="col-lg-9">
+                                  <input type="text" id="a_rechercher" name="" class="form-control" placeholder="Nom à Rechercher...">
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
                         <table id="list_agence"></table>
                     </div>
                 </div>

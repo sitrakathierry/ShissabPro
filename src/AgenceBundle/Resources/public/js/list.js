@@ -80,6 +80,7 @@ $(document).ready(function(){
             data: data,
             dataType: 'html',
             success: function(res) {
+                $('.cl_list_societe').removeClass('hidden');
                 var grid = instance_grid();
                 grid.jqGrid('setGridParam', {
                     data        : $.parseJSON(res),

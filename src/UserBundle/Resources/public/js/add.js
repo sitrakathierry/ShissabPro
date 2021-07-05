@@ -27,7 +27,7 @@ $('#user-form').on('submit', function (e) {
             }    		
     	}
     })
-});
+}); 
 
 var readURL = function(input) {
     if (input.files && input.files[0]) {

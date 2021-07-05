@@ -8,7 +8,48 @@
 {% block scripts %}
    {{ parent() }}
     <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
-    <script src="{{ asset('bundles/client/js/consultation.js') }}"></script>
+    <script src="{{ asset('bundles/client/js/consultation.js') }}"></script><script type="text/javascript">
+      
+      var a_rechercher = document.getElementById('a_rechercher');
+      
+      a_rechercher.addEventListener('keyup', makeDebounce(function(e) {
+      
+        var search_text = e.target.value.toLowerCase();
+      
+        var list = $('#list_client_morale');
+      
+          
+           list.find('tr').each(function(index, _td) {
+                var isFind = false;
+                $(_td).find('td').each(function(index, item) {
+                    var item_text = $(item).html().toLowerCase();
+                    if (item_text.indexOf(search_text) >= 0) {
+                        isFind = true;
+                        $(item).closest('tr').removeClass('hidden');     
+                    } 
+                    if(!isFind) {
+                        $(item).closest('tr').addClass('hidden');
+                    }
+                });            
+           });
+          
+      
+      
+      },500));
+      
+      function makeDebounce(callback, delay){
+       var timer;
+       return function(){
+           var args = arguments;
+           var context = this;
+           clearTimeout(timer);
+           timer = setTimeout(function(){
+               callback.apply(context, args);
+           }, delay)
+       }
+      } 
+      
+    </script>
 {% endblock %}
 
 {% block contenu %}
@@ -86,7 +127,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-1">
+                                {#<div class="col-lg-1">
                                     <div class="form-group">
                                         <div class="col-sm-12">
                                             <button class="btn btn-primary" id="btn_search" style="width:100%">
@@ -94,7 +135,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                                </div>#}
                             </div>
 
                         </div>

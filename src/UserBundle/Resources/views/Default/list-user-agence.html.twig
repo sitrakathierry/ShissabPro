@@ -24,6 +24,7 @@
                     <option value="0"></option>
                     <option value="1">Nom</option>
                     <option value="2">Responsabilité</option>
+                    <option value="3">Société</option>
                   </select>
                 </div>
               </div>
@@ -177,9 +178,9 @@
   	$('#u_username').val('');
   });
   
-  /*var u_username = document.getElementById('u_username');
+  var a_rechercher = document.getElementById('a_rechercher');
   
-  u_username.addEventListener('keyup', makeDebounce(function(e) {
+  a_rechercher.addEventListener('keyup', makeDebounce(function(e) {
   
       var search_text = e.target.value.toLowerCase();
   
@@ -199,7 +200,7 @@
       
   
   
-  },500));*/
+  },500));
   
   function makeDebounce(callback, delay){
    var timer;
