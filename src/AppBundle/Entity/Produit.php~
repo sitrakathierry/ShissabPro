@@ -22,6 +22,13 @@ class Produit
     private $id;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="code", type="text", unique=true)
@@ -257,5 +264,29 @@ class Produit
     public function getAgence()
     {
         return $this->agence;
+    }
+
+    /**
+     * Set qrcode
+     *
+     * @param string $qrcode
+     *
+     * @return Produit
+     */
+    public function setQrcode($qrcode)
+    {
+        $this->qrcode = $qrcode;
+    
+        return $this;
+    }
+
+    /**
+     * Get qrcode
+     *
+     * @return string
+     */
+    public function getQrcode()
+    {
+        return $this->qrcode;
     }
 }
