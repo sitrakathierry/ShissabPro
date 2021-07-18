@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-dev',
-    'version' => 'dev-dev',
+    'pretty_version' => 'dev-develop',
+    'version' => 'dev-develop',
     'aliases' => 
     array (
     ),
-    'reference' => 'fbb3ad3e72c92ad7ca71b4d5fd8a33c2f180e2c1',
+    'reference' => '4e07a5fc394a7de72a480ccf0be162a57841a375',
     'name' => 'symfony/framework-standard-edition',
   ),
   'versions' => 
@@ -414,12 +414,12 @@
     ),
     'symfony/framework-standard-edition' => 
     array (
-      'pretty_version' => 'dev-dev',
-      'version' => 'dev-dev',
+      'pretty_version' => 'dev-develop',
+      'version' => 'dev-develop',
       'aliases' => 
       array (
       ),
-      'reference' => 'fbb3ad3e72c92ad7ca71b4d5fd8a33c2f180e2c1',
+      'reference' => '4e07a5fc394a7de72a480ccf0be162a57841a375',
     ),
     'symfony/http-foundation' => 
     array (
