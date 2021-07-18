@@ -1,0 +1,3 @@
+caisse_homepage:
+    path:     /
+    defaults: { _controller: CaisseBundle:Default:index }

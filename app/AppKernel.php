@@ -29,6 +29,8 @@ class AppKernel extends Kernel
             new PermissionUserBundle\PermissionUserBundle(),
             new FactureBundle\FactureBundle(),
             new PdfBundle\PdfBundle(),
+            new ProduitBundle\ProduitBundle(),
+            new CaisseBundle\CaisseBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

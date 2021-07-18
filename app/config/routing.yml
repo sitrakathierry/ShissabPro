@@ -1,3 +1,11 @@
+caisse:
+    resource: "@CaisseBundle/Resources/config/routing.yml"
+    prefix:   /
+
+produit:
+    resource: "@ProduitBundle/Resources/config/routing.yml"
+    prefix:   /
+
 pdf:
     resource: "@PdfBundle/Resources/config/routing.yml"
     prefix:   /
