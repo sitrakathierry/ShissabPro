@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('bundles/produit/js/add.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Création produit
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label code">Code</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="code" required="" id="code">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pull-right">
+                                	<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Nom</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="region" required="" id="region">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Description</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="region" required="" id="region">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Prix achat</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="region" required="" id="region">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Prix vente</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="region" required="" id="region">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Stock</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="region" required="" id="region">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!-- <div class=""> -->
+                                        {# <button class="btn btn-white" type="reset">
+                                            <i class="fa fa-times"></i>
+                                            Annuler
+                                        </button> #}
+                                        <button class="btn btn-primary" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                            <input type="hidden" name="id" id="id" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

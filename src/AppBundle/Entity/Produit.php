@@ -31,6 +31,13 @@ class Produit
     /**
      * @var string
      *
+     * @ORM\Column(name="qrcode", type="text", unique=true)
+     */
+    private $qrcode;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="nom", type="text")
      */
     private $nom;
@@ -250,5 +257,29 @@ class Produit
     public function getAgence()
     {
         return $this->agence;
+    }
+
+    /**
+     * Set qrcode
+     *
+     * @param string $qrcode
+     *
+     * @return Produit
+     */
+    public function setQrcode($qrcode)
+    {
+        $this->qrcode = $qrcode;
+    
+        return $this;
+    }
+
+    /**
+     * Get qrcode
+     *
+     * @return string
+     */
+    public function getQrcode()
+    {
+        return $this->qrcode;
     }
 }
