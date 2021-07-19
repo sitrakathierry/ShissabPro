@@ -109,7 +109,7 @@ $(document).ready(function(){
 
         if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
 
-        window.location.href = Routing.generate('pdf_show', { id : id })
+        window.location.href = Routing.generate('produit_show', { id : id })
     });
 
     $(document).on('click', '#btn_search', function(event) {

@@ -48,6 +48,8 @@ class DefaultController extends Controller
     	} else {
     		$produit = new Produit();
 	        $approvisionnement = new Approvisionnement();
+    	    $produit->setDate($dateCreation);
+    	    $produit->setStock($stock);
     	}
 
     	$produit->setCodeProduit($code);
@@ -55,8 +57,6 @@ class DefaultController extends Controller
     	$produit->setNom($nom);
     	$produit->setDescription($description);
     	$produit->setPrixVente($prix_vente);
-    	$produit->setStock($stock);
-    	$produit->setDate($dateCreation);
     	$produit->setAgence($agence);
 
     	$em = $this->getDoctrine()->getManager();
@@ -114,5 +114,17 @@ class DefaultController extends Controller
                         ->list($agence);
 
         return new JsonResponse($produits);
+    }
+
+    public function showAction($id)
+    {
+
+        $produit = $this->getDoctrine()
+                ->getRepository('AppBundle:Produit')
+                ->find($id);
+
+        return $this->render('ProduitBundle:Default:show.html.twig',array(
+            'produit' => $produit
+        ));
     }
 }

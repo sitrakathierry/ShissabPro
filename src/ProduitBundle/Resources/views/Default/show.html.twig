@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('bundles/produit/js/show.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <input type="hidden" id="id_produit" value="{{ produit.id }}">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            {{ produit.nom }} - <span class="badge-warning">{{ produit.codeProduit }}</span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="tabs-container">
+                                    <ul class="nav nav-tabs">
+                                      <li class="active">
+                                        <a data-toggle="tab" href="#tab-1">Details</a>
+                                      </li>
+                                      <li class="">
+                                        <a data-toggle="tab" href="#tab-2">HISTORIQUE D'APPROVISIONNEMENT</a>
+                                      </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active">
+                                        <div class="panel-body">
+                                            <div class="form-horizontal">
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label code">Code</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" id="code" value="{{ produit.codeProduit }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 pull-right">
+                                                    	<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+                                                    </div>
+                                            	</div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label nom">Nom</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" id="nom" value="{{ produit.nom }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label description">Description</label>
+                                                            <div class="col-sm-10">
+                                                                <textarea id="description" class="summernote">
+                                                                	{{ produit.description | raw }}
+                                                                </textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+                                            	{# <div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label prix_achat">Prix achat</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="prix_achat" id="prix_achat" value="{{ produit.prixAchat }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div> #}
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label prix_vente">Prix vente</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="prix_vente" id="prix_vente" value="{{ produit.prixVente }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label stock">Stock disponible</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" value="{{ produit.stock }}" readonly="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <!-- <div class=""> -->
+                                                            {# <button class="btn btn-white" type="reset">
+                                                                <i class="fa fa-times"></i>
+                                                                Annuler
+                                                            </button> #}
+                                                            <button class="btn btn-primary" id="btn-save">
+                                                                <i class="fa fa-save"></i>
+                                                                Enregistrer les modifications
+                                                            </button>
+
+                                                            <a href=""></a>
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="id" id="id" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-2" class="tab-pane">
+                                        <div class="panel-body">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

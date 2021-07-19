@@ -23,3 +23,10 @@ produit_list:
     options:
         expose: true
     methods: [POST]
+
+produit_show:
+    path:     /produit/show/{id}
+    defaults: { _controller: ProduitBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]
