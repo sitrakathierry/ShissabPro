@@ -34,3 +34,10 @@ produit_show:
 produit_approvisionnement_add:
     path:     /produit/approvisionnement/add
     defaults: { _controller: ProduitBundle:Approvisionnement:add }
+
+produit_approvisionnement_save:
+    path:     /produit/approvisionnement/save
+    defaults: { _controller: ProduitBundle:Approvisionnement:save }
+    options:
+        expose: true
+    methods: [POST]

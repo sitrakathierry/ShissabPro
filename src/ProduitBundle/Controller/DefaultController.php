@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Produit;
 use AppBundle\Entity\Approvisionnement;
+use AppBundle\Entity\Ravitaillement;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
@@ -64,14 +65,31 @@ class DefaultController extends Controller
         $em->flush();
 
         if ($approvisionnement && $stock > 0) {
+
+            /**
+             * Ravitaillement
+             */
+            $ravitaillement = new Ravitaillement();
+
+            $ravitaillement->setDate($dateCreation);
+            $ravitaillement->setTotal( ( $stock * $prix_achat ) );
+
+            $em->persist($approvisionnement);
+            $em->flush();
+
+
+            /**
+             * Approvisionnement
+             */
         	$approvisionnement = new Approvisionnement();
 
         	$approvisionnement->setDate($dateCreation);
         	$approvisionnement->setQte($stock);
         	$approvisionnement->setPrixAchat($prix_achat);
         	$approvisionnement->setTotal( ( $stock * $prix_achat ) );
-        	$approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') );
+        	$approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') . ' ('. $stock .')' );
         	$approvisionnement->setProduit($produit);
+            $approvisionnement->setRavitaillement($ravitaillement);
 
         	$em->persist($approvisionnement);
         	$em->flush();

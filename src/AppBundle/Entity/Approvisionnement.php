@@ -66,6 +66,16 @@ class Approvisionnement
      */
     private $produit;
 
+    /**
+     * @var \AppBundle\Entity\Ravitaillement
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ravitaillement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ravitaillement", referencedColumnName="id")
+     * })
+     */
+    private $ravitaillement;
+
 
     /**
      * Get id
@@ -219,5 +229,29 @@ class Approvisionnement
     public function getProduit()
     {
         return $this->produit;
+    }
+
+    /**
+     * Set ravitaillement
+     *
+     * @param \AppBundle\Entity\Ravitaillement $ravitaillement
+     *
+     * @return Approvisionnement
+     */
+    public function setRavitaillement(\AppBundle\Entity\Ravitaillement $ravitaillement = null)
+    {
+        $this->ravitaillement = $ravitaillement;
+    
+        return $this;
+    }
+
+    /**
+     * Get ravitaillement
+     *
+     * @return \AppBundle\Entity\Ravitaillement
+     */
+    public function getRavitaillement()
+    {
+        return $this->ravitaillement;
     }
 }
