@@ -123,8 +123,15 @@ class DefaultController extends Controller
                 ->getRepository('AppBundle:Produit')
                 ->find($id);
 
+        $approvisionnements = $this->getDoctrine()
+                ->getRepository('AppBundle:Approvisionnement')
+                ->findBy(array(
+                    'produit' => $produit
+                ));
+
         return $this->render('ProduitBundle:Default:show.html.twig',array(
-            'produit' => $produit
+            'produit' => $produit,
+            'approvisionnements' => $approvisionnements,
         ));
     }
 }
