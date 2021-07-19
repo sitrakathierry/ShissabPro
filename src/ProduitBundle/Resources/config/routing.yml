@@ -5,3 +5,10 @@ produit_homepage:
 produit_add:
     path:     /produit/add
     defaults: { _controller: ProduitBundle:Default:add }
+
+produit_save:
+    path:     /produit/save
+    defaults: { _controller: ProduitBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]

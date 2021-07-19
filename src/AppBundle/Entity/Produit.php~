@@ -31,9 +31,9 @@ class Produit
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="text", unique=true)
+     * @ORM\Column(name="code_produi", type="text", unique=true)
      */
-    private $code;
+    private $codeProduit;
 
     /**
      * @var string
@@ -55,13 +55,6 @@ class Produit
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prix_achat", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $prixAchat;
 
     /**
      * @var string
@@ -171,30 +164,6 @@ class Produit
     }
 
     /**
-     * Set prixAchat
-     *
-     * @param string $prixAchat
-     *
-     * @return Produit
-     */
-    public function setPrixAchat($prixAchat)
-    {
-        $this->prixAchat = $prixAchat;
-    
-        return $this;
-    }
-
-    /**
-     * Get prixAchat
-     *
-     * @return string
-     */
-    public function getPrixAchat()
-    {
-        return $this->prixAchat;
-    }
-
-    /**
      * Set prixVente
      *
      * @param string $prixVente
@@ -288,5 +257,29 @@ class Produit
     public function getQrcode()
     {
         return $this->qrcode;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Produit
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

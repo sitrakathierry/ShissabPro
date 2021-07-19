@@ -31,14 +31,14 @@ class Produit
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="text", unique=true)
+     * @ORM\Column(name="code_produit", type="text")
      */
-    private $code;
+    private $codeProduit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="qrcode", type="text", unique=true)
+     * @ORM\Column(name="qrcode", type="text")
      */
     private $qrcode;
 
@@ -55,13 +55,6 @@ class Produit
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prix_achat", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $prixAchat;
 
     /**
      * @var string
@@ -168,30 +161,6 @@ class Produit
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set prixAchat
-     *
-     * @param string $prixAchat
-     *
-     * @return Produit
-     */
-    public function setPrixAchat($prixAchat)
-    {
-        $this->prixAchat = $prixAchat;
-    
-        return $this;
-    }
-
-    /**
-     * Get prixAchat
-     *
-     * @return string
-     */
-    public function getPrixAchat()
-    {
-        return $this->prixAchat;
     }
 
     /**
@@ -312,5 +281,29 @@ class Produit
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set codeProduit
+     *
+     * @param string $codeProduit
+     *
+     * @return Produit
+     */
+    public function setCodeProduit($codeProduit)
+    {
+        $this->codeProduit = $codeProduit;
+    
+        return $this;
+    }
+
+    /**
+     * Get codeProduit
+     *
+     * @return string
+     */
+    public function getCodeProduit()
+    {
+        return $this->codeProduit;
     }
 }
