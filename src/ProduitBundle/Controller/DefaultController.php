@@ -63,7 +63,7 @@ class DefaultController extends Controller
         $em->persist($produit);
         $em->flush();
 
-        if ($approvisionnement) {
+        if ($approvisionnement && $stock > 0) {
         	$approvisionnement = new Approvisionnement();
 
         	$approvisionnement->setDate($dateCreation);
@@ -81,5 +81,38 @@ class DefaultController extends Controller
         	'id' => $produit->getId()
         ));
     	
+    }
+
+    public function consultationAction()
+    {
+        $agences  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Agence')
+                        ->findAll();
+
+        $permission_user = $this->get('app.permission_user');
+        $user = $this->getUser();
+        $permissions = $permission_user->getPermissions($user);
+
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+
+        return $this->render('ProduitBundle:Default:consultation.html.twig', array(
+            'agences' => $agences,
+            'userAgence' => $userAgence,
+        ));
+    }
+
+    public function listAction(Request $request)
+    {
+        $agence = $request->request->get('agence');
+
+        $produits  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Produit')
+                        ->list($agence);
+
+        return new JsonResponse($produits);
     }
 }

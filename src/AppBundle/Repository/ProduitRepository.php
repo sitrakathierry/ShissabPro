@@ -10,4 +10,26 @@ namespace AppBundle\Repository;
  */
 class ProduitRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function list($agence)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select *
+					from produit p
+					where p.nom is not null ";
+
+		if ($agence) {
+			$query .= "	and p.agence = " . $agence ;
+		}
+
+		$query .= "	order by p.nom asc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
 }

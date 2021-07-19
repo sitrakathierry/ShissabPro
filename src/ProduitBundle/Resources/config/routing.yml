@@ -12,3 +12,14 @@ produit_save:
     options:
         expose: true
     methods: [POST]
+
+produit_consultation:
+    path:     /produit/consultation
+    defaults: { _controller: ProduitBundle:Default:consultation }
+
+produit_list:
+    path:     /produit/list
+    defaults: { _controller: ProduitBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
