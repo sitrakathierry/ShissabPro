@@ -1,3 +1,11 @@
 caisse_homepage:
     path:     /caisse/index
     defaults: { _controller: CaisseBundle:Default:index }
+
+caisse_vente_add:
+    path:     /caisse/vente/add
+    defaults: { _controller: CaisseBundle:Vente:add }
+
+caisse_vente_consultation:
+    path:     /caisse/vente/consultation
+    defaults: { _controller: CaisseBundle:Vente:consultation }
