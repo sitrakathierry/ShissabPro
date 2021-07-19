@@ -30,3 +30,7 @@ produit_show:
     options:
         expose: true
     methods: [GET]
+
+produit_approvisionnement_add:
+    path:     /produit/approvisionnement/add
+    defaults: { _controller: ProduitBundle:Approvisionnement:add }
