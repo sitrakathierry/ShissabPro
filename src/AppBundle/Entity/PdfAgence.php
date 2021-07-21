@@ -41,6 +41,16 @@ class PdfAgence
      */
     private $facture;
 
+    /**
+     * @var \AppBundle\Entity\ModelePdf
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     * })
+     */
+    private $produit;
+
 
     /**
      * Get id
@@ -98,5 +108,29 @@ class PdfAgence
     public function getFacture()
     {
         return $this->facture;
+    }
+
+    /**
+     * Set produit
+     *
+     * @param \AppBundle\Entity\ModelePdf $produit
+     *
+     * @return PdfAgence
+     */
+    public function setProduit(\AppBundle\Entity\ModelePdf $produit = null)
+    {
+        $this->produit = $produit;
+
+        return $this;
+    }
+
+    /**
+     * Get produit
+     *
+     * @return \AppBundle\Entity\ModelePdf
+     */
+    public function getProduit()
+    {
+        return $this->produit;
     }
 }

@@ -129,7 +129,7 @@ class DefaultController extends Controller
 
         $produits  = $this->getDoctrine()
                         ->getRepository('AppBundle:Produit')
-                        ->list($agence);
+                        ->getList($agence);
 
         return new JsonResponse($produits);
     }
@@ -147,9 +147,74 @@ class DefaultController extends Controller
                     'produit' => $produit
                 ));
 
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $print = false;
+
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findBy(array(
+                        'agence' => $agence
+                    ));
+                    
+        if (count($pdfAgence) > 0) {
+            foreach ($pdfAgence as $key => $value) {
+                if($value->getProduit()){
+                    $print = true;
+                }
+            }
+        }
+
         return $this->render('ProduitBundle:Default:show.html.twig',array(
             'produit' => $produit,
             'approvisionnements' => $approvisionnements,
+            'print' => $print
         ));
+    }
+
+    public function pdfAction($id)
+    {
+        $produit  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Produit')
+                        ->find($id);
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findBy(array(
+                        'agence' => $agence
+                    ));
+
+        $modelePdf = null;
+        foreach ($pdfAgence as $key => $value) {
+            if($value->getProduit()){
+                $modelePdf = $value->getProduit();
+            }
+        }       
+
+        $template = $this->renderView('ProduitBundle:Default:pdf.html.twig', array(
+            'produit' => $produit,
+            'modelePdf' => $modelePdf,
+        ));
+
+        $html2pdf = $this->get('app.html2pdf');
+
+        $html2pdf->create();
+
+        return $html2pdf->generatePdf($template, "produit" . $produit->getId());
+
     }
 }

@@ -1,0 +1,154 @@
+<style type="text/css">
+    table.content-details {
+        width: 100%
+        border-collapse: collapse;
+    }
+
+    .content-details th {
+        border: solid 1px #000000; 
+        padding: 5px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .content-details td {
+        border: solid 1px #c0c0c0;
+        padding: 5px; 
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    table {
+        font-size: 12pt;
+        font-family: times;
+    }
+
+    pre {
+        font-family: times;
+    }
+
+    td p {
+        width: 20%;
+    }
+
+    h1,h2,h3,h4,p {
+    	word-wrap: break-word;
+    }
+
+    table {
+    	border-collapse: collapse;
+    }
+
+    .f14{
+    	font-size: 14pt;
+    }
+
+    .f20{
+    	font-size: 20pt;
+    }
+
+    .no-margin{
+    	margin: 0;
+    }
+
+    .no-padding{
+		padding: 0;
+    }
+
+    .b {
+    	font-weight: bold;
+    }
+
+    h2{
+    	font-size: 15pt;
+    }
+
+    p{
+    	margin: 0;
+    	padding: 0;
+    }
+
+    .bordered{
+    	border: 1px solid #000;
+    }
+
+    h3 {
+    	font-size: 14pt;
+    }
+
+    .style-badge {
+        background-color: #f8ac59;
+    	color: #FFFFFF;
+    }
+
+</style>
+
+<page backtop="" backbottom="" backleft="5mm" backright="5mm"> 
+    {% include('PdfBundle:Default:entete.html.twig') %}
+
+    <table style="width:100%">
+	    <tr>
+	        <td class="text-center" style="width:100%">
+	            <h3>
+	                <u>{{ produit.nom }} - <span class="style-badge">{{ produit.codeProduit }}</span></u>
+	            </h3>
+	        </td>
+	    </tr>	    
+	</table>
+
+	<table style="width: 100%">
+	    <tr>
+	        <td style="width: 100%">
+	            {{ produit.description | raw }}
+	        </td>
+	    </tr>
+	</table>
+
+	<table style="width: 100%; border: solid 1px #000;margin-top:25px">
+	    <tr>
+	        <td class="th" style="text-align:center; width: 33.33%; border: solid 1px #000000;">NOM</td>
+	        <td class="th" style="text-align:center; width: 33.33%; border: solid 1px #000000;">PRIX VENTE</td>
+	        <td class="th" style="text-align:center; width: 33.33%; border: solid 1px #000000;">STOCK DISPONIBLE</td>
+	    </tr>
+        <tr>
+	        <td class="" style="width: 33.33%; border: solid 1px #000000;">
+	        	{{produit.nom}}
+	        </td>
+	        <td class="text-center" style="width: 33.33%; border: solid 1px #000000;">
+	        	{{produit.prixVente}}
+	        </td>
+	        <td class="text-center" style="width: 33.33%; border: solid 1px #000000;">
+	        	{{produit.stock}}
+	        </td>
+        </tr>
+	</table>
+
+	<table style="width:100%; margin-top: 50px">
+	    <tr>
+	        <td style="width: 80%" class="text-right">
+	            <br>
+	            <br>
+	            <br>
+	            Moroni le
+	            </td>
+	        <td style="width: 20%" class="text-right" class="dashed typo">
+	            <br>
+	            <br>
+	            <br>
+	             {{produit.date| date('d-m-Y')}}
+	        </td>
+	    </tr>
+	</table>	
+
+	<table style="width:100%; margin-top: 50px">
+		<tr>
+			<td style="width:100%" class="text-right">
+				POUR LA SOCIETE
+			</td>
+		</tr>
+	</table>
+</page>

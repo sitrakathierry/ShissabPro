@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class ProduitRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function list($agence)
+	public function getList($agence)
 	{
 		$em = $this->getEntityManager();
 		

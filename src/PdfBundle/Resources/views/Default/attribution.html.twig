@@ -13,14 +13,14 @@
 
 {% block contenu %}
 
-	<input type="hidden" id="id" value="{{ pdfAgence ? pdfAgence.id : '' }}">
+	{#<input type="hidden" id="id" value="{{ pdfAgence ? pdfAgence.id : '' }}">#}
 
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>
-                        Attribution des modèle
+                        Attribution des modèles
                     </h5>
                 </div>
                 <div class="ibox-content">
@@ -37,26 +37,64 @@
                     					<td>FACTURE</td>
                     					<td>
                     						<div class="col-sm-6">
-					                        	<select class="form-control" id="facture">
+					                        	<select class="cl_model_attribuer form-control" id="facture">
 					                        		<option></option>
 					                        		{% for modele in modeles %}
-					                        			<option 
-					                        				value="{{modele.id}}"
-					                        				{% if pdfAgence %}
-					                        					{% if pdfAgence.facture %}
-					                        						{% if pdfAgence.facture == modele %}
-					                        							selected=""
-					                        						{% endif %} 
-					                        					{% endif %}
-					                        				{% endif %}
-					                        			>
-					                        				{{ modele.nom }}
-					                        			</option>
+                                                        {% set isFind = 0 %}
+                                                        {% set entitySelected = 0 %}
+                                                        {% for pdf in pdfAgence %}
+                                                            {% if pdf.facture %}
+                                                                {% if pdf.facture.id == modele.id %}
+                                                                    {% set isFind = 1 %}
+        					                        			    {% set entitySelected = pdf %}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {{ isFind }} 
+                                                        <option 
+                                                            value="{{modele.id}}"
+                                                                {% if isFind %}
+                                                                    data-id="{{entitySelected.id}}" selected=""
+                                                                {% endif %} 
+                                                        >
+                                                            {{ modele.nom }}
+                                                        </option>
 					                        		{% endfor %}
 					                        	</select>
 					                        </div>
                     					</td>
                     				</tr>
+                                    <tr>
+                                        <td>PRODUIT</td>
+                                        <td>
+                                            <div class="col-sm-6">
+                                                <select class="cl_model_attribuer form-control" id="produit">
+                                                    <option></option>
+                                                    {% for modele in modeles %}
+                                                        {% set isFind = 0 %}
+                                                        {% set entitySelected = 0 %}
+                                                        {% for pdf in pdfAgence %}
+                                                            {% if pdf.produit %}
+                                                                {% if pdf.produit.id == modele.id %}
+                                                                    {% set isFind = 1 %}
+                                                                    {% set entitySelected = pdf %}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %} 
+                                                        {{ isFind }}
+                                                        <option 
+                                                            value="{{modele.id}}"
+                                                                {% if isFind %}
+                                                                    data-id="{{entitySelected.id}}" selected=""
+                                                                {% endif %} 
+                                                        >
+                                                            {{ modele.nom }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
                     			</tbody>
                     		</table>
                     	</div>

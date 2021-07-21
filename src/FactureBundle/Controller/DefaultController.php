@@ -187,11 +187,12 @@ class DefaultController extends Controller
                         'agence' => $agence
                     ));
                     
-        if ($pdfAgence) {
-            $modelePdf = $pdfAgence->getFacture();
-            if ($modelePdf) {
-                $print = true;
-            }
+        if (count($pdfAgence) > 0) {
+            foreach ($pdfAgence as $key => $value) {
+                if($value->getFacture()){
+                    $print = true;
+                }
+            } 
         }
 
 
@@ -227,11 +228,16 @@ class DefaultController extends Controller
 
         $pdfAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:PdfAgence')
-                    ->findOneBy(array(
+                    ->findBy(array(
                         'agence' => $agence
-                    ));
+                    ));       
 
-        $modelePdf = $pdfAgence->getFacture();
+        $modelePdf = null;
+        foreach ($pdfAgence as $key => $value) {
+            if($value->getFacture()){
+                $modelePdf = $value->getFacture();
+            }
+        }  
 
         $template = $this->renderView('FactureBundle:Default:pdf.html.twig', array(
             'facture' => $facture,

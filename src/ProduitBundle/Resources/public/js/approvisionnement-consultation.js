@@ -1,4 +1,10 @@
 $(document).ready(function(){
+
+	$(document).on('click', '#btn_search', function(event) {
+		event.preventDefault()
+		load_list();
+		
+	})
 	load_list();
 
 	function load_list() {

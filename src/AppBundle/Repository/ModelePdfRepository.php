@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class ModelePdfRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function list(
+	public function getList(
 		$agence,
         $recherche_par,
         $a_rechercher
