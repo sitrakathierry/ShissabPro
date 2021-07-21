@@ -34,3 +34,10 @@ produit_show:
 produit_approvisionnement_add:
     path:     /produit/approvisionnement/add
     defaults: { _controller: ProduitBundle:Approvisionnement:add }
+
+produit_pdf:
+    path:     /produit/pdf/{id}
+    defaults: { _controller: ProduitBundle:Default:pdf }
+    options:
+        expose: true
+    methods: [GET]
