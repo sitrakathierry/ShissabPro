@@ -10,4 +10,27 @@ namespace AppBundle\Repository;
  */
 class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function consultation($ravitaillement)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select ap.*, p.nom as produit
+					from approvisionnement ap
+					inner join produit p on (ap.produit = p.id)
+					where ap.id is not null ";
+
+		if ($ravitaillement) {
+			$query .= "	and ap.ravitaillement = " . $ravitaillement ;
+		}
+
+		$query .= "	order by p.nom asc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
 }

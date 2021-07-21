@@ -41,3 +41,14 @@ produit_approvisionnement_save:
     options:
         expose: true
     methods: [POST]
+
+produit_approvisionnement_consultation:
+    path:     /produit/approvisionnement/consultation
+    defaults: { _controller: ProduitBundle:Approvisionnement:consultation }
+
+produit_approvisionnement_list:
+    path:     /produit/approvisionnement/list
+    defaults: { _controller: ProduitBundle:Approvisionnement:list }
+    options:
+        expose: true
+    methods: [POST]

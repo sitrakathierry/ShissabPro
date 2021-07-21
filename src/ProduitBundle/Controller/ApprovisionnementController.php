@@ -103,4 +103,51 @@ class ApprovisionnementController extends Controller
         
 
     }
+
+    public function consultationAction()
+    {
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        return $this->render('ProduitBundle:Approvisionnement:consultation.html.twig',array(
+            'userAgence' => $userAgence
+        ));
+    }
+
+    public function listAction(Request $request)
+    {
+
+        $agence = $request->request->get('agence');
+
+        $ravitaillements = $this->getDoctrine()
+                    ->getRepository('AppBundle:Ravitaillement')
+                    ->consultation($agence);
+
+        $data = array();
+
+        foreach ($ravitaillements as $ravitaillement) {
+            $approvisionnements = $this->getDoctrine()
+                    ->getRepository('AppBundle:Approvisionnement')
+                    ->consultation($ravitaillement['id']);
+
+
+            $ravitaillement['approvisionnements'] = null;
+
+            if (!empty($approvisionnements)) {
+                $ravitaillement['approvisionnements'] = $approvisionnements;
+            }
+
+            array_push($data, $ravitaillement);
+        }
+
+        return $this->render('ProduitBundle:Approvisionnement:list.html.twig',array(
+            'ravitaillements' => $data
+        ));
+        
+    }
 }

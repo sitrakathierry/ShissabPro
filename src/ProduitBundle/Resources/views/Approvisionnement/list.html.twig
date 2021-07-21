@@ -1,0 +1,41 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>DATE</th>
+			<th>PRODUIT</th>
+			<th>QTE</th>
+			<th>PRIX UNITAIRE</th>
+			<th>TOTAL</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for ravitaillement in ravitaillements %}
+			{% if ravitaillement.approvisionnements %}
+				{% set i = 1 %}
+				{% for  approvisionnement in ravitaillement.approvisionnements %}
+					<tr>
+						{% if i == 1 %}
+							<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">{{ ravitaillement.date }}</td>
+						{% endif %}
+						<td>{{ approvisionnement.produit }}</td>
+						<td>{{ approvisionnement.qte }}</td>
+						<td>{{ approvisionnement.prix_achat }}</td>
+						<td>{{ approvisionnement.total }}</td>
+						<td></td>
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+				<tr>
+					<td colspan="2">TOTAL</td>
+					<td></td>
+					<td>{{ ravitaillement.montant_total }}</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td colspan="6" bgcolor="#ddd"></td>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	</tbody>
+</table>
