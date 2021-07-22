@@ -1,5 +1,48 @@
 $(document).ready(function(){
 
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { 
+        fps: 10, 
+        qrbox: 250,
+    });
+            
+    function onScanSuccess(decodedText, decodedResult) {
+        // console.log(`Scan result: ${decodedText}`, decodedResult);
+
+        var stop = false;
+        $(".cl_produit option").each(function(i){
+            var code = $(this).data('code');
+            if (decodedText == code && stop == false) {
+                var produit_id = $(this).val();
+                var cl_produit = $('#table-commande-add tbody tr:last').find('.cl_produit');
+
+                var insered = false;
+                $('.cl_produit').each(function(item) {
+                    if (produit_id == $(this).val()) {
+                        insered = true;
+                    }
+                });
+
+                if (insered) {
+                    show_info('Contrôle Securité', 'Produit existe déjà dans la commande en cours','info', 'info');
+                } else {
+                    if (cl_produit.val() != '' ) {
+                        $('.btn-add-row').trigger('click');
+                        $('#table-commande-add tbody tr:last').find('.cl_produit').val( produit_id ).trigger('change');
+                    } else {
+                        cl_produit.val( produit_id ).trigger('change');
+                    }
+                }
+
+                stop = true;
+            }
+        });
+
+        html5QrcodeScanner.render(onScanSuccess);
+    }
+
+    html5QrcodeScanner.render(onScanSuccess);
+
 	$('.input-group.date').datepicker({
         todayBtn: "linked",
         keyboardNavigation: false,
@@ -35,7 +78,11 @@ $(document).ready(function(){
                         $(_tr).find('.cl_qte').attr('disabled','disabled');
                         $(_tr).find('.cl_prix').attr('disabled','disabled');
                         isFind = true;
+
+                        $('.btn-remove-row').trigger('click');
+
                         return show_info("Contrôle Securité", 'Produit existe déjà dans la commande en cours','info');
+
                     }  
                 }     
             });
