@@ -73,8 +73,9 @@ class DefaultController extends Controller
 
             $ravitaillement->setDate($dateCreation);
             $ravitaillement->setTotal( ( $stock * $prix_achat ) );
+            $ravitaillement->setAgence( $agence );
 
-            $em->persist($approvisionnement);
+            $em->persist($ravitaillement);
             $em->flush();
 
 
