@@ -191,6 +191,21 @@ $(document).ready(function(){
     $(document).on('click', '#btn-save', function(event) {
         event.preventDefault();
 
+        var produits = [];
+        var isFind = false;
+
+        $('table#table-commande-add > tbody  > tr').each(function(index, tr) { 
+            var produitExist = $(tr).find('.cl_produit option:selected').val();
+            if(produits.length > 0){
+                if(checkValue(produitExist, produits)){ 
+                    isFind = true;
+                }  
+            } 
+            produits.push(produitExist);    
+        });
+
+        if(isFind) return;
+
     	var data = $('#form-commande').serializeArray();
 
     	var url = Routing.generate('caisse_vente_save');
