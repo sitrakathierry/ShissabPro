@@ -10,4 +10,27 @@ namespace AppBundle\Repository;
  */
 class PannierRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function consultation($commande)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select p.*, pr.nom as produit
+					from pannier p
+					inner join produit pr on (p.produit = pr.id)
+					where p.id is not null ";
+
+		if ($commande) {
+			$query .= "	and p.commande = " . $commande ;
+		}
+
+		$query .= "	order by pr.nom asc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
 }

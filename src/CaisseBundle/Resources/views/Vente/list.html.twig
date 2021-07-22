@@ -1,0 +1,41 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>DATE</th>
+			<th>PRODUIT</th>
+			<th>QTE</th>
+			<th>PRIX UNITAIRE</th>
+			<th>TOTAL</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for commande in commandes %}
+			{% if commande.panniers %}
+				{% set i = 1 %}
+				{% for  pannier in commande.panniers %}
+					<tr>
+						{% if i == 1 %}
+							<td rowspan="{{ (commande.panniers | length) + 1 }}">{{ commande.date }}</td>
+						{% endif %}
+						<td>{{ pannier.produit }}</td>
+						<td>{{ pannier.qte }}</td>
+						<td>{{ pannier.pu }}</td>
+						<td>{{ pannier.total }}</td>
+						<td></td>
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+				<tr>
+					<td colspan="2">TOTAL</td>
+					<td></td>
+					<td>{{ commande.montant_total }}</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td colspan="6" bgcolor="#ddd"></td>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	</tbody>
+</table>

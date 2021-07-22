@@ -9,3 +9,16 @@ caisse_vente_add:
 caisse_vente_consultation:
     path:     /caisse/vente/consultation
     defaults: { _controller: CaisseBundle:Vente:consultation }
+
+caisse_vente_save:
+    path:     /caisse/vente/save
+    defaults: { _controller: CaisseBundle:Vente:save }
+    options:
+        expose: true 
+
+caisse_commande_list:
+    path:     /caisse/list
+    defaults: { _controller: CaisseBundle:Vente:list }
+    options:
+        expose: true
+    methods: [POST]

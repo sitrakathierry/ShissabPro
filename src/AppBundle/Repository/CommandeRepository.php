@@ -10,4 +10,26 @@ namespace AppBundle\Repository;
  */
 class CommandeRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function consultation($agence)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select c.id, date_format(c.date, '%d/%m/%Y') as date, c.total as montant_total
+					from commande c
+					where c.id is not null ";
+
+		if ($agence) {
+			$query .= "	and c.agence = " . $agence ;
+		}
+
+		$query .= "	order by c.id desc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
 }
