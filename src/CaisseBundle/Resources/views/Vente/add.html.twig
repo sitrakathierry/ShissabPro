@@ -31,6 +31,8 @@
         <div class="ibox-content">
           <form class="form-horizontal" id="form-commande">
 
+          <div style="width: 500px" id="reader"></div>
+
             <div class="hr-line-dashed"></div>
             <table class="table table-bordered" id="table-commande-add">
               <thead class="thead-dark">
@@ -50,7 +52,12 @@
                       	<select class="form-control select2 cl_produit" name="produit[]">
                       		<option></option>
                       		{% for produit in produits %}
-                      			<option value="{{ produit.id }}" data-stock="{{ produit.stock }}" data-prix="{{ produit.prixVente }}"> {{ produit.nom }} </option>
+                      			<option 
+                            value="{{ produit.id }}" 
+                            data-code="{{ produit.codeProduit }}" 
+                            data-stock="{{ produit.stock }}" 
+                            data-prix="{{ produit.prixVente }}"
+                          > {{ produit.nom }} </option>
                       		{% endfor %}
                       	</select>
                       </div>
