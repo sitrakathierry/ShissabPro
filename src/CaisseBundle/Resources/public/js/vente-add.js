@@ -75,8 +75,9 @@ $(document).ready(function(){
         qte = parseInt(qte);
         if(stock && qte){
             if(stock < qte) {
-                $('#btn-save').addClass('disabled');
-                return show_info("Contrôle Securité", 'Pas assez de stock','info');
+                // $('#btn-save').addClass('disabled');
+                $(this).val('')
+                return show_info("Quantité non valide", 'Pas assez de stock','warning');
             }
         } 
         $('#btn-save').removeClass('disabled');
