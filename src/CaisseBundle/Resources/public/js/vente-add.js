@@ -17,16 +17,41 @@ $(document).ready(function(){
         event.preventDefault();
         var stock = $(this).find('option:selected').attr('data-stock');
         var prix = $(this).find('option:selected').attr('data-prix');
-        var tr = $(this).closest('tr');
-        $(tr).find('.cl_qte').val(stock);
-        $(tr).find('.cl_prix').val(Number(prix));
+        var _tr = $(this).closest('tr');
+        var produitSelected = $(this).val();
+        $(_tr).find('.cl_qte').val(stock);
+        $(_tr).find('.cl_prix').val(Number(prix));
 
-        if (Number(stock)) {
-            $(tr).find('.cl_qte').attr('max', stock);
-            var total = Number( stock ) * Number( prix );
-            $(tr).find('.cl_total').val( Number(total) );
-        } else {
-            var total = $(tr).find('.cl_prix').val();
+        var countPanier = $('table#table-commande-add > tbody  > tr').length;
+        var isFind = false;
+        if(countPanier > 1){
+            $('table#table-commande-add > tbody  > tr').each(function(index, tr) { 
+                var produitExist = $(tr).find('.cl_produit option:selected').val();
+                if($(_tr).attr('data-id') != $(tr).attr('data-id')){
+                    if(produitSelected == produitExist){       
+                        $(_tr).find('.cl_qte').val('');
+                        $(_tr).find('.cl_prix').val('');              
+                        $(_tr).find('.cl_total').val('');              
+                        $(_tr).find('.cl_qte').attr('disabled','disabled');
+                        $(_tr).find('.cl_prix').attr('disabled','disabled');
+                        isFind = true;
+                        return show_info("Contrôle Securité", 'Produit existe déjà dans la commande en cours','info');
+                    }  
+                }     
+            });
+        }
+
+        if(!isFind){
+            $('#btn-save').removeClass('disabled');
+            if (Number(stock)) {
+                $(_tr).find('.cl_qte').attr('max', stock);
+                var total = Number( stock ) * Number( prix );
+                $(_tr).find('.cl_total').val( Number(total) );
+            } else {
+                var total = $(_tr).find('.cl_prix').val();
+            }
+        }else{            
+            $('#btn-save').addClass('disabled');
         }
 
         calculTotal();
@@ -34,6 +59,24 @@ $(document).ready(function(){
 
 	$(document).on('click', '.btn-add-row', function(event) {
         event.preventDefault();
+        var produits = [];
+        var isFind = false;
+
+        $('table#table-commande-add > tbody  > tr').each(function(index, tr) { 
+            var produitExist = $(tr).find('.cl_produit option:selected').val();
+            if(produits.length > 0){
+                if(checkValue(produitExist, produits)){ 
+                    isFind = true;
+                    $('#btn-save').addClass('disabled');
+                    show_info("Contrôle Securité", 'Commande non valide','info');
+                }  
+            } 
+            produits.push(produitExist);    
+        });
+
+        if(isFind) return;
+        $('#btn-save').removeClass('disabled');
+
         var id = $('#id-row').val();
         var new_id = parseInt(id) + 1;
         
@@ -57,6 +100,9 @@ $(document).ready(function(){
 
     $(document).on('click', '.btn-remove-row', function(event) {
         event.preventDefault();
+        var produits = [];
+        var isFind = false;
+
         var id     = parseInt($('#id-row').val());
         var new_id = id - 1;
         if (new_id >= 0) {
@@ -66,6 +112,19 @@ $(document).ready(function(){
             show_info("Attention", 'Le tableau devrait contenir au moins une ligne','error');
         }
         calculTotal();
+
+        $('table#table-commande-add > tbody  > tr').each(function(index, tr) { 
+            var produitExist = $(tr).find('.cl_produit option:selected').val();
+            if(produits.length > 0){
+                if(checkValue(produitExist, produits)){ 
+                    isFind = true;
+                }  
+            } 
+            produits.push(produitExist);    
+        });
+
+        if(!isFind)
+            $('#btn-save').removeClass('disabled');
     });
 
     $(document).on('input','.cl_qte',function (event) {
@@ -129,7 +188,7 @@ $(document).ready(function(){
     }
 
     $(document).on('click', '#btn-save', function(event) {
-    	event.preventDefault();
+        event.preventDefault();
 
     	var data = $('#form-commande').serializeArray();
 
@@ -147,3 +206,17 @@ $(document).ready(function(){
     })
 
 });
+
+function checkValue(value,arr){
+  var status = false;
+ 
+  for(var i=0; i<arr.length; i++){
+    var name = arr[i];
+    if(name == value){
+      status = true;
+      break;
+    }
+  }
+
+  return status;
+}
