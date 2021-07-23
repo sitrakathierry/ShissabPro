@@ -1,10 +1,15 @@
 $(document).ready(function(){
 
-    var html5QrcodeScanner = new Html5QrcodeScanner(
-    "reader", { 
-        fps: 10, 
-        qrbox: 250,
-    });
+    function initializeScanner() {
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { 
+            fps: 10, 
+            qrbox: 250,
+        });
+
+        html5QrcodeScanner.render(onScanSuccess);
+    }
+
             
     function onScanSuccess(decodedText, decodedResult) {
         // console.log(`Scan result: ${decodedText}`, decodedResult);
@@ -38,10 +43,13 @@ $(document).ready(function(){
             }
         });
 
-        html5QrcodeScanner.render(onScanSuccess);
+        delete html5QrcodeScanner;
+        initializeScanner();
     }
 
-    html5QrcodeScanner.render(onScanSuccess);
+    initializeScanner();
+
+    
 
 	$('.input-group.date').datepicker({
         todayBtn: "linked",

@@ -90,44 +90,54 @@
 <page backtop="" backbottom="" backleft="5mm" backright="5mm"> 
     {% include('PdfBundle:Default:entete.html.twig') %}
 
-    <table style="width:100%">
-	    <tr>
-	        <td class="text-center" style="width:100%">
-	            <h3>
-	                <u>{{ produit.nom }} - <span class="style-badge">{{ produit.codeProduit }}</span></u>
-	            </h3>
-	        </td>
-	    </tr>	    
-	</table>
+    <table style="width:100%; margin-top:50px">
 
-	<table style="width: 100%">
-	    <tr>
-	        <td style="width: 100%">
-	            {{ produit.description | raw }}
-	        </td>
-	    </tr>
-	</table>
-
-	<table style="width: 100%; border: solid 1px #000;margin-top:25px">
-	    <tr>
-	        <td class="th" style="text-align:center; width: 33.33%; border: solid 1px #000000;">NOM</td>
-	        <td class="th" style="text-align:center; width: 33.33%; border: solid 1px #000000;">PRIX VENTE</td>
-	        <td class="th" style="text-align:center; width: 33.33%; border: solid 1px #000000;">STOCK DISPONIBLE</td>
-	    </tr>
         <tr>
-	        <td class="" style="width: 33.33%; border: solid 1px #000000;">
-	        	{{produit.nom}}
-	        </td>
-	        <td class="text-center" style="width: 33.33%; border: solid 1px #000000;">
-	        	{{produit.prixVente}}
-	        </td>
-	        <td class="text-center" style="width: 33.33%; border: solid 1px #000000;">
-	        	{{produit.stock}}
-	        </td>
+            <td colspan="2" style="width: 75%" class="f20">
+                {{ produit.nom }} #{{ produit.codeProduit }}
+            </td>
+            <td rowspan="4" style="width: 25%" class="text-right">
+                <img src="{{ produit.qrcode | to_src }}">
+            </td>
         </tr>
+            
+        <tr>
+            <td colspan="2" style="width: 75%">
+                {{ produit.description | raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 15%">
+                Prix de vente
+            </td>
+            <td style="width: 60%">
+                : {{ produit.prixVente }} KMF
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 15%">
+                Date de création
+            </td>
+            <td style="width: 60%">
+                : {{ produit.date | date('d/m/Y') }} 
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 15%">
+                Fabriquant
+            </td>
+            <td style="width: 60%">
+                : {{ produit.agence.nom }} 
+            </td>
+        </tr>
+	    	    
 	</table>
 
-	<table style="width:100%; margin-top: 50px">
+
+{# 	<table style="width:100%; margin-top: 50px">
 	    <tr>
 	        <td style="width: 80%" class="text-right">
 	            <br>
@@ -150,5 +160,5 @@
 				POUR LA SOCIETE
 			</td>
 		</tr>
-	</table>
+	</table> #}
 </page>
