@@ -1,3 +1,17 @@
+var image_src = $('#produit_image');
+
+if (image_src.attr('src') == '') {
+	$('#produit_image').attr('src',get_picture_b64());
+}
+
+
+$(document).on('change','#image',function(event) {
+  var file = document.querySelector('#image').files[0];
+  getBase64(file).then((src)=>{
+      $('#produit_image').attr('src',src);
+  });
+});
+
 $('.summernote').summernote()
 
 var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -28,6 +42,7 @@ $(document).on('click', '#btn-save', function(event) {
 		prix_achat : $('#prix_achat').val(),
 		prix_vente : $('#prix_vente').val(),
 		stock : $('#stock').val(),
+		produit_image : $('#produit_image').attr('src'),
 	};
 
 	var url = Routing.generate('produit_save');
@@ -41,4 +56,17 @@ $(document).on('click', '#btn-save', function(event) {
 			location.reload()
 		}
 	})
-})
+});
+
+function getBase64(file) {
+  return new Promise((resolve)=>{
+     var reader = new FileReader();
+     reader.readAsDataURL(file);
+     reader.onload = function () {
+       resolve(reader.result);
+     };
+     reader.onerror = function (error) {
+       resolve(false)
+     };
+  })
+}

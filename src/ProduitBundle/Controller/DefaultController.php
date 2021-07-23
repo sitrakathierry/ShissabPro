@@ -31,6 +31,7 @@ class DefaultController extends Controller
     	$prix_achat = $request->request->get('prix_achat');
     	$prix_vente = $request->request->get('prix_vente');
     	$stock = $request->request->get('stock');
+        $produit_image = $request->request->get('produit_image');
     	$dateCreation = new \DateTime('now');
     	$user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -59,6 +60,7 @@ class DefaultController extends Controller
     	$produit->setDescription($description);
     	$produit->setPrixVente($prix_vente);
     	$produit->setAgence($agence);
+        $produit->setImage($produit_image);
 
     	$em = $this->getDoctrine()->getManager();
         $em->persist($produit);

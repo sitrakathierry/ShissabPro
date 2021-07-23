@@ -90,7 +90,7 @@
 <page backtop="" backbottom="" backleft="5mm" backright="5mm"> 
     {% include('PdfBundle:Default:entete.html.twig') %}
 
-    <table style="width:100%; margin-top:50px">
+    <table style="width:100%; margin-top:50px; vertical-align: top;">
 
         <tr>
             <td colspan="2" style="width: 75%" class="f20">
@@ -109,9 +109,11 @@
 
         <tr>
             <td style="width: 15%">
+                <br>
                 Prix de vente
             </td>
             <td style="width: 60%">
+                <br>
                 : {{ produit.prixVente }} KMF
             </td>
         </tr>
@@ -135,6 +137,16 @@
         </tr>
 	    	    
 	</table>
+
+    {% if produit.image %}
+        <table style="width: 100%; margin-top: 20px">
+            <tr>
+                <td style="width:100%" class="text-center">
+                        <img src="{{ produit.image | to_src }}" alt="" style="width: 100%" class="text-center">
+                </td>
+            </tr>
+        </table>
+    {% endif %}
 
 
 {# 	<table style="width:100%; margin-top: 50px">

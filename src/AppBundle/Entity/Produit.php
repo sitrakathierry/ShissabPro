@@ -45,6 +45,13 @@ class Produit
     /**
      * @var string
      *
+     * @ORM\Column(name="image", type="text")
+     */
+    private $image;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="nom", type="text")
      */
     private $nom;
@@ -305,5 +312,29 @@ class Produit
     public function getCodeProduit()
     {
         return $this->codeProduit;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Produit
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

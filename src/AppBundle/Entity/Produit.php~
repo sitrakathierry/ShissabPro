@@ -31,16 +31,23 @@ class Produit
     /**
      * @var string
      *
-     * @ORM\Column(name="code_produi", type="text", unique=true)
+     * @ORM\Column(name="code_produit", type="text")
      */
     private $codeProduit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="qrcode", type="text", unique=true)
+     * @ORM\Column(name="qrcode", type="text")
      */
     private $qrcode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="text")
+     */
+    private $image;
 
     /**
      * @var string
@@ -281,5 +288,29 @@ class Produit
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set codeProduit
+     *
+     * @param string $codeProduit
+     *
+     * @return Produit
+     */
+    public function setCodeProduit($codeProduit)
+    {
+        $this->codeProduit = $codeProduit;
+    
+        return $this;
+    }
+
+    /**
+     * Get codeProduit
+     *
+     * @return string
+     */
+    public function getCodeProduit()
+    {
+        return $this->codeProduit;
     }
 }
