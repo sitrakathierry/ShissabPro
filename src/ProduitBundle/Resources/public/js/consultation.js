@@ -5,7 +5,7 @@ $(document).ready(function(){
 	load_list();
 
 	function instance_grid() {
-        var colNames = ['QR Code','Code','Nom', 'Stock', ''];
+        var colNames = ['QR Code','Image','Code','Nom', 'Stock', ''];
         
         var colModel = [{ 
             name:'qrcode',
@@ -13,6 +13,18 @@ $(document).ready(function(){
             align: 'center' ,
             formatter: function(v) {
             	return '<img style="width: 50px;padding: 5px;" src="'+ v +'">';
+            }
+        },{ 
+            name:'image',
+            index:'image',
+            align: 'center' ,
+            formatter: function(v) {
+                var src = v;
+
+                if (v == '') {
+                    src = get_picture_b64();
+                }
+                return '<img style="width: 100px;padding: 5px;" src="'+ src +'">';
             }
         },{ 
             name:'code_produit',
