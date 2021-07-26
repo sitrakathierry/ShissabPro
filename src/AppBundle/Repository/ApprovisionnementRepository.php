@@ -33,4 +33,74 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 
         return $result;
 	}
+
+	public function entreesSorties($produit_id, $type = 0)
+	{
+		$entrees = $this->entrees($produit_id);
+
+		$sorties = $this->sorties($produit_id);
+
+		if ($type == 1) {
+			return $entrees;
+		}
+
+		if ($type == 2) {
+			return $sorties;
+		}
+
+		$data =  array_merge( $entrees, $sorties );
+
+		$id = array_column($data, 'date');
+
+		array_multisort($id, SORT_ASC, $data);
+
+		return $data;
+	}
+
+	public function entrees($produit_id)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type
+					from approvisionnement ap
+					inner join produit p on (ap.produit = p.id)
+					where ap.id is not null ";
+
+		$query .= "	and p.id = " . $produit_id ;
+
+
+		$query .= "	order by ap.date desc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
+
+	public function sorties($produit_id)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select pa.id, date_format(c.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type
+					from pannier pa
+					inner join produit p on (pa.produit = p.id)
+					inner join commande c on (pa.commande = c.id)
+					where pa.id is not null ";
+
+		$query .= "	and p.id = " . $produit_id ;
+
+
+		$query .= "	order by c.date desc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
 }

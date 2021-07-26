@@ -59,3 +59,10 @@ produit_pdf:
     options:
         expose: true
     methods: [GET]
+
+produit_entrees_sorties:
+    path:     /produit/approvisionnement/entrees_sorties
+    defaults: { _controller: ProduitBundle:Approvisionnement:entreesSorties }
+    options:
+        expose: true
+    methods: [POST]

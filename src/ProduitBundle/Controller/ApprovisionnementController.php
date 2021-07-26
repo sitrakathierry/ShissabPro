@@ -150,4 +150,19 @@ class ApprovisionnementController extends Controller
         ));
         
     }
+
+    public function entreesSortiesAction(Request $request)
+    {
+        $produit_id = $request->request->get('produit_id');
+        $type = $request->request->get('type');
+
+
+        $approvisionnements = $this->getDoctrine()
+                ->getRepository('AppBundle:Approvisionnement')
+                ->entreesSorties($produit_id, $type);
+
+        return $this->render('ProduitBundle:Approvisionnement:entrees-sorties.html.twig',array(
+            'approvisionnements' => $approvisionnements,
+        ));
+    }
 }

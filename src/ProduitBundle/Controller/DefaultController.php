@@ -144,12 +144,6 @@ class DefaultController extends Controller
                 ->getRepository('AppBundle:Produit')
                 ->find($id);
 
-        $approvisionnements = $this->getDoctrine()
-                ->getRepository('AppBundle:Approvisionnement')
-                ->findBy(array(
-                    'produit' => $produit
-                ));
-
         $user = $this->getUser();
         $userAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:UserAgence')
@@ -176,7 +170,6 @@ class DefaultController extends Controller
 
         return $this->render('ProduitBundle:Default:show.html.twig',array(
             'produit' => $produit,
-            'approvisionnements' => $approvisionnements,
             'print' => $print
         ));
     }
@@ -220,4 +213,6 @@ class DefaultController extends Controller
         return $html2pdf->generatePdf($template, "produit" . $produit->getId());
 
     }
+
+
 }
