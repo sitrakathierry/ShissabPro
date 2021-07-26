@@ -45,6 +45,7 @@ $(document).on('click', '#btn-save', function(event) {
 		data: data,
 		success: function(res) {
 			show_info('Succès', 'Produit enregistré');
+			location.reload();
 		}
 	})
 });
