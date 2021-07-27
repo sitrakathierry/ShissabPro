@@ -35,7 +35,7 @@ function instance_graph(series) {
       description: ''
     },
     title: {
-      text: 'STATISTIQUE DES ACHATS ET VENTES'
+      text: $('#nom').val() + ' #' + $('#code').val()
     },
     // subtitle: {
     //   text: 'Sources: <a href="https://thebulletin.org/2006/july/global-nuclear-stockpiles-1945-2006">' +

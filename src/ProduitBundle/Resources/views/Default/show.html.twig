@@ -6,6 +6,7 @@
     <style type="text/css">
         tr.appro-1{
             background: #9dc7f1;
+            color: #000000;
         }
 
         tr.appro-2{
@@ -16,10 +17,11 @@
  {% endblock  %}
 {% block scripts %}
 {{ parent() }}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<script src="{{ asset('js/plugins/highcharts/highcharts.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/exporting.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/export-data.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/accessibility.js') }}"></script>
 
 <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
 <script src="{{ asset('bundles/produit/js/show.js') }}"></script>
@@ -35,7 +37,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5 >
-                            {{ produit.nom }} - <span class="badge-warning">{{ produit.codeProduit }}</span>
+                            {{ produit.nom }} <span class="badge-warning">#{{ produit.codeProduit }}</span>
                         </h5>
                     </div>
                     <div class="ibox-content">
