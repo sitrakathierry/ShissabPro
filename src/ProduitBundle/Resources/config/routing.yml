@@ -66,3 +66,10 @@ produit_entrees_sorties:
     options:
         expose: true
     methods: [POST]
+
+produit_graph:
+    path:     /produit/approvisionnement/graph
+    defaults: { _controller: ProduitBundle:Approvisionnement:graph }
+    options:
+        expose: true
+    methods: [POST]

@@ -5,19 +5,26 @@
     <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
     <style type="text/css">
         tr.appro-1{
-            background: #00800026;
+            background: #9dc7f1;
         }
 
         tr.appro-2{
-            background: #fd959780;
+            background: #727276;
+            color: #fff;
         }
     </style>
  {% endblock  %}
 {% block scripts %}
 {{ parent() }}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
 <script src="{{ asset('bundles/produit/js/show.js') }}"></script>
 <script src="{{ asset('bundles/produit/js/entrees-sorties.js') }}"></script>
+<script src="{{ asset('bundles/produit/js/graph.js') }}"></script>
 {% endblock %}
 
 {% block contenu %}
@@ -41,7 +48,10 @@
                                         <a data-toggle="tab" href="#tab-1">Details</a>
                                       </li>
                                       <li class="">
-                                        <a data-toggle="tab" href="#tab-2">HISTORIQUE D'APPROVISIONNEMENT</a>
+                                        <a data-toggle="tab" href="#tab-2">APPROVISIONNEMENT</a>
+                                      </li>
+                                      <li class="">
+                                        <a data-toggle="tab" href="#tab-3">STATISTIQUE</a>
                                       </li>
                                     </ul>
                                 </div>
@@ -205,6 +215,50 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div id="entres-sorties"></div>
+                                                </div> 
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-3" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Année</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control m-b agence" id="annee">
+                                                                {% set current = "now" | date('Y') %}
+
+                                                                {% for i in range((current - 3),(current)) %}
+                                                                    <option 
+                                                                        value="{{i}}"
+                                                                        {% if i == current %}
+                                                                            selected=""
+                                                                        {% endif %} 
+                                                                    >{{i}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <button class="btn btn-primary" id="btn_search_graph" style="width:100%">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <figure class="highcharts-figure">
+                                                      <div id="container"></div>
+                                                    </figure>
                                                 </div> 
                                             </div>
                                         </div>

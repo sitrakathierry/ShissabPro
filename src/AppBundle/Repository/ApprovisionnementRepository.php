@@ -34,11 +34,11 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
         return $result;
 	}
 
-	public function entreesSorties($produit_id, $type = 0)
+	public function entreesSorties($produit_id, $type = null, $annee = null)
 	{
-		$entrees = $this->entrees($produit_id);
+		$entrees = $this->entrees($produit_id, $annee);
 
-		$sorties = $this->sorties($produit_id);
+		$sorties = $this->sorties($produit_id, $annee);
 
 		if ($type == 1) {
 			return $entrees;
@@ -57,17 +57,20 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 		return $data;
 	}
 
-	public function entrees($produit_id)
+	public function entrees($produit_id, $annee)
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type
+		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois
 					from approvisionnement ap
 					inner join produit p on (ap.produit = p.id)
 					where ap.id is not null ";
 
 		$query .= "	and p.id = " . $produit_id ;
 
+		if ($annee) {
+			$query .= "	and date_format(ap.date, '%Y') = " . $annee ;
+		}
 
 		$query .= "	order by ap.date desc";
 
@@ -80,11 +83,11 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
         return $result;
 	}
 
-	public function sorties($produit_id)
+	public function sorties($produit_id, $annee)
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select pa.id, date_format(c.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type
+		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois
 					from pannier pa
 					inner join produit p on (pa.produit = p.id)
 					inner join commande c on (pa.commande = c.id)
@@ -92,8 +95,11 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 
 		$query .= "	and p.id = " . $produit_id ;
 
+		if ($annee) {
+			$query .= "	and date_format(pa.date, '%Y') = " . $annee ;
+		}
 
-		$query .= "	order by c.date desc";
+		$query .= "	order by pa.date desc";
 
         $statement = $em->getConnection()->prepare($query);
 
