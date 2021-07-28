@@ -73,3 +73,10 @@ produit_graph:
     options:
         expose: true
     methods: [POST]
+
+produit_notification_list:
+    path:     /produit/notification/list
+    defaults: { _controller: ProduitBundle:Notification:list }
+    options:
+        expose: true
+    methods: [POST]
