@@ -32,6 +32,8 @@ class DefaultController extends Controller
     	$prix_vente = $request->request->get('prix_vente');
     	$stock = $request->request->get('stock');
         $produit_image = $request->request->get('produit_image');
+        $unite = $request->request->get('unite');
+        $stock_alerte = $request->request->get('stock_alerte');
     	$dateCreation = new \DateTime('now');
     	$user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -61,6 +63,8 @@ class DefaultController extends Controller
     	$produit->setPrixVente($prix_vente);
     	$produit->setAgence($agence);
         $produit->setImage($produit_image);
+        $produit->setUnite($unite);
+        $produit->setStockAlerte($stock_alerte);
 
     	$em = $this->getDoctrine()->getManager();
         $em->persist($produit);
@@ -90,7 +94,7 @@ class DefaultController extends Controller
         	$approvisionnement->setQte($stock);
         	$approvisionnement->setPrixAchat($prix_achat);
         	$approvisionnement->setTotal( ( $stock * $prix_achat ) );
-        	$approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') . ' ('. $stock .')' );
+        	$approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') . ' ('. $stock . ' ' . $unite .')' );
         	$approvisionnement->setProduit($produit);
             $approvisionnement->setRavitaillement($ravitaillement);
 

@@ -42,6 +42,8 @@ $(document).on('click', '#btn-save', function(event) {
 		prix_achat : $('#prix_achat').val(),
 		prix_vente : $('#prix_vente').val(),
 		stock : $('#stock').val(),
+		unite : $('#unite').val(),
+		stock_alerte : $('#stock_alerte').val(),
 		produit_image : $('#produit_image').attr('src'),
 	};
 
