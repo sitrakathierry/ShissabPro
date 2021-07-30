@@ -199,11 +199,9 @@ class DefaultController extends Controller
                     ));
 
         $modelePdf = null;
-        foreach ($pdfAgence as $key => $value) {
-            if($value->getProduit()){
-                $modelePdf = $value->getProduit();
-            }
-        }       
+        if ($pdfAgence && $pdfAgence->getProduit()) {
+           $modelePdf = $pdfAgence->getProduit();
+        }      
 
         $template = $this->renderView('ProduitBundle:Default:pdf.html.twig', array(
             'produit' => $produit,

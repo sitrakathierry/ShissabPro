@@ -115,6 +115,7 @@ class DefaultController extends Controller
 
         $f_designation = $request->request->get('f_designation');
         $f_prix = $request->request->get('f_prix');
+        $f_qte = $request->request->get('f_qte');
         $f_montant = $request->request->get('f_montant');
 
         if (!empty($f_designation)) {
@@ -122,10 +123,12 @@ class DefaultController extends Controller
                 $detail = new FactureDetails();
                 $designation = $f_designation[$key];
                 $prix = $f_prix[$key];
+                $qte = $f_qte[$key];
                 $montant = $f_montant[$key];
 
                 $detail->setDesignation($designation);
                 $detail->setPrix($prix);
+                $detail->setQte($qte);
                 $detail->setMontant($montant);
                 $detail->setFacture($facture);
 
@@ -183,7 +186,7 @@ class DefaultController extends Controller
 
         $pdfAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:PdfAgence')
-                    ->findOneBy(array(
+                    ->findBy(array(
                         'agence' => $agence
                     ));
                     
@@ -228,16 +231,14 @@ class DefaultController extends Controller
 
         $pdfAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:PdfAgence')
-                    ->findBy(array(
+                    ->findOneBy(array(
                         'agence' => $agence
                     ));       
 
         $modelePdf = null;
-        foreach ($pdfAgence as $key => $value) {
-            if($value->getFacture()){
-                $modelePdf = $value->getFacture();
-            }
-        }  
+        if ($pdfAgence && $pdfAgence->getFacture()) {
+           $modelePdf = $pdfAgence->getFacture();
+        }
 
         $template = $this->renderView('FactureBundle:Default:pdf.html.twig', array(
             'facture' => $facture,

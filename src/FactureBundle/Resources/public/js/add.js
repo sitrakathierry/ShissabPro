@@ -21,21 +21,28 @@ $(document).ready(function(){
         event.preventDefault();
         var id = $('#id-row').val();
         var new_id = parseInt(id) + 1;
-        var a = '<td><div class="form-group"><div class="col-sm-10"><input type="text" class="form-control f_designation" name="f_designation[]"></div></div></td>';
-        var b = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_prix" name="f_prix[]"></div></div></td>';
-        var c = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_montant" name="f_montant[]"></div></div></td>';
-        var d = '<td></td>';
-        var markup = '<tr data-id="'+ new_id +'">' + a + b + c + d + '</tr>';
+        var a = '<td><div class="form-group"><div class="col-sm-10"><input type="text" class="form-control" name="f_designation[]" required=""></div></div></td>';
+        var b = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_qte" name="f_qte[]"></div></div></td>';
+        var c = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_prix" name="f_prix[]"></div></div></td>';
+        var d = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_montant" name="f_montant[]"></div></div></td>';
+        var e = '<td></td>';
+        var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + '</tr>';
         $("#table-fact-add tbody").append(markup);
         $('#id-row').val(new_id);
+
+        $('#table-fact-add tbody tr:last').find('.f_prix').val()
+        
     });
 
     $(document).on('click', '.btn-remove-row', function(event) {
         event.preventDefault();
         var id     = parseInt($('#id-row').val());
+
+
         var new_id = id - 1;
         if (new_id >= 0) {
             $('#id-row').val(new_id);
+            // $('tr.row-' + id).remove();
             $('#table-fact-add tbody tr:last').remove();
         } else {
             show_info("Attention", 'Le tableau devrait contenir au moins une ligne','error');
@@ -47,11 +54,38 @@ $(document).ready(function(){
 
     $(document).on('input','.f_prix',function (event) {
 
-        var value = event.target.value;
+        var prix = Number( event.target.value );
+        var qte = Number( $(this).closest('tr').find('.f_qte').val() );
+
+        var total = prix;
+
+        if (qte) {
+            total = qte * prix
+        }
 
         var montant_selector = $(this).closest('tr').find('.f_montant');
 
-        montant_selector.val(value);
+        montant_selector.val(total);
+
+        calculMontant()
+
+
+    })
+
+    $(document).on('input','.f_qte',function (event) {
+
+        var qte = Number( event.target.value );
+        var prix = Number( $(this).closest('tr').find('.f_prix').val() );
+
+        var total = prix;
+
+        if (qte) {
+            total = qte * prix
+        }
+
+        var montant_selector = $(this).closest('tr').find('.f_montant');
+
+        montant_selector.val(total);
 
         calculMontant()
 
@@ -67,7 +101,7 @@ $(document).ready(function(){
         montant = 0;
 
         $('table#table-fact-add > tbody  > tr').each(function(index, tr) { 
-           var montant_selector = $(this).find(".f_prix");
+           var montant_selector = $(this).find(".f_montant");
 
            var f_montant = montant_selector.val();
 

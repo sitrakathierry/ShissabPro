@@ -157,7 +157,7 @@ class DefaultController extends Controller
 
         $pdfAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:PdfAgence')
-                    ->findBy(array(
+                    ->findOneBy(array(
                         'agence' => $agence
                     ));
 
@@ -169,10 +169,33 @@ class DefaultController extends Controller
 
     public function saveAttributionAction(Request $request)
     {
-        //$id = $request->request->get('id');
-        //$facture = $request->request->get('facture');
-        //$produit = $request->request->get('produit');
-        $datas = $request->request->get('datas');
+        $id = $request->request->get('id');
+        $facture = $request->request->get('facture');
+        $produit = $request->request->get('produit');
+
+        if ($id) {
+            $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->find($id);
+        } else {
+            $pdfAgence = new PdfAgence();
+        }
+
+        if ($facture) {
+            $modele = $this->getDoctrine()
+                            ->getRepository('AppBundle:ModelePdf')
+                            ->find($facture);
+
+            $pdfAgence->setFacture($modele);
+        }
+
+        if ($produit) {
+            $modele = $this->getDoctrine()
+                            ->getRepository('AppBundle:ModelePdf')
+                            ->find($produit);
+
+            $pdfAgence->setProduit($modele);
+        }
 
         $user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -182,32 +205,12 @@ class DefaultController extends Controller
                     ));
         $agence = $userAgence->getAgence();
 
-        foreach ($datas as $key => $data) {  
-            $id = $data['id'];
-            if ($id) {
-                $pdfAgence = $this->getDoctrine()
-                        ->getRepository('AppBundle:PdfAgence')
-                        ->find($id);
-            } else {
-                $pdfAgence = new PdfAgence();
-            }
-            $modele = $this->getDoctrine()
-                            ->getRepository('AppBundle:ModelePdf')
-                            ->find($data['value']);
-
-            //var_dump($modele);die;
-
-            if($data['type'] == 0)
-                $pdfAgence->setFacture($modele);
-            else
-                $pdfAgence->setProduit($modele);
-            $pdfAgence->setAgence($agence);
+        $pdfAgence->setAgence($agence);
 
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($pdfAgence);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($pdfAgence);
+        $em->flush();
 
         return new JsonResponse(array(
             'id' => $pdfAgence->getId()
