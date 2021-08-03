@@ -25,7 +25,7 @@
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>
-            APPROVISIONNEMENT DES PRODUITS
+            APPROVISIONNEMENT DU PRODUIT {{ produit.nom }} - <span class="badge-warning">{{ produit.codeProduit }}</span>
           </h5>
         </div>
         <div class="ibox-content">
@@ -49,8 +49,8 @@
                       <div class="col-sm-10">
                       	<select class="form-control select2 produit" name="produit[]">
                       		<option></option>
-                      		{% for produit in produits %}
-                      			<option value="{{ produit.id }}"> {{ produit.nom }} </option>
+                      		{% for prod in produits %}
+                      			<option value="{{ produit.id }}" {{ prod.id == produit.id ? 'selected' : '' }}> {{ produit.nom }} </option>
                       		{% endfor %}
                       	</select>
                       </div>
@@ -59,21 +59,21 @@
                   <td>
                     <div class="form-group">
                       <div class="col-sm-10">
-                        <input type="number" class="form-control qte" name="qte[]" required="">
+                        <input type="number" class="form-control qte" name="qte[]" value="{{appro.qte}}" required="">
                       </div>
                     </div>
                   </td>
                   <td class="td-montant">
                     <div class="form-group">
                       <div class="col-sm-10">
-                        <input type="number" class="form-control prix" name="prix[]" required="">
+                        <input type="number" class="form-control prix" name="prix[]" value="{{appro.prixAchat}}" required="">
                       </div>
                     </div>
                   </td>
                   <td class="td-montant">
                     <div class="form-group">
                       <div class="col-sm-10">
-                        <input type="number" class="form-control total" name="total[]" readonly="">
+                        <input type="number" class="form-control total" name="total[]" value="{{appro.total}}" readonly="">
                       </div>
                     </div>
                   </td>
@@ -88,15 +88,15 @@
                   <th>
                     <div class="form-group">
                       <div class="col-sm-10">
-                        <input type="number" class="form-control" name="montant_total" id="montant_total" readonly="" value="0">
+                        <input type="number" class="form-control" name="montant_total" id="montant_total" readonly="" value="{{appro.total}}">
                       </div>
                     </div>
                     
                   </th>
-                  <th>
+                  {# <th>
                     <span class="btn-remove-row" data-id="0"><i class="fa fa-trash"></i></span>&nbsp;
                     <span class="btn-add-row" data-id="0"><i class="fa fa-plus"></i></span>
-                  </th>
+                  </th> #}
                 </tr>
               </tfoot>
             </table>
@@ -116,18 +116,14 @@
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
-              <div class="col-sm-4 col-sm-offset-2">
-                <button class="btn btn-white" type="submit">
-                <i class="fa fa-times"></i>
-                Annuler
-                </button>
+              <div class="col-sm-4">
                 <button class="btn btn-primary" id="btn-save">
                 <i class="fa fa-save"></i>
-                Enregistrer
+                Enregistrer la modification
                 </button>
               </div>
             </div>
-            <input type="hidden" name="" id="id-appro" value="0">
+            <input type="hidden" name="" id="id-appro" value="{{appro.id}}">
             <input type="hidden" name="" id="id-row" value="0">
             <input type="hidden" name="somme" id="id-somme" value="0">
           </form>
@@ -135,19 +131,5 @@
       </div>
     </div>
   </div>
-{#   {% else %}
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <h1 style="text-align: center;"> 
-                        <i class="fa fa-lock"></i>
-                        ACTION NON PERMIS
-                    </h1>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endif %} #}
 </div>
 {% endblock %}

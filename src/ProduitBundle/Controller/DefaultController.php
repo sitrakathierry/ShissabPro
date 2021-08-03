@@ -129,10 +129,15 @@ class DefaultController extends Controller
     public function listAction(Request $request)
     {
         $agence = $request->request->get('agence');
+        $recherche_par = $request->request->get('recherche_par');
+        $a_rechercher = $request->request->get('a_rechercher');
 
         $produits  = $this->getDoctrine()
                         ->getRepository('AppBundle:Produit')
-                        ->getList($agence);
+                        ->getList($agence,
+                            $recherche_par,
+                            $a_rechercher
+                        );
 
         return new JsonResponse($produits);
     }

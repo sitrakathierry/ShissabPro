@@ -53,9 +53,16 @@ produit_approvisionnement_list:
         expose: true
     methods: [POST]
     
-produit_pdf:
+produit_pdf: 
     path:     /produit/pdf/{id}
     defaults: { _controller: ProduitBundle:Default:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+produit_approvisionnement_detail:
+    path:     /produit/approvisionnement/detail/{approId}
+    defaults: { _controller: ProduitBundle:Approvisionnement:Detail }
     options:
         expose: true
     methods: [GET]

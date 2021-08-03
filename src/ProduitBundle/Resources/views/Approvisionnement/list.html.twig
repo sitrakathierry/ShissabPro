@@ -14,7 +14,7 @@
 			{% if ravitaillement.approvisionnements %}
 				{% set i = 1 %}
 				{% for  approvisionnement in ravitaillement.approvisionnements %}
-					<tr>
+					<tr data-appro-id="{{ approvisionnement.id }}" data-ravitaillement-id="{{ravitaillement.id}}">
 						{% if i == 1 %}
 							<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">{{ ravitaillement.date }}</td>
 						{% endif %}
@@ -24,7 +24,7 @@
 						<td>{{ approvisionnement.total }}</td>
 						{% if i == 1 %}
 							<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">
-								<button class="btn btn-primary">
+								<button class="btn btn-primary cl_show_appro">
 									AFFICHER
 								</button>
 							</td>

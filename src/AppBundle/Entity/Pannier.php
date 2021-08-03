@@ -22,23 +22,23 @@ class Pannier
     private $id;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="pu", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="pu", type="float", precision=10, scale=0, nullable=true)
      */
     private $pu;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="qte", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=true)
      */
     private $qte;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
      */
     private $total;
 

@@ -66,14 +66,21 @@ class ApprovisionnementController extends Controller
         $qteList = $request->request->get('qte');
         $prixList = $request->request->get('prix');
         $totalList = $request->request->get('total');
+        $approId = $request->request->get('appro_id');
 
         if (!empty($produitList)) {
         	foreach ($produitList as $key => $value) {
-        		$approvisionnement = new Approvisionnement();
+                if($approId){
+                    $approvisionnement = $this->getDoctrine()
+                        ->getRepository('AppBundle:Approvisionnement')
+                        ->find($approId);
+                }else{
+                    $approvisionnement = new Approvisionnement();
+                }
 
-        		$produit = $this->getDoctrine()
-		    		->getRepository('AppBundle:Produit')
-		            ->find( $produitList[$key] );
+                $produit = $this->getDoctrine()
+                        ->getRepository('AppBundle:Produit')
+                        ->find( $produitList[$key] );
 
         		$qte = $qteList[$key];
         		$prix = $prixList[$key];
@@ -87,7 +94,9 @@ class ApprovisionnementController extends Controller
         		$approvisionnement->setRavitaillement($ravitaillement);
         		$approvisionnement->setDescription(' Approvisionnement du produit ' . $produit->getNom() . ' le ' . $date->format('d/m/Y') . ' ('. $qte .')' );
 
-        		$em->persist($approvisionnement);
+                if($approId){
+        		  $em->persist($approvisionnement);
+                }
         		$em->flush();
 
         		$produit->setStock( $produit->getStock() + $qte );
@@ -149,5 +158,32 @@ class ApprovisionnementController extends Controller
             'ravitaillements' => $data
         ));
         
+    }
+
+    public function DetailAction($approId)
+    {
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $produits = $this->getDoctrine()
+                ->getRepository('AppBundle:Produit')
+                ->findBy(array(
+                    'agence' => $agence
+                ));
+        $appro = $this->getDoctrine()
+                    ->getRepository('AppBundle:Approvisionnement')
+                    ->find($approId);
+        $produit = $appro->getProduit();
+
+        return $this->render('ProduitBundle:Approvisionnement:detail.html.twig', array(
+            'produits' => $produits,
+            'produit' => $produit,
+            'appro' => $appro
+        ));
     }
 }
