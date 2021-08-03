@@ -3,11 +3,30 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+        tr.appro-1{
+            background: #9dc7f1;
+            color: #000000;
+        }
+
+        tr.appro-2{
+            background: #727276;
+            color: #fff;
+        }
+    </style>
  {% endblock  %}
 {% block scripts %}
 {{ parent() }}
+
+<script src="{{ asset('js/plugins/highcharts/highcharts.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/exporting.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/export-data.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/accessibility.js') }}"></script>
+
 <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
 <script src="{{ asset('bundles/produit/js/show.js') }}"></script>
+<script src="{{ asset('bundles/produit/js/entrees-sorties.js') }}"></script>
+<script src="{{ asset('bundles/produit/js/graph.js') }}"></script>
 {% endblock %}
 
 {% block contenu %}
@@ -18,7 +37,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5 >
-                            {{ produit.nom }} - <span class="badge-warning">{{ produit.codeProduit }}</span>
+                            {{ produit.nom }} <span class="badge-warning">#{{ produit.codeProduit }}</span>
                         </h5>
                     </div>
                     <div class="ibox-content">
@@ -31,7 +50,10 @@
                                         <a data-toggle="tab" href="#tab-1">Details</a>
                                       </li>
                                       <li class="">
-                                        <a data-toggle="tab" href="#tab-2">HISTORIQUE D'APPROVISIONNEMENT</a>
+                                        <a data-toggle="tab" href="#tab-2">APPROVISIONNEMENT</a>
+                                      </li>
+                                      <li class="">
+                                        <a data-toggle="tab" href="#tab-3">STATISTIQUE</a>
                                       </li>
                                     </ul>
                                 </div>
@@ -65,6 +87,17 @@
                                                         </div>
                                                     </div>
                                             	</div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label unite">Unité</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="unite" required="" id="unite" value="{{ produit.unite }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             	<div class="row">
                                             		<div class="col-lg-6">
@@ -111,6 +144,17 @@
                                                         </div>
                                                     </div>
                                             	</div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label stock_alerte">Stock d'alerte</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number" class="form-control" name="stock_alerte" required="" id="stock_alerte" value="{{ produit.stockAlerte }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <div class="row">
                                                     <div class="col-lg-6">
@@ -170,31 +214,75 @@
                                     <div id="tab-2" class="tab-pane">
                                         <div class="panel-body">
                                             <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Type</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control m-b agence" id="type">
+                                                                <option>Tous</option>
+                                                                <option value="1">Achat</option>
+                                                                <option value="2">Vente</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <button class="btn btn-primary" id="btn_search" style="width:100%">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-lg-12">
-                                                    
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Date</th>
-                                                                <th>Qte</th>
-                                                                <th>Prix d'actat</th>
-                                                                <th>Total</th>
-                                                                <th>Description</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {% for appro in approvisionnements %}
-                                                                <tr>
-                                                                    <td>{{ appro.date | date('d/m/Y') }}</td>
-                                                                    <td>{{ appro.qte }}</td>
-                                                                    <td>{{ appro.prixAchat }}</td>
-                                                                    <td>{{ appro.total }}</td>
-                                                                    <td>{{ appro.description | raw }}</td>
-                                                                </tr>
-                                                            {% endfor %}
-                                                        </tbody>
-                                                    </table>
+                                                    <div id="entres-sorties"></div>
+                                                </div> 
+                                            </div>
 
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-3" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Année</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control m-b agence" id="annee">
+                                                                {% set current = "now" | date('Y') %}
+
+                                                                {% for i in range((current - 3),(current)) %}
+                                                                    <option 
+                                                                        value="{{i}}"
+                                                                        {% if i == current %}
+                                                                            selected=""
+                                                                        {% endif %} 
+                                                                    >{{i}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <button class="btn btn-primary" id="btn_search_graph" style="width:100%">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <figure class="highcharts-figure">
+                                                      <div id="container"></div>
+                                                    </figure>
                                                 </div> 
                                             </div>
                                         </div>

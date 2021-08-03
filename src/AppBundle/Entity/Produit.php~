@@ -87,6 +87,20 @@ class Produit
      */
     private $agence;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="unite", type="text")
+     */
+    private $unite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="stock_alerte", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $stockAlerte = 0;
+
 
     /**
      * Get id
@@ -312,5 +326,29 @@ class Produit
     public function getCodeProduit()
     {
         return $this->codeProduit;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Produit
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

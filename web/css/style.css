@@ -3323,7 +3323,8 @@ video {
 /* Summernote text editor  */
 .note-editor {
   height: auto !important;
-  min-height: 300px;
+  /*min-height: 300px;*/
+  min-height: auto;
 }
 /* MODAL */
 .modal-content {
@@ -8283,4 +8284,8 @@ input[type="number"] {
 
 .ui-jqgrid tr.jqgrow {
     height: 35px !important;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    vertical-align: middle !important;
 }

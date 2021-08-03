@@ -1,0 +1,56 @@
+{% set count = produits | length %}
+<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+    <i class="fa fa-clock-o"></i>  <span class="label label-danger">{{ count }}</span>
+</a>
+<ul class="dropdown-menu dropdown-alerts">
+
+	{% set i = 1 %}
+
+	{% set break = 3 %}
+
+	{% for produit in produits %}
+
+		{% if i <= break %}
+		    <li>
+		        <a href="{{ path('produit_show',{ id : produit.id}) }}">
+		            <div>
+		                <i class="fa fa-warning fa-fw" style="color: #ed5565;"></i> 
+		                Le produit <span class="badge-warning">{{produit.nom}} #{{ produit.code_produit }}</span>
+		                {% if produit.stock == produit.stock_alerte%}
+		                	a atteint le stock d'alerte de {{ produit.stock_alerte }} {{ produit.unite }}
+		                {% else %}
+		                	est en dessous du stock d'alerte de {{ produit.stock_alerte }} {{ produit.unite }}
+		                {% endif %}
+		                {# <span class="pull-right text-muted small">{{produit.date_fin}}</span> #}
+		            </div>
+		        </a>
+		    </li>
+		    <li class="divider"></li>
+		
+		{% else %}
+			    
+
+		{% endif %}
+
+	    {% set i = i + 1 %}
+	    
+	{% endfor %}
+
+    <li>
+        <div class="text-center link-block">
+            <a href="">
+                <strong>Afficher Tous 
+
+                	{% if (count - break) > 0 %}
+	                	<span class="label label-danger">
+	                		+ {{ count - break }} 
+	                	</span> 
+                	{% endif %}
+
+                </strong>
+                <!-- <i class="fa fa-angle-right"></i> -->
+            </a>
+        </div>
+    </li>
+    
+</ul>

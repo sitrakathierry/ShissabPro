@@ -186,4 +186,80 @@ class ApprovisionnementController extends Controller
             'appro' => $appro
         ));
     }
+
+    public function entreesSortiesAction(Request $request)
+    {
+        $produit_id = $request->request->get('produit_id');
+        $type = $request->request->get('type');
+
+
+        $approvisionnements = $this->getDoctrine()
+                ->getRepository('AppBundle:Approvisionnement')
+                ->entreesSorties($produit_id, $type);
+
+        return $this->render('ProduitBundle:Approvisionnement:entrees-sorties.html.twig',array(
+            'approvisionnements' => $approvisionnements,
+        ));
+    }
+
+    public function graphAction(Request $request)
+    {
+        $produit_id = $request->request->get('produit_id');
+        $annee = $request->request->get('annee');
+
+        $approvisionnements = $this->getDoctrine()
+                ->getRepository('AppBundle:Approvisionnement')
+                ->entreesSorties(
+                    $produit_id,
+                    0,
+                    $annee
+                );
+
+        $dataAchat = array();
+        $dataVente = array();
+        $dataBenefice = array();
+        $result = array();
+
+        for ($i=0; $i < 12; $i++) { 
+            $dataAchat[$i] = 0;
+            $dataVente[$i] = 0;
+            $dataBenefice[$i] = 0;
+        }
+
+        foreach ($approvisionnements as $approvisionnement) {
+            $mois = intval( $approvisionnement['mois'] ) - 1;
+            $total = $approvisionnement['total'];
+            $type = $approvisionnement['type'];
+
+            if ($type == 1) {
+                $dataAchat[$mois] += $total;
+            } else {
+                $dataVente[$mois] += $total;
+            }
+        }
+
+        array_push($result, array(
+            'name' => 'ACHAT',
+            'data' => $dataAchat
+        ));
+
+        array_push($result, array(
+            'name' => 'VENTE',
+            'data' => $dataVente
+        ));
+
+        foreach ($dataAchat as $mois => $achat) {
+            $dataBenefice[$mois] = $dataVente[$mois] - $achat;
+        }
+
+        array_push($result, array(
+            'name' => 'MARGE',
+            'type' => 'spline',
+            'data' => $dataBenefice,
+            'color' => '#fd9597'
+        ));
+
+        return new JsonResponse( $result );
+        
+    }
 }

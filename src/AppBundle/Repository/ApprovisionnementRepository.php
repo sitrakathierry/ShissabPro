@@ -33,4 +33,80 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 
         return $result;
 	}
+
+	public function entreesSorties($produit_id, $type = null, $annee = null)
+	{
+		$entrees = $this->entrees($produit_id, $annee);
+
+		$sorties = $this->sorties($produit_id, $annee);
+
+		if ($type == 1) {
+			return $entrees;
+		}
+
+		if ($type == 2) {
+			return $sorties;
+		}
+
+		$data =  array_merge( $entrees, $sorties );
+
+		$id = array_column($data, 'date');
+
+		array_multisort($id, SORT_ASC, $data);
+
+		return $data;
+	}
+
+	public function entrees($produit_id, $annee)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois
+					from approvisionnement ap
+					inner join produit p on (ap.produit = p.id)
+					where ap.id is not null ";
+
+		$query .= "	and p.id = " . $produit_id ;
+
+		if ($annee) {
+			$query .= "	and date_format(ap.date, '%Y') = " . $annee ;
+		}
+
+		$query .= "	order by ap.date desc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
+
+	public function sorties($produit_id, $annee)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois
+					from pannier pa
+					inner join produit p on (pa.produit = p.id)
+					inner join commande c on (pa.commande = c.id)
+					where pa.id is not null ";
+
+		$query .= "	and p.id = " . $produit_id ;
+
+		if ($annee) {
+			$query .= "	and date_format(pa.date, '%Y') = " . $annee ;
+		}
+
+		$query .= "	order by pa.date desc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
 }

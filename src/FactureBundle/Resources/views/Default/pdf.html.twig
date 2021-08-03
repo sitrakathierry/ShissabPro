@@ -128,39 +128,46 @@
 
 	<table style="width: 100%; border: solid 1px #000;margin-top:25px">
 	    <tr>
-	        <td class="th" style="width: 33.33%; border: solid 1px #000000;">DESIGNATION</td>
-	        <td class="th" style="width: 33.33%; border: solid 1px #000000;">PRIX UNITAIRE</td>
-	        <td class="th" style="width: 33.33%; border: solid 1px #000000;">MONTANT TOTAL</td>
+	        <td class="th" style="width: 25%; border: solid 1px #000000;">DESIGNATION</td>
+	        <td class="th" style="width: 25%; border: solid 1px #000000;">QTE</td>
+	        <td class="th" style="width: 25%; border: solid 1px #000000;">PRIX</td>
+	        <td class="th" style="width: 25%; border: solid 1px #000000;">MONTANT TOTAL</td>
 	    </tr>
 
 		{% for detail in details %}
 	        <tr>
-		        <td class="" style="width: 33.33%; border: solid 1px #000000;">
+		        <td class="" style="width: 25%; border: solid 1px #000000;">
 		        	{{detail.designation}}
 		        </td>
-		        <td class="text-center" style="width: 33.33%; border: solid 1px #000000;">
+		        <td class="text-center" style="width: 25%; border: solid 1px #000000;">
+		        	{{detail.qte}}
+		        </td>
+		        <td class="text-center" style="width: 25%; border: solid 1px #000000;">
 		        	{{detail.prix}}
 		        </td>
-		        <td class="text-center" style="width: 33.33%; border: solid 1px #000000;">
+		        <td class="text-center" style="width: 25%; border: solid 1px #000000;">
 		        	{{detail.montant}}
 		        </td>
 	        </tr>
 		{% endfor %}
 
 	    <tr>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;text-align: left;">Montant</td>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;"></td>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;">{{facture.montant}}</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;text-align: left;">Montant</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.montant}}</td>
 	    </tr>
 	    <tr>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;text-align: left;">Remise(en %)</td>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;">{{facture.remisePourcentage}}</td>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;">{{facture.remiseValeur}}</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;text-align: left;">Remise(en %)</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.remisePourcentage}}</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.remiseValeur}}</td>
 	    </tr>
 	    <tr>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;text-align: left;">Total</td>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;"></td>
-	        <td class="tf" style="width: 33.33%; border: solid 1px #000000;">{{facture.total}}</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;text-align: left;">Total</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.total}}</td>
 	    </tr>
 
 	</table>

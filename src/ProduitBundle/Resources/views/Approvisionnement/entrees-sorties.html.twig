@@ -1,0 +1,31 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Qte</th>
+            <th>Prix</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appro in approvisionnements %}
+            <tr class="appro-{{appro.type}}">
+                <td>{{ appro.date }}</td>
+                <td>{{ appro.qte }}</td>
+                <td>{{ appro.prix }}</td>
+                <td>{{ appro.total }}</td>
+                <td>
+                    {% if appro.type == 1 %}
+                        Achat
+                    {% endif %}
+
+                    {% if appro.type == 2 %}
+                        Vente
+                    {% endif %}
+
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

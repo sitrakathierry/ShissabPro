@@ -13,7 +13,7 @@
 
 {% block contenu %}
 
-	{#<input type="hidden" id="id" value="{{ pdfAgence ? pdfAgence.id : '' }}">#}
+	<input type="hidden" id="id" value="{{ pdfAgence ? pdfAgence.id : '' }}">
 
     <div class="row">
         <div class="col-lg-12">
@@ -37,10 +37,22 @@
                     					<td>FACTURE</td>
                     					<td>
                     						<div class="col-sm-6">
-					                        	<select class="cl_model_attribuer form-control" id="facture">
+					                        	<select class="form-control" id="facture">
 					                        		<option></option>
 					                        		{% for modele in modeles %}
-                                                        {% set isFind = 0 %}
+                                                        <option
+                                                            value="{{ modele.id }}"
+                                                            {% if pdfAgence %}
+                                                                {% if pdfAgence.facture  %}
+                                                                    {% if pdfAgence.facture.id == modele.id%}
+                                                                        selected=""
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        >
+                                                            {{ modele.nom }}
+                                                        </option>
+                                                        {# {% set isFind = 0 %}
                                                         {% set entitySelected = 0 %}
                                                         {% for pdf in pdfAgence %}
                                                             {% if pdf.facture %}
@@ -58,7 +70,7 @@
                                                                 {% endif %} 
                                                         >
                                                             {{ modele.nom }}
-                                                        </option>
+                                                        </option> #}
 					                        		{% endfor %}
 					                        	</select>
 					                        </div>
@@ -68,10 +80,22 @@
                                         <td>PRODUIT</td>
                                         <td>
                                             <div class="col-sm-6">
-                                                <select class="cl_model_attribuer form-control" id="produit">
+                                                <select class="form-control" id="produit">
                                                     <option></option>
                                                     {% for modele in modeles %}
-                                                        {% set isFind = 0 %}
+                                                        <option
+                                                            value="{{ modele.id }}"
+                                                            {% if pdfAgence %}
+                                                                {% if pdfAgence.produit %}
+                                                                    {% if pdfAgence.produit.id == modele.id %}
+                                                                        selected=""
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        >
+                                                            {{ modele.nom }}
+                                                        </option>
+                                                        {# {% set isFind = 0 %}
                                                         {% set entitySelected = 0 %}
                                                         {% for pdf in pdfAgence %}
                                                             {% if pdf.produit %}
@@ -89,7 +113,7 @@
                                                                 {% endif %} 
                                                         >
                                                             {{ modele.nom }}
-                                                        </option>
+                                                        </option> #}
                                                     {% endfor %}
                                                 </select>
                                             </div>

@@ -87,6 +87,20 @@ class Produit
      */
     private $agence;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="unite", type="text")
+     */
+    private $unite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="stock_alerte", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $stockAlerte = 0;
+
 
     /**
      * Get id
@@ -336,5 +350,53 @@ class Produit
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set unite
+     *
+     * @param string $unite
+     *
+     * @return Produit
+     */
+    public function setUnite($unite)
+    {
+        $this->unite = $unite;
+    
+        return $this;
+    }
+
+    /**
+     * Get unite
+     *
+     * @return string
+     */
+    public function getUnite()
+    {
+        return $this->unite;
+    }
+
+    /**
+     * Set stockAlerte
+     *
+     * @param string $stockAlerte
+     *
+     * @return Produit
+     */
+    public function setStockAlerte($stockAlerte)
+    {
+        $this->stockAlerte = $stockAlerte;
+    
+        return $this;
+    }
+
+    /**
+     * Get stockAlerte
+     *
+     * @return string
+     */
+    public function getStockAlerte()
+    {
+        return $this->stockAlerte;
     }
 }

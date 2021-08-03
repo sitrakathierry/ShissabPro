@@ -15,7 +15,7 @@ class FactureDetails
     /**
      * @var string
      *
-     * @ORM\Column(name="designation", type="text", nullable=true)
+     * @ORM\Column(name="designation", type="string", length=45, nullable=true)
      */
     private $designation = '';
 

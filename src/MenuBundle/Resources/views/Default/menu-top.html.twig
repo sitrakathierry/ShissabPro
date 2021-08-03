@@ -21,14 +21,14 @@
             </li>
 
             {% set class = 'hidden' %}
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_AGENT') %}
                 {% set class = '' %}
             {% endif %}
 
-            <li class="dropdown {{ class }}" id="notif-bientot-expire">
+            <li class="dropdown {{ class }}" id="notif-produit">
             </li>
-            <li class="dropdown {{ class }}" id="notif-ordonnance">
-            </li>
+            {# <li class="dropdown {{ class }}" id="notif-ordonnance">
+            </li> #}
             <li>
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <a href="{{ path('fos_user_security_logout') }}">

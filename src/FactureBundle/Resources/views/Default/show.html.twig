@@ -70,7 +70,8 @@
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">DESIGNATION</th>
-                  <th scope="col">PRIX UNITAIRE</th>
+                  <th scope="col">QTE</th>
+                  <th scope="col">PRIX</th>
                   <th scope="col">MONTANT TOTAL</th>
                   <th scope="col"></th>
                 </tr>
@@ -98,6 +99,13 @@
 	                    </div>
 	                  </td>
 	                  <td>
+                      <div class="form-group">
+                        <div class="col-sm-10">
+                          <input type="number" class="form-control f_qte" name="f_qte[]" value="{{detail.qte}}" >
+                        </div>
+                      </div>
+                    </td>
+                    <td>
 	                    <div class="form-group">
 	                      <div class="col-sm-10">
 	                        <input type="number" class="form-control f_prix" name="f_prix[]" value="{{detail.prix}}" required="">
@@ -122,7 +130,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <th colspan="2">Montant</th>
+                  <th colspan="3">Montant</th>
                   <th>
                     <div class="form-group">
                       <div class="col-sm-10">
@@ -137,7 +145,7 @@
                   </th>
                 </tr>
                 <tr>
-                  <th>Remise (en %)</th>
+                  <th colspan="2">Remise (en %)</th>
                   <th>
                     <div class="form-group">
                       <div class="col-sm-10">
@@ -155,7 +163,7 @@
                   <th></th>
                 </tr>
                 <tr>
-                  <th colspan="2">Total</th>
+                  <th colspan="3">Total</th>
                   <th id="">
                     <div class="form-group">
                       <div class="col-sm-10">

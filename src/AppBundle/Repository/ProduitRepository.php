@@ -40,4 +40,27 @@ class ProduitRepository extends \Doctrine\ORM\EntityRepository
 
         return $result;
 	}
+
+	public function notifications($agence)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select *
+					from produit p 
+					where p.stock <= p.stock_alerte";
+
+		if ($agence) {
+			$query .= "	and p.agence = " . $agence ;
+		}
+
+		$query .= "	order by p.nom asc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
 }
