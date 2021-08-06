@@ -6,6 +6,7 @@
   {{ parent() }}
   <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
   <script src="{{ asset('bundles/facture/js/add.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/show.js') }}"></script>
 {% endblock %}
 {% block contenu %}
 <div class="wrapper wrapper-content">
@@ -15,6 +16,26 @@
         <div class="ibox-title">
           <h5>
             Facture N° <span class="badge-warning">{{facture.formattedNum}}</span>
+            {% if facture.type == 1 %}
+                {% if definitif %}
+                    <a href="{{ path('facture_show', { id : definitif.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
+                        <i class="fa fa-file"></i>
+                        Voir Fact. DEFINITIF
+                    </a>
+                {% else %}
+                    <button class="btn btn-xs btn-outline btn-primary" id="creer-definitif">
+                        <div class="fa fa-copy"></div>
+                        Créer Fact. DEFINITIF
+                    </button>
+                {% endif %}
+            {% else %}
+                {% if facture.proforma %}
+                     <a href="{{ path('facture_show', { id : facture.proforma.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
+                        <i class="fa fa-file"></i>
+                        Voir Fact. PROFORMA
+                    </a>
+                {% endif %}
+            {% endif %}
           </h5>
           {# <div class="ibox-tools">
 	            <a href="{{ path('facture_pdf', { id : facture.id }) }}" class="btn btn-primary btn-xs btn-print" target="_blank">
@@ -25,7 +46,7 @@
         <div class="ibox-content">
           <form method="POST" action="{{ path('facture_save') }}" class="form-horizontal">
 
-          	<input type="hidden" name="f_id" value="{{ facture.id }}">
+          	<input type="hidden" name="f_id" id="f_id" value="{{ facture.id }}">
 
             <div class="form-group">
               <label class="col-sm-2 control-label">FACTURE</label>

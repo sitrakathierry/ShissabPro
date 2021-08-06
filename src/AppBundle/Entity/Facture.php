@@ -113,10 +113,20 @@ class Facture
      */
     private $agence;
 
+    /**
+     * @var \AppBundle\Entity\Facture
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Facture")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="proforma", referencedColumnName="id")
+     * })
+     */
+    private $proforma;
+
     public function getFormattedNum()
     {
 
-        $this->formattedNum = "F-" . str_pad($this->num, 3, '0', STR_PAD_LEFT) . "/" . $this->dateCreation->format('y');
+        $this->formattedNum = (($this->type == 1) ? "PR-" : "DF-") . str_pad($this->num, 3, '0', STR_PAD_LEFT) . "/" . $this->dateCreation->format('y');
 
         return $this->formattedNum;
     }
@@ -418,5 +428,29 @@ class Facture
     public function getAgence()
     {
         return $this->agence;
+    }
+
+    /**
+     * Set proforma
+     *
+     * @param \AppBundle\Entity\Facture $proforma
+     *
+     * @return Facture
+     */
+    public function setProforma(\AppBundle\Entity\Facture $proforma = null)
+    {
+        $this->proforma = $proforma;
+    
+        return $this;
+    }
+
+    /**
+     * Get proforma
+     *
+     * @return \AppBundle\Entity\Facture
+     */
+    public function getProforma()
+    {
+        return $this->proforma;
     }
 }

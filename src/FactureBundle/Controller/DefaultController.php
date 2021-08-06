@@ -160,6 +160,12 @@ class DefaultController extends Controller
                         ->getRepository('AppBundle:Facture')
                         ->find($id);
 
+        $definitif = $this->getDoctrine()
+                        ->getRepository('AppBundle:Facture')
+                        ->findOneBy(array(
+                            'proforma' => $facture
+                        ));
+
         $clients = $this->getDoctrine()
                 ->getRepository('AppBundle:Client')
                 ->findAll();
@@ -205,6 +211,7 @@ class DefaultController extends Controller
             'details' => $details,
             'permissions' => $permissions,
             'print' => $print,
+            'definitif' => $definitif,
         ));
 
     }
@@ -296,6 +303,84 @@ class DefaultController extends Controller
             );
 
         return new JsonResponse($factures);
+    }
+
+    public function creerDefinitifAction($id)
+    {
+        $facture  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Facture')
+                        ->find($id);
+
+        $this->duplicateToDefinitif($facture);
+
+        return new JsonResponse(array(
+            'id' => $facture->getNum()
+        ));
+
+        
+    }
+
+    public function duplicateToDefinitif($facture)
+    {
+        $details = $this->getDoctrine()
+                    ->getRepository('AppBundle:FactureDetails')
+                    ->findBy(array(
+                        'facture' => $facture
+                    ));
+
+        $factureDefinitif = new Facture();
+        $num = $facture->getNum();
+        $f_type = 2;
+        $montant = $facture->getMontant();
+        $f_remise = $facture->getRemisePourcentage();
+        $remise = $facture->getRemiseValeur();
+        $total = $facture->getTotal();
+        $somme = $facture->getSomme();
+        $descr = $facture->getDescr();
+        $client = $facture->getClient();
+        $date = $facture->getDate();
+        $agence = $facture->getAgence();
+        $dateCreation = new \DateTime('now');
+
+        $factureDefinitif->setNum($num);
+        $factureDefinitif->setType($f_type);
+        $factureDefinitif->setMontant($montant);
+        $factureDefinitif->setRemisePourcentage($f_remise);
+        $factureDefinitif->setRemiseValeur($remise);
+        $factureDefinitif->setTotal($total);
+        $factureDefinitif->setSomme($somme);
+        $factureDefinitif->setDescr($descr);
+        $factureDefinitif->setClient($client);
+        $factureDefinitif->setDateCreation($dateCreation);
+        $factureDefinitif->setDate($date);
+        $factureDefinitif->setAgence($agence);
+        $factureDefinitif->setProforma($facture);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($factureDefinitif);
+        $em->flush();
+
+        foreach ($details as $detail) {
+            $detailDefinitif = new FactureDetails();
+
+            $designation = $detail->getDesignation();
+            $prix = $detail->getPrix();
+            $qte = $detail->getQte();
+            $montant = $detail->getMontant();
+
+            $detailDefinitif->setDesignation($designation);
+            $detailDefinitif->setPrix($prix);
+            $detailDefinitif->setQte($qte);
+            $detailDefinitif->setMontant($montant);
+            $detailDefinitif->setFacture($factureDefinitif);
+
+            $em->persist($detailDefinitif);
+            $em->flush();
+            
+        }
+
+        return $factureDefinitif->getId();
+
     }
 
 }

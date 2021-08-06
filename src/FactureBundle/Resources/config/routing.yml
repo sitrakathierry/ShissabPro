@@ -37,3 +37,10 @@ facture_list:
     options:
         expose: true
     methods: [POST]
+
+facture_creer_definitif:
+    path:     /facture/creer-definitif/{id}
+    defaults: { _controller: FactureBundle:Default:creerDefinitif }
+    options:
+        expose: true
+    methods: [GET]
