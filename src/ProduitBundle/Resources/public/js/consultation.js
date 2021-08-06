@@ -86,9 +86,11 @@ $(document).ready(function(){
 
     function load_list() {
     	
-        var url = Routing.generate('produit_list')
+        var url = Routing.generate('produit_list');
         var data = {
-        	agence : $('#agence').val()
+        	agence : $('#agence').val(),
+            recherche_par: $('#recherche_par').val(),
+            a_rechercher: $('#a_rechercher').val()
         };
 
         $.ajax({
@@ -128,6 +130,6 @@ $(document).ready(function(){
         event.preventDefault();
 
         load_list();
-    })
+    });
 
 });

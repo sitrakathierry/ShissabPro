@@ -64,16 +64,16 @@ class Produit
     private $description;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="prix_vente", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="prix_vente", type="float", precision=10, scale=0, nullable=true)
      */
     private $prixVente;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="stock", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="stock", type="float", precision=10, scale=0, nullable=true)
      */
     private $stock;
 

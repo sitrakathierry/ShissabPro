@@ -104,6 +104,9 @@ $(document).ready(function(){
     	event.preventDefault();
 
     	var data = $('#form-appro').serializeArray();
+        var id = $('#id-appro').val();
+        if(id)
+            data.push({name: "appro_id", value: id});
 
     	var url = Routing.generate('produit_approvisionnement_save');
 

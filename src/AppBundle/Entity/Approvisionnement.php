@@ -29,23 +29,23 @@ class Approvisionnement
     private $date;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="qte", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=true)
      */
     private $qte;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="prix_achat", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="prix_achat", type="float", precision=10, scale=0, nullable=true)
      */
     private $prixAchat;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
      */
     private $total;
 

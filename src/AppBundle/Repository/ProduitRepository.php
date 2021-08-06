@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class ProduitRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getList($agence)
+	public function getList($agence, $recherche_par, $a_rechercher)
 	{
 		$em = $this->getEntityManager();
 		
@@ -20,6 +20,14 @@ class ProduitRepository extends \Doctrine\ORM\EntityRepository
 
 		if ($agence) {
 			$query .= "	and p.agence = " . $agence ;
+		}
+
+		if ($recherche_par == 0) {
+			$query .= "	and p.code_produit like '%" . $a_rechercher . "%'";
+		}
+
+		if ($recherche_par == 1) {
+			$query .= "	and p.nom like '%" . $a_rechercher . "%'";
 		}
 
 		$query .= "	order by p.nom asc";

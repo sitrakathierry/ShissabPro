@@ -53,13 +53,21 @@ produit_approvisionnement_list:
         expose: true
     methods: [POST]
     
-produit_pdf:
+produit_pdf: 
     path:     /produit/pdf/{id}
     defaults: { _controller: ProduitBundle:Default:pdf }
     options:
         expose: true
     methods: [GET]
 
+<<<<<<< HEAD
+produit_approvisionnement_detail:
+    path:     /produit/approvisionnement/detail/{approId}
+    defaults: { _controller: ProduitBundle:Approvisionnement:Detail }
+    options:
+        expose: true
+    methods: [GET]
+=======
 produit_entrees_sorties:
     path:     /produit/approvisionnement/entrees_sorties
     defaults: { _controller: ProduitBundle:Approvisionnement:entreesSorties }
@@ -80,3 +88,4 @@ produit_notification_list:
     options:
         expose: true
     methods: [POST]
+>>>>>>> 3f04e8612f2652e77efebd43cc704d80d6f56014

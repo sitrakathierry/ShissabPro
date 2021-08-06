@@ -29,9 +29,9 @@ class Commande
     private $date;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
      */
     private $total;
 
