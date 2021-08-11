@@ -31,6 +31,7 @@ class AppKernel extends Kernel
             new PdfBundle\PdfBundle(),
             new ProduitBundle\ProduitBundle(),
             new CaisseBundle\CaisseBundle(),
+            new ServiceBundle\ServiceBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

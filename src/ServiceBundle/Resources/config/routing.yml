@@ -1,0 +1,32 @@
+service_homepage:
+    path:     /service/index
+    defaults: { _controller: ServiceBundle:Default:index }
+
+service_add:
+    path:     /service/add
+    defaults: { _controller: ServiceBundle:Default:add }
+
+service_save:
+    path:     /service/save
+    defaults: { _controller: ServiceBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+service_consultation:
+    path:     /service/consultation
+    defaults: { _controller: ServiceBundle:Default:consultation }
+
+service_list:
+    path:     /service/list
+    defaults: { _controller: ServiceBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
+
+service_show:
+    path:     /service/show/{id}
+    defaults: { _controller: ServiceBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]

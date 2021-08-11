@@ -1,3 +1,7 @@
+service:
+    resource: "@ServiceBundle/Resources/config/routing.yml"
+    prefix:   /
+
 caisse:
     resource: "@CaisseBundle/Resources/config/routing.yml"
     prefix:   /
