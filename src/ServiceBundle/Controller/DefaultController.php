@@ -95,5 +95,42 @@ class DefaultController extends Controller
 
         return new JsonResponse($services);
     }
+
+    public function showAction($id)
+    {
+
+        $service = $this->getDoctrine()
+                ->getRepository('AppBundle:Service')
+                ->find($id);
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $print = false;
+
+        // $pdfAgence = $this->getDoctrine()
+        //             ->getRepository('AppBundle:PdfAgence')
+        //             ->findBy(array(
+        //                 'agence' => $agence
+        //             ));
+                    
+        // if (count($pdfAgence) > 0) {
+        //     foreach ($pdfAgence as $key => $value) {
+        //         if($value->getProduit()){
+        //             $print = true;
+        //         }
+        //     }
+        // }
+
+        return $this->render('ServiceBundle:Default:show.html.twig',array(
+            'service' => $service,
+            'print' => $print
+        ));
+    }
     
 }
