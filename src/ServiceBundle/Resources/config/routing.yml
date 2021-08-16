@@ -30,3 +30,17 @@ service_show:
     options:
         expose: true
     methods: [GET]
+
+service_save_prix:
+    path:     /service/save-prix
+    defaults: { _controller: ServiceBundle:Default:savePrix }
+    options:
+        expose: true
+    methods: [POST]
+
+service_list_prix:
+    path:     /service/list-prix
+    defaults: { _controller: ServiceBundle:Default:listPrix }
+    options:
+        expose: true
+    methods: [POST]

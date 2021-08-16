@@ -4,6 +4,7 @@ namespace ServiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Service;
+use AppBundle\Entity\TarifService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -131,6 +132,42 @@ class DefaultController extends Controller
             'service' => $service,
             'print' => $print
         ));
+    }
+
+    public function savePrixAction(Request $request)
+    {
+        $id_service = $request->request->get('id_service');
+        $duree = $request->request->get('duree');
+        $prix = $request->request->get('prix');
+
+        $service = $this->getDoctrine()
+                ->getRepository('AppBundle:Service')
+                ->find($id_service);
+
+        $tarif = new TarifService();
+        $tarif->setDuree($duree);
+        $tarif->setPrix($prix);
+        $tarif->setService($service);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($tarif);
+        $em->flush();
+
+        return new JsonResponse(array(
+            'id' => $tarif->getId()
+        ));
+    }
+
+    public function listPrixAction(Request $request)
+    {
+
+        $id_service = $request->request->get('id_service');
+
+        $services = $this->getDoctrine()
+                ->getRepository('AppBundle:TarifService')
+                ->list($id_service);
+
+        return new JsonResponse( $services );
     }
     
 }

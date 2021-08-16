@@ -8,6 +8,7 @@
 {{ parent() }}
 <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
 <script src="{{ asset('bundles/service/js/show.js') }}"></script>
+<script src="{{ asset('bundles/service/js/prix.js') }}"></script>
 {% endblock %}
 
 {% block contenu %}
@@ -24,74 +25,136 @@
                     <div class="ibox-content">
                         <div class="form-horizontal">
 
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label nom">Nom</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" required="" id="nom" value="{{ service.nom }}">
-                                        </div>
-                                    </div>
-                                </div>
-                        	</div>
-
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label description">Description</label>
-                                        <div class="col-sm-10">
-                                            <textarea id="description" class="summernote">
-                                            	{{ service.description | raw }}
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                        	</div>
-
-                        	<input type="hidden" id="statut" value="1">
-
-{#                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label duree">Durée</label>
-                                        <div class="col-sm-10">
-                                        	<select class="form-control" id="duree">
-                                        		<option value="1">Heure</option>
-                                        		<option value="2">Jour</option>
-                                        		<option value="3">Mois</option>
-                                        		<option value="4">Année</option>
-                                        	</select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label prix">Prix</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="prix" required="" id="prix">
-                                        </div>
-                                    </div>
-                                </div>
-                        	</div> #}
-
-                            <div class="hr-line-dashed"></div>
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <!-- <div class=""> -->
-                                        {# <button class="btn btn-white" type="reset">
-                                            <i class="fa fa-times"></i>
-                                            Annuler
-                                        </button> #}
-                                        <button class="btn btn-primary" id="btn-save">
-                                            <i class="fa fa-save"></i>
-                                            Enregistrer les modification
-                                        </button>
-                                    <!-- </div> -->
+                                <div class="col-lg-12">
+                                    <div class="tabs-container">
+                                        <ul class="nav nav-tabs">
+                                          <li class="active">
+                                            <a data-toggle="tab" href="#tab-1">DETAILS</a>
+                                          </li>
+                                          <li class="">
+                                            <a data-toggle="tab" href="#tab-2">PRIX</a>
+                                          </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="tab-content">
+                                        <div id="tab-1" class="tab-pane active">
+                                            <div class="panel-body">
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label nom">Nom</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" required="" id="nom" value="{{ service.nom }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label description">Description</label>
+                                                            <div class="col-sm-10">
+                                                                <textarea id="description" class="summernote">
+                                                                	{{ service.description | raw }}
+                                                                </textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+                                            	<input type="hidden" id="statut" value="1">
+
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <!-- <div class=""> -->
+                                                            {# <button class="btn btn-white" type="reset">
+                                                                <i class="fa fa-times"></i>
+                                                                Annuler
+                                                            </button> #}
+                                                            <button class="btn btn-primary" id="btn-save">
+                                                                <i class="fa fa-save"></i>
+                                                                Enregistrer les modification
+                                                            </button>
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="tab-2" class="tab-pane">
+                                            <div class="panel-body">
+
+                                                <div id="prix-container">
+                                                    <div class="row" id="defaul-tpl">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">Durée</label>
+                                                                <div class="col-sm-10">
+                                                                    <select class="form-control" id="duree">
+                                                                        <option value="1">Heure</option>
+                                                                        <option value="2">Jour</option>
+                                                                        <option value="3">Mois</option>
+                                                                        <option value="4">Année</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">Prix</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number" class="form-control" id="prix" required="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <button class="btn btn-primary pull-right" id="save-prix">
+                                                            <i class="fa fa-save"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="t-content" style="width:100%;overflow:auto;">
+                                                            <table id="liste_prix"></table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {# <div class="hr-line-dashed"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <!-- <div class=""> -->
+                                                            <button class="btn btn-white" type="reset">
+                                                                <i class="fa fa-times"></i>
+                                                                Annuler
+                                                            </button>
+                                                            <button class="btn btn-primary" id="btn-save">
+                                                                <i class="fa fa-save"></i>
+                                                                Enregistrer les modification
+                                                            </button>
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </div> #}
+                                            </div>
+                                        </div>
+
+
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
