@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    
+    $('#descr').summernote();
 
     $('#f_client').select2();
     

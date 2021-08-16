@@ -128,7 +128,7 @@ class FactureProduitController extends Controller
             }
         }
 
-        return $this->redirectToRoute('facture_show',array('id' => $facture->getId()));
+        return $this->redirectToRoute('facture_produit_show',array('id' => $facture->getId()));
 
     }
 
@@ -141,6 +141,84 @@ class FactureProduitController extends Controller
             ->newNum($id_agence);
 
         return $newNum;
+
+    }
+
+    public function showAction($id)
+    {
+        $facture  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Facture')
+                        ->find($id);
+
+        $factureProduit  = $this->getDoctrine()
+                        ->getRepository('AppBundle:FactureProduit')
+                        ->findOneBy(array(
+                        	'facture' => $facture
+                        ));
+
+        $definitif = $this->getDoctrine()
+                        ->getRepository('AppBundle:Facture')
+                        ->findOneBy(array(
+                            'proforma' => $facture
+                        ));
+
+        $details = $this->getDoctrine()
+                    ->getRepository('AppBundle:FactureProduitDetails')
+                    ->findBy(array(
+                        'factureProduit' => $factureProduit
+                    ));
+
+        $permission_user = $this->get('app.permission_user');
+        $user = $this->getUser();
+        $permissions = $permission_user->getPermissions($user);
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $clients = $this->getDoctrine()
+            ->getRepository('AppBundle:Client')
+            ->findBy(array(
+                'agence' => $agence
+            ));
+
+        $produits = $this->getDoctrine()
+            ->getRepository('AppBundle:Produit')
+            ->findBy(array(
+                'agence' => $agence
+            ));
+
+        $print = false;
+
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findBy(array(
+                        'agence' => $agence
+                    ));
+                    
+        if (count($pdfAgence) > 0) {
+            foreach ($pdfAgence as $key => $value) {
+                if($value->getFacture()){
+                    $print = true;
+                }
+            } 
+        }
+
+
+        return $this->render('FactureBundle:FactureProduit:show.html.twig', array(
+            'facture' => $facture,
+            'factureProduit' => $factureProduit,
+            'details' => $details,
+            'produits' => $produits,
+            'clients' => $clients,
+            'permissions' => $permissions,
+            'print' => $print,
+            'definitif' => $definitif,
+        ));
 
     }
 }

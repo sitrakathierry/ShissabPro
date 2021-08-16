@@ -51,3 +51,10 @@ facture_produit_save:
     options:
         expose: true
     methods: [POST]
+
+facture_produit_show:
+    path:     /facture/produit/show/{id}
+    defaults: { _controller: FactureBundle:FactureProduit:show }
+    options:
+        expose: true
+    methods: [GET]
