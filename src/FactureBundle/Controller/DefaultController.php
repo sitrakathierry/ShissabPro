@@ -43,9 +43,16 @@ class DefaultController extends Controller
                 'agence' => $agence
             ));
 
+        $services = $this->getDoctrine()
+            ->getRepository('AppBundle:Service')
+            ->findBy(array(
+                'agence' => $agence
+            ));
+
         return $this->render('FactureBundle:Default:add.html.twig',array(
         	'clients' => $clients,
             'produits' => $produits,
+            'services' => $services,
             'permissions' => $permissions,
             'userAgence' => $userAgence,
         ));

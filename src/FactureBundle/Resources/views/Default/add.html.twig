@@ -7,6 +7,7 @@
   <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
   <script src="{{ asset('bundles/facture/js/add.js') }}"></script>
   <script src="{{ asset('bundles/facture/js/facture-produit-add.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/facture-service-add.js') }}"></script>
 {% endblock %}
 {% block contenu %}
 <div class="wrapper wrapper-content">
@@ -44,6 +45,49 @@
               </div>
             </div>
 
+            <div class="form-group client_mac">
+              <label class="col-sm-2 control-label">Client</label>
+              <div class="col-sm-10">
+                <select class="form-control m-b" name="f_client" id="f_client">
+                  <option value=""></option>
+                  {% if is_granted('ROLE_ADMIN') %}
+                    {% for client in clients %}
+                      {% if client.statut == 1%}
+                        <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                          {{client.idClientMorale.nomSociete}}
+                        </option>
+                      {% else %}
+                        <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                          {{client.idClientPhysique.nom}}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    {% for client in clients %}
+                      {% if client.agence == userAgence.agence %}
+                        {% if client.statut == 1%}
+                          <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                            {{client.idClientMorale.nomSociete}}
+                          </option>
+                        {% else %}
+                          <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                            {{client.idClientPhysique.nom}}
+                          </option>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea id="descr" name="descr"></textarea>
+                </div>
+            </div>
+
             <div id="form-produit" class="hidden">
                 {% include('FactureBundle:FactureProduit:form.html.twig') %}
             </div>
@@ -78,7 +122,9 @@
               </div>
             </div>
             <input type="hidden" name="" id="id-row" value="0">
+            <input type="hidden" name="" id="id-row-service" value="0">
             <input type="hidden" name="somme" id="id-somme" value="0">
+            <input type="hidden" name="somme" id="id-somme-service" value="0">
           </form>
         </div>
       </div>
