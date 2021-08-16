@@ -20,6 +20,13 @@ class Facture
     private $type = '';
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="modele", type="integer", nullable=true)
+     */
+    private $modele = '';
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_creation", type="date", nullable=true)
@@ -126,7 +133,7 @@ class Facture
     public function getFormattedNum()
     {
 
-        $this->formattedNum = "F-" . str_pad($this->num, 3, '0', STR_PAD_LEFT) . "/" . $this->dateCreation->format('y');
+        $this->formattedNum = (($this->type == 1) ? "PR-" : "DF-") . str_pad($this->num, 3, '0', STR_PAD_LEFT) . "/" . $this->dateCreation->format('y');
 
         return $this->formattedNum;
     }
@@ -428,5 +435,29 @@ class Facture
     public function getAgence()
     {
         return $this->agence;
+    }
+
+    /**
+     * Set proforma
+     *
+     * @param \AppBundle\Entity\Facture $proforma
+     *
+     * @return Facture
+     */
+    public function setProforma(\AppBundle\Entity\Facture $proforma = null)
+    {
+        $this->proforma = $proforma;
+    
+        return $this;
+    }
+
+    /**
+     * Get proforma
+     *
+     * @return \AppBundle\Entity\Facture
+     */
+    public function getProforma()
+    {
+        return $this->proforma;
     }
 }

@@ -44,3 +44,10 @@ facture_creer_definitif:
     options:
         expose: true
     methods: [GET]
+
+facture_produit_save:
+    path:    /facture/produit/save
+    defaults: { _controller: FactureBundle:FactureProduit:save }
+    options:
+        expose: true
+    methods: [POST]

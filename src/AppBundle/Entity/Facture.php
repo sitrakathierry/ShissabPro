@@ -20,6 +20,13 @@ class Facture
     private $type = '';
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="modele", type="integer", nullable=true)
+     */
+    private $modele = '';
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_creation", type="date", nullable=true)
@@ -452,5 +459,29 @@ class Facture
     public function getProforma()
     {
         return $this->proforma;
+    }
+
+    /**
+     * Set modele
+     *
+     * @param integer $modele
+     *
+     * @return Facture
+     */
+    public function setModele($modele)
+    {
+        $this->modele = $modele;
+    
+        return $this;
+    }
+
+    /**
+     * Get modele
+     *
+     * @return integer
+     */
+    public function getModele()
+    {
+        return $this->modele;
     }
 }

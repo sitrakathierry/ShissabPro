@@ -28,12 +28,24 @@ class DefaultController extends Controller
                         'user' => $user
                     ));
 
+        $agence = $userAgence->getAgence();
+
+
     	$clients = $this->getDoctrine()
             ->getRepository('AppBundle:Client')
-            ->findAll();
+            ->findBy(array(
+                'agence' => $agence
+            ));
+
+        $produits = $this->getDoctrine()
+            ->getRepository('AppBundle:Produit')
+            ->findBy(array(
+                'agence' => $agence
+            ));
 
         return $this->render('FactureBundle:Default:add.html.twig',array(
         	'clients' => $clients,
+            'produits' => $produits,
             'permissions' => $permissions,
             'userAgence' => $userAgence,
         ));
