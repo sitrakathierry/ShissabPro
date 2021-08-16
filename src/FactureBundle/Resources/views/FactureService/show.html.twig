@@ -98,7 +98,7 @@
             </div>
 
             <div class="hr-line-dashed"></div>
-            <table class="table table-bordered" id="table-fact-add">
+            <table class="table table-bordered" id="table-service-add">
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">DESIGNATION</th>
@@ -153,10 +153,10 @@
 				          <div class="col-sm-10">
 				            <select class="form-control f_service_duree" name="f_service_duree[]">
 				              <option></option>
-				              <option value="1">Heure</option>
-				              <option value="2">Jour</option>
-				              <option value="3">Mois</option>
-				              <option value="4">Année</option>
+				              <option value="1" {% if detail.duree == 1 %} selected="" {% endif %}>Heure</option>
+				              <option value="2" {% if detail.duree == 2 %} selected="" {% endif %}>Jour</option>
+				              <option value="3" {% if detail.duree == 3 %} selected="" {% endif %}>Mois</option>
+				              <option value="4" {% if detail.duree == 4 %} selected="" {% endif %}>Année</option>
 				            </select>
 				          </div>
 				        </div>

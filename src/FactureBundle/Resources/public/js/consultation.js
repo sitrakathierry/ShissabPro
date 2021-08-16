@@ -194,6 +194,21 @@ $(document).ready(function(){
         
     });
 
+    $(document).on('click', '.consulter_service', function(){
+        var id = $(this).hasClass('cl_add') ? 0 : $(this).closest('tr').attr('id'),
+            action = parseInt($(this).attr('data-type'));
+
+        $('.'+cl_row_edited).removeClass(cl_row_edited);
+
+        if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
+        var url = Routing.generate('facture_service_show',{
+            id: id
+        });
+
+        window.location.href = url;
+        
+    });
+
     $(document).on('change','#type_date',function(event) {
 
         var val = $(this).val();
