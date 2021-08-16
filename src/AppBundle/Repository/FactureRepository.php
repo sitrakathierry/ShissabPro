@@ -15,7 +15,7 @@ class FactureRepository extends \Doctrine\ORM\EntityRepository
 
 		$em = $this->getEntityManager();
 		
-		$query = "	select f.id as id, IF(f.type = 1,'PROFORMA','DEFINITIVE') as type, date_format(f.date_creation,'%d/%m/%Y') as date_creation, date_format(f.date,'%d/%m/%Y') as date, IF(c.statut = 1,cm.nom_societe,cp.nom) as client, CONCAT( IF(f.type = 1, 'PR-','DF-') ,LPAD(f.num, 3, '0'),'/',date_format(f.date_creation,'%y')) as num_fact, ag.nom as agence
+		$query = "	select f.id as id, IF(f.type = 1,'PROFORMA','DEFINITIVE') as type, date_format(f.date_creation,'%d/%m/%Y') as date_creation, date_format(f.date,'%d/%m/%Y') as date, IF(c.statut = 1,cm.nom_societe,cp.nom) as client, CONCAT( IF(f.type = 1, 'PR-','DF-') ,LPAD(f.num, 3, '0'),'/',date_format(f.date_creation,'%y')) as num_fact, ag.nom as agence, f.modele
 					from facture f
 					left join client c on (f.client = c.num_police)
 					left join client_morale cm on (c.id_client_morale=cm.id)

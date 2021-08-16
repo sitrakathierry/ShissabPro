@@ -5,7 +5,7 @@ $(document).ready(function(){
 	load_list();
 
     function instance_list_grid() {
-        var colNames = ['Agence','N° Facture','Type','Date de création','Date facture','Client',''];
+        var colNames = ['Agence','N° Facture','Modele','Type','Date de création','Date facture','Client',''];
         var colModel = [{
                 name    : 'agence',
                 index   : 'agence',
@@ -20,6 +20,22 @@ $(document).ready(function(){
                 editable: false,
                 sortable: false,
                 classes : 'js-num_fact'
+            },{
+                name    : 'modele',
+                index   : 'modele',
+                align   : 'left',
+                editable: false,
+                sortable: false,
+                classes : 'js-modele',
+                formatter: function(v) {
+                    if (v == 1) {
+                        return 'PRODUIT';
+                    }
+                    if (v == 2) {
+                        return 'SERVICE';
+                    }
+                    return '';
+                }
             },{
                 name    : 'type',
                 index   : 'type',
@@ -52,10 +68,16 @@ $(document).ready(function(){
                 name:'x',
                 index:'x',
                 align: 'center',
-                formatter: function(v){ 
-                	var del = '&nbsp;&nbsp;<i class="fa fa-trash-o pointer create_attestation" data-type="2" aria-hidden="true"></i>';
-                    // return '<i class="fa fa-pencil-square-o pointer create_attestation" data-type="0" aria-hidden="true"></i>' 
-                    return '<button class="btn btn-xs btn-outline btn-primary consulter " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Consulter</button>'; 
+                formatter: function(v,i,r){ 
+                    if (r.modele == 1) {
+                        return '<button class="btn btn-xs btn-outline btn-primary consulter_produit " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Consulter</button>'; 
+                    }
+
+                    if (r.modele == 2) {
+                        return '<button class="btn btn-xs btn-outline btn-primary consulter_service " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Consulter</button>'; 
+                    }
+
+                    return '';
                 }
             }
         ];
@@ -157,14 +179,14 @@ $(document).ready(function(){
 		})
 	})
 
-    $(document).on('click', '.consulter', function(){
+    $(document).on('click', '.consulter_produit', function(){
         var id = $(this).hasClass('cl_add') ? 0 : $(this).closest('tr').attr('id'),
             action = parseInt($(this).attr('data-type'));
 
         $('.'+cl_row_edited).removeClass(cl_row_edited);
 
         if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
-        var url = Routing.generate('facture_show',{
+        var url = Routing.generate('facture_produit_show',{
             id: id
         });
 
