@@ -58,3 +58,17 @@ facture_produit_show:
     options:
         expose: true
     methods: [GET]
+
+facture_service_save:
+    path:    /facture/service/save
+    defaults: { _controller: FactureBundle:FactureService:save }
+    options:
+        expose: true
+    methods: [POST]
+
+facture_service_show:
+    path:     /facture/service/show/{id}
+    defaults: { _controller: FactureBundle:FactureService:show }
+    options:
+        expose: true
+    methods: [GET]

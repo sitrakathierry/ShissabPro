@@ -1,14 +1,15 @@
 <?php
 
 namespace FactureBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Facture;
-use AppBundle\Entity\FactureProduit;
-use AppBundle\Entity\FactureProduitDetails;
+use AppBundle\Entity\FactureService;
+use AppBundle\Entity\FactureServiceDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class FactureProduitController extends Controller
+class FactureServiceController extends Controller
 {
     public function saveAction(Request $request)
     {
@@ -18,11 +19,11 @@ class FactureProduitController extends Controller
         $f_date = $request->request->get('f_date');
         $descr = $request->request->get('descr');
 
-        $montant = $request->request->get('montant');
-        $f_remise = $request->request->get('f_remise');
-        $remise = $request->request->get('remise');
-        $total = $request->request->get('total');
-        $somme = $request->request->get('somme');
+        $montant = $request->request->get('service_montant');
+        $f_remise = $request->request->get('f_service_remise');
+        $remise = $request->request->get('service_remise');
+        $total = $request->request->get('service_total');
+        $somme = $request->request->get('service_somme');
 
         $f_id = $request->request->get('f_id');
         $list_id = $request->request->get('list_id');
@@ -39,8 +40,8 @@ class FactureProduitController extends Controller
                 ->find($f_id);
              $newNum = str_pad($facture->getNum(), 3, '0', STR_PAD_LEFT);
 
-             $factureProduit = $this->getDoctrine()
-                ->getRepository('AppBundle:FactureProduit')
+             $factureService = $this->getDoctrine()
+                ->getRepository('AppBundle:FactureService')
                 ->findOneBy(array(
                     'facture' => $facture
                 ));
@@ -49,7 +50,7 @@ class FactureProduitController extends Controller
             $newNum = $this->prepareNewNumFacture($agence->getId());
             $facture->setNum(intval($newNum));
 
-            $factureProduit = new FactureProduit();
+            $factureService = new FactureService();
 
         }
 
@@ -76,9 +77,9 @@ class FactureProduitController extends Controller
         $em->persist($facture);
         $em->flush();
 
-        $factureProduit->setFacture($facture);
+        $factureService->setFacture($facture);
 
-        $em->persist($factureProduit);
+        $em->persist($factureService);
         $em->flush();
 
         $details_list = explode(",", $list_id);
@@ -88,7 +89,7 @@ class FactureProduitController extends Controller
 
             if ($old_id != "") {
                 $old_detail = $this->getDoctrine()
-                                    ->getRepository('AppBundle:FactureProduitDetails')
+                                    ->getRepository('AppBundle:FactureServiceDetails')
                                     ->find($old_id);
 
                 $em->remove($old_detail);
@@ -97,29 +98,30 @@ class FactureProduitController extends Controller
 
         }
 
-        $f_produit = $request->request->get('f_produit');
-        $f_prix = $request->request->get('f_prix');
-        $f_qte = $request->request->get('f_qte');
-        $f_montant = $request->request->get('f_montant');
+        $f_service = $request->request->get('f_service');
+        $f_service_periode = $request->request->get('f_service_periode');
+        $f_service_duree = $request->request->get('f_service_duree');
+        $f_service_prix = $request->request->get('f_service_prix');
+        $f_service_montant = $request->request->get('f_service_montant');
 
-        if (!empty($f_produit)) {
-            foreach ($f_produit as $key => $value) {
-                $detail = new FactureProduitDetails();
-                $produit = $this->getDoctrine()
-                    ->getRepository('AppBundle:Produit')
-                    ->find( $f_produit[$key] );
+        if (!empty($f_service)) {
+            foreach ($f_service as $key => $value) {
+                $detail = new FactureServiceDetails();
+                $service = $this->getDoctrine()
+                    ->getRepository('AppBundle:Service')
+                    ->find( $f_service[$key] );
 
-                $prix = $f_prix[$key];
-                $qte = $f_qte[$key];
-                $montant = $f_montant[$key];
+                $periode = $f_service_periode[$key];
+                $duree = $f_service_duree[$key];
+                $prix = $f_service_prix[$key];
+                $montant = $f_service_montant[$key];
 
-                $detail->setProduit($produit);
+                $detail->setService($service);
+                $detail->setPeriode($periode);
+                $detail->setDuree($duree);
                 $detail->setPrix($prix);
-                $detail->setQte($qte);
                 $detail->setMontant($montant);
-                $detail->setFactureProduit($factureProduit);
-
-                // var_dump("expression");die();
+                $detail->setFactureService($factureService);
 
                 $em->persist($detail);
                 $em->flush();
@@ -127,7 +129,7 @@ class FactureProduitController extends Controller
             }
         }
 
-        return $this->redirectToRoute('facture_produit_show',array('id' => $facture->getId()));
+        return $this->redirectToRoute('facture_service_show',array('id' => $facture->getId()));
 
     }
 
@@ -149,8 +151,8 @@ class FactureProduitController extends Controller
                         ->getRepository('AppBundle:Facture')
                         ->find($id);
 
-        $factureProduit  = $this->getDoctrine()
-                        ->getRepository('AppBundle:FactureProduit')
+        $factureService  = $this->getDoctrine()
+                        ->getRepository('AppBundle:FactureService')
                         ->findOneBy(array(
                         	'facture' => $facture
                         ));
@@ -162,9 +164,9 @@ class FactureProduitController extends Controller
                         ));
 
         $details = $this->getDoctrine()
-                    ->getRepository('AppBundle:FactureProduitDetails')
+                    ->getRepository('AppBundle:FactureServiceDetails')
                     ->findBy(array(
-                        'factureProduit' => $factureProduit
+                        'factureService' => $factureService
                     ));
 
         $permission_user = $this->get('app.permission_user');
@@ -185,8 +187,8 @@ class FactureProduitController extends Controller
                 'agence' => $agence
             ));
 
-        $produits = $this->getDoctrine()
-            ->getRepository('AppBundle:Produit')
+        $services = $this->getDoctrine()
+            ->getRepository('AppBundle:Service')
             ->findBy(array(
                 'agence' => $agence
             ));
@@ -208,11 +210,11 @@ class FactureProduitController extends Controller
         }
 
 
-        return $this->render('FactureBundle:FactureProduit:show.html.twig', array(
+        return $this->render('FactureBundle:FactureService:show.html.twig', array(
             'facture' => $facture,
-            'factureProduit' => $factureProduit,
+            'factureService' => $factureService,
             'details' => $details,
-            'produits' => $produits,
+            'services' => $services,
             'clients' => $clients,
             'permissions' => $permissions,
             'print' => $print,

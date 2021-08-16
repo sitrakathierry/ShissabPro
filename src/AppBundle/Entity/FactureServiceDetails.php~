@@ -1,0 +1,83 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * FactureServiceDetails
+ *
+ * @ORM\Table(name="facture_service_details")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FactureServiceDetailsRepository")
+ */
+class FactureServiceDetails
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\Service
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Service")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="service", referencedColumnName="id")
+     * })
+     */
+    private $service;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="periode", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $periode = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duree", type="integer", nullable=true)
+     */
+    private $duree = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prix", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $prix = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montant = '';
+
+    /**
+     * @var \AppBundle\Entity\FactureService
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\FactureService")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="facture_service", referencedColumnName="id")
+     * })
+     */
+    private $factureService;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+
