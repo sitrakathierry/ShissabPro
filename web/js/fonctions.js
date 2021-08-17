@@ -1,3 +1,11 @@
+function jq_number_unformat(v) {
+    return v.replace(/\s/g,'');
+}
+
+function jq_number_format(v) {
+    return Number(v).toLocaleString();
+}
+
 /**
  * MODAL Bootstrap
  */

@@ -34,3 +34,43 @@ comptabilite_banque_editor:
     methods:  [POST]
     options:
         expose: true
+
+# comptebancaire 
+comptabilite_comptebancaire:
+    path:     /comptabilite/comptebancaire
+    defaults: { _controller: ComptabiliteBundle:CompteBancaire:index }
+
+comptabilite_comptebancaire_get_list:
+    path:     /comptabilite/comptebancaire/get-list
+    defaults: { _controller: ComptabiliteBundle:CompteBancaire:getList }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_comptebancaire_save:
+    path:     /comptabilite/comptebancaire/save
+    defaults: { _controller: ComptabiliteBundle:CompteBancaire:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_comptebancaire_delete:
+    path:    /comptabilite/comptebancaire/delete/{id}
+    defaults: { _controller: ComptabiliteBundle:CompteBancaire:delete}
+    options:
+        expose: true
+    methods: [GET]
+
+comptabilite_comptebancaire_editor:
+    path:     /comptabilite/comptebancaire/editor
+    defaults: { _controller: ComptabiliteBundle:CompteBancaire:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_comptebancaire_list_by_banque:
+    path:    /comptabilite/comptebancaire/list-by-banque/{id_banque}
+    defaults: { _controller: ComptabiliteBundle:CompteBancaire:listByBanque}
+    options:
+        expose: true
+    methods: [GET]

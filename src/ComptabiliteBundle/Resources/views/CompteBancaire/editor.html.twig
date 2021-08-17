@@ -1,0 +1,29 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_banque">Banque</label>
+        <div class="col-lg-10">
+            <select class="form-control" id="id_banque">
+            	<option value=""></option>
+            	{% for banque in banques %}
+            	    <option value="{{banque.id}}" {% if compte.banque.id == banque.id %}selected=""{% endif %}>{{banque.nom}}</option>
+            	{% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_num_compte">Numéro de compte</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Nom" class="form-control" id="id_num_compte" value="{{ compte ? compte.numCompte : '' }}">
+        </div>
+    </div>
+
+    <input type="hidden" value="{{compte.id}}" id="id_comptebancaire_edit">
+
+        <div class="form-group text-right">
+            <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+            <span class="btn btn-primary btn-sm" id="id_save_comptebancaire">Enregistrer</span>
+        </div>
+
+
+</div>
