@@ -1,0 +1,36 @@
+comptabilite_homepage:
+    path:     /comptabilite/index
+    defaults: { _controller: ComptabiliteBundle:Default:index }
+
+# banque
+comptabilite_banque:
+    path:     /comptabilite/banque
+    defaults: { _controller: ComptabiliteBundle:Banque:index }
+
+comptabilite_banque_get_list:
+    path:     /comptabilite/banque/get-list
+    defaults: { _controller: ComptabiliteBundle:Banque:getList }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_banque_save:
+    path:     /comptabilite/banque/save
+    defaults: { _controller: ComptabiliteBundle:Banque:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_banque_delete:
+    path:    /comptabilite/banque/delete/{id}
+    defaults: { _controller: ComptabiliteBundle:Banque:delete}
+    options:
+        expose: true
+    methods: [GET]
+
+comptabilite_banque_editor:
+    path:     /comptabilite/banque/editor
+    defaults: { _controller: ComptabiliteBundle:Banque:editor }
+    methods:  [POST]
+    options:
+        expose: true

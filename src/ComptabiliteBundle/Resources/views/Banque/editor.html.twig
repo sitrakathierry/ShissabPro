@@ -1,0 +1,15 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_nom">Nom</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Nom" class="form-control" id="id_nom" value="{{ banque ? banque.nom : '' }}">
+        </div>
+    </div>
+
+    <input type="hidden" value="{{banque.id}}" id="id_banque_edit">
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_banque">Enregistrer</span>
+    </div>
+</div>

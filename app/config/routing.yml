@@ -1,3 +1,7 @@
+comptabilite:
+    resource: "@ComptabiliteBundle/Resources/config/routing.yml"
+    prefix:   /
+
 service:
     resource: "@ServiceBundle/Resources/config/routing.yml"
     prefix:   /
