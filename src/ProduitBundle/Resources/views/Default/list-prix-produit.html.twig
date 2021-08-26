@@ -12,7 +12,7 @@
         {% for prixProduit in prixProduits %}
             <tr>
                 <td class="text-center">{{ prixProduit.prixVente }}</td>
-                <td class="text-center">{{ prixProduit.stockRestant }}</td>
+                <td class="text-center">{{ prixProduit.qte }}</td>
                 <td class="text-center">{{ prixProduit.date|date("d/m/Y") }}</td>
                 {% if prixProduit.dateExpiration and prixProduit.dateExpiration|date("dmY") <= "now"|date("dmY")  %}
                     <td class="text-center" style="background:#ed5565;color:#fff;">Périmé</td>
