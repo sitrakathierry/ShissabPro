@@ -1,0 +1,31 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-center">Prix</th>
+            <th class="text-center">Stock</th>
+            <th class="text-center">Date</th>
+            <th class="text-center">Status</th>
+            <th class="text-center"><i class="fa fa-bookmark-o"></i> Modifier</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prixProduit in prixProduits %}
+            <tr>
+                <td class="text-center">{{ prixProduit.prixVente }}</td>
+                <td class="text-center">{{ prixProduit.stockRestant }}</td>
+                <td class="text-center">{{ prixProduit.date|date("d/m/Y") }}</td>
+                {% if prixProduit.dateExpiration and prixProduit.dateExpiration|date("dmY") <= "now"|date("dmY")  %}
+                    <td class="text-center" style="background:#ed5565;color:#fff;">Périmé</td>
+                {% else %}
+                    {% if prixProduit.status == 0  %}
+                        <td class="text-center" style="background:#23c6c8;color:#fff;">Actif</td>
+                    {% endif %}
+                    {% if prixProduit.status == 1  %}
+                        <td class="text-center" style="background:#f8ac59;color:#fff;">Desactivé</td>
+                    {% endif %}
+                {% endif %}
+                <td class="text-center"><i class="fa fa-edit fa-lg pointer cl_statut_produit" data-produit="{{prixProduit.produit.nom}}" data-expirer="{{ (prixProduit.dateExpiration) ? prixProduit.dateExpiration|date("d/m/Y") : '' }}" data-status="{{prixProduit.status}}" data-id="{{prixProduit.id}}" data-code="{{prixProduit.produit.codeProduit}}"></i></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

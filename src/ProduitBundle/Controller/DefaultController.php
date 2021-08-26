@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Produit;
 use AppBundle\Entity\Approvisionnement;
 use AppBundle\Entity\Ravitaillement;
+use AppBundle\Entity\PrixProduit;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
@@ -34,6 +35,7 @@ class DefaultController extends Controller
         $produit_image = $request->request->get('produit_image');
         $unite = $request->request->get('unite');
         $stock_alerte = $request->request->get('stock_alerte');
+        //$expirer = $request->request->get('expirer');
     	$dateCreation = new \DateTime('now');
     	$user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -88,6 +90,10 @@ class DefaultController extends Controller
             /**
              * Approvisionnement
              */
+            /*$expirer = explode('/', $expirer);
+            $expirer = $expirer[2].'-'.$expirer[1].'-'.$expirer[0];
+            $expirer = new \DateTime($expirer);*/
+
         	$approvisionnement = new Approvisionnement();
 
         	$approvisionnement->setDate($dateCreation);
@@ -97,8 +103,27 @@ class DefaultController extends Controller
         	$approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') . ' ('. $stock . ' ' . $unite .')' );
         	$approvisionnement->setProduit($produit);
             $approvisionnement->setRavitaillement($ravitaillement);
+            //$approvisionnement->setDateExpiration($expirer);
+            $approvisionnement->setPrixVente($prix_vente);
 
         	$em->persist($approvisionnement);
+
+            $prixProduit = $this->getDoctrine()
+                                ->getRepository('AppBundle:PrixProduit')
+                                ->findBy(array('prixVente' => $prix_vente, 'agence' => $agence, 'produit' => $produit));
+            if(count($prixProduit) > 0){
+                $prixProduit->setPrixVente($prix_vente);
+                $prixProduit->setStock($stock);
+                $prixProduit->setAgence($agence);
+                $prixProduit->setProduit($produit);
+            }else{
+                $prixProduit = new PrixProduit();
+                $prixProduit->setPrixVente($prix_vente);
+                $prixProduit->setStock($stock);
+                $prixProduit->setAgence($agence);
+                $prixProduit->setProduit($produit);
+                $em->persist($prixProduit);
+            }
         	$em->flush();
         }
 
@@ -221,5 +246,44 @@ class DefaultController extends Controller
 
     }
 
+    public function listPrixProduitAction(Request $request)
+    {
+        $produit_id = $request->request->get('produit_id');
 
+        $produit  = $this->getDoctrine()
+                         ->getRepository('AppBundle:Produit')
+                         ->find($produit_id);
+
+        $prixProduit = $this->getDoctrine()
+                            ->getRepository('AppBundle:Approvisionnement')
+                            ->findBy(array('produit' => $produit));
+
+        return $this->render('ProduitBundle:Default:list-prix-produit.html.twig',array(
+            'prixProduits' => $prixProduit
+        ));
+    }
+
+    public function saveStatutProduitAction(Request $request)
+    {
+        $prixProduit = $request->request->get('prixProduit');
+        $status = $request->request->get('status');
+        $expirer = $request->request->get('expirer');
+
+        $prixProduit = $this->getDoctrine()
+                            ->getRepository('AppBundle:Approvisionnement')
+                            ->find($prixProduit);
+        if($prixProduit){
+            $prixProduit->setStatus($status);
+            if($expirer){
+                $expirer = explode('/', $expirer);
+                $expirer = $expirer[2].'-'.$expirer[1].'-'.$expirer[0];
+                $expirer = new \DateTime($expirer);
+                $prixProduit->setDateExpiration($expirer);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+
+        return new JsonResponse(1);
+    }
 }

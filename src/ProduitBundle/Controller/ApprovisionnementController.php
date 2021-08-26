@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Approvisionnement;
 use AppBundle\Entity\Ravitaillement;
+use AppBundle\Entity\PrixProduit;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApprovisionnementController extends Controller
@@ -65,7 +66,9 @@ class ApprovisionnementController extends Controller
         $produitList = $request->request->get('produit');
         $qteList = $request->request->get('qte');
         $prixList = $request->request->get('prix');
+        $prixVenteList = $request->request->get('prix_vente');
         $totalList = $request->request->get('total');
+        $expirerList = $request->request->get('expirer');
         $approId = $request->request->get('appro_id');
 
         if (!empty($produitList)) {
@@ -85,24 +88,48 @@ class ApprovisionnementController extends Controller
         		$qte = $qteList[$key];
         		$prix = $prixList[$key];
         		$total = $totalList[$key];
+                $vente = $prixVenteList[$key];
+                $expirer = $expirerList[$key];
+                $expirer = explode('/', $expirer);
+                $expirer = $expirer[2].'-'.$expirer[1].'-'.$expirer[0];
+                $expirer = new \DateTime($expirer);
 
-        		$approvisionnement->setDate($date);
-        		$approvisionnement->setQte($qte);
-        		$approvisionnement->setPrixAchat($prix);
-        		$approvisionnement->setTotal($total);
-        		$approvisionnement->setProduit($produit);
-        		$approvisionnement->setRavitaillement($ravitaillement);
-        		$approvisionnement->setDescription(' Approvisionnement du produit ' . $produit->getNom() . ' le ' . $date->format('d/m/Y') . ' ('. $qte .')' );
+                if($vente){
+                    $approvisionnement->setDate($date);
+                    $approvisionnement->setQte($qte);
+                    $approvisionnement->setPrixAchat($prix);
+                    $approvisionnement->setTotal($total);
+                    $approvisionnement->setProduit($produit);
+                    $approvisionnement->setRavitaillement($ravitaillement);
+                    $approvisionnement->setDateExpiration($expirer);
+                    $approvisionnement->setPrixVente($vente);
+                    $approvisionnement->setDescription(' Approvisionnement du produit ' . $produit->getNom() . ' le ' . $date->format('d/m/Y') . ' ('. $qte .')' );
 
-                if($approId){
-        		  $em->persist($approvisionnement);
+                    if(!$approId){
+                      $em->persist($approvisionnement);
+                    }
+
+                    $prixProduit = $this->getDoctrine()
+                                        ->getRepository('AppBundle:PrixProduit')
+                                        ->findBy(array('prixVente' => $vente, 'agence' => $agence, 'produit' => $produit));
+                    if(count($prixProduit) > 0){
+                        $prixProduit = $prixProduit[0];
+                        $qtePro = $prixProduit->getStock();
+                        $prixProduit->setStock($qte + $qtePro);
+                        $prixProduit->setAgence($agence);
+                        $prixProduit->setProduit($produit);
+                    }else{
+                        $prixProduit = new PrixProduit();
+                        $prixProduit->setPrixVente($vente);
+                        $prixProduit->setStock($qte);
+                        $prixProduit->setAgence($agence);
+                        $prixProduit->setProduit($produit);
+                        $em->persist($prixProduit);
+                    }
+                    $produit->setStock( $produit->getStock() + $qte );
+                    $em->persist($produit);
+                    $em->flush();
                 }
-        		$em->flush();
-
-        		$produit->setStock( $produit->getStock() + $qte );
-        		$em->persist($produit);
-        		$em->flush();
-        	
         	}
         }
 

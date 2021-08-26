@@ -76,6 +76,34 @@ class Approvisionnement
      */
     private $ravitaillement;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_expiration", type="date", nullable=true)
+     */
+    private $dateExpiration;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="status", type="boolean", nullable=true)
+     */
+    private $status = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prix_vente", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $prixVente;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="stock_restant", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $stockRestant;
+
 
     /**
      * Get id
@@ -184,6 +212,30 @@ class Approvisionnement
     }
 
     /**
+     * Set stockRestant
+     *
+     * @param string $stockRestant
+     *
+     * @return Approvisionnement
+     */
+    public function setStockRestant($stockRestant)
+    {
+        $this->stockRestant = $stockRestant;
+    
+        return $this;
+    }
+
+    /**
+     * Get stockRestant
+     *
+     * @return string
+     */
+    public function getStockRestant()
+    {
+        return $this->stockRestant;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -253,5 +305,79 @@ class Approvisionnement
     public function getRavitaillement()
     {
         return $this->ravitaillement;
+    }
+
+    
+
+    /**
+     * Set dateExpiration
+     *
+     * @param \DateTime $dateExpiration
+     *
+     * @return Approvisionnement
+     */
+    public function setDateExpiration($dateExpiration)
+    {
+        $this->dateExpiration = $dateExpiration;
+
+        return $this;
+    }
+
+    /**
+     * Get dateExpiration
+     *
+     * @return \DateTime
+     */
+    public function getDateExpiration()
+    {
+        return $this->dateExpiration;
+    }
+
+    /**
+     * Set status
+     *
+     * @param boolean $status
+     *
+     * @return Approvisionnement
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return boolean
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set prixVente
+     *
+     * @param string $prixVente
+     *
+     * @return Approvisionnement
+     */
+    public function setPrixVente($prixVente)
+    {
+        $this->prixVente = $prixVente;
+
+        return $this;
+    }
+
+    /**
+     * Get prixVente
+     *
+     * @return string
+     */
+    public function getPrixVente()
+    {
+        return $this->prixVente;
     }
 }

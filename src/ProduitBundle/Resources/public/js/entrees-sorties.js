@@ -1,8 +1,7 @@
 list_entrees_sorties();
 
-$(document).on('click', '#btn_search', function(event) {
-	event.preventDefault();
-	list_entrees_sorties();
+$(document).on('click', '.cl_statut_produit', function(event) {
+	$('#produit-status-modal').modal('show');
 })
 
 function list_entrees_sorties() {

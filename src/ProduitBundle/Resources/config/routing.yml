@@ -87,3 +87,18 @@ produit_notification_list:
     options:
         expose: true
     methods: [POST]
+    
+produit_list_prix_produit:
+    path:     /produit/prix_produit
+    defaults: { _controller: ProduitBundle:Default:listPrixProduit }
+    options:
+        expose: true
+    methods: [POST] 
+    
+produit_save_statut_prix_produit:
+    path:     /produit/save/statut
+    defaults: { _controller: ProduitBundle:Default:saveStatutProduit }
+    options:
+        expose: true
+    methods: [POST]
+

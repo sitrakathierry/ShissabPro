@@ -7,8 +7,17 @@ $(document).ready(function(){
         calendarWeeks: true,
         autoclose: true,
         format: 'dd/mm/yyyy',
-        language: 'fr',
+        language: 'fr'
+    });
 
+    $('.expirer').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        calendarWeeks: true,
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        language: 'fr'
     });
 
 	$('.select2').select2();
@@ -20,17 +29,28 @@ $(document).ready(function(){
         
         var produit_options = $('.produit').html();
 
-        var a = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control select2 produit" name="produit[]">'+ produit_options +'</select></div></div></td>';
-        b = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control qte" name="qte[]" required=""></div></div></td>';
-        c = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control prix" name="prix[]" required=""></div></div></td>';
-        d = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control total" name="total[]" readonly=""></div></div></td><td></td>'
+        var a = '<td><div class="form-group"><div class="col-sm-12"><select class="form-control select2 produit" name="produit[]">'+ produit_options +'</select></div></div></td>';
+        b = '<td><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control qte" name="qte[]" required=""></div></div></td>';
+        c = '<td><div class="form-group"><div class="col-sm-12"><input type="text" class="form-control expirer" name="expirer[]" required=""></div></div></td>';
+        d = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control prix_vente" name="prix_vente[]" required=""></div></div></td>';
+        e = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control prix" name="prix[]" required=""></div></div></td>';
+        f = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control total" name="total[]" readonly=""></div></div></td><td></td>'
 
-        var markup = '<tr data-id="'+ new_id +'">' + a + b + c + d + '</tr>';
+        var markup = '<tr data-id="'+ new_id +'">' + a + b + c + d + e + f +'</tr>';
         $("#table-appro-add tbody").append(markup);
         $('#id-row').val(new_id);
 
         $('.select2').select2();
 
+        $('.expirer').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'fr'
+        });
         calculTotal();
 
 

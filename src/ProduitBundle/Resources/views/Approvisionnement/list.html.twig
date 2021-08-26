@@ -4,6 +4,8 @@
 			<th>DATE</th>
 			<th>PRODUIT</th>
 			<th>QTE</th>
+          	<th>EXPIRER LE</th>
+          	<th>PRIX VENTE</th>
 			<th>PRIX UNITAIRE</th>
 			<th>TOTAL</th>
 			<th></th>
@@ -14,23 +16,27 @@
 			{% if ravitaillement.approvisionnements %}
 				{% set i = 1 %}
 				{% for  approvisionnement in ravitaillement.approvisionnements %}
-					<tr data-appro-id="{{ approvisionnement.id }}" data-ravitaillement-id="{{ravitaillement.id}}">
-						{% if i == 1 %}
-							<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">{{ ravitaillement.date }}</td>
-						{% endif %}
-						<td>{{ approvisionnement.produit }}</td>
-						<td>{{ approvisionnement.qte }}</td>
-						<td>{{ approvisionnement.prix_achat }}</td>
-						<td>{{ approvisionnement.total }}</td>
-						{% if i == 1 %}
-							<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">
-								<button class="btn btn-primary cl_show_appro">
-									AFFICHER
-								</button>
-							</td>
-						{% endif %}
-					</tr>
-					{% set i = i + 1 %}
+					{% if approvisionnement %}
+						<tr data-appro-id="{{ approvisionnement.id }}" data-ravitaillement-id="{{ravitaillement.id}}">
+							{% if i == 1 %}
+								<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">{{ ravitaillement.date }}</td>
+							{% endif %}
+							<td>{{ approvisionnement.produit }}</td>
+							<td>{{ approvisionnement.qte }}</td>
+							<td>{{ (approvisionnement.date_expiration) ? approvisionnement.date_expiration|date("d/m/Y") : '' }}</td>
+							<td>{{ approvisionnement.prix_vente }}</td>
+							<td>{{ approvisionnement.prix_achat }}</td>
+							<td>{{ approvisionnement.total }}</td>
+							{% if i == 1 %}
+								<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">
+									<button class="btn btn-primary cl_show_appro">
+										AFFICHER
+									</button>
+								</td>
+							{% endif %}
+						</tr>
+						{% set i = i + 1 %}
+					{% endif %}
 				{% endfor %}
 				<tr>
 					<td colspan="2">TOTAL</td>

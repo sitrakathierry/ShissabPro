@@ -35,10 +35,12 @@
             <table class="table table-bordered" id="table-appro-add">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col">PRODUIT</th>
-                  <th scope="col">QTE</th>
-                  <th scope="col">PRIX UNITAIRE</th>
-                  <th scope="col">MONTANT TOTAL</th>
+                  <th class="col-sm-2">PRODUIT</th>
+                  <th class="col-sm-2">QTE</th>
+                  <th class="col-sm-2">EXPIRER LE</th>
+                  <th class="col-sm-2">PRIX VENTE</th>
+                  <th class="col-sm-2">PRIX UNITAIRE</th>
+                  <th class="col-sm-2">MONTANT TOTAL</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -46,7 +48,7 @@
                 <tr data-id="0">
                   <td>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                       	<select class="form-control select2 produit" name="produit[]">
                       		<option></option>
                       		{% for produit in produits %}
@@ -58,21 +60,35 @@
                   </td>
                   <td>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                         <input type="number" class="form-control qte" name="qte[]" required="">
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <div class="col-sm-12">
+                        <input type="text" class="form-control expirer" name="expirer[]" required="">
                       </div>
                     </div>
                   </td>
                   <td class="td-montant">
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
+                        <input type="number" class="form-control prix_vente" name="prix_vente[]" required="">
+                      </div>
+                    </div>
+                  </td>
+                  <td class="td-montant">
+                    <div class="form-group">
+                      <div class="col-sm-12">
                         <input type="number" class="form-control prix" name="prix[]" required="">
                       </div>
                     </div>
                   </td>
                   <td class="td-montant">
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                         <input type="number" class="form-control total" name="total[]" readonly="">
                       </div>
                     </div>
@@ -84,7 +100,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <th colspan="3">Total</th>
+                  <th colspan="4">Total</th>
                   <th>
                     <div class="form-group">
                       <div class="col-sm-10">

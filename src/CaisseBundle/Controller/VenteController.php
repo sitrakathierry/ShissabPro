@@ -27,8 +27,15 @@ class VenteController extends Controller
 	            	'agence' => $agence
 	            ));
 
+        $prixProduit = $this->getDoctrine()
+                            ->getRepository('AppBundle:PrixProduit')
+                            ->findBy(array(
+                                'agence' => $agence
+                            ));
+
         return $this->render('CaisseBundle:Vente:add.html.twig', array(
-        	'produits' => $produits
+        	'produits' => $produits,
+            'prixProduits' => $prixProduit
         ));
     }
 
@@ -71,9 +78,10 @@ class VenteController extends Controller
         	foreach ($produitList as $key => $value) {
         		$panier = new Pannier();
 
-        		$produit = $this->getDoctrine()
-		    		->getRepository('AppBundle:Produit')
-		            ->find( $produitList[$key] );
+        		$prixProduit = $this->getDoctrine()
+                		    		->getRepository('AppBundle:PrixProduit')
+                		            ->find( $produitList[$key] );
+                $produit = $prixProduit->getProduit(); 
 
         		$qte = $qteList[$key];
         		$prix = $prixList[$key];
@@ -87,10 +95,10 @@ class VenteController extends Controller
         		$panier->setCommande($commande);
 
         		$em->persist($panier);
-        		$em->flush();
 
-        		$produit->setStock( $produit->getStock() - $qte );
-        		$em->persist($produit);
+                $produit->setStock( $produit->getStock() - $qte );
+        		$prixProduit->setStock( $prixProduit->getStock() - $qte );
+        		//$em->persist($produit);
         		$em->flush();
         	
         	}

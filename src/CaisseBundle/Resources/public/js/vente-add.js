@@ -137,10 +137,10 @@ $(document).ready(function(){
         
         var produit_options = $('.cl_produit').html();
 
-        var a = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control select2 cl_produit" name="produit[]">'+ produit_options +'</select></div></div></td>';
-        b = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control cl_qte" name="qte[]" required=""></div></div></td>';
-        c = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control cl_prix" name="prix[]" required=""></div></div></td>';
-        d = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control cl_total" name="total[]" readonly=""></div></div></td><td></td>'
+        var a = '<td><div class="form-group"><div class="col-sm-12"><select class="form-control select2 cl_produit" name="produit[]">'+ produit_options +'</select></div></div></td>';
+        b = '<td><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control cl_qte" name="qte[]" required=""></div></div></td>';
+        c = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control cl_prix" name="prix[]" required=""></div></div></td>';
+        d = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control cl_total" name="total[]" readonly=""></div></div></td><td></td>'
 
         var markup = '<tr data-id="'+ new_id +'">' + a + b + c + d + '</tr>';
         $("#table-commande-add tbody").append(markup);
@@ -270,7 +270,7 @@ $(document).ready(function(){
     		type: 'POST',
     		data: data,
     		success: function(res) {
-    			show_info('Succès', 'Approvisionnement éffectué');
+    			show_info('Succès', 'Achat éffectué');
     			location.reload();
     		}
     	})

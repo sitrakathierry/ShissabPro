@@ -48,16 +48,28 @@
                 <tr data-id="0">
                   <td>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                       	<select class="form-control select2 cl_produit" name="produit[]">
                       		<option></option>
                       		{% for produit in produits %}
-                      			<option 
+                            <optgroup label="{{ produit.nom }}">
+                              {% for prixProduit in prixProduits %}
+                                {% if prixProduit.produit == produit %}
+                                  <option 
+                                    value="{{ prixProduit.id }}" 
+                                    data-code="{{ produit.codeProduit }}" 
+                                    data-stock="{{ prixProduit.stock }}" 
+                                    data-prix="{{ prixProduit.prixVente }}"
+                                  > {{ prixProduit.prixVente }} KMF</option>
+                                {% endif %}
+                              {% endfor %}
+                            </optgroup>
+                      			{# <option 
                             value="{{ produit.id }}" 
                             data-code="{{ produit.codeProduit }}" 
                             data-stock="{{ produit.stock }}" 
                             data-prix="{{ produit.prixVente }}"
-                          > {{ produit.nom }} </option>
+                          > {{ produit.nom }} </option> #}
                       		{% endfor %}
                       	</select>
                       </div>
@@ -65,21 +77,21 @@
                   </td>
                   <td>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                         <input type="number" class="form-control cl_qte" name="qte[]" required="">
                       </div>
                     </div>
                   </td>
                   <td class="td-montant">
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                         <input type="number" class="form-control cl_prix" name="prix[]" required="">
                       </div>
                     </div>
                   </td>
                   <td class="td-montant">
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                         <input type="number" class="form-control cl_total" name="total[]" readonly="">
                       </div>
                     </div>
@@ -94,7 +106,7 @@
                   <th colspan="3">Total</th>
                   <th>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-12">
                         <input type="number" class="form-control" name="montant_total" id="montant_total" readonly="" value="0">
                       </div>
                     </div>
