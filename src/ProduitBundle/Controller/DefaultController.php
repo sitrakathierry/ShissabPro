@@ -35,7 +35,7 @@ class DefaultController extends Controller
         $produit_image = $request->request->get('produit_image');
         $unite = $request->request->get('unite');
         $stock_alerte = $request->request->get('stock_alerte');
-        //$expirer = $request->request->get('expirer');
+        $expirer = $request->request->get('expirer');
     	$dateCreation = new \DateTime('now');
     	$user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -90,9 +90,9 @@ class DefaultController extends Controller
             /**
              * Approvisionnement
              */
-            /*$expirer = explode('/', $expirer);
+            $expirer = explode('/', $expirer);
             $expirer = $expirer[2].'-'.$expirer[1].'-'.$expirer[0];
-            $expirer = new \DateTime($expirer);*/
+            $expirer = new \DateTime($expirer);
 
         	$approvisionnement = new Approvisionnement();
 
@@ -103,7 +103,8 @@ class DefaultController extends Controller
         	$approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') . ' ('. $stock . ' ' . $unite .')' );
         	$approvisionnement->setProduit($produit);
             $approvisionnement->setRavitaillement($ravitaillement);
-            //$approvisionnement->setDateExpiration($expirer);
+            $approvisionnement->setDateExpiration($expirer);
+            $approvisionnement->setStockRestant($stock);
             $approvisionnement->setPrixVente($prix_vente);
 
         	$em->persist($approvisionnement);
@@ -124,6 +125,7 @@ class DefaultController extends Controller
                 $prixProduit->setProduit($produit);
                 $em->persist($prixProduit);
             }
+            $approvisionnement->setPrixProduit($prixProduit);
         	$em->flush();
         }
 
@@ -265,23 +267,39 @@ class DefaultController extends Controller
 
     public function saveStatutProduitAction(Request $request)
     {
-        $prixProduit = $request->request->get('prixProduit');
+        $approvisionnement = $request->request->get('prixProduit');
         $status = $request->request->get('status');
         $expirer = $request->request->get('expirer');
 
-        $prixProduit = $this->getDoctrine()
+        $approvisionnement = $this->getDoctrine()
                             ->getRepository('AppBundle:Approvisionnement')
-                            ->find($prixProduit);
-        if($prixProduit){
-            $prixProduit->setStatus($status);
+                            ->find($approvisionnement);
+        $em = $this->getDoctrine()->getManager();
+        if($approvisionnement){
+            $lastStatut = $approvisionnement->getStatus();
+            $approvisionnement->setStatus($status);
+            $em->flush();
             if($expirer){
                 $expirer = explode('/', $expirer);
                 $expirer = $expirer[2].'-'.$expirer[1].'-'.$expirer[0];
                 $expirer = new \DateTime($expirer);
-                $prixProduit->setDateExpiration($expirer);
+                $approvisionnement->setDateExpiration($expirer);
+                $stock = $approvisionnement->getStockRestant();
+                if(!$stock)
+                    $stock = $approvisionnement->getQte();
+                $prixProduit = $approvisionnement->getPrixProduit();
+                if($status != 0){
+                    if($prixProduit){
+                        $prixProduit->setStock($prixProduit->getStock() - $stock);
+                    }
+                }
+                if($lastStatut != 0){
+                    if($prixProduit){
+                        $prixProduit->setStock($prixProduit->getStock() + $stock);
+                    }
+                }
+                $em->flush();
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
         }
 
         return new JsonResponse(1);

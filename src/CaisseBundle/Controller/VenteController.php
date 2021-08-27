@@ -76,16 +76,43 @@ class VenteController extends Controller
 
         if (!empty($produitList)) {
         	foreach ($produitList as $key => $value) {
+
+                $qte = $qteList[$key];
+                $prix = $prixList[$key];
+                $total = $totalList[$key];
+
         		$panier = new Pannier();
 
         		$prixProduit = $this->getDoctrine()
                 		    		->getRepository('AppBundle:PrixProduit')
                 		            ->find( $produitList[$key] );
-                $produit = $prixProduit->getProduit(); 
 
-        		$qte = $qteList[$key];
-        		$prix = $prixList[$key];
-        		$total = $totalList[$key];
+                $approvisionnement = $this->getDoctrine()
+                                          ->getRepository('AppBundle:Approvisionnement')
+                                          ->findBy(array('prixProduit' => $prixProduit), array('dateExpiration' => 'ASC'));
+                if(count($approvisionnement) > 0){
+                    $qtes = $qte;
+                    foreach ($approvisionnement as $key => $appro) {                         
+                        $stock = $appro->getStockRestant();
+                        if($appro->getStatus() == 0 && $qtes != 0 && $stock != 0){  
+                            if($qtes > $stock){
+                                $qtes = $qtes - $stock;
+                                $restStock = $appro->setStockRestant($qtes);
+                                if($qtes == 0)
+                                    $appro->setStatus(1);
+                            }else{                                
+                                $qtes = $qtes - $stock;
+                                $qtes = abs($qtes);
+                                $restStock = $appro->setStockRestant($qtes);
+                                if($qtes == 0)
+                                    $appro->setStatus(1);
+                                $qtes = 0;
+                            }
+                        }
+                    }
+                }
+
+                $produit = $prixProduit->getProduit(); 
 
         		$panier->setDate($date);
         		$panier->setQte($qte);

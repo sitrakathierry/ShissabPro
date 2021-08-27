@@ -84,9 +84,9 @@ class Approvisionnement
     private $dateExpiration;
 
     /**
-     * @var boolean
+     * @var int
      *
-     * @ORM\Column(name="status", type="boolean", nullable=true)
+     * @ORM\Column(name="status", type="integer", nullable=true)
      */
     private $status = '0';
 
@@ -103,6 +103,16 @@ class Approvisionnement
      * @ORM\Column(name="stock_restant", type="float", precision=10, scale=0, nullable=true)
      */
     private $stockRestant;
+
+    /**
+     * @var \AppBundle\Entity\PrixProduit
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PrixProduit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="prix_produit_id", referencedColumnName="id")
+     * })
+     */
+    private $prixProduit;
 
 
     /**
@@ -336,7 +346,7 @@ class Approvisionnement
     /**
      * Set status
      *
-     * @param boolean $status
+     * @param integer $status
      *
      * @return Approvisionnement
      */
@@ -350,7 +360,7 @@ class Approvisionnement
     /**
      * Get status
      *
-     * @return boolean
+     * @return integer
      */
     public function getStatus()
     {
@@ -379,5 +389,29 @@ class Approvisionnement
     public function getPrixVente()
     {
         return $this->prixVente;
+    }
+
+    /**
+     * Set prixProduit
+     *
+     * @param \AppBundle\Entity\PrixProduit $prixProduit
+     *
+     * @return Approvisionnement
+     */
+    public function setPrixProduit(\AppBundle\Entity\PrixProduit $prixProduit = null)
+    {
+        $this->prixProduit = $prixProduit;
+
+        return $this;
+    }
+
+    /**
+     * Get prixProduit
+     *
+     * @return \AppBundle\Entity\PrixProduit
+     */
+    public function getPrixProduit()
+    {
+        return $this->prixProduit;
     }
 }

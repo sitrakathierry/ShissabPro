@@ -125,6 +125,7 @@ class ApprovisionnementController extends Controller
                         $prixProduit->setAgence($agence);
                         $prixProduit->setProduit($produit);
                         $em->persist($prixProduit);
+                        $approvisionnement->setPrixProduit($prixProduit);
                     }
                     $produit->setStock( $produit->getStock() + $qte );
                     $em->persist($produit);

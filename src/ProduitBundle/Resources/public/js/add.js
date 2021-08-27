@@ -7,6 +7,16 @@ $(document).on('change','#image',function(event) {
   });
 });
 
+$('#expirer').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true,
+    format: 'dd/mm/yyyy',
+    language: 'fr'
+});
+
 $('.summernote').summernote()
 
 var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -37,6 +47,7 @@ $(document).on('click', '#btn-save', function(event) {
 		unite : $('#unite').val(),
 		stock_alerte : $('#stock_alerte').val(),
 		produit_image : $('#produit_image').attr('src'),
+		expirer: $('#expirer').val()
 	};
 
 	var url = Routing.generate('produit_save');

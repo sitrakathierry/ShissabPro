@@ -54,7 +54,7 @@
                       		{% for produit in produits %}
                             <optgroup label="{{ produit.nom }}">
                               {% for prixProduit in prixProduits %}
-                                {% if prixProduit.produit == produit %}
+                                {% if prixProduit.produit == produit and prixProduit.stock > 0 %}
                                   <option 
                                     value="{{ prixProduit.id }}" 
                                     data-code="{{ produit.codeProduit }}" 
