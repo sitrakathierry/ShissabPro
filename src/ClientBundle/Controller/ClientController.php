@@ -271,6 +271,16 @@ class ClientController extends Controller
                             ->find($num_police);
         } else {
             $client = new Client();
+
+            $exist =  $this->checkExist( $request );
+
+            if (!!$exist) {
+                return new JsonResponse(array(
+                    'success' => false,
+                    'id' => $exist
+                ));
+            }
+
         }
 
 
@@ -355,15 +365,20 @@ class ClientController extends Controller
             $user = $this->getUser();
             $logs->setStory($user,'Modification Fiche Client N°' . $client->getFormattedNum());
 
-            return $this->redirectToRoute('client_show',array(
-                'id' => $client->getNumPolice()
-            ));
+            // return $this->redirectToRoute('client_show',array(
+            //     'id' => $client->getNumPolice()
+            // ));
         } else {
             $logs = $this->get('app.logs');
             $user = $this->getUser();
             $logs->setStory($user,'Création Fiche Client N°' . $client->getFormattedNum());
-            return $this->redirectToRoute('client_add');
+            // return $this->redirectToRoute('client_add');
         }
+
+        return new JsonResponse(array(
+            'success' => true,
+            'id' => $num_police
+        ));
 
     }
 
@@ -708,6 +723,37 @@ class ClientController extends Controller
                     ->details($id);
                     
         return new JsonResponse($client);
+    }
+
+    public function checkExist(Request $request)
+    {
+        $statut = $request->request->get('statut');
+        
+        if ($statut == 1) {
+            $clm_nom_societe = $request->request->get('clm_nom_societe');
+
+            $morale = $this->getDoctrine()
+                    ->getRepository('AppBundle:Client')
+                    ->checkMorale(array(
+                        'nomSociete' => strtoupper($clm_nom_societe)
+                    ));
+
+            return $morale;
+        } else {
+            $clp_nom = $request->request->get('clp_nom');
+
+            $physique = $this->getDoctrine()
+                    ->getRepository('AppBundle:Client')
+                    ->checkPhysique(array(
+                        'nom' => $clp_nom
+                    ));
+
+            return $physique;
+
+        }
+
+        return false;
+        
     }
 
 }

@@ -35,7 +35,9 @@ $(document).ready(function(){
 			let clm_email = $('input[name=clm_email]').val();
 			let clm_tel_contact = $('input[name=clm_tel_contact]').val();
 			if (clm_nom_societe != '' && clm_tel_fixe != '' && clm_tel_contact != '') {
-				form.submit();
+				// form.submit();
+				var data = form.serializeArray();
+				save_client(data, form.data('action'));
 			} else {
 				show_info('Erreur','Champs obligatoires','error');
 			}
@@ -46,13 +48,39 @@ $(document).ready(function(){
 			let clp_tel = $('input[name=clp_tel]').val();
 			let clp_sexe = $('select[name=clp_sexe]').val();
 			if (clp_nom != '' && clp_adresse != '' && clp_tel != '' && clp_sexe != '') {
-				form.submit();
+				// form.submit();
+				var data = form.serializeArray();
+				save_client(data, form.data('action'));
 			} else {
 				show_info('Erreur','Champs obligatoires','error');
 			}
 		}
+	});
 
-
-
-	})
+	function save_client(data,url) {
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: data,
+			success: function(res) {
+				if (res.success == true) {
+					show_info('Succés','Client enregistré');
+				} else {
+					// console.log('existant');
+					swal({
+		                title: "Le Client existant déjà",
+		                text: "Voulez-vous consulter les informations du client",
+		                type: "info",
+		                showCancelButton: true,
+		                // confirmButtonColor: "#DD6B55",
+		                confirmButtonText: "OUI",
+		                closeOnConfirm: false
+		            }, function () {
+		            	var url = Routing.generate('client_show', { id : res.id });
+		            	window.location.href = url
+		            });
+				}
+			}
+		})
+	}
 });

@@ -10,6 +10,55 @@ namespace AppBundle\Repository;
  */
 class ClientRepository extends \Doctrine\ORM\EntityRepository
 {
+
+	public function checkPhysique($param)
+	{
+		$em = $this->getEntityManager();
+
+		$query = "	select c.num_police
+					from client c
+					inner join client_physique cp on (c.id_client_physique = cp.id)";
+
+		$query .= "	where UPPER(cp.nom) = '" . $param['nom'] . "'";
+
+		$query .= "	limit 1";
+
+        $statement = $em->getConnection()->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        if (!empty($result)) {
+        	return $result[0]['num_police'];
+        }
+
+        return false;
+
+	}
+
+	public function checkMorale($param)
+	{
+		$em = $this->getEntityManager();
+
+		$query = "	select c.num_police
+					from client c
+					inner join client_morale cm on (c.id_client_morale = cm.id)";
+
+		$query .= "	where UPPER(cm.nom_societe) = '" . $param['nomSociete'] . "'";
+
+		$query .= "	limit 1";
+
+        $statement = $em->getConnection()->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        if (!empty($result)) {
+        	return $result[0]['num_police'];
+        }
+
+        return false;
+
+	}
+
 	public function liste($statut,$agence)
 	{
 
