@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    $('.summernote').summernote();
+    $('.f_designation').summernote();
 
     $(document).on('change','.f_libre',function(event) {
         var libre = $(this).children("option:selected").val();
@@ -9,7 +9,7 @@ $(document).ready(function(){
             $(this).closest('tr').find('.f_produit').addClass('hidden');
             $(this).closest('tr').find('.f_designation_container').removeClass('hidden');
             
-            $('.summernote').summernote();
+            $('.f_designation').summernote();
         } else {
             $(this).closest('tr').find('.f_produit').removeClass('hidden');
             $(this).closest('tr').find('.f_designation_container').addClass('hidden');
@@ -65,14 +65,14 @@ $(document).ready(function(){
             $('#id-row').val(new_id);
             // $('tr.row-' + id).remove();
 
-            $('.summernote').destroy();
+            $('.f_designation').destroy();
 
             $('#table-fact-add tbody tr:last').remove();
         } else {
             show_info("Attention", 'Le tableau devrait contenir au moins une ligne','error');
         }
 
-        $('.summernote').summernote();
+        $('.f_designation').summernote();
 
         calculMontant();
     });

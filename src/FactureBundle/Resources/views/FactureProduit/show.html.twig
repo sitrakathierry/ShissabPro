@@ -101,6 +101,7 @@
             <table class="table table-bordered" id="table-fact-add">
               <thead class="thead-dark">
                 <tr>
+                  <th scope="col">TYPE</th>
                   <th scope="col">DESIGNATION</th>
                   <th scope="col">QTE</th>
                   <th scope="col">PRIX</th>
@@ -117,26 +118,57 @@
                 {% for detail in details %}
 
                 	{% if list_id == "" %}
-                        {% set list_id = detail.id %}
-                    {% else %}
-                        {% set list_id = list_id ~ "," ~ detail.id %}
-                    {% endif %}
+                      {% set list_id = detail.id %}
+                  {% else %}
+                      {% set list_id = list_id ~ "," ~ detail.id %}
+                  {% endif %}
+
+                  {% set f_produit_class = '' %}
+                  {% set f_designation_class = '' %}
 
 	                <tr data-id="{{i}}">
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-10">
+                          <select class="form-control f_libre" name="f_libre[]">
+                            <option 
+                              value="0" 
+                              {% if detail.libre == 0 %} 
+                                selected="" 
+                                {% set f_designation_class = 'hidden' %}
+                              {% endif %} 
+                            >PRODUIT</option>
+
+                            <option 
+                              value="1" 
+                              {% if detail.libre == 1 %} 
+                                selected="" 
+                                {% set f_produit_class = 'hidden' %}
+                              {% endif %} 
+                            >AUTRE</option>
+                          </select>
+                        </div>
+                      </div>
+                    </td>
 	                  <td>
 	                    <div class="form-group">
 	                      <div class="col-sm-10">
-	                        <select class="form-control f_produit" name="f_produit[]">
-				              <option></option>
-				              {% for produit in produits %}
-				                <option 
-				                	value="{{produit.id}}"
-				                	{% if detail.produit.id == produit.id %}
-				                		selected=""
-				                	{% endif %} 
-				                >{{produit.nom}}</option>
-				              {% endfor %}
-				            </select>
+	                        <select class="form-control f_produit {{ f_produit_class }}" name="f_produit[]">
+      				              <option></option>
+      				              {% for produit in produits %}
+      				                <option 
+      				                	value="{{produit.id}}"
+      				                	{% if detail.produit.id == produit.id %}
+      				                		selected=""
+      				                	{% endif %} 
+      				                >{{produit.nom}}</option>
+      				              {% endfor %}
+      				            </select>
+                          <div class="f_designation_container {{ f_designation_class }}">
+                            <textarea class="f_designation" name="f_designation[]">
+                              {{ detail.designation | raw }}
+                            </textarea>
+                          </div>
 	                      </div>
 	                    </div>
 	                  </td>
@@ -241,7 +273,7 @@
                     </button>
 
                     {% if print %}
-                      <a href="{{ path('facture_pdf', { id : facture.id }) }}" class="btn btn-info" target="_blank">
+                      <a href="{{ path('facture_produit_pdf', { id : facture.id }) }}" class="btn btn-info" target="_blank">
                           <i class="fa fa-print"></i>
                           Imprimer
                       </a>

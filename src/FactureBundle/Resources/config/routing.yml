@@ -72,3 +72,10 @@ facture_service_show:
     options:
         expose: true
     methods: [GET]
+
+facture_produit_pdf:
+    path:     /facture/produit/pdf/{id}
+    defaults: { _controller: FactureBundle:FactureProduit:pdf }
+    options:
+        expose: true
+    methods: [GET]

@@ -231,4 +231,64 @@ class FactureProduitController extends Controller
         ));
 
     }
+
+    public function pdfAction($id)
+    {
+        $facture  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Facture')
+                        ->find($id);
+
+        $factureProduit  = $this->getDoctrine()
+                        ->getRepository('AppBundle:FactureProduit')
+                        ->findOneBy(array(
+                            'facture' => $facture
+                        ));
+
+        $details = $this->getDoctrine()
+                    ->getRepository('AppBundle:FactureProduitDetails')
+                    ->findBy(array(
+                        'factureProduit' => $factureProduit
+                    ));
+
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $produits = $this->getDoctrine()
+            ->getRepository('AppBundle:Produit')
+            ->findBy(array(
+                'agence' => $agence
+            ));
+            
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findOneBy(array(
+                        'agence' => $agence
+                    ));       
+
+        $modelePdf = null;
+        if ($pdfAgence && $pdfAgence->getFacture()) {
+           $modelePdf = $pdfAgence->getFacture();
+        }
+
+        $template = $this->renderView('FactureBundle:FactureProduit:pdf.html.twig', array(
+            'facture' => $facture,
+            'factureProduit' => $factureProduit,
+            'details' => $details,
+            'produits' => $produits,
+            'modelePdf' => $modelePdf,
+        ));
+
+        $html2pdf = $this->get('app.html2pdf');
+
+        $html2pdf->create();
+
+        return $html2pdf->generatePdf($template, "facture" . $facture->getId());
+
+    }
 }
