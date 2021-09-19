@@ -97,6 +97,8 @@ class FactureProduitController extends Controller
 
         }
 
+        $f_libre = $request->request->get('f_libre');
+        $f_designation = $request->request->get('f_designation');
         $f_produit = $request->request->get('f_produit');
         $f_prix = $request->request->get('f_prix');
         $f_qte = $request->request->get('f_qte');
@@ -105,15 +107,24 @@ class FactureProduitController extends Controller
         if (!empty($f_produit)) {
             foreach ($f_produit as $key => $value) {
                 $detail = new FactureProduitDetails();
-                $produit = $this->getDoctrine()
-                    ->getRepository('AppBundle:Produit')
-                    ->find( $f_produit[$key] );
 
+                $libre = $f_libre[$key];
+                $designation = $f_designation[$key];
                 $prix = $f_prix[$key];
                 $qte = $f_qte[$key];
                 $montant = $f_montant[$key];
 
-                $detail->setProduit($produit);
+
+                if ($libre == 1) {
+                    $detail->setDesignation($designation);
+                } else {
+                    $produit = $this->getDoctrine()
+                        ->getRepository('AppBundle:Produit')
+                        ->find( $f_produit[$key] );
+                    $detail->setProduit($produit);
+                }
+
+                $detail->setLibre($libre);
                 $detail->setPrix($prix);
                 $detail->setQte($qte);
                 $detail->setMontant($montant);
