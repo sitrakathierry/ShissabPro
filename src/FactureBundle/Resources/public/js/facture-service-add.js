@@ -1,5 +1,22 @@
 $(document).ready(function(){
 
+    $('.f_service_designation').summernote();
+
+    $(document).on('change','.f_service_libre',function(event) {
+        var libre = $(this).children("option:selected").val();
+
+        if (libre == 1) {
+            $(this).closest('tr').find('.f_service').addClass('hidden');
+            $(this).closest('tr').find('.f_service_designation_container').removeClass('hidden');
+            
+            $('.f_service_designation').summernote();
+        } else {
+            $(this).closest('tr').find('.f_service').removeClass('hidden');
+            $(this).closest('tr').find('.f_service_designation_container').addClass('hidden');
+        }
+    })
+
+
     $('#descr').summernote();
 
     $('#f_client').select2();
@@ -24,13 +41,14 @@ $(document).ready(function(){
         var services = $('.f_service').html();
         var durees = $('.f_service_duree').html();
 
-        var a = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service" name="f_service[]">'+ services +'</select></div></div></td>';
-        var b = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_periode" name="f_service_periode[]"></div></div></td>';
-        var c = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_duree" name="f_service_duree[]">'+ durees +'</select></div></div></td>';
-        var d = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_prix" name="f_service_prix[]"></div></div></td>';
-        var e = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_montant" name="f_service_montant[]"></div></div></td>';
-        var f = '<td></td>';
-        var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + '</tr>';
+        var a ='<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_libre" name="f_service_libre[]"><option value="0">PRODUIT</option><option value="1">AUTRE</option></select></div></div></td>';
+        var b = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service" name="f_service[]">'+ services +'</select><div class="f_service_designation_container hidden"><textarea class="f_service_designation" name="f_service_designation[]"></textarea></div></div></div></td>';
+        var c = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_periode" name="f_service_periode[]"></div></div></td>';
+        var d = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_duree" name="f_service_duree[]">'+ durees +'</select></div></div></td>';
+        var e = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_prix" name="f_service_prix[]"></div></div></td>';
+        var f = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_montant" name="f_service_montant[]"></div></div></td>';
+        var g = '<td></td>';
+        var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + f + g + '</tr>';
         $("#table-service-add tbody").append(markup);
         $('#id-row-service').val(new_id);
 
@@ -47,10 +65,16 @@ $(document).ready(function(){
         if (new_id >= 0) {
             $('#id-row-service').val(new_id);
             // $('tr.row-' + id).remove();
+
+            $('.f_service_designation').destroy();
+
             $('#table-service-add tbody tr:last').remove();
         } else {
             show_info("Attention", 'Le tableau devrait contenir au moins une ligne','error');
         }
+
+        $('.f_service_designation').summernote();
+        
         calculMontantService();
     });
 

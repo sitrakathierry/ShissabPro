@@ -2,6 +2,7 @@
 <table class="table table-bordered" id="table-service-add">
   <thead class="thead-dark">
     <tr>
+      <th scope="col">TYPE DESIGNATION</th>
       <th scope="col">DESIGNATION</th>
       <th scope="col">PERIODE</th>
       <th scope="col">DUREE</th>
@@ -12,6 +13,16 @@
   </thead>
   <tbody>
     <tr data-id="0">
+       <td>
+        <div class="form-group">
+          <div class="col-sm-10">
+            <select class="form-control f_service_libre" name="f_service_libre[]">
+              <option value="0">PRODUIT</option>
+              <option value="1">AUTRE</option>
+            </select>
+          </div>
+        </div>
+      </td>
       <td>
         <div class="form-group">
           <div class="col-sm-10">
@@ -21,6 +32,10 @@
                 <option value="{{service.id}}">{{service.nom}}</option>
               {% endfor %}
             </select>
+            <div class="f_service_designation_container hidden">
+              <textarea class="f_service_designation" name="f_service_designation[]">
+              </textarea>
+            </div>
           </div>
         </div>
       </td>

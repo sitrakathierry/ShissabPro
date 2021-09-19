@@ -47,8 +47,8 @@ $(document).ready(function(){
         var d = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_prix" name="f_prix[]"></div></div></td>';
         var e = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_montant" name="f_montant[]"></div></div></td>';
         var f = '<td></td>';
-        var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + f + '</tr>';
-        $("#table-fact-add tbody").append(markup);
+        var markup = '<tr class="fact-row row-'+ new_id +'">' + a + b + c + d + e + f + '</tr>';
+        $("#table-fact-add tbody#principal").append(markup);
         $('#id-row').val(new_id);
 
         $('#table-fact-add tbody tr:last').find('.f_prix').val()
@@ -83,6 +83,8 @@ $(document).ready(function(){
 
         var prix = Number( event.target.value );
         var qte = Number( $(this).closest('tr').find('.f_qte').val() );
+
+        console.log(prix,qte)
 
         var total = prix;
 
@@ -128,7 +130,7 @@ $(document).ready(function(){
         montant = 0;
 
         $('table#table-fact-add > tbody  > tr').each(function(index, tr) { 
-           var montant_selector = $(this).find(".f_montant");
+           var montant_selector = $(this).children('td.td-montant').find('.f_montant');
 
            var f_montant = montant_selector.val();
 

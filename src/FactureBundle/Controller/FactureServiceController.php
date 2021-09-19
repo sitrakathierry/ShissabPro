@@ -98,6 +98,8 @@ class FactureServiceController extends Controller
 
         }
 
+        $f_service_libre = $request->request->get('f_service_libre');
+        $f_service_designation = $request->request->get('f_service_designation');
         $f_service = $request->request->get('f_service');
         $f_service_periode = $request->request->get('f_service_periode');
         $f_service_duree = $request->request->get('f_service_duree');
@@ -107,16 +109,24 @@ class FactureServiceController extends Controller
         if (!empty($f_service)) {
             foreach ($f_service as $key => $value) {
                 $detail = new FactureServiceDetails();
-                $service = $this->getDoctrine()
-                    ->getRepository('AppBundle:Service')
-                    ->find( $f_service[$key] );
 
+                $libre = $f_service_libre[$key];
+                $designation = $f_service_designation[$key];
                 $periode = $f_service_periode[$key];
                 $duree = $f_service_duree[$key];
                 $prix = $f_service_prix[$key];
                 $montant = $f_service_montant[$key];
 
-                $detail->setService($service);
+                if ($libre == 1) {
+                    $detail->setDesignation($designation);
+                    
+                } else {
+                    $service = $this->getDoctrine()
+                        ->getRepository('AppBundle:Service')
+                        ->find( $f_service[$key] );
+                    $detail->setService($service);
+                }
+
                 $detail->setPeriode($periode);
                 $detail->setDuree($duree);
                 $detail->setPrix($prix);

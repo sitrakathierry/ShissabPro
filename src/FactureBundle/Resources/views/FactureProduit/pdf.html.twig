@@ -80,6 +80,15 @@
     	font-size: 14pt;
     }
 
+    .th, .tf {
+    	font-weight: bold;
+    	text-transform: uppercase;
+    }
+
+    .th{
+    	text-align: center;
+    }
+
 </style>
 
 <page backtop="" backbottom="" backleft="5mm" backright="5mm"> 
@@ -143,35 +152,35 @@
 		        		{{ detail.produit.nom }}
 		        	{% endif %}
 		        </td>
-		        <td class="text-center" style="width: 25%; border: solid 1px #000000;">
+		        <td class="" style="width: 25%; border: solid 1px #000000;">
 		        	{{detail.qte}}
 		        </td>
-		        <td class="text-center" style="width: 25%; border: solid 1px #000000;">
+		        <td class="text-right" style="width: 25%; border: solid 1px #000000;">
 		        	{{detail.prix}}
 		        </td>
-		        <td class="text-center" style="width: 25%; border: solid 1px #000000;">
+		        <td class="text-right" style="width: 25%; border: solid 1px #000000;">
 		        	{{detail.montant}}
 		        </td>
 	        </tr>
 		{% endfor %}
 
 	    <tr>
-	        <td class="tf" style="width: 25%; border: solid 1px #000000;text-align: left;">Montant</td>
+	        <td class="tf" style="width: 25%; border: solid 1px #000000;">Montant</td>
 	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
 	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
-	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.montant}}</td>
+	        <td class="tf text-right" style="width: 25%; border: solid 1px #000000;">{{facture.montant}}</td>
 	    </tr>
 	    <tr>
 	        <td class="tf" style="width: 25%; border: solid 1px #000000;text-align: left;">Remise(en %)</td>
 	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
-	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.remisePourcentage}}</td>
-	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.remiseValeur}}</td>
+	        <td class="tf text-right" style="width: 25%; border: solid 1px #000000;">{{facture.remisePourcentage}}</td>
+	        <td class="tf text-right" style="width: 25%; border: solid 1px #000000;">{{facture.remiseValeur}}</td>
 	    </tr>
 	    <tr>
 	        <td class="tf" style="width: 25%; border: solid 1px #000000;text-align: left;">Total</td>
 	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
 	        <td class="tf" style="width: 25%; border: solid 1px #000000;"></td>
-	        <td class="tf" style="width: 25%; border: solid 1px #000000;">{{facture.total}}</td>
+	        <td class="tf text-right" style="width: 25%; border: solid 1px #000000;">{{facture.total}}</td>
 	    </tr>
 
 	</table>
