@@ -65,6 +65,7 @@ $(document).ready(function(){
 			success: function(res) {
 				if (res.success == true) {
 					show_info('Succés','Client enregistré');
+					location.reload();
 				} else {
 					// console.log('existant');
 					swal({

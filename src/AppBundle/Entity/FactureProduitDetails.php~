@@ -62,6 +62,20 @@ class FactureProduitDetails
      */
     private $factureProduit;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="libre", type="integer", nullable=true)
+     */
+    private $libre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="designation", type="text", nullable=true)
+     */
+    private $designation;
+
 
     /**
      * Get id
@@ -169,4 +183,28 @@ class FactureProduitDetails
         return $this->produit;
     }
 
+
+    /**
+     * Set factureProduit
+     *
+     * @param \AppBundle\Entity\FactureProduit $factureProduit
+     *
+     * @return FactureProduitDetails
+     */
+    public function setFactureProduit(\AppBundle\Entity\FactureProduit $factureProduit = null)
+    {
+        $this->factureProduit = $factureProduit;
+    
+        return $this;
+    }
+
+    /**
+     * Get factureProduit
+     *
+     * @return \AppBundle\Entity\FactureProduit
+     */
+    public function getFactureProduit()
+    {
+        return $this->factureProduit;
+    }
 }

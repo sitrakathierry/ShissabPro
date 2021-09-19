@@ -728,6 +728,7 @@ class ClientController extends Controller
     public function checkExist(Request $request)
     {
         $statut = $request->request->get('statut');
+        $agence = $request->request->get('agence');
         
         if ($statut == 1) {
             $clm_nom_societe = $request->request->get('clm_nom_societe');
@@ -735,7 +736,8 @@ class ClientController extends Controller
             $morale = $this->getDoctrine()
                     ->getRepository('AppBundle:Client')
                     ->checkMorale(array(
-                        'nomSociete' => strtoupper($clm_nom_societe)
+                        'nomSociete' => strtoupper($clm_nom_societe),
+                        'agence' => $agence
                     ));
 
             return $morale;
@@ -745,7 +747,8 @@ class ClientController extends Controller
             $physique = $this->getDoctrine()
                     ->getRepository('AppBundle:Client')
                     ->checkPhysique(array(
-                        'nom' => $clp_nom
+                        'nom' => $clp_nom,
+                        'agence' => $agence
                     ));
 
             return $physique;

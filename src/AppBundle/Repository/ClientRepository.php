@@ -21,6 +21,8 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 
 		$query .= "	where UPPER(cp.nom) = '" . $param['nom'] . "'";
 
+		$query .= "	and c.agence = " . $param['agence'];
+
 		$query .= "	limit 1";
 
         $statement = $em->getConnection()->prepare($query);
@@ -44,6 +46,8 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 					inner join client_morale cm on (c.id_client_morale = cm.id)";
 
 		$query .= "	where UPPER(cm.nom_societe) = '" . $param['nomSociete'] . "'";
+
+		$query .= "	and c.agence = " . $param['agence'];
 
 		$query .= "	limit 1";
 

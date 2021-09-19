@@ -1,6 +1,24 @@
 $(document).ready(function(){
 
+    $('.summernote').summernote();
+
+    $(document).on('change','.f_libre',function(event) {
+        var libre = $(this).children("option:selected").val();
+
+        if (libre == 1) {
+            $(this).closest('tr').find('.f_produit').addClass('hidden');
+            $(this).closest('tr').find('.f_designation_container').removeClass('hidden');
+            
+            $('.summernote').summernote();
+        } else {
+            $(this).closest('tr').find('.f_produit').removeClass('hidden');
+            $(this).closest('tr').find('.f_designation_container').addClass('hidden');
+        }
+    })
+
+
     $('#descr').summernote();
+
 
     $('#f_client').select2();
     
@@ -22,12 +40,14 @@ $(document).ready(function(){
         var id = $('#id-row').val();
         var new_id = parseInt(id) + 1;
         var produits = $('.f_produit').html();
-        var a = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_produit" name="f_produit[]">'+ produits +'</select></div></div></td>';
-        var b = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_qte" name="f_qte[]"></div></div></td>';
-        var c = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_prix" name="f_prix[]"></div></div></td>';
-        var d = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_montant" name="f_montant[]"></div></div></td>';
-        var e = '<td></td>';
-        var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + '</tr>';
+
+        var a ='<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_libre" name="f_libre[]"><option value="0">PRODUIT</option><option value="1">AUTRE</option></select></div></div></td>';
+        var b = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_produit" name="f_produit[]">'+ produits +'</select><div class="f_designation_container hidden"><textarea class="summernote f_designation" name="f_designation[]"></textarea></div></div></div></td>';
+        var c = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_qte" name="f_qte[]"></div></div></td>';
+        var d = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_prix" name="f_prix[]"></div></div></td>';
+        var e = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_montant" name="f_montant[]"></div></div></td>';
+        var f = '<td></td>';
+        var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + f + '</tr>';
         $("#table-fact-add tbody").append(markup);
         $('#id-row').val(new_id);
 
@@ -44,10 +64,16 @@ $(document).ready(function(){
         if (new_id >= 0) {
             $('#id-row').val(new_id);
             // $('tr.row-' + id).remove();
+
+            $('.summernote').destroy();
+
             $('#table-fact-add tbody tr:last').remove();
         } else {
             show_info("Attention", 'Le tableau devrait contenir au moins une ligne','error');
         }
+
+        $('.summernote').summernote();
+
         calculMontant();
     });
 

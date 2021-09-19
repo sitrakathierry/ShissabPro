@@ -62,6 +62,20 @@ class FactureProduitDetails
      */
     private $factureProduit;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="libre", type="integer", nullable=true)
+     */
+    private $libre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="designation", type="text", nullable=true)
+     */
+    private $designation;
+
 
     /**
      * Get id
@@ -192,5 +206,53 @@ class FactureProduitDetails
     public function getFactureProduit()
     {
         return $this->factureProduit;
+    }
+
+    /**
+     * Set libre
+     *
+     * @param integer $libre
+     *
+     * @return FactureProduitDetails
+     */
+    public function setLibre($libre)
+    {
+        $this->libre = $libre;
+
+        return $this;
+    }
+
+    /**
+     * Get libre
+     *
+     * @return integer
+     */
+    public function getLibre()
+    {
+        return $this->libre;
+    }
+
+    /**
+     * Set designation
+     *
+     * @param string $designation
+     *
+     * @return FactureProduitDetails
+     */
+    public function setDesignation($designation)
+    {
+        $this->designation = $designation;
+
+        return $this;
+    }
+
+    /**
+     * Get designation
+     *
+     * @return string
+     */
+    public function getDesignation()
+    {
+        return $this->designation;
     }
 }
