@@ -43,6 +43,10 @@
     	border-collapse: collapse;
     }
 
+    .f10{
+    	font-size: 10pt;
+    }
+
     .f14{
     	font-size: 14pt;
     }
@@ -188,28 +192,28 @@
 	<table style="width:100%; margin-top: 50px">
 		<tr>
 			<td style="width:80%">
-				Arrêté la présente facture à la somme de <span id="somme" class="typo" style="text-transform: uppercase;">{{facture.somme}}</span> 
+				Arrêté la présente facture à la somme de <span id="somme" class="typo b" style="text-transform: uppercase;">{{facture.somme}}</span> 
+			</td>
+			<td style="width:20%">
 			</td>
 		</tr>
 	    <tr>
-	        <td style="width: 80%" class="text-right">
-	            <br>
-	            <br>
-	            <br>
-	            Le
-	            </td>
-	        <td style="width: 20%" class="text-right" class="dashed typo">
-	            <br>
-	            <br>
-	            <br>
-	             {{facture.date| date('d/m/Y')}}
+	        <td style="width: 80%">
+            </td>
+	        <td style="width: 20%" class="text-center dashed typo">
+	        	<br>
+	        	<br>
+	        	<br>
+	             Le {{facture.date| date('d/m/Y')}}
 	        </td>
 	    </tr>
 	</table>
 
-	<table style="width:100%; margin-top: 50px">
+	<table style="width:100%; margin-top: 20px">
 		<tr>
-			<td style="width:100%" class="text-right">
+			<td style="width:80%">
+			</td>
+			<td style="width:20%" class="text-center f10">
 				POUR LA SOCIETE
 			</td>
 		</tr>
