@@ -104,7 +104,9 @@ $(document).ready(function(){
     $(document).on('input','.f_qte',function (event) {
 
         var qte = Number( event.target.value );
-        var prix = Number( $(this).closest('tr').find('.f_prix').val() );
+        var prix = $(this).closest('tr').find('.f_prix').val();
+
+        prix = prix ? prix : 0;
 
         var total = prix;
 
