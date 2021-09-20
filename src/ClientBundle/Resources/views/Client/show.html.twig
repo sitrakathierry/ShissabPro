@@ -36,7 +36,7 @@
                         </h5>
                     </div>
                     <div class="ibox-content">
-                        <form method="POST" action="{{ path('client_save') }}" class="form-horizontal" id="form">
+                        <form method="POST" data-action="{{ path('client_save') }}" class="form-horizontal" id="form">
 
                           <input type="hidden" name="num_police" id="num_police" value="{{client.numPolice}}">
                           <input type="hidden" name="statut" value="{{client.statut}}">
@@ -397,15 +397,15 @@
 
                             <div class="hr-line-dashed"></div>
                             <div class="row">
-                              {% if permissions.client.delete %}
+                              {# {% if permissions.client.delete %} #}
                               <div class="col-lg-6">
                                   <a href="{{ path('client_delete', {id: client.numPolice}) }}" class="btn btn-danger" id="delete">
                                     <i class="fa fa-trash"></i>
                                     Supprimer
                                   </a>
                               </div>
-                              {% endif %}
-                              {% if permissions.client.edit %}
+                              {# {% endif %} #}
+                              {# {% if permissions.client.edit %} #}
                                 <div class="col-lg-6">
                                     <!-- <div class=""> -->
                                         <button class="btn btn-white" type="reset">
@@ -418,7 +418,7 @@
                                         </button>
                                     <!-- </div> -->
                                 </div>
-                              {% endif %}
+                              {# {% endif %} #}
                             </div>
                             <input type="hidden" name="" id="id-row" value="0">
                             <input type="hidden" name="f_a_payer" id="id-row" value="0" id="f_a_payer">
