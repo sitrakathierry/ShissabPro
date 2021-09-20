@@ -19,7 +19,6 @@ $(document).ready(function(){
 
     $('#descr').summernote();
 
-
     $('#f_client').select2();
     
     $('#data_1 .input-group.date').datepicker({

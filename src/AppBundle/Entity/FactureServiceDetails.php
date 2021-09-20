@@ -36,28 +36,28 @@ class FactureServiceDetails
      *
      * @ORM\Column(name="periode", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $periode = '';
+    private $periode = '0.00';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="duree", type="integer", nullable=true)
      */
-    private $duree = '';
+    private $duree = '0';
 
     /**
      * @var string
      *
      * @ORM\Column(name="prix", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $prix = '';
+    private $prix = '0.00';
 
     /**
      * @var string
      *
      * @ORM\Column(name="montant", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $montant = '';
+    private $montant = '0.00';
 
     /**
      * @var \AppBundle\Entity\FactureService
@@ -74,14 +74,14 @@ class FactureServiceDetails
      *
      * @ORM\Column(name="libre", type="integer", nullable=true)
      */
-    private $libre;
+    private $libre = '0';
 
     /**
      * @var string
      *
      * @ORM\Column(name="designation", type="text", nullable=true)
      */
-    private $designation;
+    private $designation = '';
 
 
     /**
@@ -101,7 +101,7 @@ class FactureServiceDetails
      *
      * @return FactureServiceDetails
      */
-    public function setPeriode($periode)
+    public function setPeriode($periode = '0.00')
     {
         $this->periode = $periode;
     

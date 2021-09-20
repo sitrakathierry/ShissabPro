@@ -41,7 +41,7 @@ $(document).ready(function(){
         var services = $('.f_service').html();
         var durees = $('.f_service_duree').html();
 
-        var a ='<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_libre" name="f_service_libre[]"><option value="0">PRODUIT</option><option value="1">AUTRE</option></select></div></div></td>';
+        var a ='<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_libre" name="f_service_libre[]"><option value="0">SERVICE</option><option value="1">AUTRE</option></select></div></div></td>';
         var b = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service" name="f_service[]">'+ services +'</select><div class="f_service_designation_container hidden"><textarea class="f_service_designation" name="f_service_designation[]"></textarea></div></div></div></td>';
         var c = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_periode" name="f_service_periode[]"></div></div></td>';
         var d = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_duree" name="f_service_duree[]">'+ durees +'</select></div></div></td>';
@@ -49,7 +49,7 @@ $(document).ready(function(){
         var f = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_montant" name="f_service_montant[]"></div></div></td>';
         var g = '<td></td>';
         var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + f + g + '</tr>';
-        $("#table-service-add tbody").append(markup);
+        $("#table-service-add tbody#principal-service").append(markup);
         $('#id-row-service').val(new_id);
 
         $('#table-service-add tbody tr:last').find('.f_prix').val()
@@ -128,8 +128,9 @@ $(document).ready(function(){
 
         montant = 0;
 
-        $('table#table-fact-add > tbody  > tr').each(function(index, tr) { 
-           var montant_selector = $(this).find(".f_service_montant");
+        $('table#table-service-add > tbody  > tr').each(function(index, tr) { 
+           // var montant_selector = $(this).find(".f_service_montant");
+           var montant_selector = $(this).children('td.td-montant').find('.f_service_montant');
 
            var f_montant = montant_selector.val();
 

@@ -127,7 +127,8 @@ class FactureServiceController extends Controller
                     $detail->setService($service);
                 }
 
-                $detail->setPeriode($periode);
+                $detail->setLibre($libre);
+                $detail->setPeriode($periode ? $periode : '0.00');
                 $detail->setDuree($duree);
                 $detail->setPrix($prix);
                 $detail->setMontant($montant);
@@ -230,6 +231,66 @@ class FactureServiceController extends Controller
             'print' => $print,
             'definitif' => $definitif,
         ));
+
+    }
+
+    public function pdfAction($id)
+    {
+        $facture  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Facture')
+                        ->find($id);
+
+        $factureService  = $this->getDoctrine()
+                        ->getRepository('AppBundle:FactureService')
+                        ->findOneBy(array(
+                            'facture' => $facture
+                        ));
+
+        $details = $this->getDoctrine()
+                    ->getRepository('AppBundle:FactureServiceDetails')
+                    ->findBy(array(
+                        'factureService' => $factureService
+                    ));
+
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+        $agence = $userAgence->getAgence();
+
+        $services = $this->getDoctrine()
+            ->getRepository('AppBundle:Service')
+            ->findBy(array(
+                'agence' => $agence
+            ));
+            
+        $pdfAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findOneBy(array(
+                        'agence' => $agence
+                    ));       
+
+        $modelePdf = null;
+        if ($pdfAgence && $pdfAgence->getFacture()) {
+           $modelePdf = $pdfAgence->getFacture();
+        }
+
+        $template = $this->renderView('FactureBundle:FactureService:pdf.html.twig', array(
+            'facture' => $facture,
+            'factureService' => $factureService,
+            'details' => $details,
+            'services' => $services,
+            'modelePdf' => $modelePdf,
+        ));
+
+        $html2pdf = $this->get('app.html2pdf');
+
+        $html2pdf->create();
+
+        return $html2pdf->generatePdf($template, "facture" . $facture->getId());
 
     }
 }
