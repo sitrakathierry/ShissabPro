@@ -10,12 +10,18 @@ namespace AppBundle\Repository;
  */
 class ProduitRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getList($agence, $recherche_par, $a_rechercher)
+	public function getList(
+		$agence, 
+		$recherche_par, 
+		$a_rechercher,
+		$categorie = 0
+	)
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select *
+		$query = "	select p.id, p.qrcode, p.code_produit, p.image, p.nom, p.stock
 					from produit p
+					left join categorie_produit cp on (p.categorie_produit = cp.id)
 					where p.nom is not null ";
 
 		if ($agence) {
@@ -28,6 +34,10 @@ class ProduitRepository extends \Doctrine\ORM\EntityRepository
 
 		if ($recherche_par == 1) {
 			$query .= "	and p.nom like '%" . $a_rechercher . "%'";
+		}
+
+		if ($categorie) {
+			$query .= "	and cp.id = " . $categorie;
 		}
 
 		$query .= "	order by p.nom asc";

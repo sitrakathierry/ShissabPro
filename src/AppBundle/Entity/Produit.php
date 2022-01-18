@@ -101,6 +101,16 @@ class Produit
      */
     private $stockAlerte = 0;
 
+    /**
+     * @var \AppBundle\Entity\CategorieProduit
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CategorieProduit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="categorie_produit", referencedColumnName="id")
+     * })
+     */
+    private $categorieProduit;
+
 
     /**
      * Get id
@@ -398,5 +408,29 @@ class Produit
     public function getStockAlerte()
     {
         return $this->stockAlerte;
+    }
+
+    /**
+     * Set categorieProduit
+     *
+     * @param \AppBundle\Entity\CategorieProduit $categorieProduit
+     *
+     * @return Produit
+     */
+    public function setCategorieProduit(\AppBundle\Entity\CategorieProduit $categorieProduit = null)
+    {
+        $this->categorieProduit = $categorieProduit;
+
+        return $this;
+    }
+
+    /**
+     * Get categorieProduit
+     *
+     * @return \AppBundle\Entity\CategorieProduit
+     */
+    public function getCategorieProduit()
+    {
+        return $this->categorieProduit;
     }
 }

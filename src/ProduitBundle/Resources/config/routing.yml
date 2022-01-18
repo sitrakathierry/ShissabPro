@@ -14,8 +14,11 @@ produit_save:
     methods: [POST]
 
 produit_consultation:
-    path:     /produit/consultation
-    defaults: { _controller: ProduitBundle:Default:consultation }
+    path:     /produit/consultation/{categorie}
+    defaults: { _controller: ProduitBundle:Default:consultation, categorie: 0}
+    options:
+        expose: true
+    methods: [GET]
 
 produit_list:
     path:     /produit/list
@@ -102,3 +105,37 @@ produit_save_statut_prix_produit:
         expose: true
     methods: [POST]
 
+
+# CATEGORIE DES PRODUITS
+produit_categorie_index:
+    path:     /produit/categorie/index
+    defaults: { _controller: ProduitBundle:CategorieProduit:index }
+
+produit_categorie_add:
+    path:     /produit/categorie/add
+    defaults: { _controller: ProduitBundle:CategorieProduit:add }
+
+produit_categorie_save:
+    path:     /produit/categorie/save
+    defaults: { _controller: ProduitBundle:CategorieProduit:save }
+    options:
+        expose: true
+    methods: [POST]
+
+produit_categorie_consultation:
+    path:     /produit/categorie/consultation
+    defaults: { _controller: ProduitBundle:CategorieProduit:consultation }
+
+produit_categorie_list:
+    path:     /produit/categorie/list
+    defaults: { _controller: ProduitBundle:CategorieProduit:list }
+    options:
+        expose: true
+    methods: [POST]
+
+produit_categorie_show:
+    path:     /produit/categorie/show/{id}
+    defaults: { _controller: ProduitBundle:CategorieProduit:show }
+    options:
+        expose: true
+    methods: [GET]

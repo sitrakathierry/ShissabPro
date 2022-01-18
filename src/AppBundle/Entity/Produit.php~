@@ -64,16 +64,16 @@ class Produit
     private $description;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="prix_vente", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="prix_vente", type="float", precision=10, scale=0, nullable=true)
      */
     private $prixVente;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="stock", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="stock", type="float", precision=10, scale=0, nullable=true)
      */
     private $stock;
 
@@ -100,6 +100,16 @@ class Produit
      * @ORM\Column(name="stock_alerte", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $stockAlerte = 0;
+
+    /**
+     * @var \AppBundle\Entity\CategorieProduit
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CategorieProduit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="categorie_produit", referencedColumnName="id")
+     * })
+     */
+    private $categorieProduit;
 
 
     /**
@@ -350,5 +360,53 @@ class Produit
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set unite
+     *
+     * @param string $unite
+     *
+     * @return Produit
+     */
+    public function setUnite($unite)
+    {
+        $this->unite = $unite;
+    
+        return $this;
+    }
+
+    /**
+     * Get unite
+     *
+     * @return string
+     */
+    public function getUnite()
+    {
+        return $this->unite;
+    }
+
+    /**
+     * Set stockAlerte
+     *
+     * @param string $stockAlerte
+     *
+     * @return Produit
+     */
+    public function setStockAlerte($stockAlerte)
+    {
+        $this->stockAlerte = $stockAlerte;
+    
+        return $this;
+    }
+
+    /**
+     * Get stockAlerte
+     *
+     * @return string
+     */
+    public function getStockAlerte()
+    {
+        return $this->stockAlerte;
     }
 }

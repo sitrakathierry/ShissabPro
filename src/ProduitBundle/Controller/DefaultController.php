@@ -135,15 +135,23 @@ class DefaultController extends Controller
     	
     }
 
-    public function consultationAction()
+    public function consultationAction($categorie)
     {
         $agences  = $this->getDoctrine()
                         ->getRepository('AppBundle:Agence')
                         ->findAll();
 
+        $categorieProduit  = $this->getDoctrine()
+                        ->getRepository('AppBundle:CategorieProduit')
+                        ->find($categorie);
+
         $permission_user = $this->get('app.permission_user');
         $user = $this->getUser();
         $permissions = $permission_user->getPermissions($user);
+
+        $categories  = $this->getDoctrine()
+                        ->getRepository('AppBundle:CategorieProduit')
+                        ->findAll();
 
         $userAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:UserAgence')
@@ -154,6 +162,8 @@ class DefaultController extends Controller
         return $this->render('ProduitBundle:Default:consultation.html.twig', array(
             'agences' => $agences,
             'userAgence' => $userAgence,
+            'categorieProduit' => $categorieProduit,
+            'categories' => $categories,
         ));
     }
 
@@ -162,12 +172,14 @@ class DefaultController extends Controller
         $agence = $request->request->get('agence');
         $recherche_par = $request->request->get('recherche_par');
         $a_rechercher = $request->request->get('a_rechercher');
+        $categorie = $request->request->get('categorie');
 
         $produits  = $this->getDoctrine()
                         ->getRepository('AppBundle:Produit')
                         ->getList($agence,
                             $recherche_par,
-                            $a_rechercher
+                            $a_rechercher,
+                            $categorie
                         );
 
         return new JsonResponse($produits);
