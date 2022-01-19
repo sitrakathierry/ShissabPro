@@ -10,14 +10,19 @@ namespace AppBundle\Repository;
  */
 class CompteBancaireRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function list($recherche_par,$a_rechercher)
+	public function list(
+		$recherche_par,
+		$a_rechercher,
+		$agence_id = 0
+	)
 	{
 
 		$em = $this->getEntityManager();
 		
 		$query = "	select cb.id as id, b.nom as banque, cb.num_compte, cb.solde
 					from compte_bancaire cb
-					inner join banque b on (cb.banque = b.id)";
+					inner join banque b on (cb.banque = b.id)
+					left join agence ag on (cb.agence = ag.id)";
 
 		$where = " where b.id is not null";
 
@@ -27,6 +32,10 @@ class CompteBancaireRepository extends \Doctrine\ORM\EntityRepository
 
 		if ($recherche_par == 2) {
 			$where .= "	and cb.num_compte like '%". $a_rechercher ."%'";
+		}
+
+		if ($agence_id) {
+			$where .= "	and ag.id = " . $agence_id;
 		}
 
 		$query .= $where;

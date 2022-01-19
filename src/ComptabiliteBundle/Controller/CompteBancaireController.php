@@ -35,11 +35,21 @@ class CompteBancaireController extends Controller
         $recherche_par = $request->request->get('recherche_par');
         $a_rechercher = $request->request->get('a_rechercher');
 
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+                    
+        $agence_id = $userAgence->getAgence()->getId();
+
         $comptes = $this->getDoctrine()
                 ->getRepository('AppBundle:CompteBancaire')
                 ->list(
                     $recherche_par,
-                    $a_rechercher
+                    $a_rechercher,
+                    $agence_id
                 );
 
         return new JsonResponse($comptes);
@@ -60,6 +70,15 @@ class CompteBancaireController extends Controller
         	$compte = new CompteBancaire();
         }
 
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+                    
+        $agence = $userAgence->getAgence();
+
         $banque = $this->getDoctrine()
                     ->getRepository('AppBundle:Banque')
                     ->find($banque_id);
@@ -67,6 +86,7 @@ class CompteBancaireController extends Controller
         $compte->setBanque($banque);
         $compte->setNumCompte($num_compte);
         $compte->setSolde($solde);
+        $compte->setAgence($agence);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($compte);

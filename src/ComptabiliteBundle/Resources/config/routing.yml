@@ -3,9 +3,13 @@ comptabilite_homepage:
     defaults: { _controller: ComptabiliteBundle:Default:index }
 
 # banque
-comptabilite_banque:
-    path:     /comptabilite/banque
+comptabilite_banque_index:
+    path:     /comptabilite/banque/index
     defaults: { _controller: ComptabiliteBundle:Banque:index }
+
+comptabilite_banque_list:
+    path:     /comptabilite/banque/list
+    defaults: { _controller: ComptabiliteBundle:Banque:list }
 
 comptabilite_banque_get_list:
     path:     /comptabilite/banque/get-list

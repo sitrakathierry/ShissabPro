@@ -15,6 +15,11 @@ class BanqueController extends Controller
         return $this->render('ComptabiliteBundle:Banque:index.html.twig');
     }
 
+    public function listAction()
+    {
+        return $this->render('ComptabiliteBundle:Banque:list.html.twig');
+    }
+
     public function getListAction(Request $request)
     {
 
