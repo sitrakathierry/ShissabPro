@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th>Produit</th>
             <th>Qté ({{ produit.unite }})</th>
             <th>Prix unitaire (KMF)</th>
             <th>Total (KMF)</th>
@@ -12,6 +13,7 @@
         {% for appro in approvisionnements %}
             <tr class="appro-{{appro.type}}">
                 <td>{{ appro.date }}</td>
+                <td> {{ appro.code_variation }} - {{ appro.nom }} {{ appro.prix_vente }} KMF</td>
                 <td>{{ appro.qte }} </td>
                 <td>{{ appro.prix }}</td>
                 <td>{{ appro.total }}</td>

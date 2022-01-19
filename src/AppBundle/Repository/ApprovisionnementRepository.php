@@ -62,7 +62,7 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 
 		$em = $this->getEntityManager();
 		
-		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois, p.unite
+		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois, p.unite, p.nom, vp.prix_vente, CONCAT(p.code_produit,'/',vp.id) as code_variation
 					from approvisionnement ap
 					inner join variation_produit vp on (ap.variation_produit = vp.id)
 					inner join produit p on (vp.produit = p.id)
@@ -90,7 +90,7 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 
 		$em = $this->getEntityManager();
 		
-		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois, p.unite
+		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois, p.unite, p.nom, vp.prix_vente, CONCAT(p.code_produit,'/',vp.id) as code_variation
 					from pannier pa
 					inner join variation_produit vp on (pa.variation_produit = vp.id)
 					inner join produit p on (vp.produit = p.id)
