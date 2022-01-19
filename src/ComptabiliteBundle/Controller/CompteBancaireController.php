@@ -23,9 +23,21 @@ class CompteBancaireController extends Controller
 
     public function listByBanqueAction($id_banque)
     {
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+                    
+        $agence_id = $userAgence->getAgence()->getId();
+
         $comptes = $this->getDoctrine()
                 ->getRepository('AppBundle:CompteBancaire')
-                ->listByBanque($id_banque);
+                ->listByBanque(
+                    $id_banque,
+                    $agence_id
+                );
 
         return new JsonResponse($comptes);
     }

@@ -50,7 +50,10 @@ class CompteBancaireRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
-	public function listByBanque($id_banque)
+	public function listByBanque(
+		$id_banque,
+		$agence_id = 0
+	)
 	{
 
 		$em = $this->getEntityManager();
@@ -58,7 +61,14 @@ class CompteBancaireRepository extends \Doctrine\ORM\EntityRepository
 		$query = "	select cb.id as id, cb.num_compte
 					from compte_bancaire cb
 					inner join banque b on (cb.banque = b.id)
+					left join agence ag on (cb.agence = ag.id)
 					where b.id = " . $id_banque;
+
+		$where = " where cb.id is not null";
+
+		if ($agence_id) {
+			$where .= "	and ag.id = " . $agence_id;
+		}
 
         $statement = $em->getConnection()->prepare($query);
 

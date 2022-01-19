@@ -78,3 +78,26 @@ comptabilite_comptebancaire_list_by_banque:
     options:
         expose: true
     methods: [GET]
+
+# DepotRetrait
+comptabilite_mouvement_add:
+    path:     /comptabilite/mouvement/add
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:addMouvement }
+
+comptabilite_mouvement_save:
+    path:     /comptabilite/mouvement/save
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:saveMouvement }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_solde_general:
+    path:     /comptabilite/soldegeneral
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:soldeGeneral }
+
+comptabilite_mouvement_list:
+    path:     /comptabilite/mouvement/list
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:listMouvement }
+    methods:  [POST]
+    options:
+        expose: true
