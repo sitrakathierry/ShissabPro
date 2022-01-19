@@ -3,8 +3,8 @@ produit_homepage:
     defaults: { _controller: ProduitBundle:Default:index }
 
 produit_add:
-    path:     /produit/add
-    defaults: { _controller: ProduitBundle:Default:add }
+    path:     /produit/add/{categorie}
+    defaults: { _controller: ProduitBundle:Default:add, categorie : 0 }
 
 produit_save:
     path:     /produit/save
@@ -91,13 +91,6 @@ produit_notification_list:
         expose: true
     methods: [POST]
     
-produit_list_prix_produit:
-    path:     /produit/prix_produit
-    defaults: { _controller: ProduitBundle:Default:listPrixProduit }
-    options:
-        expose: true
-    methods: [POST] 
-    
 produit_save_statut_prix_produit:
     path:     /produit/save/statut
     defaults: { _controller: ProduitBundle:Default:saveStatutProduit }
@@ -139,3 +132,11 @@ produit_categorie_show:
     options:
         expose: true
     methods: [GET]
+
+# VARIATION PRODUIT
+produit_list_variation:
+    path:     /produit/variation/list
+    defaults: { _controller: ProduitBundle:VariationProduit:list }
+    options:
+        expose: true
+    methods: [POST] 

@@ -60,14 +60,14 @@ function load_list_prix_produit() {
         produit_id : $('#id_produit').val()
     };
 
-    var url = Routing.generate('produit_list_prix_produit');
+    var url = Routing.generate('produit_list_variation');
 
     $.ajax({
         url: url,
         type: 'POST',
         data: data,
         success: function(res) {
-            $('#js_list_prix_produit').html(res);
+            $('#list_variation').html(res);
         }
     });
 }

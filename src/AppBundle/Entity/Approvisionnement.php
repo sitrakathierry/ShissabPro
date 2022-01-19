@@ -57,16 +57,6 @@ class Approvisionnement
     private $description;
 
     /**
-     * @var \AppBundle\Entity\Produit
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
-     * })
-     */
-    private $produit;
-
-    /**
      * @var \AppBundle\Entity\Ravitaillement
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ravitaillement")
@@ -93,27 +83,19 @@ class Approvisionnement
     /**
      * @var string
      *
-     * @ORM\Column(name="prix_vente", type="decimal", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="stock", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $prixVente;
+    private $stock;
 
     /**
-     * @var float
+     * @var \AppBundle\Entity\VariationProduit
      *
-     * @ORM\Column(name="stock_restant", type="float", precision=10, scale=0, nullable=true)
-     */
-    private $stockRestant;
-
-    /**
-     * @var \AppBundle\Entity\PrixProduit
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PrixProduit")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VariationProduit")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="prix_produit_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="variation_produit", referencedColumnName="id")
      * })
      */
-    private $prixProduit;
-
+    private $variationProduit;
 
     /**
      * Get id
@@ -222,30 +204,6 @@ class Approvisionnement
     }
 
     /**
-     * Set stockRestant
-     *
-     * @param string $stockRestant
-     *
-     * @return Approvisionnement
-     */
-    public function setStockRestant($stockRestant)
-    {
-        $this->stockRestant = $stockRestant;
-    
-        return $this;
-    }
-
-    /**
-     * Get stockRestant
-     *
-     * @return string
-     */
-    public function getStockRestant()
-    {
-        return $this->stockRestant;
-    }
-
-    /**
      * Set description
      *
      * @param string $description
@@ -267,30 +225,6 @@ class Approvisionnement
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set produit
-     *
-     * @param \AppBundle\Entity\Produit $produit
-     *
-     * @return Approvisionnement
-     */
-    public function setProduit(\AppBundle\Entity\Produit $produit = null)
-    {
-        $this->produit = $produit;
-    
-        return $this;
-    }
-
-    /**
-     * Get produit
-     *
-     * @return \AppBundle\Entity\Produit
-     */
-    public function getProduit()
-    {
-        return $this->produit;
     }
 
     /**
@@ -367,51 +301,52 @@ class Approvisionnement
         return $this->status;
     }
 
+
     /**
-     * Set prixVente
+     * Set stock
      *
-     * @param string $prixVente
+     * @param string $stock
      *
      * @return Approvisionnement
      */
-    public function setPrixVente($prixVente)
+    public function setStock($stock)
     {
-        $this->prixVente = $prixVente;
+        $this->stock = $stock;
 
         return $this;
     }
 
     /**
-     * Get prixVente
+     * Get stock
      *
      * @return string
      */
-    public function getPrixVente()
+    public function getStock()
     {
-        return $this->prixVente;
+        return $this->stock;
     }
 
     /**
-     * Set prixProduit
+     * Set variationProduit
      *
-     * @param \AppBundle\Entity\PrixProduit $prixProduit
+     * @param \AppBundle\Entity\VariationProduit $variationProduit
      *
      * @return Approvisionnement
      */
-    public function setPrixProduit(\AppBundle\Entity\PrixProduit $prixProduit = null)
+    public function setVariationProduit(\AppBundle\Entity\VariationProduit $variationProduit = null)
     {
-        $this->prixProduit = $prixProduit;
+        $this->variationProduit = $variationProduit;
 
         return $this;
     }
 
     /**
-     * Get prixProduit
+     * Get variationProduit
      *
-     * @return \AppBundle\Entity\PrixProduit
+     * @return \AppBundle\Entity\VariationProduit
      */
-    public function getPrixProduit()
+    public function getVariationProduit()
     {
-        return $this->prixProduit;
+        return $this->variationProduit;
     }
 }

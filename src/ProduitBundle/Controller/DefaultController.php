@@ -5,6 +5,7 @@ namespace ProduitBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Produit;
+use AppBundle\Entity\VariationProduit;
 use AppBundle\Entity\Approvisionnement;
 use AppBundle\Entity\Ravitaillement;
 use AppBundle\Entity\PrixProduit;
@@ -17,62 +18,102 @@ class DefaultController extends Controller
         return $this->render('ProduitBundle:Default:index.html.twig');
     }
 
-    public function addAction()
+    public function addAction($categorie)
     {
-        return $this->render('ProduitBundle:Default:add.html.twig');
+        $categorieProduit = $this->getDoctrine()
+                    ->getRepository('AppBundle:CategorieProduit')
+                    ->find($categorie);
+
+        $categories = $this->getDoctrine()
+                    ->getRepository('AppBundle:CategorieProduit')
+                    ->findAll();
+
+        return $this->render('ProduitBundle:Default:add.html.twig', array(
+            'categorieProduit' => $categorieProduit,
+            'categories' => $categories,
+        ));
     }
 
     public function saveAction(Request $request)
     {
-    	$id = $request->request->get('id');
-    	$code = $request->request->get('code');
-    	$qrcode = $request->request->get('qrcode');
-    	$nom = $request->request->get('nom');
-    	$description = $request->request->get('description');
-    	$prix_achat = $request->request->get('prix_achat');
-    	$prix_vente = $request->request->get('prix_vente');
-    	$stock = $request->request->get('stock');
+        $id = $request->request->get('id');
+        $code = $request->request->get('code');
+        $qrcode = $request->request->get('qrcode');
+        $nom = $request->request->get('nom');
+        $description = $request->request->get('description');
+        $prix_achat = $request->request->get('prix_achat');
+        $prix_vente = $request->request->get('prix_vente');
+        $stock = $request->request->get('stock');
         $produit_image = $request->request->get('produit_image');
         $unite = $request->request->get('unite');
         $stock_alerte = $request->request->get('stock_alerte');
         $expirer = $request->request->get('expirer');
-    	$dateCreation = new \DateTime('now');
-    	$user = $this->getUser();
+        $categorie = $request->request->get('categorie');
+        $dateCreation = new \DateTime('now');
+        $user = $this->getUser();
         $userAgence = $this->getDoctrine()
                     ->getRepository('AppBundle:UserAgence')
                     ->findOneBy(array(
                         'user' => $user
                     ));
+                    
         $agence = $userAgence->getAgence();
 
-    	$approvisionnement = null;
-    	if ($id) {
-    		$produit = $this->getDoctrine()
-	    		->getRepository('AppBundle:Produit')
-	            ->find($id);
+        $creation = true;
 
-    	} else {
-    		$produit = new Produit();
-	        $approvisionnement = new Approvisionnement();
-    	    $produit->setDate($dateCreation);
-    	    $produit->setStock($stock);
-    	}
+        /**
+         * Produit
+         */
+        if ($id) {
+            $produit = $this->getDoctrine()
+                ->getRepository('AppBundle:Produit')
+                ->find($id);
 
-    	$produit->setCodeProduit($code);
-    	$produit->setQrcode($qrcode);
-    	$produit->setNom($nom);
-    	$produit->setDescription($description);
-    	$produit->setPrixVente($prix_vente);
-    	$produit->setAgence($agence);
+            $creation = false;
+
+        } else {
+            $produit = new Produit();
+
+            $approvisionnement = new Approvisionnement();
+
+            $variation = new VariationProduit();
+            
+            $produit->setDate($dateCreation);
+            $produit->setStock($stock);
+        }
+
+        $produit->setCodeProduit($code);
+        $produit->setQrcode($qrcode);
+        $produit->setNom($nom);
+        $produit->setDescription($description);
+        $produit->setAgence($agence);
         $produit->setImage($produit_image);
         $produit->setUnite($unite);
         $produit->setStockAlerte($stock_alerte);
 
-    	$em = $this->getDoctrine()->getManager();
+        $categorie = $this->getDoctrine()
+                ->getRepository('AppBundle:CategorieProduit')
+                ->find($categorie);
+
+        if ($categorie) {
+            $produit->setCategorieProduit($categorie);
+        }
+
+        $em = $this->getDoctrine()->getManager();
         $em->persist($produit);
         $em->flush();
 
-        if ($approvisionnement && $stock > 0) {
+
+        if (!!$creation) {
+            /**
+             * VariationProduit
+             */
+            $variation->setPrixVente($prix_vente);
+            $variation->setStock($stock);
+            $variation->setProduit($produit);
+
+            $em->persist($variation);
+            $em->flush();
 
             /**
              * Ravitaillement
@@ -86,7 +127,6 @@ class DefaultController extends Controller
             $em->persist($ravitaillement);
             $em->flush();
 
-
             /**
              * Approvisionnement
              */
@@ -94,45 +134,23 @@ class DefaultController extends Controller
             $expirer = $expirer[2].'-'.$expirer[1].'-'.$expirer[0];
             $expirer = new \DateTime($expirer);
 
-        	$approvisionnement = new Approvisionnement();
-
-        	$approvisionnement->setDate($dateCreation);
-        	$approvisionnement->setQte($stock);
-        	$approvisionnement->setPrixAchat($prix_achat);
-        	$approvisionnement->setTotal( ( $stock * $prix_achat ) );
-        	$approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') . ' ('. $stock . ' ' . $unite .')' );
-        	$approvisionnement->setProduit($produit);
+            $approvisionnement->setDate($dateCreation);
+            $approvisionnement->setQte($stock);
+            $approvisionnement->setPrixAchat($prix_achat);
+            $approvisionnement->setTotal( ( $stock * $prix_achat ) );
+            $approvisionnement->setDescription(' Création du produit ' . $nom . ' le ' . $dateCreation->format('d/m/Y') . ' ('. $stock . ' ' . $unite .')' );
             $approvisionnement->setRavitaillement($ravitaillement);
             $approvisionnement->setDateExpiration($expirer);
-            $approvisionnement->setStockRestant($stock);
-            $approvisionnement->setPrixVente($prix_vente);
+            $approvisionnement->setVariationProduit($variation);
 
-        	$em->persist($approvisionnement);
+            $em->persist($approvisionnement);
+            $em->flush();
 
-            $prixProduit = $this->getDoctrine()
-                                ->getRepository('AppBundle:PrixProduit')
-                                ->findBy(array('prixVente' => $prix_vente, 'agence' => $agence, 'produit' => $produit));
-            if(count($prixProduit) > 0){
-                $prixProduit->setPrixVente($prix_vente);
-                $prixProduit->setStock($stock);
-                $prixProduit->setAgence($agence);
-                $prixProduit->setProduit($produit);
-            }else{
-                $prixProduit = new PrixProduit();
-                $prixProduit->setPrixVente($prix_vente);
-                $prixProduit->setStock($stock);
-                $prixProduit->setAgence($agence);
-                $prixProduit->setProduit($produit);
-                $em->persist($prixProduit);
-            }
-            $approvisionnement->setPrixProduit($prixProduit);
-        	$em->flush();
         }
-
         return new JsonResponse(array(
-        	'id' => $produit->getId()
+            'id' => $produit->getId()
         ));
-    	
+
     }
 
     public function consultationAction($categorie)
@@ -216,8 +234,14 @@ class DefaultController extends Controller
             }
         }
 
+        $categories = $this->getDoctrine()
+                    ->getRepository('AppBundle:CategorieProduit')
+                    ->findAll();
+
+
         return $this->render('ProduitBundle:Default:show.html.twig',array(
             'produit' => $produit,
+            'categories' => $categories,
             'print' => $print
         ));
     }
@@ -258,23 +282,6 @@ class DefaultController extends Controller
 
         return $html2pdf->generatePdf($template, "produit" . $produit->getId());
 
-    }
-
-    public function listPrixProduitAction(Request $request)
-    {
-        $produit_id = $request->request->get('produit_id');
-
-        $produit  = $this->getDoctrine()
-                         ->getRepository('AppBundle:Produit')
-                         ->find($produit_id);
-
-        $prixProduit = $this->getDoctrine()
-                            ->getRepository('AppBundle:Approvisionnement')
-                            ->findBy(array('produit' => $produit));
-
-        return $this->render('ProduitBundle:Default:list-prix-produit.html.twig',array(
-            'prixProduits' => $prixProduit
-        ));
     }
 
     public function saveStatutProduitAction(Request $request)

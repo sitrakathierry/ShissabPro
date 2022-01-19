@@ -1,0 +1,24 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th class="text-center">Code</th>
+			<th class="text-center">Prix de vente</th>
+			<th class="text-center">Stock</th>
+			<!-- <th class="text-center">Status</th> -->
+            <th class="text-center"></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for variation in variations %}
+			<tr>
+				<td>{{ produit.codeProduit}}/{{ variation.id }}</td>
+				<td>{{ variation.prixVente }}</td>
+				<td>{{ variation.stock }}</td>
+				<!-- <td></td> -->
+				<!-- <td>
+					<button class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Modifier</button>
+				</td> -->
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

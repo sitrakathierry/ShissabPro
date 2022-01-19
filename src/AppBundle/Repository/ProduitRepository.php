@@ -19,7 +19,7 @@ class ProduitRepository extends \Doctrine\ORM\EntityRepository
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select p.id, p.qrcode, p.code_produit, p.image, p.nom, p.stock
+		$query = "	select p.id, p.qrcode, p.code_produit, p.image, p.nom, p.stock, cp.nom as categorie
 					from produit p
 					left join categorie_produit cp on (p.categorie_produit = cp.id)
 					where p.nom is not null ";

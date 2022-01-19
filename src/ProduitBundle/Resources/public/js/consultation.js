@@ -5,7 +5,7 @@ $(document).ready(function(){
 	load_list();
 
 	function instance_grid() {
-        var colNames = ['QR Code','Image','Code','Nom', 'Stock', ''];
+        var colNames = ['QR Code','Image','Code','Catégorie','Nom', 'Stock', ''];
         
         var colModel = [{ 
             name:'qrcode',
@@ -29,6 +29,10 @@ $(document).ready(function(){
         },{ 
             name:'code_produit',
             index:'code_produit',
+            align: 'center' 
+        },{ 
+            name:'categorie',
+            index:'categorie',
             align: 'center' 
         },{ 
             name:'nom',

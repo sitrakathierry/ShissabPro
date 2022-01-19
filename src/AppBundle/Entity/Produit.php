@@ -66,13 +66,6 @@ class Produit
     /**
      * @var float
      *
-     * @ORM\Column(name="prix_vente", type="float", precision=10, scale=0, nullable=true)
-     */
-    private $prixVente;
-
-    /**
-     * @var float
-     *
      * @ORM\Column(name="stock", type="float", precision=10, scale=0, nullable=true)
      */
     private $stock;
@@ -192,30 +185,6 @@ class Produit
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set prixVente
-     *
-     * @param string $prixVente
-     *
-     * @return Produit
-     */
-    public function setPrixVente($prixVente)
-    {
-        $this->prixVente = $prixVente;
-    
-        return $this;
-    }
-
-    /**
-     * Get prixVente
-     *
-     * @return string
-     */
-    public function getPrixVente()
-    {
-        return $this->prixVente;
     }
 
     /**

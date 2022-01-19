@@ -45,6 +45,8 @@ $(document).on('click', '#btn-save', function(event) {
 		unite : $('#unite').val(),
 		stock_alerte : $('#stock_alerte').val(),
 		produit_image : $('#produit_image').attr('src'),
+		categorie: $('#categorie').val(),
+		
 	};
 
 	var url = Routing.generate('produit_save');

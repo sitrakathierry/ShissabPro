@@ -18,10 +18,39 @@
                     <div class="ibox-title">
                         <h5 >
                             Création produit
+                            {% if categorieProduit %}
+                                <span class="badge-warning">{{ categorieProduit.nom }}</span>
+                            {% endif %}
                         </h5>
                     </div>
                     <div class="ibox-content">
                         <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Catégorie</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="categorie">
+                                                <option value=""></option>
+                                                {% for categorie in categories %}
+                                                    <option 
+                                                        value="{{categorie.id}}"
+                                                        {% if categorieProduit %}
+                                                            {% if categorie.id == categorieProduit.id %}
+                                                                selected=""
+                                                            {% endif %} 
+                                                        {% endif %}
+                                                    >{{categorie.nom}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pull-right">
+                                    <div id="qrcode" style="width:100%;display: flex;justify-content: center;"></div>
+                                </div>
+                            </div>
 
                         	<div class="row">
                         		<div class="col-lg-6">
@@ -31,9 +60,6 @@
                                             <input type="text" class="form-control" required="" id="code">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                	<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
                                 </div>
                         	</div>
 
@@ -46,9 +72,6 @@
                                         </div>
                                     </div>
                                 </div>
-                        	</div>
-
-                            <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label unite">Unité</label>
@@ -57,13 +80,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                        	</div>
+
 
                         	<div class="row">
-                        		<div class="col-lg-6">
+                        		<div class="col-lg-12">
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label description">Description</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-1 control-label description">Description</label>
+                                        <div class="col-sm-11">
                                             <textarea id="description" class="summernote"></textarea>
                                         </div>
                                     </div>
@@ -75,35 +99,30 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label prix_achat">Prix achat</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="prix_achat" required="" id="prix_achat">
+                                            <input type="number" class="form-control" name="prix_achat" required="" id="prix_achat">
+                                        </div>
+                                    </div>
+                                </div>
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label prix_vente">Prix vente</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" name="prix_vente" required="" id="prix_vente">
                                         </div>
                                     </div>
                                 </div>
                         	</div>
 
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label prix_vente">Prix vente</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="prix_vente" required="" id="prix_vente">
-                                        </div>
-                                    </div>
-                                </div>
-                        	</div>
 
                         	<div class="row">
                         		<div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label stock">Stock</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="stock" required="" id="stock">
+                                            <input type="number" class="form-control" name="stock" required="" id="stock">
                                         </div>
                                     </div>
                                 </div>
-                        	</div>
-
-                            <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label stock_alerte">Stock d'alerte</label>
@@ -112,7 +131,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                        	</div>
 
                             <div class="row">
                                 <div class="col-lg-6">
@@ -123,9 +142,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label nom">Image</label>
@@ -137,7 +153,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-6 align-left">
+                                <div class="col-lg-12" style="justify-content: center;align-items: center;display: flex;">
                                   <img src="" id="produit_image" class="img-thumbnail">
                                 </div>
                                 
@@ -146,13 +162,13 @@
 
                             <div class="hr-line-dashed"></div>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <!-- <div class=""> -->
                                         {# <button class="btn btn-white" type="reset">
                                             <i class="fa fa-times"></i>
                                             Annuler
                                         </button> #}
-                                        <button class="btn btn-primary" id="btn-save">
+                                        <button class="btn btn-primary pull-right" id="btn-save">
                                             <i class="fa fa-save"></i>
                                             Enregistrer
                                         </button>

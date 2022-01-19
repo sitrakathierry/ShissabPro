@@ -29,23 +29,23 @@ class Approvisionnement
     private $date;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="qte", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=true)
      */
     private $qte;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="prix_achat", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="prix_achat", type="float", precision=10, scale=0, nullable=true)
      */
     private $prixAchat;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
      */
     private $total;
 
@@ -57,16 +57,6 @@ class Approvisionnement
     private $description;
 
     /**
-     * @var \AppBundle\Entity\Produit
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
-     * })
-     */
-    private $produit;
-
-    /**
      * @var \AppBundle\Entity\Ravitaillement
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ravitaillement")
@@ -76,6 +66,36 @@ class Approvisionnement
      */
     private $ravitaillement;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_expiration", type="date", nullable=true)
+     */
+    private $dateExpiration;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="status", type="integer", nullable=true)
+     */
+    private $status = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="stock", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $stock;
+
+    /**
+     * @var \AppBundle\Entity\VariationProduit
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VariationProduit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="variation_produit", referencedColumnName="id")
+     * })
+     */
+    private $variationProduit;
 
     /**
      * Get id
@@ -208,26 +228,101 @@ class Approvisionnement
     }
 
     /**
-     * Set produit
+     * Set ravitaillement
      *
-     * @param \AppBundle\Entity\Produit $produit
+     * @param \AppBundle\Entity\Ravitaillement $ravitaillement
      *
      * @return Approvisionnement
      */
-    public function setProduit(\AppBundle\Entity\Produit $produit = null)
+    public function setRavitaillement(\AppBundle\Entity\Ravitaillement $ravitaillement = null)
     {
-        $this->produit = $produit;
+        $this->ravitaillement = $ravitaillement;
     
         return $this;
     }
 
     /**
-     * Get produit
+     * Get ravitaillement
      *
-     * @return \AppBundle\Entity\Produit
+     * @return \AppBundle\Entity\Ravitaillement
      */
-    public function getProduit()
+    public function getRavitaillement()
     {
-        return $this->produit;
+        return $this->ravitaillement;
+    }
+
+    
+
+    /**
+     * Set dateExpiration
+     *
+     * @param \DateTime $dateExpiration
+     *
+     * @return Approvisionnement
+     */
+    public function setDateExpiration($dateExpiration)
+    {
+        $this->dateExpiration = $dateExpiration;
+
+        return $this;
+    }
+
+    /**
+     * Get dateExpiration
+     *
+     * @return \DateTime
+     */
+    public function getDateExpiration()
+    {
+        return $this->dateExpiration;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return Approvisionnement
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+
+    /**
+     * Set stock
+     *
+     * @param string $stock
+     *
+     * @return Approvisionnement
+     */
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * Get stock
+     *
+     * @return string
+     */
+    public function getStock()
+    {
+        return $this->stock;
     }
 }
