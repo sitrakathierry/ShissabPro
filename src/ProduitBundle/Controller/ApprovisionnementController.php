@@ -225,8 +225,13 @@ class ApprovisionnementController extends Controller
                 ->getRepository('AppBundle:Approvisionnement')
                 ->entreesSorties($produit_id, $type);
 
+        $produit = $this->getDoctrine()
+                ->getRepository('AppBundle:Produit')
+                ->find($produit_id);
+
         return $this->render('ProduitBundle:Approvisionnement:entrees-sorties.html.twig',array(
             'approvisionnements' => $approvisionnements,
+            'produit' => $produit,
         ));
     }
 

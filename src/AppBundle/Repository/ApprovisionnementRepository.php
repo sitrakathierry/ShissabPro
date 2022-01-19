@@ -59,11 +59,13 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 
 	public function entrees($produit_id, $annee)
 	{
+
 		$em = $this->getEntityManager();
 		
-		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois
+		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois, p.unite
 					from approvisionnement ap
-					inner join produit p on (ap.produit = p.id)
+					inner join variation_produit vp on (ap.variation_produit = vp.id)
+					inner join produit p on (vp.produit = p.id)
 					where ap.id is not null ";
 
 		$query .= "	and p.id = " . $produit_id ;
@@ -85,11 +87,13 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 
 	public function sorties($produit_id, $annee)
 	{
+
 		$em = $this->getEntityManager();
 		
-		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois
+		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois, p.unite
 					from pannier pa
-					inner join produit p on (pa.produit = p.id)
+					inner join variation_produit vp on (pa.variation_produit = vp.id)
+					inner join produit p on (vp.produit = p.id)
 					inner join commande c on (pa.commande = c.id)
 					where pa.id is not null ";
 

@@ -2,9 +2,9 @@
     <thead>
         <tr>
             <th>Date</th>
-            <th>Qte</th>
-            <th>Prix</th>
-            <th>Total</th>
+            <th>Qté ({{ produit.unite }})</th>
+            <th>Prix unitaire (KMF)</th>
+            <th>Total (KMF)</th>
             <th></th>
         </tr>
     </thead>
@@ -12,16 +12,16 @@
         {% for appro in approvisionnements %}
             <tr class="appro-{{appro.type}}">
                 <td>{{ appro.date }}</td>
-                <td>{{ appro.qte }}</td>
+                <td>{{ appro.qte }} </td>
                 <td>{{ appro.prix }}</td>
                 <td>{{ appro.total }}</td>
                 <td>
                     {% if appro.type == 1 %}
-                        Achat
+                        ACHAT
                     {% endif %}
 
                     {% if appro.type == 2 %}
-                        Vente
+                        VANTE
                     {% endif %}
 
                 </td>
