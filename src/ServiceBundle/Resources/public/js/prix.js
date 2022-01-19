@@ -4,7 +4,9 @@ load_list_prix();
 
 $(document).on('click','#save-prix', function(event) {
 	var data = {
-		duree : $('#duree').val(),
+		type_tarif : $('#type_tarif').val(),
+        duree : $('#duree').val(),
+        prestation : $('#prestation').val(),
 		prix : $('#prix').val(),
 		id_service : $('#id_service').val()
 	};
@@ -24,17 +26,23 @@ $(document).on('click','#save-prix', function(event) {
 });
 
 function instance_grid_prix() {
-    var colNames = ['Durée','Prix',''];
+    var colNames = ['Tarrif','Prix',''];
     
     var colModel = [{ 
-        name:'duree',
-        index:'duree',
+        name:'tarif',
+        index:'tarif',
         align: 'center' ,
-        formatter : function(v) {
-        	if (v == 1) { return 'Heure'; }
-        	if (v == 2) { return 'Jour'; }
-        	if (v == 3) { return 'Mois'; }
-        	if (v == 4) { return 'Année'; }
+        formatter : function(v, i, r) {
+
+            if (r.type == 1) {
+            	if (r.duree == 1) { return 'Heure'; }
+            	if (r.duree == 2) { return 'Jour'; }
+            	if (r.duree == 3) { return 'Mois'; }
+            	if (r.duree == 4) { return 'Année'; }
+            } else {
+                return r.prestation
+            }
+
         }
     },{ 
         name:'prix',
@@ -113,3 +121,17 @@ function load_list_prix() {
     })
     
 }
+
+$(document).on('change', '#type_tarif', function(event) {
+    event.preventDefault();
+    
+    var type = $(this).children("option:selected").val();
+
+    if (type == '1') {
+        $('.row_duree').removeClass('hidden')
+        $('.row_prestation').addClass('hidden')
+    } else {
+        $('.row_duree').addClass('hidden')
+        $('.row_prestation').removeClass('hidden')
+    }
+})

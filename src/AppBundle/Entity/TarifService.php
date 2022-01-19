@@ -24,14 +24,28 @@ class TarifService
     /**
      * @var int
      *
-     * @ORM\Column(name="duree", type="integer")
+     * @ORM\Column(name="type", type="integer", nullable=true)
+     */
+    private $type;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="duree", type="integer", nullable=true)
      */
     private $duree;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prix", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="prestation", type="text", nullable=true)
+     */
+    private $prestation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prix", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $prix;
 
@@ -126,5 +140,53 @@ class TarifService
     public function getService()
     {
         return $this->service;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     *
+     * @return TarifService
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set prestation
+     *
+     * @param string $prestation
+     *
+     * @return TarifService
+     */
+    public function setPrestation($prestation)
+    {
+        $this->prestation = $prestation;
+
+        return $this;
+    }
+
+    /**
+     * Get prestation
+     *
+     * @return string
+     */
+    public function getPrestation()
+    {
+        return $this->prestation;
     }
 }

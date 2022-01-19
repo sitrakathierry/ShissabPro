@@ -137,7 +137,9 @@ class DefaultController extends Controller
     public function savePrixAction(Request $request)
     {
         $id_service = $request->request->get('id_service');
+        $type_tarif = $request->request->get('type_tarif');
         $duree = $request->request->get('duree');
+        $prestation = $request->request->get('prestation');
         $prix = $request->request->get('prix');
 
         $service = $this->getDoctrine()
@@ -145,7 +147,9 @@ class DefaultController extends Controller
                 ->find($id_service);
 
         $tarif = new TarifService();
+        $tarif->setType($type_tarif);
         $tarif->setDuree($duree);
+        $tarif->setPrestation($prestation);
         $tarif->setPrix($prix);
         $tarif->setService($service);
 

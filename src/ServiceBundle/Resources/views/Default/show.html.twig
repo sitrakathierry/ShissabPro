@@ -33,7 +33,7 @@
                                             <a data-toggle="tab" href="#tab-1">DETAILS</a>
                                           </li>
                                           <li class="">
-                                            <a data-toggle="tab" href="#tab-2">PRIX</a>
+                                            <a data-toggle="tab" href="#tab-2">TARIFICATION</a>
                                           </li>
                                         </ul>
                                     </div>
@@ -88,49 +88,82 @@
                                         <div id="tab-2" class="tab-pane">
                                             <div class="panel-body">
 
-                                                <div id="prix-container">
-                                                    <div class="row" id="defaul-tpl">
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label class="col-sm-2 control-label">Durée</label>
-                                                                <div class="col-sm-10">
-                                                                    <select class="form-control" id="duree">
-                                                                        <option value="1">Heure</option>
-                                                                        <option value="2">Jour</option>
-                                                                        <option value="3">Mois</option>
-                                                                        <option value="4">Année</option>
-                                                                    </select>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-2 control-label">Tarif par</label>
+                                                                    <div class="col-sm-10">
+                                                                        <select class="form-control" id="type_tarif">
+                                                                            <option></option>
+                                                                            <option value="1">Durée</option>
+                                                                            <option value="2">Prestation</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label class="col-sm-2 control-label">Prix</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="number" class="form-control" id="prix" required="">
+
+                                                        <div class="row row_duree">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-2 control-label">Durée</label>
+                                                                    <div class="col-sm-10">
+                                                                        <select class="form-control" id="duree">
+                                                                            <option></option>
+                                                                            <option value="1">Heure</option>
+                                                                            <option value="2">Jour</option>
+                                                                            <option value="3">Mois</option>
+                                                                            <option value="4">Année</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                        <div class="row row_prestation hidden">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-2 control-label">Prestation</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control" id="prestation" required="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-2 control-label">Prix</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="number" class="form-control" id="prix" required="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                            
+
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <button class="btn btn-primary pull-right" id="save-prix">
+                                                                    <i class="fa fa-save"></i>
+                                                                    Enregistrer
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        
                                                     </div>
-                                                    
-                                                </div>
-
-
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <button class="btn btn-primary pull-right" id="save-prix">
-                                                            <i class="fa fa-save"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-lg-12">
+                                                    <div class="col-lg-6">
                                                         <div class="t-content" style="width:100%;overflow:auto;">
                                                             <table id="liste_prix"></table>
                                                         </div>
                                                     </div>
                                                 </div>
+
 
                                                 {# <div class="hr-line-dashed"></div>
                                                 <div class="row">
