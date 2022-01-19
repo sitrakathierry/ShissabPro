@@ -10,4 +10,24 @@ namespace AppBundle\Repository;
  */
 class VariationProduitRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function list($agence)
+    {
+        $em = $this->getEntityManager();
+
+        $query = "  select vp.id, p.nom, vp.prix_vente, p.id as produit_id, vp.stock
+                    from variation_produit vp
+                    inner join produit p on (vp.produit = p.id)
+                    inner join agence ag on (p.agence = ag.id)";
+
+        $query .= " where ag.id = " . $agence;
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+
+    }
 }

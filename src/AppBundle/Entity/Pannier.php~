@@ -22,23 +22,23 @@ class Pannier
     private $id;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="pu", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="pu", type="float", precision=10, scale=0, nullable=true)
      */
     private $pu;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="qte", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=true)
      */
     private $qte;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
      */
     private $total;
 
@@ -50,14 +50,14 @@ class Pannier
     private $date;
 
     /**
-     * @var \AppBundle\Entity\Produit
+     * @var \AppBundle\Entity\VariationProduit
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VariationProduit")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="variation_produit", referencedColumnName="id")
      * })
      */
-    private $produit;
+    private $variationProduit;
 
     /**
      * @var \AppBundle\Entity\Commande
@@ -177,26 +177,26 @@ class Pannier
     }
 
     /**
-     * Set produit
+     * Set commande
      *
-     * @param \AppBundle\Entity\Produit $produit
+     * @param \AppBundle\Entity\Commande $commande
      *
      * @return Pannier
      */
-    public function setProduit(\AppBundle\Entity\Produit $produit = null)
+    public function setCommande(\AppBundle\Entity\Commande $commande = null)
     {
-        $this->produit = $produit;
+        $this->commande = $commande;
     
         return $this;
     }
 
     /**
-     * Get produit
+     * Get commande
      *
-     * @return \AppBundle\Entity\Produit
+     * @return \AppBundle\Entity\Commande
      */
-    public function getProduit()
+    public function getCommande()
     {
-        return $this->produit;
+        return $this->commande;
     }
 }

@@ -29,7 +29,7 @@ $(document).ready(function(){
                 });
 
                 if (insered) {
-                    show_info('Contrôle Securité', 'Produit existe déjà dans la commande en cours','info', 'info');
+                    show_info('ATTENTION', ' CE PRODUIT EXISTE DÉJÀ DANS LA COMMANDE','info');
                 } else {
                     if (cl_produit.val() != '' ) {
                         $('.btn-add-row').trigger('click');
@@ -66,11 +66,11 @@ $(document).ready(function(){
 
     $(document).on('change', '.cl_produit', function(event) {
         event.preventDefault();
-        var stock = $(this).find('option:selected').attr('data-stock');
-        var prix = $(this).find('option:selected').attr('data-prix');
+        var stock = $(this).find('option:selected').data('stock');
+        var prix = $(this).find('option:selected').data('prixvente');
         var _tr = $(this).closest('tr');
         var produitSelected = $(this).val();
-        $(_tr).find('.cl_qte').val(stock);
+        // $(_tr).find('.cl_qte').val(stock);
         $(_tr).find('.cl_prix').val(Number(prix));
 
         var countPanier = $('table#table-commande-add > tbody  > tr').length;
@@ -89,7 +89,7 @@ $(document).ready(function(){
 
                         $('.btn-remove-row').trigger('click');
 
-                        return show_info("Contrôle Securité", 'Produit existe déjà dans la commande en cours','info');
+                        return show_info('ATTENTION', ' CE PRODUIT EXISTE DÉJÀ DANS LA COMMANDE','warning');
 
                     }  
                 }     
@@ -191,7 +191,7 @@ $(document).ready(function(){
             if(stock < qte) {
                 // $('#btn-save').addClass('disabled');
                 $(this).val('')
-                return show_info("Quantité non valide", 'Pas assez de stock','warning');
+                return show_info("QUANTITÉ NON VALIDE", 'PAS ASSEZ DE STOCK','warning');
             }
         } 
         $('#btn-save').removeClass('disabled');

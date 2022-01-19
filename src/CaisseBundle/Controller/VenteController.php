@@ -19,23 +19,14 @@ class VenteController extends Controller
                     ->findOneBy(array(
                         'user' => $user
                     ));
-        $agence = $userAgence->getAgence();
+        $agence = $userAgence->getAgence()->getId();
 
-        $produits = $this->getDoctrine()
-	    		->getRepository('AppBundle:Produit')
-	            ->findBy(array(
-	            	'agence' => $agence
-	            ));
-
-        $prixProduit = $this->getDoctrine()
-                            ->getRepository('AppBundle:PrixProduit')
-                            ->findBy(array(
-                                'agence' => $agence
-                            ));
+        $variations = $this->getDoctrine()
+	    		->getRepository('AppBundle:VariationProduit')
+	            ->list($agence);
 
         return $this->render('CaisseBundle:Vente:add.html.twig', array(
-        	'produits' => $produits,
-            'prixProduits' => $prixProduit
+        	'variations' => $variations,
         ));
     }
 
@@ -77,56 +68,73 @@ class VenteController extends Controller
         if (!empty($produitList)) {
         	foreach ($produitList as $key => $value) {
 
+        		$panier = new Pannier();
+
                 $qte = $qteList[$key];
                 $prix = $prixList[$key];
                 $total = $totalList[$key];
+                $variation = $produitList[$key];
 
-        		$panier = new Pannier();
+        		$variation = $this->getDoctrine()
+                		    		->getRepository('AppBundle:VariationProduit')
+                		            ->find( $variation );
+                
+                $produit = $variation->getProduit(); 
 
-        		$prixProduit = $this->getDoctrine()
-                		    		->getRepository('AppBundle:PrixProduit')
-                		            ->find( $produitList[$key] );
+                // $approvisionnement = $this->getDoctrine()
+                //                           ->getRepository('AppBundle:Approvisionnement')
+                //                           ->findBy(array('prixProduit' => $prixProduit), array('dateExpiration' => 'ASC'));
 
-                $approvisionnement = $this->getDoctrine()
-                                          ->getRepository('AppBundle:Approvisionnement')
-                                          ->findBy(array('prixProduit' => $prixProduit), array('dateExpiration' => 'ASC'));
-                if(count($approvisionnement) > 0){
-                    $qtes = $qte;
-                    foreach ($approvisionnement as $key => $appro) {                         
-                        $stock = $appro->getStockRestant();
-                        if($appro->getStatus() == 0 && $qtes != 0 && $stock != 0){  
-                            if($qtes > $stock){
-                                $qtes = $qtes - $stock;
-                                $restStock = $appro->setStockRestant($qtes);
-                                if($qtes == 0)
-                                    $appro->setStatus(1);
-                            }else{                                
-                                $qtes = $qtes - $stock;
-                                $qtes = abs($qtes);
-                                $restStock = $appro->setStockRestant($qtes);
-                                if($qtes == 0)
-                                    $appro->setStatus(1);
-                                $qtes = 0;
-                            }
-                        }
-                    }
-                }
+                // if(count($approvisionnement) > 0){
+                //     $qtes = $qte;
+                //     foreach ($approvisionnement as $key => $appro) {                         
+                //         $stock = $appro->getStockRestant();
+                //         if($appro->getStatus() == 0 && $qtes != 0 && $stock != 0){  
+                //             if($qtes > $stock){
+                //                 $qtes = $qtes - $stock;
+                //                 $restStock = $appro->setStockRestant($qtes);
+                //                 if($qtes == 0)
+                //                     $appro->setStatus(1);
+                //             }else{                                
+                //                 $qtes = $qtes - $stock;
+                //                 $qtes = abs($qtes);
+                //                 $restStock = $appro->setStockRestant($qtes);
+                //                 if($qtes == 0)
+                //                     $appro->setStatus(1);
+                //                 $qtes = 0;
+                //             }
+                //         }
+                //     }
+                // }
 
-                $produit = $prixProduit->getProduit(); 
 
         		$panier->setDate($date);
         		$panier->setQte($qte);
         		$panier->setPu($prix);
         		$panier->setTotal($total);
-        		$panier->setProduit($produit);
+        		$panier->setVariationProduit($variation);
         		$panier->setCommande($commande);
 
         		$em->persist($panier);
-
-                $produit->setStock( $produit->getStock() - $qte );
-        		$prixProduit->setStock( $prixProduit->getStock() - $qte );
-        		//$em->persist($produit);
         		$em->flush();
+
+                /**
+                 * Stock produit
+                 */
+                $produit->setStock( $produit->getStock() - $qte );
+                $em->persist($produit);
+                $em->flush();
+
+                /**
+                 * Stock variation
+                 */
+                $variation->setStock( $variation->getStock() - $qte );
+                $em->persist($variation);
+                $em->flush();
+
+                // $produit->setStock( $produit->getStock() - $qte );
+        		// $prixProduit->setStock( $prixProduit->getStock() - $qte );
+        		// $em->persist($produit);
         	
         	}
         }

@@ -25,13 +25,13 @@
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>
-            VENTES DES PRODUITS
+            COMMANDE DES PRODUITS
           </h5>
         </div>
         <div class="ibox-content">
           <form class="form-horizontal" id="form-commande">
 
-          <div class="hidden" style="width: 500px" id="reader"></div>
+          <div style="width: 500px" id="reader"></div>
 
             <div class="hr-line-dashed"></div>
             <table class="table table-bordered" id="table-commande-add">
@@ -51,12 +51,19 @@
                       <div class="col-sm-12">
                       	<select class="form-control select2 cl_produit" name="produit[]">
                       		<option></option>
-                      		{% for variation in variations %}
-                      			<option
-                      				value="{{ variation.id }}"
-                              data-prixvente="{{ variation.prix_vente }}"
-                              data-stock="{{ variation.stock }}"
-                      			>{{ variation.nom }} - {{ variation.prix_vente }} KMF</option>
+                      		{% for produit in produits %}
+                            <optgroup label="{{ produit.nom }}">
+                              {% for prixProduit in prixProduits %}
+                                {% if prixProduit.produit == produit and prixProduit.stock > 0 %}
+                                  <option 
+                                    value="{{ prixProduit.id }}" 
+                                    data-code="{{ produit.codeProduit }}" 
+                                    data-stock="{{ prixProduit.stock }}" 
+                                    data-prix="{{ prixProduit.prixVente }}"
+                                  > {{ prixProduit.prixVente }} KMF</option>
+                                {% endif %}
+                              {% endfor %}
+                            </optgroup>
                       		{% endfor %}
                       	</select>
                       </div>
@@ -121,19 +128,17 @@
               </div>
             </div>
             <div class="hr-line-dashed"></div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- <div class=""> -->
-                        {# <button class="btn btn-white" type="reset">
-                            <i class="fa fa-times"></i>
-                            Annuler
-                        </button> #}
-                        <button class="btn btn-primary pull-right" id="btn-save">
-                            <i class="fa fa-save"></i>
-                            Enregistrer
-                        </button>
-                    <!-- </div> -->
-                </div>
+            <div class="form-group">
+              <div class="col-sm-4 col-sm-offset-2">
+                <button class="btn btn-white" type="submit">
+                <i class="fa fa-times"></i>
+                Annuler
+                </button>
+                <button class="btn btn-primary" id="btn-save">
+                <i class="fa fa-save"></i>
+                Enregistrer
+                </button>
+              </div>
             </div>
             <input type="hidden" name="" id="id-row" value="0">
             <input type="hidden" name="somme" id="id-somme" value="0">

@@ -50,14 +50,14 @@ class Pannier
     private $date;
 
     /**
-     * @var \AppBundle\Entity\Produit
+     * @var \AppBundle\Entity\VariationProduit
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VariationProduit")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="variation_produit", referencedColumnName="id")
      * })
      */
-    private $produit;
+    private $variationProduit;
 
     /**
      * @var \AppBundle\Entity\Commande
@@ -177,30 +177,6 @@ class Pannier
     }
 
     /**
-     * Set produit
-     *
-     * @param \AppBundle\Entity\Produit $produit
-     *
-     * @return Pannier
-     */
-    public function setProduit(\AppBundle\Entity\Produit $produit = null)
-    {
-        $this->produit = $produit;
-    
-        return $this;
-    }
-
-    /**
-     * Get produit
-     *
-     * @return \AppBundle\Entity\Produit
-     */
-    public function getProduit()
-    {
-        return $this->produit;
-    }
-
-    /**
      * Set commande
      *
      * @param \AppBundle\Entity\Commande $commande
@@ -222,5 +198,29 @@ class Pannier
     public function getCommande()
     {
         return $this->commande;
+    }
+
+    /**
+     * Set variationProduit
+     *
+     * @param \AppBundle\Entity\VariationProduit $variationProduit
+     *
+     * @return Pannier
+     */
+    public function setVariationProduit(\AppBundle\Entity\VariationProduit $variationProduit = null)
+    {
+        $this->variationProduit = $variationProduit;
+
+        return $this;
+    }
+
+    /**
+     * Get variationProduit
+     *
+     * @return \AppBundle\Entity\VariationProduit
+     */
+    public function getVariationProduit()
+    {
+        return $this->variationProduit;
     }
 }
