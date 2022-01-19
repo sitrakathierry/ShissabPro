@@ -14,9 +14,10 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select ap.*, p.nom as produit
+		$query = "	select ap.*, p.nom as produit, vp.prix_vente, p.unite
 					from approvisionnement ap
-					inner join produit p on (ap.produit = p.id)
+					inner join variation_produit vp on (ap.variation_produit = vp.id)
+					inner join produit p on (vp.produit = p.id)
 					where ap.id is not null ";
 
 		if ($ravitaillement) {

@@ -5,9 +5,9 @@
 			<th>PRODUIT</th>
 			<th>QTE</th>
           	<th>EXPIRER LE</th>
-          	<th>PRIX VENTE</th>
-			<th>PRIX UNITAIRE</th>
-			<th>TOTAL</th>
+          	<th>PRIX VENTE (KMF)</th>
+			<th>PRIX UNITAIRE (KMF)</th>
+			<th>TOTAL (KMF)</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -22,7 +22,7 @@
 								<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">{{ ravitaillement.date }}</td>
 							{% endif %}
 							<td>{{ approvisionnement.produit }}</td>
-							<td>{{ approvisionnement.qte }}</td>
+							<td>{{ approvisionnement.qte }} {{ approvisionnement.unite }}</td>
 							<td>{{ (approvisionnement.date_expiration) ? approvisionnement.date_expiration|date("d/m/Y") : '' }}</td>
 							<td>{{ approvisionnement.prix_vente }}</td>
 							<td>{{ approvisionnement.prix_achat }}</td>
@@ -39,13 +39,11 @@
 					{% endif %}
 				{% endfor %}
 				<tr>
-					<td colspan="2">TOTAL</td>
-					<td></td>
-					<td>{{ ravitaillement.montant_total }}</td>
-					<td></td>
+					<td colspan="5">TOTAL</td>
+					<td><b>{{ ravitaillement.montant_total }}</b></td>
 				</tr>
 				<tr>
-					<td colspan="6" bgcolor="#ddd"></td>
+					<td colspan="8" bgcolor="#ddd"></td>
 				</tr>
 			{% endif %}
 		{% endfor %}

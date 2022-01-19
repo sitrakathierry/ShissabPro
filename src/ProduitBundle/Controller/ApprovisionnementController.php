@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Approvisionnement;
 use AppBundle\Entity\Ravitaillement;
-use AppBundle\Entity\PrixProduit;
+use AppBundle\Entity\VariationProduit;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApprovisionnementController extends Controller
@@ -35,9 +35,9 @@ class ApprovisionnementController extends Controller
 
     public function saveAction(Request $request)
     {
-    	$id = $request->request->get('id');
-    	$montant_total = $request->request->get('montant_total');
-    	$date = $request->request->get('date');
+        $id = $request->request->get('id');
+        $montant_total = $request->request->get('montant_total');
+        $date = $request->request->get('date');
         $date = \DateTime::createFromFormat('j/m/Y', $date);
         $user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -48,13 +48,13 @@ class ApprovisionnementController extends Controller
         $agence = $userAgence->getAgence();
 
         if ($id) {
-        	$ravitaillement = $this->getDoctrine()
-	    		->getRepository('AppBundle:Ravitaillement')
-	            ->find($id);
+            $ravitaillement = $this->getDoctrine()
+                ->getRepository('AppBundle:Ravitaillement')
+                ->find($id);
         } else {
-        	$ravitaillement = new Ravitaillement();
+            $ravitaillement = new Ravitaillement();
         }
-
+        
         $ravitaillement->setTotal($montant_total);
         $ravitaillement->setDate($date);
         $ravitaillement->setAgence($agence);
@@ -72,22 +72,15 @@ class ApprovisionnementController extends Controller
         $approId = $request->request->get('appro_id');
 
         if (!empty($produitList)) {
-        	foreach ($produitList as $key => $value) {
-                if($approId){
-                    $approvisionnement = $this->getDoctrine()
-                        ->getRepository('AppBundle:Approvisionnement')
-                        ->find($approId);
-                }else{
-                    $approvisionnement = new Approvisionnement();
-                }
+            foreach ($produitList as $key => $value) {
 
                 $produit = $this->getDoctrine()
                         ->getRepository('AppBundle:Produit')
                         ->find( $produitList[$key] );
 
-        		$qte = $qteList[$key];
-        		$prix = $prixList[$key];
-        		$total = $totalList[$key];
+                $qte = $qteList[$key];
+                $prix = $prixList[$key];
+                $total = $totalList[$key];
                 $vente = $prixVenteList[$key];
                 $expirer = $expirerList[$key];
                 $expirer = explode('/', $expirer);
@@ -95,50 +88,63 @@ class ApprovisionnementController extends Controller
                 $expirer = new \DateTime($expirer);
 
                 if($vente){
+
+                    /**
+                     * VariationProduit
+                     */
+                    $variation = $this->getDoctrine()
+                                        ->getRepository('AppBundle:VariationProduit')
+                                        ->findOneBy(array(
+                                            'prixVente' => $vente, 
+                                            'produit' => $produit
+                                        ));
+                    if ($variation) {
+                        $variation->setStock( $qte + $variation->getStock() );
+                    } else {
+                        $variation = new VariationProduit();
+
+                        $variation->setPrixVente($vente);
+                        $variation->setStock($qte);
+                        $variation->setProduit($produit);
+                    }
+
+                    $em->persist($variation);
+                    $em->flush();
+
+                    /**
+                     * Approvisionnement
+                     */
+                    if($approId){
+                        $approvisionnement = $this->getDoctrine()
+                            ->getRepository('AppBundle:Approvisionnement')
+                            ->find($approId);
+                    }else{
+                        $approvisionnement = new Approvisionnement();
+                    }
+
                     $approvisionnement->setDate($date);
                     $approvisionnement->setQte($qte);
                     $approvisionnement->setPrixAchat($prix);
                     $approvisionnement->setTotal($total);
-                    $approvisionnement->setProduit($produit);
                     $approvisionnement->setRavitaillement($ravitaillement);
                     $approvisionnement->setDateExpiration($expirer);
-                    $approvisionnement->setPrixVente($vente);
                     $approvisionnement->setDescription(' Approvisionnement du produit ' . $produit->getNom() . ' le ' . $date->format('d/m/Y') . ' ('. $qte .')' );
 
-                    if(!$approId){
-                      $em->persist($approvisionnement);
-                    }
 
-                    $prixProduit = $this->getDoctrine()
-                                        ->getRepository('AppBundle:PrixProduit')
-                                        ->findBy(array('prixVente' => $vente, 'agence' => $agence, 'produit' => $produit));
-                    if(count($prixProduit) > 0){
-                        $prixProduit = $prixProduit[0];
-                        $qtePro = $prixProduit->getStock();
-                        $prixProduit->setStock($qte + $qtePro);
-                        $prixProduit->setAgence($agence);
-                        $prixProduit->setProduit($produit);
-                    }else{
-                        $prixProduit = new PrixProduit();
-                        $prixProduit->setPrixVente($vente);
-                        $prixProduit->setStock($qte);
-                        $prixProduit->setAgence($agence);
-                        $prixProduit->setProduit($produit);
-                        $em->persist($prixProduit);
-                        $approvisionnement->setPrixProduit($prixProduit);
-                    }
+                    $approvisionnement->setVariationProduit($variation);
+                    $em->persist($approvisionnement);
+                    $em->flush();
+                    
                     $produit->setStock( $produit->getStock() + $qte );
                     $em->persist($produit);
                     $em->flush();
                 }
-        	}
+            }
         }
 
         return new JsonResponse(array(
-        	'id' => $approvisionnement->getId()
+            'id' => $approvisionnement->getId()
         ));
-        
-
     }
 
     public function consultationAction()
