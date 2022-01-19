@@ -16,7 +16,8 @@ class PannierRepository extends \Doctrine\ORM\EntityRepository
 		
 		$query = "	select p.*, pr.nom as produit
 					from pannier p
-					inner join produit pr on (p.produit = pr.id)
+					inner join variation_produit vp on (p.variation_produit = vp.id)
+					inner join produit pr on (vp.produit = pr.id)
 					where p.id is not null ";
 
 		if ($commande) {
