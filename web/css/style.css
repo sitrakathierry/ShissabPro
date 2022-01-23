@@ -1316,11 +1316,9 @@ button.dim:active:before {
 .fc-event,
 .fc-agenda .fc-event-time,
 .fc-event a {
-  padding: 4px 6px;
+  padding: 4px 6px !important;
   background-color: #fd9597;
-  /* background color */
-  border-color: #fd9597;
-  /* border color */
+  border-color: unset !important;
 }
 .fc-event-time,
 .fc-event-title {
@@ -8292,4 +8290,10 @@ input[type="number"] {
 
 #qrcode canvas {
   border: 1px solid;
+}
+
+.modal-header.deplacer.ui-draggable-handle {
+    border-radius: unset;
+    background: #fd9597;
+    color: #f8fafb;
 }

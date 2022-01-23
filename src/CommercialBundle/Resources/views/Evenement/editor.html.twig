@@ -1,0 +1,72 @@
+<div class="form-horizontal">
+    <!-- <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">Client</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="evenement_client">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">Type</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="evenement_type">
+                        <option value="1">Rendez-vous</option>
+                        <option value="2">Telephone</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">Titre</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" required="" id="evenement_titre">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">Description</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control summernote" id="evenement_description"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">Date et heure</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control input-datepicker" required="" id="evenement_date">
+                </div>
+                <div class="col-sm-2 clockpicker" data-autoclose="true">
+                    <input type="text" class="form-control" value="{{ "now" | date('h:i') }}" id="evenement_heure">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">Heure</label>
+                
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row">
+            <button class="btn btn-primary" id="btn-add-event">AJOUTER</button>
+    </div>
+</div>

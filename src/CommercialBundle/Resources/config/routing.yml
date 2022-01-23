@@ -1,0 +1,21 @@
+commercial_index:
+    path:     /commercial/index
+    defaults: { _controller: CommercialBundle:Default:index }
+
+commercial_agenda_index:
+    path:     /commercial/agenda/index
+    defaults: { _controller: CommercialBundle:Agenda:index }
+
+commercial_evenement_editor:
+    path:     /commercial/evenement/editor
+    defaults: { _controller: CommercialBundle:Evenement:editor }
+    options:
+        expose: true
+    methods: [POST]
+
+commercial_evenement_save:
+    path:     /commercial/evenement/save
+    defaults: { _controller: CommercialBundle:Evenement:save }
+    options:
+        expose: true
+    methods: [POST]

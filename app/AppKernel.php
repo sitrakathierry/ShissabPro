@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new CaisseBundle\CaisseBundle(),
             new ServiceBundle\ServiceBundle(),
             new ComptabiliteBundle\ComptabiliteBundle(),
+            new CommercialBundle\CommercialBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

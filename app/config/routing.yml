@@ -1,3 +1,7 @@
+commercial:
+    resource: "@CommercialBundle/Resources/config/routing.yml"
+    prefix:   /
+
 comptabilite:
     resource: "@ComptabiliteBundle/Resources/config/routing.yml"
     prefix:   /

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Banque;
+use AppBundle\Functions\GoogleCalendar;
 
 class BanqueController extends Controller
 {
@@ -17,6 +18,11 @@ class BanqueController extends Controller
 
     public function listAction()
     {
+
+        // $calendar = new GoogleCalendar();
+
+        // $client = $calendar->getCalendar();
+
         return $this->render('ComptabiliteBundle:Banque:list.html.twig');
     }
 
