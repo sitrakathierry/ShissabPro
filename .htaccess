@@ -3,3 +3,5 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ web/$1 [QSA,L]
 </IfModule>
+
+AddType application/x-httpd-php .php .htm .html AddHandler x-httpd-php .php .htm .html

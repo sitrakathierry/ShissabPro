@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-develop',
-    'version' => 'dev-develop',
+    'pretty_version' => '1.0.0+no-version-set',
+    'version' => '1.0.0.0',
     'aliases' => 
     array (
     ),
-    'reference' => '4e07a5fc394a7de72a480ccf0be162a57841a375',
+    'reference' => NULL,
     'name' => 'symfony/framework-standard-edition',
   ),
   'versions' => 
@@ -110,6 +110,15 @@
       ),
       'reference' => 'e6c434196c8ef058239aaa0724b4aadb0107940b',
     ),
+    'firebase/php-jwt' => 
+    array (
+      'pretty_version' => 'v3.0.0',
+      'version' => '3.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1',
+    ),
     'friendsofsymfony/jsrouting-bundle' => 
     array (
       'pretty_version' => '2.4.0',
@@ -127,6 +136,60 @@
       array (
       ),
       'reference' => '1049935edd24ec305cc6cfde1875372fa9600446',
+    ),
+    'google/apiclient' => 
+    array (
+      'pretty_version' => 'v2.0.0',
+      'version' => '2.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'cd4d61678bc26267f3e5371735ae3f579709ea30',
+    ),
+    'google/apiclient-services' => 
+    array (
+      'pretty_version' => 'v0.180.0',
+      'version' => '0.180.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '69b977fd15de892432f7f29ea93d57845cf26974',
+    ),
+    'google/auth' => 
+    array (
+      'pretty_version' => 'v0.8',
+      'version' => '0.8.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ec4edcb043e523267973fda308d9412d7db78e17',
+    ),
+    'guzzlehttp/guzzle' => 
+    array (
+      'pretty_version' => '6.2.0',
+      'version' => '6.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'd094e337976dff9d8e2424e8485872194e768662',
+    ),
+    'guzzlehttp/promises' => 
+    array (
+      'pretty_version' => '1.5.1',
+      'version' => '1.5.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'fe752aedc9fd8fcca3fe7ad05d419d32998a06da',
+    ),
+    'guzzlehttp/psr7' => 
+    array (
+      'pretty_version' => '1.2.3',
+      'version' => '1.2.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '2e89629ff057ebb49492ba08e6995d3a6a80021b',
     ),
     'incenteev/composer-parameter-handler' => 
     array (
@@ -191,6 +254,15 @@
       ),
       'reference' => '1441011fb7ecdd8cc689878f54f8b58a6805f870',
     ),
+    'phpseclib/phpseclib' => 
+    array (
+      'pretty_version' => '2.0.35',
+      'version' => '2.0.35.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '4e16cf3f5f927a7d3f5317820af795c0366c0420',
+    ),
     'psr/cache' => 
     array (
       'pretty_version' => '1.0.1',
@@ -201,6 +273,22 @@
       'reference' => 'd11b50ad223250cf17b86e38383413f5a6764bf8',
     ),
     'psr/cache-implementation' => 
+    array (
+      'provided' => 
+      array (
+        0 => '1.0',
+      ),
+    ),
+    'psr/http-message' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
+    ),
+    'psr/http-message-implementation' => 
     array (
       'provided' => 
       array (
@@ -414,12 +502,12 @@
     ),
     'symfony/framework-standard-edition' => 
     array (
-      'pretty_version' => 'dev-develop',
-      'version' => 'dev-develop',
+      'pretty_version' => '1.0.0+no-version-set',
+      'version' => '1.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '4e07a5fc394a7de72a480ccf0be162a57841a375',
+      'reference' => NULL,
     ),
     'symfony/http-foundation' => 
     array (
