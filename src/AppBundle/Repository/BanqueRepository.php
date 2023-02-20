@@ -10,13 +10,18 @@ namespace AppBundle\Repository;
  */
 class BanqueRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function list()
+	public function list($agence)
 	{
 
 		$em = $this->getEntityManager();
 		
-		$query = "	select *
-					from banque";
+		$query = "	select b.*
+					from banque b
+					inner join agence ag on (b.agence = ag.id)";
+
+		if ($agence) {
+			$query .= "	where ag.id = " . $agence;
+		}
 
         $statement = $em->getConnection()->prepare($query);
 

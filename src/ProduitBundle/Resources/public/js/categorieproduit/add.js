@@ -10,24 +10,45 @@ $(document).on('change','#image',function(event) {
 $(document).on('click', '#btn-save', function(event) {
 	event.preventDefault();
 
-	var data = {
-		nom : $('#nom').val(),
-		stock : $('#stock').val(),
-		unite : $('#unite').val(),
-		categorie_image : $('#categorie_image').attr('src'),
-	};
+	var nom = $('#nom').val();
 
-	var url = Routing.generate('produit_categorie_save');
+	if (nom) {
+		var data = {
+			nom : nom,
+			categorie_image : $('#categorie_image').attr('src'),
+		};
 
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: data,
-		success: function(res) {
-			show_info('Succès', 'Catégorie enregistré');
-			location.reload();
-		}
-	})
+		var url = Routing.generate('produit_categorie_save');
+
+		 disabled_confirm(false); 
+      swal({
+          title: "Enregistrer",
+          text: "Voulez-vous vraiment enregistrer ? ",
+          type: "info",
+          showCancelButton: true,
+          confirmButtonText: "Oui",
+          cancelButtonText: "Non",
+      },
+      function () {
+          disabled_confirm(true);
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: data,
+						success: function(res) {
+							if (res.exist) {
+								show_info('Erreur','Cette catégorie est déjà enregistré','error');
+							} else {
+								show_success('Succès', 'Catégorie enregistré');
+							}
+						}
+					});
+      });
+
+	} else {
+		show_info('Attention','Champs obligatoire','warning');
+	}
+
 });
 
 function getBase64(file) {

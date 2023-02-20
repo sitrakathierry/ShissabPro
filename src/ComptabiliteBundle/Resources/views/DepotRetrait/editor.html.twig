@@ -1,0 +1,73 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_date">Date</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Date" class="form-control" id="id_date" value="{{ mouvement.date | date('d/m/Y') }}" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_operation">Operation</label>
+        <div class="col-lg-10">
+            <select class="form-control" id="id_operation" disabled="">
+            	<option value=""></option>
+            	<option value="1" {% if mouvement.operation == 1 %} selected="" {% endif %} >Dépôt</option>
+            	<option value="2" {% if mouvement.operation == 2 %} selected="" {% endif %} >Retrait</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_num_operation">N° Opération</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="N° Opération" class="form-control" id="id_num_operation" value="{{ mouvement.numOperation  }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_type_operation">Type operation</label>
+        <div class="col-lg-10">
+            <select class="form-control" id="id_type_operation" disabled="">
+            	<option value=""></option>
+            	<option value="1" {% if mouvement.typeOperation == 1 %} selected="" {% endif %} >CASH</option>
+            	<option value="2" {% if mouvement.typeOperation == 2 %} selected="" {% endif %} >Chèque</option>
+            	<option value="3" {% if mouvement.typeOperation == 3 %} selected="" {% endif %} >Virement</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_banque">Banque</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Banque" class="form-control" id="id_banque" value="{{ mouvement.compteBancaire.banque.nom  }}" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_compte_bancaire">Compte bancaire</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="N° Opération" class="form-control" id="id_compte_bancaire" value="{{ mouvement.compteBancaire.numCompte  }}" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_montant">Montant</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="N° Opération" class="form-control" id="id_montant" value="{{ mouvement.montant  }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_op_nom">Personne concerné</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="N° Opération" class="form-control" id="id_op_nom" value="{{ mouvement.opNom  }}">
+        </div>
+    </div>
+
+    <input type="hidden" value="{{mouvement.id}}" id="id_mouvement_edit">
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_mouvement">Enregistrer</span>
+    </div>
+</div>

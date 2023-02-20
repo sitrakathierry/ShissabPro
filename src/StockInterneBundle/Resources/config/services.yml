@@ -1,0 +1,4 @@
+services:
+#    stock_interne.example:
+#        class: StockInterneBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

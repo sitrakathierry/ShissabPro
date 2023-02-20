@@ -1,0 +1,275 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <link href="{{ asset('css/plugins/clockpicker/clockpicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/slick/slick.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('js/plugins/clockpicker/clockpicker.js') }}"></script>
+<script src="{{ asset('js/plugins/slick/slick.min.js') }}"></script>
+<script src="{{ asset('bundles/hebergement/js/reservation/add.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+	<div class="ibox-content m-b-sm border-bottom m-lr-10">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="nb_pers">Nombre de personne *</label>
+                    <input type="text" id="nb_pers" name="nb_pers" value="" placeholder="Nombre de personne" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="categorie">Catégorie</label>
+                    <select class="form-control" id="categorie">
+                    	<option value="0">Tous</option>
+                    	{% for categorie in categories %}
+                    		<option value="{{ categorie.id }}">{{ categorie.nom }}</option>
+                    	{% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="date_entree">Date entrée *</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_entree" type="text" class="form-control " value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="date_sortie">Date sortie *</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_sortie" type="text" class="form-control" value="">
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="nb_pers">Heure d'entrée *</label>
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        <input type="text" class="form-control" value="" readonly="" id="heure_entree">
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label" for="nb_pers">Heure de sortie *</label>
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        <input type="text" class="form-control" value="" readonly="" id="heure_sortie">
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-primary btn-full-width mt-custom" id="btn_search">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Chambres disponibles <span class="badge-info"></span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" id="chambres_disponibles">
+                        	
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content" id="details">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Details de la réservations
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group client_mac">
+                                  <label class="col-sm-2 control-label">CLIENT</label>
+                                  <div class="col-sm-10">
+                                    <select class="form-control m-b" name="client" id="client" required="">
+                                      <option value=""></option>
+                                        {% for client in clients %}
+                                          {% if client.agence == userAgence.agence %}
+                                            {% if client.statut == 1%}
+                                              <option 
+                                                value="{{client.numPolice}}" 
+                                                data-police="{{client.formattedNum}}"
+                                                data-tel="{{client.idClientMorale.telFixe}}"
+                                            >
+                                                {{client.idClientMorale.nomSociete}}
+                                              </option>
+                                            {% else %}
+                                              <option 
+                                                value="{{client.numPolice}}" 
+                                                data-police="{{client.formattedNum}}"
+                                                data-tel="{{client.idClientPhysique.tel}}"
+                                            >
+                                                {{client.idClientPhysique.nom}}
+                                              </option>
+                                            {% endif %}
+                                          {% endif %}
+                                        {% endfor %}
+
+                                    </select>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                  <label class="col-sm-2 control-label">TEL</label>
+                                  <div class="col-sm-10">
+                                    <input type="hidden" id="nom_client" name="nom_client">
+                                    <input type="text" class="form-control" id="tel_client">
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        	<div class="row">
+                        		<div class="col-lg-12">
+
+                                    <input type="hidden" id="chambre_id">
+
+                        			<table class="table table-bordered">
+                        				<thead>
+                        					<tr>
+                        						<th>Chambre</th>
+                        						<th>Nb pers</th>
+                        						<th>
+                        							Petit dejeuner
+                        						</th>
+                        						<th>Nb nuits</th>
+                                                <th>Total ({{ agence.deviseSymbole }})</th>
+                        					</tr>
+                        				</thead>
+                        				<tbody>
+                        					<tr>
+                        						<td id="reservation_chambre_nom"></td>
+                        						<td>
+                        							<div class="form-group">
+				                                        <div class="col-sm-12">
+				                                        	<input type="number" class="form-control" id="reservation_nb_pers" readonly="">
+				                                        </div>
+				                                    </div>
+                        						</td>
+                        						<td id="reservation_petit_dejeuner">
+                        							<div class="form-group">
+				                                        <div class="col-sm-6">
+				                                        	<select class="form-control" id="reservation_avec_petit_dejeuner">
+				                                        		<option value="1">INCLUS</option>
+				                                        		<option value="2">SUPPLÉMENTAIRE</option>
+				                                        	</select>
+				                                        </div>
+				                                        <div class="col-sm-6">
+				                                        	<input type="number" class="form-control" id="montant_petit_dejeuner" readonly="">
+				                                        </div>
+				                                    </div>
+                        						</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <input type="number" class="form-control" id="reservation_nb_nuit" readonly="">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                        						<td>
+                        							<div class="form-group">
+				                                        <div class="col-sm-12">
+				                                        	<input type="number" class="form-control" id="reservation_total" readonly="">
+                                                            <input type="hidden" class="form-control" id="montant" readonly="">
+				                                        </div>
+				                                    </div>
+                        						</td>
+                        					</tr>
+                        				</tbody>
+                        			</table>
+                        		</div>
+                        	</div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+                              <div class="col-lg-6 col-lg-push-6">
+                                <div class="form-group" >
+                                  <label class="font-noraml">À</label>
+                                  <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                                    <input type="text" class="form-control" name="lieu" id="lieu" value="{{ agence.region }}" required="">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="row">
+                              <div class="col-lg-6 col-lg-push-6">
+                                <div class="form-group" id="data_1">
+                                  <label class="font-noraml">Le</label>
+                                  <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input type="text" class="form-control" name="date" id="date" value="{{ "now" | date('d/m/Y') }}" required="">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="statut">
+                                                <option value="1">CONFIRMÉ</option>
+                                                <option value="0">NON CONFIRMÉ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary pull-right" id="btn-save">
+                                        <i class="fa fa-save"></i>
+                                        Reserver
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

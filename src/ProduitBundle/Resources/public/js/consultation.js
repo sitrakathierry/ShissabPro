@@ -2,46 +2,51 @@ var cl_row_edited = 'r-cl-edited';
 
 $(document).ready(function(){
 
+    $('.select2').select2();
+
 	load_list();
 
 	function instance_grid() {
-        var colNames = ['QR Code','Image','Code','Catégorie','Nom', 'Stock', ''];
+        var colNames = ['Code produit','Catégorie','Nom', 'Stock', ''];
         
-        var colModel = [{ 
-            name:'qrcode',
-            index:'qrcode',
-            align: 'center' ,
-            formatter: function(v) {
-            	return '<img style="width: 50px;padding: 5px;" src="'+ v +'">';
-            }
-        },{ 
-            name:'image',
-            index:'image',
-            align: 'center' ,
-            formatter: function(v) {
-                var src = v;
+        var colModel = [
+        // { 
+        //     name:'qrcode',
+        //     index:'qrcode',
+        //     align: 'center' ,
+        //     formatter: function(v) {
+        //     	return '<img style="width: 50px;padding: 5px;" src="'+ v +'">';
+        //     }
+        // }
+        // ,{ 
+        //     name:'image',
+        //     index:'image',
+        //     align: 'center' ,
+        //     formatter: function(v) {
+        //         var src = v;
 
-                if (v == '') {
-                    src = get_picture_b64();
-                }
-                return '<img style="width: 100px;padding: 5px;" src="'+ src +'">';
-            }
-        },{ 
+        //         if (v == '') {
+        //             src = get_picture_b64();
+        //         }
+        //         return '<img style="width: 100px;padding: 5px;" src="'+ src +'">';
+        //     }
+        // },
+        { 
             name:'code_produit',
             index:'code_produit',
-            align: 'center' 
+            // align: 'center' 
         },{ 
             name:'categorie',
             index:'categorie',
-            align: 'center' 
+            // align: 'center' 
         },{ 
             name:'nom',
             index:'nom',
-            align: 'center' 
+            // align: 'center' 
         },{ 
             name:'stock',
             index:'stock',
-            align: 'center'
+            // align: 'center'
         },{
             name:'action',
             index:'action',
@@ -64,6 +69,7 @@ $(document).ready(function(){
             viewrecords: true,
             hidegrid   : true,
             forceFit:true,
+            rowNum: 1000000000
         };
 
         var tableau_grid = $('#liste_produit');
@@ -96,6 +102,7 @@ $(document).ready(function(){
             recherche_par: $('#recherche_par').val(),
             a_rechercher: $('#a_rechercher').val(),
             categorie: $('#categorie').val(),
+            produit_id: $('#produit_id').val(),
         };
 
         $.ajax({
@@ -136,5 +143,18 @@ $(document).ready(function(){
 
         load_list();
     });
+
+    $(document).on('change', '#produit_id', function(event) {
+        event.preventDefault();
+
+        load_list();
+    });
+
+    // $(document).on( "keydown", function( event ) {
+    //     console.log(event)
+    //   if (event.which === 13) {
+    //     load_list();
+    //   }
+    // });
 
 });

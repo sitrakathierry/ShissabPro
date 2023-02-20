@@ -138,4 +138,28 @@ class CompteBancaire
     {
         return $this->solde;
     }
+
+    /**
+     * Set agence
+     *
+     * @param \AppBundle\Entity\Agence $agence
+     *
+     * @return CompteBancaire
+     */
+    public function setAgence(\AppBundle\Entity\Agence $agence = null)
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * Get agence
+     *
+     * @return \AppBundle\Entity\Agence
+     */
+    public function getAgence()
+    {
+        return $this->agence;
+    }
 }

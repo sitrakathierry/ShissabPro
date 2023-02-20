@@ -1,0 +1,212 @@
+<style type="text/css">
+    table.content-details {
+        width: 100%
+        border-collapse: collapse;
+    }
+
+    .content-details th {
+        border: solid 1px #000000; 
+        padding: 5px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .content-details td {
+        border: solid 1px #c0c0c0;
+        padding: 5px; 
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    table {
+        font-size: 12pt;
+        font-family: times;
+    }
+
+    pre {
+        font-family: times;
+    }
+
+    td p {
+        width: 20%;
+    }
+
+    h1,h2,h3,h4,p {
+    	word-wrap: break-word;
+    }
+
+    table {
+    	border-collapse: collapse;
+    }
+
+    .f10{
+    	font-size: 10pt;
+    }
+
+    .f14{
+    	font-size: 14pt;
+    }
+
+    .f20{
+    	font-size: 20pt;
+    }
+
+    .no-margin{
+    	margin: 0;
+    }
+
+    .no-padding{
+		padding: 0;
+    }
+
+    .b {
+    	font-weight: bold;
+    }
+
+    h2{
+    	font-size: 15pt;
+    }
+
+    p{
+    	margin: 0;
+    	padding: 0;
+    }
+
+    .bordered{
+    	border: 1px solid #000;
+    }
+
+    h3 {
+    	font-size: 14pt;
+    }
+
+    .th, .tf {
+    	font-weight: bold;
+    	text-transform: uppercase;
+    }
+
+    .th{
+    	text-align: center;
+    	background-color: #c0c0c0;
+    }
+
+</style>
+
+<page backtop="" backbottom="" backleft="5mm" backright="5mm"> 
+    {% include('PdfBundle:Default:entete.html.twig') %}
+
+    <table style="width:100%">
+	    <tr>
+	        <td class="text-center" style="width:100%">
+
+	            <h3>
+                	FICHE DE RÉSERVATION
+	            </h3>
+	        </td>
+	    </tr>
+	</table>
+
+	<table style="width:100%;border: solid 1px #000">
+		<tr>
+	        <td style="width: 33.33%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Numéro de réservation</span>
+	        	<br>
+	        	<span class="f14 b">{{ booking.num }}</span>
+	        </td>
+	        <td style="width: 33.33%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Réservation</span>
+	        	<br>
+	        	
+	        		{% if booking.statut == 0 %}<span class="f14 b">NON CONFIRMÉ </span>{% endif %}
+	        		{% if booking.statut == 1 %}<span class="f14 b">CONFIRMÉ </span>{% endif %}
+	        		{% if booking.statut == 5 %}<span class="f14 b">ANNULÉ </span>{% endif %}
+	        	
+	        </td>
+	        <td style="width: 33.33%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Nom du client</span>
+	        	<br>
+	        	<span class="f14 b">{{ booking.nom }}</span>
+	        </td>
+		</tr>
+		<tr>
+	        <td colspan="3" style="width: 100%; border: solid 1px #000000;padding: 15px;">
+	        	<span class="f14 b">{{ booking.agence.nom }}</span>
+	        	<br>
+	        	<span>{{ booking.agence.adresse }}, {{ booking.agence.region }}</span>
+	        	<br>
+	        	<span>Téléphone : {{ booking.agence.tel }}</span>
+	        </td>
+		</tr>
+	</table>
+
+	<table style="width:100%;border: solid 1px #000">
+		<tr>
+	        <td style="width: 33.33%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Date d'arrivé</span>
+	        	<br>
+	        	<span class="f14 b">{{ booking.dateEntree | date('d/m/Y') }} {{ booking.heureEntree | date('h:i') }}</span>
+	        </td>
+	        <td style="width: 33.33%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Nombre de nuit</span>
+	        	<br>
+	        	<span class="f14 b">{{ booking.nbNuit }}</span>
+	        </td>
+	        <td style="width: 33.33%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Date de départ</span>
+	        	<br>
+	        	<span class="f14 b">{{ booking.dateSortie | date('d/m/Y') }} {{ booking.heureSortie | date('h:i') }}</span>
+	        </td>
+		</tr>
+		<tr>
+	        <td colspan="2" style="width: 66.66%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Chambre</span>
+	        	<br>
+	        	<span class="f14 b">{{ booking.chambre.categorieChambre.typeChambre.nom }} , {{ booking.chambre.categorieChambre.nom }}</span>
+	        </td>
+	        <td style="width: 33.33%; border: solid 1px #000000;padding: 15px;">
+	        	<span>Repas</span>
+	        	<br>
+	        	<span class="f14 b">Chambre 
+        		{% if booking.avecPetitDejeuner == 1 %} 
+    				avec Petit déjeuner 
+        		{% else %}
+    				sans Petit déjeuner 
+        		{% endif %}
+	        	</span>
+	        </td>
+		</tr>
+	</table>
+
+	{% if condition %}
+		<table style="width:100%; margin-top: 25px;">
+			<tr>
+				<td style="width:100%" class="b">
+					<u>CONDITIONS GÉNÉRALES</u>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:100%">
+					{{ condition.text | raw }}
+				</td>
+			</tr>
+		</table>
+	{% endif %}
+
+	<table style="width:100%; margin-top: 50px">
+	    <tr>
+	        <td style="width: 100%" class="text-right dashed typo">
+	        	<br>
+	        	<br>
+	        	<br>
+	        	 {{ booking.lieu }}
+	             Le {{booking.date| date('d/m/Y')}}
+	        	 
+	        </td>
+	    </tr>
+	</table>
+
+</page>

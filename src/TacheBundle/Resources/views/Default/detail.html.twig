@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/light.css') }}">
+<link rel="stylesheet" href=" {{ asset("bundles/tache/css/detail.css") }} ">
+<link rel="stylesheet" href=" {{ asset("bundles/tache/css/style.css") }} ">
+
+<style type="text/css">
+    .lcslt-multiple,#lc-select-dd li span
+    {
+        font-size: 1.2em !important;
+    }
+    
+    .mr-3
+    {
+        margin-right : 15px ;
+    }
+    .dt_date_Deb_et_Fin,.dt_duree
+    {
+        display : flex ;
+        flex-direction: row ;
+        /* justify-content: center ; */
+        align-items :center ;
+    }
+
+</style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+{# <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script> #}
+<script src="{{ asset('js/lc_select.js') }}"></script>
+<script src="{{ asset('bundles/tache/js/add.js') }}"></script>
+<script src="{{ asset('bundles/tache/js/detail.js') }}"></script>
+
+{% endblock %}
+{% block contenu %}
+    {% set statut = "" %}
+    {% if uneTache.statut == 0 %}
+        {% set statut = "tache_noncommencee" %}
+    {% elseif uneTache.statut == 1 %}
+        {% set statut = "tache_encours" %}
+    {% elseif uneTache.statut == 2 %}
+        {% set statut = "tache_terminee" %}
+    {% else  %}
+        {% set statut = "tache_depassee" %}
+    {% endif %}
+    <div class="t-block">
+        <div class="t-title">
+            <h2>TACHE <span class="dt_title {{ statut }} ">{{ uneTache.tache }}</span></h2>
+        </div>
+        <div class="liste-tache container mt-3 mb-3">
+            <div class="row">
+                <!-- <div class="col-md-1"></div> -->
+                <div class="col-md-10 dt_size">
+                    <table class="table">
+                            
+                            <tr class="cal_date">
+                                <td class="text-center"><i class="fa fa-calendar" aria-hidden="true"></i></td>
+                                <th>Date d'éxécution</th>
+                                <td class="dt_date_Deb_et_Fin">
+                                 Du {{ uneTache.dateDebut }} Au {{ uneTache.dateFin }} 
+                                </td>
+                            </tr>
+                            <tr>
+                                {% set typeDuree = "" %}
+                                {% if uneTache.type_duree == "mn" %}
+                                    {% set typeDuree = "Minute(s)" %}
+                                {% elseif uneTache.type_duree == "h" %}
+                                    {% set typeDuree = "Heure(s)" %}
+                                {% else %}
+                                    {% set typeDuree = "Jour(s)" %}
+                                {% endif %}
+                                <td class="text-center"><i class="fa fa-hourglass-half" aria-hidden="true"></i></td>
+                                <th>Durée </th>
+                                <td class="dt_duree">
+                                    {{ uneTache.duree }} {{ typeDuree }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><i class="fa fa-users" aria-hidden="true"></i></td>
+                                <th>Personne(s) assignée(s)</th>
+                                <td class="dt_personnes">
+                                    {% for unePersonne in baseTachePers %}
+                                        {{ unePersonne.username }}, 
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><i class="fa fa-archive" aria-hidden="true"></i></td>
+                                <th>Type de Tâche </th>
+                                <td class="dt_types_tache">
+                                {% for uneType in baseTacheType %}
+                                    {{ uneType.nom_type_tache }},
+                                {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><i class="fa fa-info"></i></td>
+                                <th>Description </th>
+                                <td class="dt_description">
+                                    {{ uneTache.description }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="dt_action text-right">
+                                <button class="btn btn-success dt_modif_tache" value="{{ uneTache.id }}"><i class="fa fa-edit"></i>&nbsp;Modifier</button>
+                                <input type="hidden" value="{{ path("tache_consultation") }}" class="redirect"  />
+                                {% if accessTache is not empty %}
+                                    <button class="btn btn-danger dt_suppr_tache" value="{{ uneTache.id }}"><i class="fa fa-trash"></i>&nbsp;Supprimer</button>
+                                {% endif %}
+                                {% if uneTache.statut != 2 %}
+                                    <button class="btn btn-primary dt_termine_tache" value="{{ uneTache.id }}"><i class="fa fa-check"></i>&nbsp;Terminer</button>
+                                {% endif %}
+                                </td>
+                            </tr>
+                    </table>
+                    <div class="dt_commentaire">
+                    <form id="form_comment_add">
+                        <div class="dt_comment_add">
+                            <label for="">Ajouter un commentaire</label>
+                            <div class="new_comment">
+                                <img src="{{ asset('img/profil.png') }}" class="dt_cm_profil">
+                                <input type="hidden" name="idtache" value="{{ uneTache.id }}">   
+                                <textarea name="comment_content" id="comment_content" class="form-control comment_content" placeholder="Votre commentaire ici"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary dt_ajout_comment"><i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;Envoyer</button>
+                        </div>
+                    </form>
+                        <div class="dt_comment_recs">
+                            <label for="" class="show_comment">{{ baseCommnetaire|length }} commentaire(s)</label>
+                            {% for unComment in baseCommnetaire %}
+                                {% if unComment.idPcomment != user %}
+                                <div class="new_comment comment_item">
+                                    <img src="{{ asset('img/profil.png') }}" class="dt_item_profil">
+                                    <div class="comment_content_item">
+                                        <span>{{ unComment.username }}, {{ unComment.date_created_at }}</span>
+                                        <p>{{ unComment.contenu }}</p>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="new_comment comment_item">
+                                    <div class="comment_content_item text-right mr-3">
+                                        <span>{{ unComment.username }}, {{ unComment.date_created_at }}</span>
+                                        <p>{{ unComment.contenu }}</p>
+                                    </div>
+                                    <img src="{{ asset('img/me.png') }}" class="dt_item_profil">
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

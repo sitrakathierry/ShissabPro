@@ -12,12 +12,24 @@ class CompteBancaireController extends Controller
 {
 	public function indexAction()
     {
-    	$banques = $this->getDoctrine()
+    	$user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+                    
+        $agence = $userAgence->getAgence();
+
+        $banques = $this->getDoctrine()
                     ->getRepository('AppBundle:Banque')
-                    ->findAll();
+                    ->findBy(array(
+                        'agence' => $agence
+                    ));
 
         return $this->render('ComptabiliteBundle:CompteBancaire:index.html.twig',array(
-        	'banques' => $banques,
+        	'agence' => $agence,
+            'banques' => $banques,
         ));
     }
 
@@ -132,9 +144,20 @@ class CompteBancaireController extends Controller
         $compte = $this->getDoctrine()->getRepository('AppBundle:CompteBancaire')
             ->find($id);
 
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+                    
+        $agence = $userAgence->getAgence();
+
         $banques = $this->getDoctrine()
                     ->getRepository('AppBundle:Banque')
-                    ->findAll();
+                    ->findBy(array(
+                        'agence' => $agence
+                    ));
 
 
         return $this->render('@Comptabilite/CompteBancaire/editor.html.twig',[

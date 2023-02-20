@@ -1,0 +1,32 @@
+<input type="hidden" id="data-donut-credit" value="{{donut}}">
+<div class="row">
+	<div class="col-md-4">
+        <div class="widget red-bg p-xl">
+            <h2>
+                CREDIT
+            </h2>
+            <ul class="list-unstyled m-t-md">
+                <li>
+                    Total créance: {{total}}
+                </li>
+                <li>
+                    Total payé: {{totalPaye}}
+                </li>
+                <li>
+                    Nombre de dossier en cours de paiement: {{encoursPaiement}}
+                </li>
+                <li>
+                    Nombre de dossier payé: {{nbPaye}}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+    	<div class="ibox-content text-center">
+            <div class="">
+                <div class="dash-block-credit" id="credit-donut-chart" ></div>
+            </div>
+        </div>
+    </div>
+</div>

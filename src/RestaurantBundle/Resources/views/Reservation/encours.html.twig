@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+        td{
+            vertical-align: middle;
+        }
+    </style>
+{% endblock  %}
+
+{% block scripts %}
+   {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/restaurant/js/reservation/encours.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Liste des commandes en cours
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">SOCIETE</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control m-b agence" id="agence">
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <option value="0">TOUS</option>
+                                                    {% for agence in agences %}
+                                                        {% if agence.id != 1 %}
+                                                            <option value="{{agence.id}}">{{agence.nom}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option value="{{userAgence.agence.id}}" selected="">{{userAgence.agence.nom}}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-primary" id="btn_search" style="width:100%">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="t-content">
+                                <div 
+                                    id="list_reservation"
+                                    style="width: 100%;overflow: scroll;height: 400px;" 
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

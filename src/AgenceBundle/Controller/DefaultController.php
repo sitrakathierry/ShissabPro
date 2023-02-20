@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Entity\User;
+use AppBundle\Entity\UserAgence;
 
 class DefaultController extends Controller
 {
@@ -34,6 +36,9 @@ class DefaultController extends Controller
         $code = $request->request->get('code');
         $id = $request->request->get('id');
         $capacite = $request->request->get('capacite');
+        $adresse = $request->request->get('adresse');
+        $tel = $request->request->get('tel');
+        $logo_agence = $request->request->get('logo_agence');
 
         if ($id) {
             $agence = $this->getDoctrine()
@@ -45,14 +50,56 @@ class DefaultController extends Controller
 
         $agence->setNom($nom);
         $agence->setRegion($region);
-        if($code)
-            $agence->setCode($code);
-        if($capacite)
-            $agence->setCapacite($capacite);
 
+        if ($adresse) {
+            $agence->setAdresse($adresse);
+        }
+
+        if ($tel) {
+            $agence->setTel($tel);
+        }
+
+        if ($logo_agence) {
+            $agence->setImg($logo_agence);
+        }
+
+        
+        if($capacite) $agence->setCapacite($capacite);
+        
         $em = $this->getDoctrine()->getManager();
         $em->persist($agence);
         $em->flush();
+
+        if (!$id) {
+            $nom_responsable = $request->request->get('nom_responsable');
+            $email_responsable = $request->request->get('email_responsable');
+            $mdp_responsable = $request->request->get('mdp_responsable');
+            $responsabilite = $request->request->get('responsabilite');
+            
+            $user = new User();
+            $userAgence = new UserAgence();
+            $roles = [];
+            array_push($roles, "ROLE_RESPONSABLE");
+
+            $user->setUserName($nom_responsable);
+            $user->setUserNameCanonical($nom_responsable);
+            $user->setEmail($email_responsable);
+            $user->setEmailCanonical($email_responsable);
+            $user->setPlainPassword($mdp_responsable);
+            $user->setEnabled(1);
+
+            $user->setRoles($roles);
+            $userManager = $this->get('fos_user.user_manager');
+            $userManager->updateUser($user);
+
+            $userAgence->setAgence($agence);
+            $userAgence->setUser($user);
+            $userAgence->setResponsable($responsabilite);
+
+            $em->persist($userAgence);
+            $em->flush();
+        }
+
 
         return $this->redirectToRoute('agence_show',array(
             'id'  => $agence->getId()
@@ -175,8 +222,55 @@ class DefaultController extends Controller
 
         $agence = $userAgence->getAgence();
 
+        $entrepots  = $this->getDoctrine()
+                        ->getRepository('AppBundle:Entrepot')
+                        ->findBy(array(
+                            'agence' => $agence
+                        ));
+
+        $checkEntrepot = $this->checkEntrepot();
+
         return $this->render('AgenceBundle:Default:add-user.html.twig',array(
-            'agence' => $agence
+            'agence' => $agence,
+            'entrepots' => $entrepots,
+            'checkEntrepot' => $checkEntrepot,
         ));
+    }
+
+    public function checkEntrepot()
+    {
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+
+        $route = 'entrepot_index';
+                    
+        $agence = $userAgence->getAgence();
+
+        $menu = $this->getDoctrine()
+                    ->getRepository('AppBundle:Menu')
+                    ->findOneBy(array(
+                        'route' => $route
+                    ));
+
+        if (!$menu) {
+            return false;
+        }
+
+        $menuParAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:MenuParAgence')
+                    ->findOneBy(array(
+                        'menu' => $menu,
+                        'agence' => $agence,
+                    ));
+
+        if (!$menuParAgence) {
+            return false;
+        }
+
+        return true;
     }
 }

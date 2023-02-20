@@ -1,0 +1,32 @@
+{% if (menu) %}
+	{% set total_notif = notif_reserv + notif_emp %}
+	<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+	    <i class="fa fa-cutlery"></i>  <span class="label label-danger">{{ total_notif }}</span>
+	</a>
+	{% if notif_reserv > 0 or notif_emp > 0 %}
+		<ul class="dropdown-menu dropdown-alerts">
+			{% if notif_reserv > 0 %}
+			    <li>
+			        <a>
+			            <div>
+			                <span class="badge badge-warning">{{ notif_reserv }}</span>
+			                commande(s) sur place en cours
+			            </div>
+			        </a>
+			    </li>
+			{% endif %}
+
+			{% if notif_emp > 0 %}
+			    <li>
+			        <a>
+			            <div>
+			                <span class="badge badge-warning">{{ notif_emp }}</span>
+			                commande(s) à emporter en cours
+			            </div>
+			        </a>
+			    </li>
+			{% endif %}
+
+		</ul>
+	{% endif %}
+{% endif %}

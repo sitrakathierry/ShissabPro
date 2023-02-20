@@ -1,0 +1,129 @@
+{% for commande in commandes %}
+	{% if commande.details %}
+		{% for detail in commande.details %}
+			<tr>
+		        <td>
+		            <div class="form-group">
+		              <div class="col-sm-12">
+		                <select class="form-control select2 plat" name="plat[]">
+		                    <option></option>
+		                    {% for plat in plats %}
+		                        <option 
+		                            value="{{ plat.id }}"
+		                            data-prixvente="{{ plat.prixVente }}"
+		                            {% if plat.id == detail.plat_id %}
+		                            	selected=""
+		                            {% endif %} 
+		                        >{{ plat.nom }}</option>
+		                    {% endfor %}
+		                </select>
+		              </div>
+		            </div>
+		        </td>
+		        <td>
+		            <div class="form-group">
+		              <div class="col-sm-12">
+		                <input type="number" class="form-control qte" name="qte[]" value="{{ detail.qte }}">
+		              </div>
+		            </div>
+		        </td>
+		        
+		        <td>
+		            <div class="form-group">
+		              <div class="col-sm-12">
+		                <input type="number" class="form-control prix" name="prix[]" value="{{ detail.prix }}">
+		              </div>
+		            </div>
+		        </td>
+
+		        <td>
+		            <input type="hidden" class="accompagnement_supp" value="0">
+		            <table class="table table-bordered table-accompagnement">
+		                <tbody>
+		                	{% for acc_detail in detail.accompagnements %}
+			                    <tr>
+			                        <td>
+			                            <div class="form-group">
+			                              <div class="col-sm-12">
+			                                <select class="form-control select2 accompagnement" name="accompagnement[]">
+			                                    <option></option>
+			                                    {% for accompagnement in accompagnements %}
+			                                        <option 
+			                                            value="{{ accompagnement.id }}"
+			                                            data-prix="{{ accompagnement.prix }}"
+			                                            {% if acc_detail.accompagnement == accompagnement.id %}
+			                                            	selected=""
+			                                            {% endif %} 
+			                                        >{{ accompagnement.nom }}</option>
+			                                    {% endfor %}
+			                                </select>
+			                              </div>
+			                            </div>
+			                        </td>
+
+			                        <td>
+			                            <div class="form-group">
+			                              <div class="col-sm-12">
+			                                <select class="option form-control portion_accompagnement" name="portion_accompagnement[]">
+			                                    <option value="0"></option>
+			                                    <option value="1" {% if acc_detail.qte_accompagnement == '1' %} selected="" {% endif %} >1 </option>
+			                                    <option value="0.5" {% if acc_detail.qte_accompagnement == '0.5' %} selected="" {% endif %} >1/2 </option>
+			                                </select>
+			                                <input type="number" class="hidden qte_accompagnement" name="qte_accompagnement []" value="{{ acc_detail.qte_accompagnement }}">
+			                              </div>
+			                            </div>
+			                        </td>
+
+			                        <td>
+			                            <div class="form-group">
+			                              <div class="col-sm-12">
+			                                <input type="number" class="form-control prix_accompagnement" name="prix_accompagnement[]" placeholder="Total" value="{{ acc_detail.prix_accompagnement }}">
+			                              </div>
+			                            </div>
+			                        </td>
+
+			                        <td>
+			                            <button class="btn btn-white btn-full-width btn-remove-tr-accompagnement">
+			                                <i class="fa fa-trash"></i>
+			                            </button>
+			                        </td>
+			                    </tr>
+		                	{% endfor %}
+		                </tbody>
+
+		                <tfoot>
+		                    <tr>
+		                        <td colspan="2"></td>
+		                        <td>
+		                            <div class="form-group">
+		                              <div class="col-sm-12">
+		                                <input type="number" class="form-control total_accompagnement" name="total_accompagnement[]" placeholder="Total" readonly="">
+		                              </div>
+		                            </div>
+		                        </td>
+		                        <td>
+		                            <button class="btn btn-white btn-full-width btn-add-row-accompagnement" data-id="0">
+		                                <i class="fa fa-plus"></i>
+		                            </button>
+		                        </td>
+		                    </tr>
+		                </tfoot>
+		            </table>
+		        </td>
+		        
+		        <td>
+		            <div class="form-group">
+		              <div class="col-sm-12">
+		                <input type="number" class="form-control total" name="total[]" value="{{ detail.total }}">
+		              </div>
+		            </div>
+		        </td>
+		        <td>
+		            <button class="btn btn-danger btn-full-width btn-remove-tr">
+		                <i class="fa fa-trash"></i>
+		            </button>
+		            <input type="hidden" class="statut_detail" value="1"></td>
+		    </tr>
+		{% endfor %}
+	{% endif %}
+{% endfor %}

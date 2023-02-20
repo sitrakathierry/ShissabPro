@@ -63,6 +63,8 @@ client_show:
 client_dashboard:
     path:     /client/dashboard
     defaults: { _controller: ClientBundle:Client:dashboard }
+    options:
+        expose: true
 
 client_adresse:
     path:    /client/adresse/{id}
@@ -72,8 +74,8 @@ client_adresse:
     methods: [GET]
 
 client_delete:
-    path:    /client/delete/{id}/{ajax}
-    defaults: { _controller: ClientBundle:Client:delete, ajax: 0 }
+    path:    /client/delete/{id}
+    defaults: { _controller: ClientBundle:Client:delete}
     options:
         expose: true
     methods: [GET]
@@ -213,6 +215,13 @@ client_tous_list:
 client_details:
     path:    /client/details/{id}
     defaults: { _controller: ClientBundle:Client:getClientDetails }
+    options:
+        expose: true
+    methods: [GET]
+
+client_dashboards:
+    path:    /client/dashboards
+    defaults: { _controller: ClientBundle:Dashboard:index }
     options:
         expose: true
     methods: [GET]

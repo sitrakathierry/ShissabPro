@@ -45,6 +45,8 @@ class Commande
      */
     private $agence;
 
+    private $recu;
+
 
     /**
      * Get id
@@ -127,5 +129,21 @@ class Commande
     {
         return $this->agence;
     }
-}
 
+    /**
+     * Get recu
+     *
+     */
+    public function getRecu()
+    {
+
+        $id = $this->id;
+
+        $id = str_pad($id, 6, '0', STR_PAD_LEFT);
+
+        $this->recu = $id;
+
+        return $this->recu;
+
+    }
+}

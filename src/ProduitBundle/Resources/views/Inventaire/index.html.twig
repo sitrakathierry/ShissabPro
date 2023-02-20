@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style>
+        #a_rechercher
+        {
+            margin-top : 23px ;
+        }
+        .tableau_donnee
+        {
+            margin-top : 20px ;
+        }
+    </style>
+{% endblock  %}
+
+{% block scripts %}
+   {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/produit/js/inventaire/index.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Inventaire des produits
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3 hidden">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">SOCIETE</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control m-b agence" id="agence">
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <option value="0">TOUS</option>
+                                                    {% for agence in agences %}
+                                                        {% if agence.id != 1 %}
+                                                            <option value="{{agence.id}}">{{agence.nom}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option value="{{userAgence.agence.id}}" selected="">{{userAgence.agence.nom}}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label">ENTREPÔT</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control m-b entrepot" id="entrepot">
+                                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                                    <option value="0">TOUS</option>
+                                                    {% for entrepot in entrepots %}
+                                                        <option value="{{entrepot.id}}">{{entrepot.nom}}</option>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option value="{{userEntrepot.entrepot.id}}" selected="">{{userEntrepot.entrepot.nom}}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label">CATEGORIE</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control m-b categorie" id="categorie">
+                                                <option value="0">Tous</option>
+                                                {% for categorie in categories %}
+                                                    <option 
+                                                        value="{{categorie.id}}"
+                                                    >{{categorie.nom}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-12 control-label">RECHERCHE PAR</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control m-b statut" id="recherche_par">
+                                                <option value="0">CODE PRODUIT</option>
+                                                <option value="1">NOM PRODUIT</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="col-sm-12 ">
+                                            <input type="text" class="form-control" id="a_rechercher" placeholder="Texte à rechercher ..." style="margin-bottom:10px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <div class="btn-group" style="width:100%">
+                                                <button class="btn btn-primary" id="btn_search" style="width:50%">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                                <span data-toggle="dropdown" class="btn btn-white dropdown-toggle"><i class="fa fa-download" aria-hidden="true"></i></span>
+                                                <ul class="dropdown-menu">
+                                                    <li class="cl_export" data-type="xls">
+                                                        <a href="#">
+                                                            <i class="fa fa-file-excel-o"></i>
+                                                            Exporter en Excel
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="hidden">
+                        <form action="" method="POST" id="form_export"></form>
+                    </div>
+                    <div class="row tableau_donnee">
+                        <div class="col-lg-12">
+                            <div class="t-content" style="width:100%;overflow:auto;">
+                                <table id="liste_produit"></table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

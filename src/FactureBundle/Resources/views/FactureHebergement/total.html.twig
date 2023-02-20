@@ -1,0 +1,81 @@
+<table class="table table-bordered">
+	<tfoot>
+		<tr>
+	      <th colspan="6">MONTANT TOTAL À PAYER ({{ deviseEntrepot.symbole }})</th>
+	      <th id="">
+	        <div class="form-group">
+	          <div class="col-sm-12">
+	            <input type="number" class="form-control" name="total_heb_resto" id="total_heb_resto" readonly="" value="0">
+	          </div>
+	        </div>
+	      </th>
+	      <th>
+	      </th>
+	    </tr>
+	    {% if devises | length > 0 %}
+	      <tr>
+	        <th >MONTANT EN</th>
+	        <th colspan="5">
+	          <div class="form-group">
+	            <div class="col-sm-12">
+	              <select class="form-control f_heb_devise" name="f_heb_devise">
+	                <option></option>
+	                {% for devise in devises %}
+	                  <option 
+	                    value="{{devise.id}}"
+	                    data-montantprincipal="{{devise.montantPrincipal}}"
+	                    data-montantconversion="{{devise.montantConversion}}"
+	                  >{{devise.symbole}}</option>
+	                {% endfor %}
+	              </select>
+	            </div>
+	          </div>
+	        </th>
+	        <th id="">
+	          <div class="form-group">
+	            <div class="col-sm-12">
+	              <input type="number" class="form-control f_heb_montant_converti" name="f_heb_montant_converti" readonly="" value="">
+	            </div>
+	          </div>
+	        </th>
+	        <th>
+	        </th>
+	      </tr>
+	    {% endif %}
+		{# <tr>
+	      <th colspan="6">REMISE</th>
+	      <th id="">
+	        <div class="form-group">
+	          <div class="col-sm-4">
+	            <select class="form-control" id="f_hebergement_remise_type" name="f_hebergement_remise_type">
+	              <option value="0">%</option>
+	              <option value="1">Montant</option>
+	            </select>
+	          </div>
+	          <div class="col-sm-8">
+	            <input type="number" class="form-control" id="f_hebergement_remise" name="f_hebergement_remise" >
+	          </div>
+	        </div>
+	        <input type="hidden" class="form-control" name="hebergement_remise" id="hebergement_remise" readonly="" value="0">
+	      </th>
+	      <th>
+	      </th>
+	    </tr> #}
+	    {# <tr>
+	      <th colspan="6">MONTANT APRÈS DEDUCTION ({{ deviseEntrepot.symbole }})</th>
+	      <th id="">
+	        <div class="form-group">
+	          <div class="col-sm-12">
+	            <input type="number" class="form-control" name="hebergement_total" id="hebergement_total" readonly="" value="0">
+	          </div>
+	        </div>
+	      </th>
+	      <th>
+	      </th>
+	    </tr> #}
+	</tfoot>
+</table>
+
+<div class="hr-line-dashed"></div>
+<p>Arrêté la présente facture à la somme de <b id="hebergement_somme" style="text-transform: uppercase;"></b> 
+<p>

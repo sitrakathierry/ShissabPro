@@ -1,0 +1,49 @@
+<div class="form-horizontal">
+    
+	<div class="form-group">
+        <label class="col-lg-3 control-label" for="id_type">Type</label>
+        <div class="col-lg-9">
+        	<select class="form-control" id="id_type">
+        		<option></option>
+        		{% for type in types %}
+        			<option
+        				value="{{ type.id }}"
+        				{% if type.id == categorie.typeChambre.id %} selected {% endif %}
+        			>{{ type.nom }}</option>
+        		{% endfor %}
+        	</select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="id_nom">Nom</label>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Nom" class="form-control" id="id_nom" value="{{ categorie ? categorie.nom : '' }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="id_description">Description</label>
+        <div class="col-lg-9">
+        	<textarea class="summernote" id="id_description">
+        		{{ categorie.description | raw }}
+        	</textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="id_caracteristique">Caractéristiques</label>
+        <div class="col-lg-9">
+            <input type="text" class="form-control" id="id_caracteristiques" required="" data-role="tagsinput" value="{{ categorie.caracteristiques }}">
+        </div>
+    </div>
+
+
+    <input type="hidden" value="{{categorie.id}}" id="id_categorie_edit">
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_categorie">Enregistrer</span>
+    </div>
+</div>
+<script src="{{ asset('bundles/client/js/bootstrap-tagsinput.js') }}"></script>

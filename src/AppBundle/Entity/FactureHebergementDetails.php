@@ -1,0 +1,288 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * FactureHebergementDetails
+ *
+ * @ORM\Table(name="facture_hebergement_details")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FactureHebergementDetailsRepository")
+ */
+class FactureHebergementDetails
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_pers", type="integer", nullable=true)
+     */
+    private $nbPers;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_entree", type="datetime", nullable=true)
+     */
+    private $dateEntree;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_sortie", type="datetime", nullable=true)
+     */
+    private $dateSortie;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_nuit", type="integer", nullable=true)
+     */
+    private $nbNuit;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="avec_petit_dejeuner", type="integer", nullable=true)
+     */
+    private $avecPetitDejeuner;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montant;
+
+    /**
+     * @var \AppBundle\Entity\Chambre
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Chambre")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="chambre", referencedColumnName="id")
+     * })
+     */
+    private $chambre;
+
+    /**
+     * @var \AppBundle\Entity\FactureHebergement
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\FactureHebergement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="facture_hebergement", referencedColumnName="id")
+     * })
+     */
+    private $factureHebergement;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nbPers
+     *
+     * @param integer $nbPers
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setNbPers($nbPers)
+    {
+        $this->nbPers = $nbPers;
+
+        return $this;
+    }
+
+    /**
+     * Get nbPers
+     *
+     * @return int
+     */
+    public function getNbPers()
+    {
+        return $this->nbPers;
+    }
+
+    /**
+     * Set dateEntree
+     *
+     * @param \DateTime $dateEntree
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setDateEntree($dateEntree)
+    {
+        $this->dateEntree = $dateEntree;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEntree
+     *
+     * @return \DateTime
+     */
+    public function getDateEntree()
+    {
+        return $this->dateEntree;
+    }
+
+    /**
+     * Set dateSortie
+     *
+     * @param \DateTime $dateSortie
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setDateSortie($dateSortie)
+    {
+        $this->dateSortie = $dateSortie;
+
+        return $this;
+    }
+
+    /**
+     * Get dateSortie
+     *
+     * @return \DateTime
+     */
+    public function getDateSortie()
+    {
+        return $this->dateSortie;
+    }
+
+    /**
+     * Set nbNuit
+     *
+     * @param integer $nbNuit
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setNbNuit($nbNuit)
+    {
+        $this->nbNuit = $nbNuit;
+
+        return $this;
+    }
+
+    /**
+     * Get nbNuit
+     *
+     * @return int
+     */
+    public function getNbNuit()
+    {
+        return $this->nbNuit;
+    }
+
+    /**
+     * Set avecPetitDejeuner
+     *
+     * @param integer $avecPetitDejeuner
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setAvecPetitDejeuner($avecPetitDejeuner)
+    {
+        $this->avecPetitDejeuner = $avecPetitDejeuner;
+
+        return $this;
+    }
+
+    /**
+     * Get avecPetitDejeuner
+     *
+     * @return int
+     */
+    public function getAvecPetitDejeuner()
+    {
+        return $this->avecPetitDejeuner;
+    }
+
+    /**
+     * Set montant
+     *
+     * @param string $montant
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setMontant($montant)
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    /**
+     * Get montant
+     *
+     * @return string
+     */
+    public function getMontant()
+    {
+        return $this->montant;
+    }
+
+    /**
+     * Set chambre
+     *
+     * @param \AppBundle\Entity\Chambre $chambre
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setChambre(\AppBundle\Entity\Chambre $chambre = null)
+    {
+        $this->chambre = $chambre;
+
+        return $this;
+    }
+
+    /**
+     * Get chambre
+     *
+     * @return \AppBundle\Entity\Chambre
+     */
+    public function getChambre()
+    {
+        return $this->chambre;
+    }
+
+    /**
+     * Set factureHebergement
+     *
+     * @param \AppBundle\Entity\FactureHebergement $factureHebergement
+     *
+     * @return FactureHebergementDetails
+     */
+    public function setFactureHebergement(\AppBundle\Entity\FactureHebergement $factureHebergement = null)
+    {
+        $this->factureHebergement = $factureHebergement;
+
+        return $this;
+    }
+
+    /**
+     * Get factureHebergement
+     *
+     * @return \AppBundle\Entity\FactureHebergement
+     */
+    public function getFactureHebergement()
+    {
+        return $this->factureHebergement;
+    }
+}

@@ -1,0 +1,275 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/user/css/user.css') }}">
+{% endblock  %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/agence/js/parametre.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+	<input type="hidden" id="agence_id" value="{{ agence.id }}">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            Paramètre général - {{ agence.nom }}
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                    	<div class="row">
+                    		<div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label nom">Devise (symbole)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="devise_symbole" value="{{ agence.deviseSymbole }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label nom">Devise (lettre)</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="devise_lettre" value="{{ agence.deviseLettre }}">
+                                    </div>
+                                </div>
+                            </div>
+                    	</div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button class="btn btn-primary pull-right" id="btn-save" >
+                                    <i class="fa fa-save"></i>
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+
+                        {% if checkProduit %}
+                            <div class="hr-line-dashed"></div>
+                            <h5>DEVISE PAR ENTREPÔT</h5>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-sm-6">ENTREPÔT</th>
+                                                <th>DEVISE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for entrepot in entrepots %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <input type="text" class="form-control" readonly="" value="{{ entrepot.nom }}">
+                                                                <input type="hidden" class="d_entrepot" value="{{ entrepot.id }}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <select class="form-control d_devise">
+                                                                    <option 
+                                                                        value="{{ agence.deviseSymbole }}"
+                                                                        data-lettre="{{ agence.deviseLettre }}"
+                                                                        {% if agence.deviseSymbole == entrepot.deviseSymbole %}
+                                                                            selected=""
+                                                                        {% endif %} 
+                                                                    >
+                                                                        {{ agence.deviseSymbole }}
+                                                                    </option>
+                                                                    {% for devise in devises %}
+                                                                        <option 
+                                                                            value="{{ devise.symbole }}"
+                                                                            data-lettre="{{ devise.lettre }}"
+                                                                            {% if devise.symbole == entrepot.deviseSymbole %}
+                                                                                selected=""
+                                                                            {% endif %} 
+                                                                        >
+                                                                            {{ devise.symbole }}
+                                                                        </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button class="btn btn-primary pull-right" id="btn-save-devise-entrepot" >
+                                        <i class="fa fa-save"></i>
+                                        Enregistrer
+                                    </button>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                        {% if agence.deviseSymbole %}
+                        	<div class="hr-line-dashed"></div>
+                            <h5>DEVISE SUPPLÉMENTAIRE</h5>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">DEVISE</th>
+                                                <th>CONVERSION</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for devise in devises %}
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" class="id" value="{{ devise.id }}">
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <label class="control-label">SYMBOLE</label>
+                                                                <input type="text" class="form-control symbole" value="{{ devise.symbole }}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <label class="control-label">LETTRE</label>
+                                                                <input type="text" class="form-control lettre" value="{{ devise.lettre }}">
+                                                            </div>
+                                                        </div> 
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-6">
+                                                                <label class="control-label">{{ agence.deviseSymbole }}</label>
+                                                                <input type="number" class="form-control montant_principal" value="{{ devise.montantPrincipal }}">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label class="control-label">{{ devise.symbole }}</label>
+                                                                <input type="number" class="form-control montant_conversion" value="{{ devise.montantConversion }}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-warning btn-full-width btn-save-devise" >
+                                                            <i class="fa fa-save"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-full-width btn-delete-devise" >
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" class="id">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label class="control-label">SYMBOLE</label>
+                                                            <input type="text" class="form-control symbole" value="">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label class="control-label">LETTRE</label>
+                                                            <input type="text" class="form-control lettre" value="">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-6">
+                                                            <label class="control-label">{{ agence.deviseSymbole }}</label>
+                                                            <input type="number" class="form-control montant_principal" value="">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label class="control-label">TAUX</label>
+                                                            <input type="number" class="form-control montant_conversion" value="">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-info btn-full-width btn-save-devise" style="margin-top: 30px;">
+                                                        <i class="fa fa-save"></i>
+                                                        Ajouter
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="hr-line-dashed"></div>
+                        <h5>IMPRESSION TICKET</h5>
+
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Titre</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="ticket_titre" value="{{ agence.titreTicket ? agence.titreTicket : agence.nom }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Sous titre</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="ticket_soustitre" value="{{ agence.soustitreTicket }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Adresse</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="ticket_adresse" value="{{ agence.adresseTicket ? agence.adresseTicket : agence.adresse }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Tél</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="ticket_tel" value="{{ agence.telTicket ? agence.telTicket : agence.tel }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button class="btn btn-primary pull-right" id="btn-save-ticket" >
+                                        <i class="fa fa-save"></i>
+                                        Enregistrer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

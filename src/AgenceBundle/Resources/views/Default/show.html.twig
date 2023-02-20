@@ -7,6 +7,7 @@
 
  {% block scripts %}
     {{ parent() }}
+    <script src="{{ asset('bundles/agence/js/show.js') }}"></script>
 {% endblock %}
 
 {% block contenu %}
@@ -16,7 +17,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>
-                            DETAILS AGENCE
+                            DETAILS SOCIÉTÉ - {{ agence.nom }}
                         </h5>
                     </div>
                     <div class="ibox-content">
@@ -31,6 +32,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label adresse">Adresse</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="adresse" value="{{agence.adresse}}">
+                                        </div>
+                                    </div>
+                                </div>
                         	</div>
 
                         	<div class="row">
@@ -38,11 +47,34 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label nom">Région</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="region" required="" value="{{agence.region}}">
+                                            <input type="text" class="form-control" name="region" value="{{agence.region}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Tél</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="tel" id="tel" value="{{agence.tel}}">
                                         </div>
                                     </div>
                                 </div>
                         	</div>
+
+                            <div class="row form-horizontal">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Logo</label>
+                                        <div class="col-sm-10">
+                                            <input type="file" class="form-control" id="logo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="hidden" name="logo_agence" id="logo_agence">
+                                    <img src="{{ agence.img ? agence.img : asset('img/picture.png') }}" id="logo_img" class="img-thumbnail photo-avatar pull-right">
+                                </div>
+                            </div>
 
                             {% if is_granted('ROLE_ADMIN') %}                                 
                                 <div class="row">

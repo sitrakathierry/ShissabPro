@@ -1,0 +1,70 @@
+{% for detail in details %}
+	<tr>
+	    <td>
+	      <div class="form-group">
+	        <div class="col-sm-12">
+	          <select class="form-control type_designation" name="type_designation[]">
+	            <option></option>
+	            <option value="1" {% if detail.libre != 1 %} selected="" {% endif %} >PRODUIT</option>
+	            <option value="3" {% if detail.libre == 1 %} selected="" {% endif %} >AUTRE</option>
+	          </select>
+	        </div>
+	      </div>
+	    </td>
+	    <td>
+	      <div class="form-group">
+	        <div class="col-sm-12">
+	          <select class="form-control designation select2 {% if detail.libre == 1 %} hidden {% endif %}" name="designation[]">
+	          	{% if detail.variationProduit %}
+	            	<option value="{{ detail.variationProduit.id }}">
+	            		{{ detail.variationProduit.produitEntrepot.produit.nom }} - {{ detail.variationProduit.prixVente }} KMF
+	            	</option>
+	          	{% endif %}
+	          </select>
+	          <div class="designation_autre_container {% if detail.libre != 1 %} hidden {% endif %}">
+	            <textarea class="designation_autre" name="designation_autre[]">
+	            	{{ detail.designation | raw }}
+	            </textarea>
+	          </div>
+	        </div>
+	      </div>
+	    </td>
+	    <td class="soustable">
+      		<div class="form-group">
+			  <div class="col-sm-12">
+			    <input type="number" class="form-control f_ps_qte" name="f_ps_qte[]" value="{{ detail.qte }}">
+			  </div>
+			</div>
+
+			<input type="hidden" name="f_ps_periode[]" class="f_ps_periode">
+			<input type="hidden" name="f_ps_duree[]" class="f_ps_duree">
+	    </td>
+	    <td>
+	      <div class="form-group">
+	        <div class="col-sm-12">
+	          <input type="number" class="form-control prix" name="prix[]" value="{{ detail.prix }}" >
+	        </div>
+	      </div>
+	    </td>
+	    <td>
+	      <div class="form-group">
+	        <div class="col-sm-4">
+	          <select class="form-control remise_type_ligne" name="remise_type_ligne[]">
+	            <option value="0" {% if detail.typeRemise == 0 %} selected="" {% endif %} >%</option>
+              	<option value="1" {% if detail.typeRemise == 1 %} selected="" {% endif %} >Montant</option>
+	          </select>
+	        </div>
+	        <div class="col-sm-8">
+	          <input type="number" class="form-control remise_ligne" name="remise_ligne[]" value="{{ detail.montantRemise }}">
+	        </div>
+	      </div>
+	    </td>
+	    <td class="td-montant">
+	      <div class="form-group">
+	        <div class="col-sm-12">
+	          <input type="number" class="form-control montant" name="montant[]" value="{{ detail.montant }}">
+	        </div>
+	      </div>
+	    </td>
+	</tr>
+{% endfor %}

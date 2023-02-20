@@ -13,11 +13,13 @@
                 </div>
             </form> #}
         </div>
+
         <ul class="nav navbar-top-links navbar-right">
             <li>
-                <span class="m-r-sm text-muted welcome-message"><b style="color:#fd9597;">
-                    SHISSAB SYSTEM
-                </b></span>
+                <img src="{{ asset('img/shissab-header.jpg') }}"  style="height: 50px !important;"/>
+                {# <span class="m-r-sm text-muted welcome-message"><b style="color:#005502;">
+                    SHISSAB SYSTEME
+                </b></span> #}
             </li>
 
             {% set class = 'hidden' %}
@@ -27,8 +29,8 @@
 
             <li class="dropdown {{ class }}" id="notif-produit">
             </li>
-            {# <li class="dropdown {{ class }}" id="notif-ordonnance">
-            </li> #}
+            <li class="dropdown {{ class }}" id="notif-booking">
+            </li>
             <li>
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <a href="{{ path('fos_user_security_logout') }}">

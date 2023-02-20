@@ -1,0 +1,41 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Format</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="type_tarif_edit">
+                <option></option>
+                <option value="1" {% if tarif.type == 1 %} selected="" {% endif %} >Durée</option>
+                <option value="2" {% if tarif.type == 2 %} selected="" {% endif %} >Qte</option>
+            </select>
+        </div>
+    </div>
+
+    {% if tarif.type == 1 %}
+	    <div class="form-group">
+	         <label class="col-sm-2 control-label">Durée</label>
+	        <div class="col-sm-10">
+	            <select class="form-control" id="duree_edit">
+	                <option value="1" {% if tarif.duree == 1 %} selected="" {% endif %} >heure</option>
+	                <option value="2" {% if tarif.duree == 2 %} selected="" {% endif %} >jour</option>
+	                <option value="3" {% if tarif.duree == 3 %} selected="" {% endif %} >mois</option>
+	                <option value="4" {% if tarif.duree == 4 %} selected="" {% endif %} >année</option>
+	            </select>
+	        </div>
+	    </div>
+    {% endif %}
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Prix</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" id="prix_edit" required="" value="{{ tarif.prix }}">
+        </div>
+    </div>
+
+
+    <input type="hidden" value="{{tarif.id}}" id="id_tarif_edit">
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_tarif">Enregistrer</span>
+    </div>
+</div>

@@ -89,9 +89,16 @@
                     <i class="fa fa-eye"></i> 
                     Voir
                     </a>
-                    <a class="btn btn-xs btn-danger btn-outline cl_delete_user" data-action=""><i class="fa fa-trash"></i>
+                    {% if agent.user.enabled == 1 %}
+                    <a class="btn btn-xs btn-danger btn-outline cl_delete_user" data-action="{{ path('user_delete', { id : agent.user.id }) }}"><i class="fa fa-trash"></i>
                     Suppr.
                     </a>
+                    {% else %}
+                    <a class="btn btn-xs btn-success btn-outline cl_active_user" data-action="{{ path('user_active', { id : agent.user.id }) }}"><i class="fa fa-check"></i>
+                    Activer
+                    </a>
+                    {% endif %}
+                    
                   </td>
                 </tr>
                 {% endfor %}
@@ -222,8 +229,9 @@
    }
   }
   
-  $('.cl_delete_user').click(function () {
+ $('.cl_delete_user').click(function () {
           var action = $(this).data('action');
+
           swal({
               title: "Êtes-vous sûr?",
               text: "Voulez-vous vraiment Supprimer l'utilisateur",
@@ -236,12 +244,53 @@
               closeOnCancel: false },
               function (isConfirm) {
                   if (isConfirm) {
-                      window.location.href = action;
+                      // window.location.href = action;
+
+                      $.ajax({
+                        url : action,
+                        type : 'GET',
+                        success: function(res) {
+                          location.reload();
+                        }
+                      })
+
                   } else {
                       swal("Annulé", "La suppression à été annulé", "error");
                   }
               });
       });
+
+    $('.cl_active_user').click(function () {
+          var action = $(this).data('action');
+
+          swal({
+              title: "Êtes-vous sûr ?",
+              text: "Voulez-vous vraiment Activer l'utilisateur",
+              type: "info",
+              showCancelButton: true,
+              confirmButtonColor: "#0080FF",
+              confirmButtonText: "Oui, Activez-le!",
+              cancelButtonText: "Non, annulez",
+              closeOnConfirm: false,
+              closeOnCancel: false },
+              function (isConfirm) {
+                  if (isConfirm) {
+                      // window.location.href = action;
+
+                      $.ajax({
+                        url : action,
+                        type : 'GET',
+                        success: function(res) {
+                          location.reload();
+                        }
+                      })
+
+                  } else {
+                      swal("Annulé", "L'activation à été annulé", "info");
+                  }
+              });
+      });
+  
   
   
 </script>

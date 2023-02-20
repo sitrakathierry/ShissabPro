@@ -36,15 +36,35 @@ class VariationProduit
     private $stock;
 
     /**
-     * @var \AppBundle\Entity\Produit
+     * @var \AppBundle\Entity\ProduitEntrepot
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProduitEntrepot")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="produit_entrepot", referencedColumnName="id")
      * })
      */
-    private $produit;
+    private $produitEntrepot;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="marge_type", type="integer", nullable=true)
+     */
+    private $margeType = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marge_valeur", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $margeValeur;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="is_delete", type="integer", nullable=true)
+     */
+    private $is_delete;
 
     /**
      * Get id
@@ -105,26 +125,98 @@ class VariationProduit
     }
 
     /**
-     * Set produit
+     * Set produitEntrepot
      *
-     * @param \AppBundle\Entity\Produit $produit
+     * @param \AppBundle\Entity\ProduitEntrepot $produitEntrepot
      *
-     * @return VariationProduit
+     * @return VariationProduitEntrepot
      */
-    public function setProduit(\AppBundle\Entity\Produit $produit = null)
+    public function setProduitEntrepot(\AppBundle\Entity\ProduitEntrepot $produitEntrepot = null)
     {
-        $this->produit = $produit;
+        $this->produitEntrepot = $produitEntrepot;
 
         return $this;
     }
 
     /**
-     * Get produit
+     * Get produitEntrepot
      *
-     * @return \AppBundle\Entity\Produit
+     * @return \AppBundle\Entity\ProduitEntrepot
      */
-    public function getProduit()
+    public function getProduitEntrepot()
     {
-        return $this->produit;
+        return $this->produitEntrepot;
+    }
+
+    /**
+     * Set margeType
+     *
+     * @param integer $margeType
+     *
+     * @return VariationProduit
+     */
+    public function setMargeType($margeType)
+    {
+        $this->margeType = $margeType;
+
+        return $this;
+    }
+
+    /**
+     * Get margeType
+     *
+     * @return integer
+     */
+    public function getMargeType()
+    {
+        return $this->margeType;
+    }
+
+    /**
+     * Set margeValeur
+     *
+     * @param string $margeValeur
+     *
+     * @return VariationProduit
+     */
+    public function setMargeValeur($margeValeur)
+    {
+        $this->margeValeur = $margeValeur ? $margeValeur : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get margeValeur
+     *
+     * @return string
+     */
+    public function getMargeValeur()
+    {
+        return $this->margeValeur;
+    }
+
+        /**
+     * Set isDelete
+     *
+     * @param integer $isDelete
+     *
+     * @return Facture
+     */
+    public function setIsDelete($isDelete)
+    {
+        $this->is_delete = $isDelete;
+
+        return $this;
+    }
+
+    /**
+     * Get isDelete
+     *
+     * @return integer
+     */
+    public function getIsDelete()
+    {
+        return $this->is_delete;
     }
 }

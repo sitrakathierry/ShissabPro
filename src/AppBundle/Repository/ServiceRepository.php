@@ -10,7 +10,11 @@ namespace AppBundle\Repository;
  */
 class ServiceRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getList($agence, $recherche_par, $a_rechercher)
+	public function getList(
+		$agence, 
+		$recherche_par = '', 
+		$a_rechercher = ''
+	)
 	{
 		$em = $this->getEntityManager();
 		

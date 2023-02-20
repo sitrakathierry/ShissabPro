@@ -1,0 +1,399 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+        tr.appro-1{
+            background: #9dc7f1;
+            color: #000000;
+        }
+
+        tr.appro-2{
+            background: #727276;
+            color: #fff;
+        }
+    </style>
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+
+<script src="{{ asset('js/plugins/highcharts/highcharts.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/exporting.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/export-data.js') }}"></script>
+<script src="{{ asset('js/plugins/highcharts/accessibility.js') }}"></script>
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+
+<script src="{{ asset('bundles/produit/js/stockentrepot/show.js') }}"></script>
+
+<script src="{{ asset('bundles/produit/js/stockentrepot/variation.js') }}"></script>
+<script src="{{ asset('bundles/produit/js/entrees-sorties.js') }}"></script>
+<script src="{{ asset('bundles/produit/js/graph.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <input type="hidden" id="id_entrepot" value="{{ produitEntrepot.entrepot.id }}">
+    <input type="hidden" id="id_produit" value="{{ produit.id }}">
+    <input type="hidden" id="id_produit_entrepot" value="{{ produitEntrepot.id }}">
+    <input type="hidden" id="devise_symbole" value="{{ agence.deviseSymbole }}">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            {{ produit.nom }} 
+                            <span class="badge-warning">
+                            	{{ produit.codeProduit }}/{{ produitEntrepot.indice }}
+                            </span>
+                            <span class="label label-info pull-right">
+                                Entrepot
+                                {{ produitEntrepot.entrepot.nom }}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="tabs-container">
+                                    <ul class="nav nav-tabs">
+                                      <li class="active">
+                                        <a data-toggle="tab" href="#tab-1">DETAILS</a>
+                                      </li>
+                                      <li>
+                                        <a data-toggle="tab" href="#tab-2">VARIATIONS DU PRODUIT</a>
+                                      </li>
+                                      <li>
+                                        <a data-toggle="tab" href="#tab-3">ACHATS ET VENTES</a>
+                                      </li>
+                                      <li>
+                                        <a data-toggle="tab" href="#tab-4">STATISTIQUES</a>
+                                      </li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active">
+                                        <div class="panel-body">
+                                            <div class="form-horizontal">
+
+                                            	<div class="row">
+					                                <div class="col-lg-6">
+					                                    <div class="form-group">
+					                                        <label class="col-sm-2 control-label">Catégorie</label>
+					                                        <div class="col-sm-10">
+					                                            <input type="text" class="form-control" value="{{produit.categorieProduit.nom }}" readonly="">
+					                                        </div>
+					                                    </div>
+					                                </div>
+                                                    <div class="col-lg-6 pull-right">
+                                                        <div id="qrcode" style="width:100%;display: flex;justify-content: center;"></div>
+                                                    </div>
+					                            </div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label code">Code</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" class="form-control" id="code" value="{{ produit.codeProduit }}" readonly="">
+                                                            </div>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" class="form-control" id="indice" value="{{ produitEntrepot.indice }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                            	</div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label nom">Nom</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" id="nom" value="{{ (produit.nom) ? produit.nom : ''  }}" readonly="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label unite">Unité</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" name="unite" required="" id="unite" value="{{ produit.unite }}" readonly="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-1 control-label description">Description</label>
+                                                            <div class="col-sm-11">
+                                                                <textarea id="description" class="summernote">
+                                                                	{{ produit.description | raw }}
+                                                                </textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            	</div>
+
+                                            	<div class="row">
+                                            		<div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label stock">Stock disponible </label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control" value="{{ produitEntrepot.stock }}" readonly="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {# <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label stock_alerte">Stock d'alerte</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number" class="form-control" name="stock_alerte" required="" id="stock_alerte" value="{{ produit.stockAlerte }}">
+                                                            </div>
+                                                        </div>
+                                                    </div> #}
+                                            	</div>
+
+                                                {# <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label nom">Image</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="file" class="form-control" id="image">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12 align-left">
+                                                      <img src="{{ produit.image ? produit.image : '' }}" id="produit_image" class="img-thumbnail">
+                                                    </div>
+                                                    
+                                                </div> #}
+
+
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <!-- <div class=""> -->
+                                                            {# <button class="btn btn-white" type="reset">
+                                                                <i class="fa fa-times"></i>
+                                                                Annuler
+                                                            </button> #}
+                                                            <button class="btn btn-primary" id="btn-save">
+                                                                <i class="fa fa-save"></i>
+                                                                Mettre à jour
+                                                            </button>
+
+                                                            <button class="btn btn-danger" id="btn-delete">
+                                                                <i class="fa fa-trash"></i>
+                                                                Supprimer
+                                                            </button>
+
+                                                            {% if print %}
+                                                              {# <a href="{{ path('produit_pdf', { id : produit.id }) }}" class="btn btn-info" target="_blank">
+                                                                  <i class="fa fa-print"></i>
+                                                                  Fiche produit
+                                                              </a> #}
+                                                            {% else %}
+                                                              <div class="row">
+                                                                <div class="col-lg-12">
+                                                                  <div class="alert alert-warning">
+                                                                      <i class="fa fa-warning"></i>
+                                                                      Veuillez créer un modèle pour l'impression
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            {% endif %}
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="id" id="id" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tab-2" class="tab-pane">
+                                        <div class="panel-body">
+
+                                            <div class="form-horizontal">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Entrepot</label>
+                                                            <div class="col-sm-10">
+                                                                <select class="form-control" id="variation_entrepot">
+                                                                    <option value="{{ produitEntrepot.entrepot.id }}" selected="">{{ produitEntrepot.entrepot.nom }}</option>
+                                                                    {# {% if is_granted('ROLE_RESPONSABLE') %}
+                                                                        <option value="0"></option>
+                                                                        {% for entrepot in entrepots %}
+                                                                            <option value="{{entrepot.id}}">{{entrepot.nom}}</option>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <option value="{{userEntrepot.entrepot.id}}" selected="">{{userEntrepot.entrepot.nom}}</option>
+                                                                    {% endif %} #}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Code</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" class="form-control" id="variation_code" readonly="" value="{{ produit.codeProduit }}">
+                                                            </div>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" class="form-control" id="variation_indice" value="{{ produitEntrepot.indice }}" readonly="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Prix de vente</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number" class="form-control" id="variation_prix_vente">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Stock</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number" class="form-control" id="variation_stock">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Mettre à jour le stock du produit générale</label>
+                                                            <div class="col-sm-10">
+                                                                <select class="form-control" id="variation_operation">
+                                                                    <option value="0">NON</option>
+                                                                    <option value="1">OUI</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                            <button class="btn btn-primary pull-right" id="btn-save-variation">
+                                                                <i class="fa fa-save"></i>
+                                                                Enregistrer
+                                                            </button>
+                                                    </div>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div id="list_variation"></div>
+                                                </div> 
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div id="tab-3" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Type</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control m-b agence" id="type">
+                                                                <option>Tous</option>
+                                                                <option value="1">ACHAT</option>
+                                                                <option value="2">VENTE</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <button class="btn btn-primary" id="btn_search" style="width:100%">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div id="entres-sorties"></div>
+                                                </div> 
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div id="tab-4" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Année</label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control m-b agence" id="annee">
+                                                                {% set current = "now" | date('Y') %}
+
+                                                                {% for i in range((current - 3),(current)) %}
+                                                                    <option 
+                                                                        value="{{i}}"
+                                                                        {% if i == current %}
+                                                                            selected=""
+                                                                        {% endif %} 
+                                                                    >{{i}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <button class="btn btn-primary" id="btn_search_graph" style="width:100%">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <figure class="highcharts-figure">
+                                                      <div id="container"></div>
+                                                    </figure>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

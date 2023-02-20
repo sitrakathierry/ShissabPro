@@ -91,6 +91,13 @@ comptabilite_mouvement_save:
     options:
         expose: true
 
+comptabilite_mouvement_update:
+    path:     /comptabilite/mouvement/update
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:updateMouvement }
+    methods:  [POST]
+    options:
+        expose: true
+
 comptabilite_solde_general:
     path:     /comptabilite/soldegeneral
     defaults: { _controller: ComptabiliteBundle:DepotRetrait:soldeGeneral }
@@ -98,6 +105,244 @@ comptabilite_solde_general:
 comptabilite_mouvement_list:
     path:     /comptabilite/mouvement/list
     defaults: { _controller: ComptabiliteBundle:DepotRetrait:listMouvement }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_mouvement_delete:
+    path:     /comptabilite/mouvement/delete/{id}
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:deleteMouvement }
+    methods:  [GET]
+    options:
+        expose: true
+
+comptabilite_mouvement_editor:
+    path:     /comptabilite/mouvement/editor
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:editorMouvement }
+    methods:  [POST]
+    options:
+        expose: true
+
+# dépense
+comptabilite_depense_index:
+    path:     /comptabilite/depense/index
+    defaults: { _controller: ComptabiliteBundle:Depense:index }
+    options:
+        expose: true
+
+# decharge
+comptabilite_decharge_index:
+    path:     /comptabilite/decharge/index
+    defaults: { _controller: ComptabiliteBundle:Decharge:index }
+
+comptabilite_decharge_add:
+    path:     /comptabilite/decharge/add
+    defaults: { _controller: ComptabiliteBundle:Decharge:add }
+    options:
+        expose: true
+
+comptabilite_decharge_save:
+    path:     /comptabilite/decharge/save
+    defaults: { _controller: ComptabiliteBundle:Decharge:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_decharge_declare:
+    path:     /comptabilite/decharge/declare
+    defaults: { _controller: ComptabiliteBundle:Decharge:declare }
+    options:
+        expose: true
+
+comptabilite_decharge_list:
+    path:     /comptabilite/decharge/list
+    defaults: { _controller: ComptabiliteBundle:Decharge:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_decharge_show:
+    path:     /comptabilite/decharge/show/{id}
+    defaults: { _controller: ComptabiliteBundle:Decharge:show }
+    options:
+        expose: true
+    methods: [GET]
+
+comptabilite_decharge_delete:
+    path:     /comptabilite/decharge/delete/{id}
+    defaults: { _controller: ComptabiliteBundle:Decharge:delete }
+    options:
+        expose: true
+    methods: [GET]
+
+comptabilite_decharge_pdf:
+    path:     /comptabilite/decharge/pdf/{id}
+    defaults: { _controller: ComptabiliteBundle:Decharge:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+comptabilite_decharge_valide:
+    path:     /comptabilite/decharge/valide
+    defaults: { _controller: ComptabiliteBundle:Decharge:valide }
+    options:
+        expose: true
+
+comptabilite_decharge_validation:
+    path:     /comptabilite/decharge/validation/{id}
+    defaults: { _controller: ComptabiliteBundle:Decharge:validation }
+    options:
+        expose: true
+    methods: [GET]
+
+comptabilite_decharge_declare_export:
+    path:     /comptabilite/decharge/declare/export
+    defaults: { _controller: ComptabiliteBundle:Decharge:exportDeclare }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_decharge_valide_export:
+    path:     /comptabilite/decharge/valide/export
+    defaults: { _controller: ComptabiliteBundle:Decharge:exportValide }
+    methods:  [POST]
+    options:
+        expose: true
+
+# cheque
+comptabilite_cheque_index:
+    path:     /comptabilite/cheque/index
+    defaults: { _controller: ComptabiliteBundle:Cheque:index }
+    options:
+        expose: true
+
+
+# cheque entrant
+comptabilite_cheque_entree_index:
+    path:     /comptabilite/cheque/entree/index
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:index }
+    options:
+        expose: true
+
+comptabilite_cheque_entree_add:
+    path:     /comptabilite/cheque/entree/add
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:add }
+    options:
+        expose: true
+
+comptabilite_cheque_entree_save:
+    path:     /comptabilite/cheque/entree/save
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_cheque_entree_encours:
+    path:     /comptabilite/cheque/entree/encours
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:encours }
+    options:
+        expose: true
+
+comptabilite_cheque_entree_list:
+    path:     /comptabilite/cheque/entree/list
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_cheque_entree_show:
+    path:     /comptabilite/cheque/entree/show/{id}
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:show }
+    methods:  [GET]
+    options:
+        expose: true
+
+comptabilite_cheque_entree_delete:
+    path:     /comptabilite/cheque/entree/delete/{id}
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:delete }
+    methods:  [GET]
+    options:
+        expose: true
+
+comptabilite_cheque_entree_validation:
+    path:     /comptabilite/cheque/entree/validation/{id}
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:validation }
+    methods:  [GET]
+    options:
+        expose: true
+
+comptabilite_cheque_entree_valide:
+    path:     /comptabilite/cheque/entree/valide
+    defaults: { _controller: ComptabiliteBundle:ChequeEntree:valide }
+    options:
+        expose: true
+
+# cheque sortant
+comptabilite_cheque_sortant_index:
+    path:     /comptabilite/cheque/sortant/index
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:index }
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_add:
+    path:     /comptabilite/cheque/sortant/add
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:add }
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_save:
+    path:     /comptabilite/cheque/sortant/save
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_encours:
+    path:     /comptabilite/cheque/sortant/encours
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:encours }
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_encours:
+    path:     /comptabilite/cheque/sortant/encours
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:encours }
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_list:
+    path:     /comptabilite/cheque/sortant/list
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_show:
+    path:     /comptabilite/cheque/sortant/show/{id}
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:show }
+    methods:  [GET]
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_validation:
+    path:     /comptabilite/cheque/sortant/validation/{id}
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:validation }
+    methods:  [GET]
+    options:
+        expose: true
+
+comptabilite_cheque_sortant_valide:
+    path:     /comptabilite/cheque/sortant/valide
+    defaults: { _controller: ComptabiliteBundle:ChequeSortant:valide }
+    options:
+        expose: true
+
+comptabilite_banque_update_agence:
+    path:     /comptabilite/banque/update/agence
+    defaults: { _controller: ComptabiliteBundle:Banque:updateAgence }
+
+comptabilite_solde_general_export:
+    path:     /comptabilite/soldegeneral/export
+    defaults: { _controller: ComptabiliteBundle:DepotRetrait:export }
     methods:  [POST]
     options:
         expose: true

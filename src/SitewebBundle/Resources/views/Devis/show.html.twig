@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+   {{ parent() }}
+   <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+
+{% endblock  %}
+{% block scripts %}
+   {{ parent() }}
+   <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+   <script src="{{ asset('bundles/siteweb/js/devis.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<input type="hidden" id="id_siteweb" value="{{ siteweb.id }}">
+<div class="wrapper wrapper-content">
+   <div class="row">
+      <div class="col-lg-2">
+         <div class="ibox float-e-margins">
+            <div class="ibox-content mailbox-content">
+               <div class="file-manager">
+                  <a class="btn btn-block btn-primary compose-mail" href="{{ siteweb.lien }}" target="_blank">
+                  {{ siteweb.nom }} <i class="fa fa-external-link"></i>
+                  </a>
+                  <div class="space-25"></div>
+                  {{ render(controller('SitewebBundle:Default:menu', { id: siteweb.id } )) }}
+                  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-10 animated fadeInRight">
+      	<div class="mail-box-header">
+            <div class="pull-right tooltip-demo">
+                <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Répondre">
+                	<i class="fa fa-reply"></i> Répondre
+                </a>
+                <a href="#" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimer">
+                	<i class="fa fa-print"></i> 
+                </a>
+                <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Supprimer">
+                	<i class="fa fa-trash-o"></i> 
+                </a>
+            </div>
+            <h2>
+                Demande devis - {{ devis.nom }}
+            </h2>
+            <div class="mail-tools tooltip-demo m-t-md">
+
+
+                <h3>
+                    <span class="font-noraml">Objet: </span> {{ devis.objet }}
+                </h3>
+                <h5>
+                    <span class="pull-right font-noraml">{{ devis.date | date('d/m/Y h:i') }}</span>
+                    <span class="font-noraml">De: </span> {{ devis.email }}
+                </h5>
+            </div>
+        </div>
+        <div class="mail-box">
+
+            <div class="mail-body">
+                <p>
+                    {{ devis.message }}
+                </p>
+            </div>
+            <div class="mail-body text-right tooltip-demo">
+                    <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="fa fa-reply"></i> Répondre</a>
+                    {# <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="fa fa-arrow-right"></i> Forward</a> #}
+                    <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Imprimer" class="btn btn-sm btn-white"><i class="fa fa-print"></i> Imprimer</button>
+                    <button title="" data-placement="top" data-toggle="tooltip" data-original-title="Trash" class="btn btn-sm btn-white"><i class="fa fa-trash-o"></i> Supprimer</button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

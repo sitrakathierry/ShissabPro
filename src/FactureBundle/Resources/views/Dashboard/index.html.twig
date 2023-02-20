@@ -1,0 +1,72 @@
+<input type="hidden" id="data-pie-facture" value="{{pie}}">
+<input type="hidden" id="data-morris-facture" value="{{morris}}">
+<input type="hidden" id="data-line-facture" value="{{line}}">
+<div class="row">
+	<div class="col-md-4">
+		<div class="row">
+			<div class="col-md-12">
+			    <div class="widget blue-bg p-xl">
+		            <h2>
+		                DEVIS
+		            </h2>
+			        <ul class="list-unstyled m-t-md">
+			            <li>
+			                Total devis : {{totalDevis}}
+			                
+			            </li>
+			            <li>
+			                Total devis mois encours : {{totalDevisMois}}
+			            </li>
+			            <li>
+			                Montant total devis : {{montantTotalDevis}}
+			            </li>
+			        </ul>
+			    </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+			    <div class="widget lazur-bg p-xl">
+		            <h2>
+		                FACTURE DÉFINITIVE
+		            </h2>
+			        <ul class="list-unstyled m-t-md">
+			            <li>
+			                Total définitive : {{totalDefinitive}}
+			                
+			            </li>
+			            <li>
+			                Total définitive mois encours : {{totalDefinitiveMois}}
+			            </li>
+			            <li>
+			                Montant total définitive : {{montantTotalDefinitive}}
+			            </li>
+			        </ul>
+			    </div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="row">
+			<div class="col-md-6">
+		        <div class="ibox-content text-center">
+		            <div class="flot-chart dash-block-facture">
+		                <div class="flot-chart-pie-content" id="facture-pie-chart"></div>
+		            </div>
+		        </div>
+		    </div>
+		    <div class="col-md-6">
+		        <div class="ibox-content text-center">
+		            <div class="dash-block-facture" id="facture-bar-chart"></div>
+		        </div>
+		    </div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="ibox-content text-center" style="margin-top:10px">
+                    <div class="dash-block-facture" id="facture-line-chart"></div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

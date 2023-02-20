@@ -1,0 +1,185 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ProduitEntrepot
+ *
+ * @ORM\Table(name="produit_entrepot")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProduitEntrepotRepository")
+ */
+class ProduitEntrepot
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="indice", type="text", nullable=true)
+     */
+    private $indice;
+
+    /**
+     * @var \AppBundle\Entity\Produit
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     * })
+     */
+    private $produit;
+
+    /**
+     * @var \AppBundle\Entity\Entrepot
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Entrepot")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="entrepot", referencedColumnName="id")
+     * })
+     */
+    private $entrepot;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="stock", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $stock;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="stock_alerte", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $stockAlerte = '0.00';
+
+    private $variationProduitList = array();
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set indice
+     *
+     * @param string $indice
+     *
+     * @return ProduitEntrepot
+     */
+    public function setIndice($indice)
+    {
+        $this->indice = $indice;
+
+        return $this;
+    }
+
+    /**
+     * Get indice
+     *
+     * @return string
+     */
+    public function getIndice()
+    {
+        return $this->indice;
+    }
+
+    /**
+     * Set stockAlerte
+     *
+     * @param string $stockAlerte
+     *
+     * @return ProduitEntrepot
+     */
+    public function setStockAlerte($stockAlerte)
+    {
+        $this->stockAlerte = $stockAlerte ? $stockAlerte : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get stockAlerte
+     *
+     * @return string
+     */
+    public function getStockAlerte()
+    {
+        return $this->stockAlerte;
+    }
+
+    /**
+     * Set produit
+     *
+     * @param \AppBundle\Entity\Produit $produit
+     *
+     * @return ProduitEntrepot
+     */
+    public function setProduit(\AppBundle\Entity\Produit $produit = null)
+    {
+        $this->produit = $produit;
+
+        return $this;
+    }
+
+    /**
+     * Get produit
+     *
+     * @return \AppBundle\Entity\Produit
+     */
+    public function getProduit()
+    {
+        return $this->produit;
+    }
+
+    /**
+     * Set stock
+     *
+     * @param float $stock
+     *
+     * @return ProduitEntrepot
+     */
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * Get stock
+     *
+     * @return float
+     */
+    public function getStock()
+    {
+        return $this->stock;
+    }
+
+    public function setVariationProduitList($variationProduitList = array())
+    {
+        $this->variationProduitList = $variationProduitList;
+
+        return $this;
+    }
+
+    public function getVariationProduitList()
+    {
+        return $this->variationProduitList;
+    }
+}

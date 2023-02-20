@@ -1,0 +1,43 @@
+<input type="hidden" id="data-client" value="{{data}}">
+<div class="row">
+	<div class="col-md-4">
+        <div class="widget style-client navy-bg">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <span class="text-upper"> Total client	 </span>
+                    <h2 class="font-bold">{{total}}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="ibox-content">
+            <div>
+                <div>
+                    <span class="text-upper f10">Nombre de client Pers. Moral</span>
+                    <small class="pull-right">{{morales}}</small>
+                </div>
+                <div class="progress progress-small">
+                    <div style="width: {{ morales ? ((morales/total) *100) : 0  }}%;" class="progress-bar progress-bar-warning"></div>
+                </div>
+
+                <div>
+                    <span class="text-upper f10">Nombre de client Pers. Physique</span>
+                    <small class="pull-right">{{physiques}}</small>
+                </div>
+                <div class="progress progress-small">
+                    <div style="width: {{ physiques ? ((physiques/total) *100) : 0  }}%;" class="progress-bar progress-bar-info"></div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="ibox-content text-center">
+            <div class="flot-chart dash-block-client">
+                <div class="flot-chart-pie-content" id="client-pie-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>

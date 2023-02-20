@@ -323,7 +323,8 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 }
 .navbar-fixed-top,
 .navbar-static-top {
-  background: #f3f3f4;
+  /*background: #f3f3f4;*/
+  background: #f7f7f7;
 }
 .fixed-nav #wrapper {
   margin-top: 0;
@@ -574,6 +575,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 .btn {
   border-radius: 3px;
+  margin: 1px;
 }
 .float-e-margins .btn {
   margin-bottom: 5px;
@@ -582,7 +584,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
   min-width: 120px;
 }
 .btn-primary.btn-outline {
-  color: #fd9597;
+  color: #ecb534;
 }
 .btn-success.btn-outline {
   color: #1c84c6;
@@ -604,8 +606,8 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
   color: #fff;
 }
 .btn-primary {
-  background-color: #fd9597;
-  border-color: #fd9597;
+  background-color: #ecb534;
+  border-color: #ecb534;
   color: #FFFFFF;
 }
 .btn-primary:hover,
@@ -617,8 +619,8 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 .btn-primary:active:hover,
 .btn-primary.active:hover,
 .btn-primary.active:focus {
-  background-color: #fd9597;
-  border-color: #fd9597;
+  background-color: #005502;
+  border-color: #005502;
   color: #FFFFFF;
 }
 .btn-primary:active,
@@ -1703,7 +1705,7 @@ a.DTTT_button:hover:not(.DTTT_disabled) {
   border-radius: 5px;
   padding: 15px 20px;
   margin-bottom: 10px;
-  margin-top: 10px;
+  /*margin-top: 10px;*/
 }
 .widget.style1 h2 {
   font-size: 30px;
@@ -3054,7 +3056,7 @@ a.forum-item-title:hover {
 /*Slick Carousel */
 .slick-prev:before,
 .slick-next:before {
-  color: #fd9597 !important;
+  color: #ecb534 !important;
 }
 /* Payments */
 .payment-card {
@@ -3776,7 +3778,8 @@ table.table-mail tr td {
   background-color: #ffffff;
 }
 .navy-bg {
-  background-color: #fd9597;
+  /*background-color: #fd9597;*/
+  background-color: #1ab394;
   color: #ffffff;
 }
 .blue-bg {
@@ -4353,7 +4356,7 @@ body.mini-navbar.fixed-sidebar .logo-element {
   max-width: 400px;
   z-index: 100;
   margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 250px;
 }
 .lockscreen.middle-box {
   width: 200px;
@@ -5184,6 +5187,7 @@ del {
   color: #676a6c;
   display: block;
   margin: 2px 0 5px 0;
+  height: 0px;
 }
 .product-name:hover,
 .product-name:focus {
@@ -5193,7 +5197,7 @@ del {
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
-  background-color: #fd9597;
+  background-color: #ecb534;
   padding: 6px 12px;
   position: absolute;
   top: -32px;
@@ -6448,7 +6452,7 @@ body.landing-page {
   -------------------------------------------------- */
 }
 .landing-page span.navy {
-  color: #fd9597;
+  color: #ecb534;
 }
 .landing-page p.text-color {
   color: #676a6c;
@@ -6476,7 +6480,7 @@ body.landing-page {
   width: 60px;
   height: 1px;
   margin: 60px auto 0;
-  border-bottom: 2px solid #fd9597;
+  border-bottom: 2px solid #ecb534;
 }
 .landing-page .navbar-wrapper {
   position: fixed;
@@ -6504,7 +6508,7 @@ body.landing-page {
   transition: all 0.3s ease-in-out 0s;
 }
 .landing-page .navbar-default .nav li a {
-  color: #fd9597;
+  color: #005602;
   font-family: 'Open Sans', helvetica, arial, sans-serif;
   font-weight: 700;
   letter-spacing: 1px;
@@ -6548,7 +6552,7 @@ body.landing-page {
   height: auto;
   display: block;
   font-size: 14px;
-  background: #fd9597;
+  background: #ecb534;
   padding: 15px 20px 15px 20px;
   border-radius: 0 0 5px 5px;
   font-weight: 700;
@@ -6599,6 +6603,9 @@ body.landing-page {
 }
 .landing-page .header-back.one {
   background: url('../img/shissab-header.jpg') 50% 0 no-repeat;
+}
+.landing-page .header-back.resto {
+  background: url('../img/resto-header.jpg') 50% 0 no-repeat;
 }
 .landing-page .header-back.two {
   background: url('../img/shissab-header.jpg') 50% 0 no-repeat;
@@ -8130,7 +8137,7 @@ body.md-skin {
     }
 
     .tile-menu:hover .tile-title {
-        color: #fd9597b3;
+        color: #ecb534;
     }
 
     .tile-menu:hover .tile-icon {
@@ -8139,7 +8146,7 @@ body.md-skin {
 
     .tile-link, .tile-link:hover, .tile-link:active, .tile-link:visited {
         color: 
-        #fd9597;
+        #ecb534;
         text-decoration: none;
         display: block;
     }
@@ -8296,4 +8303,146 @@ input[type="number"] {
     border-radius: unset;
     background: #fd9597;
     color: #f8fafb;
+}
+
+.badge-strength {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.mail-box-header h2 {
+    text-transform: uppercase;
+}
+
+.folder-list li a {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.unread td {
+    background-color: rgb(255 152 0 / 10%);
+}
+
+.password-confimed,
+.username-confirmed {
+  font-size: 35px;
+}
+
+.password-confimed.danger,
+.username-confirmed.danger {
+  color: #f44336;
+}
+
+.password-confimed.success,
+.username-confirmed.success {
+  color: #cddc39;
+}
+
+.btn-full-width {
+  width: 100% !important;
+}
+
+.m-lr-10 {
+  margin: 0 10px !important;
+}
+
+.mt-custom {
+  margin-top: 23px;
+}
+
+.product-imitation {
+  text-transform: uppercase !important;
+}
+
+.plat_item_desc{
+  overflow-y: auto;
+  height: 100px;
+}
+
+.product-imitation{
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.nav > li > a {
+    text-transform: uppercase;
+    font-size: 10px !important;
+}
+
+.produit-entrepot {
+  border: 1px solid;
+  padding: 30px;
+  background: #f0f0f0;
+  margin: 15px 0;
+}
+
+table.mw-1500 {
+  min-width: 1500px !important;
+}
+
+table.mw-2000 {
+  min-width: 2000px !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+/*Dashboard*/
+.dash-block-client,
+.dash-block-client > .flot-chart-pie-content {
+  min-height: 100%;
+  height: 106px !important;
+  width: 100%;
+}
+
+.widget.style-client{
+    min-height: 100%;
+    height: 142px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.f10 {
+  font-size: 10px;
+}
+
+.legendLabel {
+    text-align: left;
+}
+
+.dash-block-facture,
+.dash-block-facture > .flot-chart-pie-content {
+  min-height: 100%;
+  height: 158px !important;
+  width: 100%;
+}
+
+.dash-morris-facture {
+  height: 200px !important;
+}
+
+.dash-morris-facture > #facture-bar-chart {
+  height: 140px !important;
+}
+
+.dash-block-credit {
+  min-height: 100%;
+  height: 175px !important;
+  width: 100%;
+}
+
+.dash-block-heb {
+  min-height: 100%;
+  height: 212px !important;
+  width: 100%;
+}
+
+.dash-block-resto {
+  min-height: 100%;
+  height: 231px !important;
+  width: 100%;
 }

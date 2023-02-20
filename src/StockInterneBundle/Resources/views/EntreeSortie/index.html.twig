@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+  	.select2-container {
+          width: 100% !important;
+      }
+
+      .select2-container--bootstrap4 .select2-selection--single {
+          height: calc(3rem + 3.5px) !important;
+      }
+
+      tr.appro-1{
+	        background: #9dc7f1;
+	        color: #000000;
+	    }
+
+	    tr.appro-2{
+	        background: #727276;
+	        color: #fff;
+	    }
+  </style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+  <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('bundles/stockinterne/js/entree-sortie-list.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<div class="wrapper wrapper-content">
+{# {% if permissions.facture.create %} #}
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            ENTRÉES/SORTIE - STOCK INTERNE
+          </h5>
+        </div>
+        <div class="ibox-content">
+
+          <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="stock_interne">PRODUIT</label>
+                    <select class="form-control select2" id="stock_interne">
+                        <option value="0">TOUS</option>
+                        {% for stockInterne in stockInternes %}
+                            <option value="{{ stockInterne.id }}">{{ stockInterne.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="type">TYPE</label>
+                    <select class="form-control" id="type">
+                        <option value="0">TOUS</option>
+                        <option value="1">ENTRÉES</option>
+                        <option value="2">SORTIES</option>
+                    </select>
+                </div>
+            </div>
+
+            
+
+          </div>
+
+          <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="type_date">DATE</label>
+                    <select class="form-control m-b" id="type_date">
+                        <option value="0">Tous</option>
+                        <option value="1">Aujourd'hui</option>
+                        <option value="2">Mois</option>
+                        <option value="3">Année</option>
+                        <option value="4">Date spécifique</option>
+                        <option value="5">Fourchette</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-3 selector_mois hidden">
+                <div class="form-group">
+                    <label class="control-label" for="mois">MOIS</label>
+                    <select class="form-control m-b" id="mois">
+                        <option value=""></option>
+                        <option {% if "now" | date('m') == "01" %} selected="" {% endif %} value="01">Janvier</option>
+                        <option {% if "now" | date('m') == "02" %} selected="" {% endif %} value="02">Fevrier</option>
+                        <option {% if "now" | date('m') == "03" %} selected="" {% endif %} value="03">Mars</option>
+                        <option {% if "now" | date('m') == "04" %} selected="" {% endif %} value="04">Avril</option>
+                        <option {% if "now" | date('m') == "05" %} selected="" {% endif %} value="05">Mai</option>
+                        <option {% if "now" | date('m') == "06" %} selected="" {% endif %} value="06">Juin</option>
+                        <option {% if "now" | date('m') == "07" %} selected="" {% endif %} value="07">Juillet</option>
+                        <option {% if "now" | date('m') == "08" %} selected="" {% endif %} value="08">Août</option>
+                        <option {% if "now" | date('m') == "09" %} selected="" {% endif %} value="09">Septembre</option>
+                        <option {% if "now" | date('m') == "10" %} selected="" {% endif %} value="10">Octobre</option>
+                        <option {% if "now" | date('m') == "11" %} selected="" {% endif %} value="11">Novembre</option>
+                        <option {% if "now" | date('m') == "12" %} selected="" {% endif %} value="12">Decembre</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-3 selector_annee hidden">
+                <div class="form-group">
+                    <label class="control-label" for="annee">ANNÉE</label>
+                    <input type="number" class="form-control" id="annee" value="{{ "now" | date('Y') }}">
+                </div>
+            </div>
+
+
+            <div class="col-sm-3 selector_specifique hidden">
+                <div class="form-group">
+                    <label class="control-label" for="date_specifique">DATE</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_specifique" type="text" class="form-control input-datepicker" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3 selector_fourchette hidden">
+                <div class="form-group">
+                    <label class="control-label" for="debut_date">DATE DÉBUT</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="debut_date" type="text" class="form-control input-datepicker" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3 selector_fourchette hidden">
+                <div class="form-group">
+                    <label class="control-label" for="fin_date">DATE FIN</label>
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="fin_date" type="text" class="form-control input-datepicker" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+              <button class="btn btn-primary btn-full-width mt-custom" id="btn_search">
+                  <i class="fa fa-search"></i>
+              </button>
+            </div>
+            
+            
+        </div>
+
+        	<div class="row">
+        		<div class="col-lg-12" id="list_entree_sortie">
+        			
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

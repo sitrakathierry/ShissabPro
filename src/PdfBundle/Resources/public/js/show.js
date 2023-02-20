@@ -1,3 +1,55 @@
+$(document).on('click','#btn-delete',function(event) {
+	event.preventDefault();
+
+	var url = Routing.generate('pdf_delete', { id : $('#id').val() });
+
+	disabled_confirm(false); 
+
+  swal({
+        title: "Supprimer",
+        text: "Voulez-vous vraiment supprimer ce modèle ? ",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonText: "Oui",
+        cancelButtonText: "Non",
+    },
+    function () {
+      disabled_confirm(true);
+            
+    	$.ajax({
+    		url: url,
+    		type: 'GET',
+    		success: function(res) {
+    			show_success('Succès', 'Suppression éffectué', Routing.generate('pdf_consultation'));
+    		}
+    	});
+      
+  });
+
+})
+
+$('#texte_haut').summernote({
+  	toolbar: [
+	    ['style', ['style']],
+	    ['fontsize', ['fontsize']],
+	    ['font', ['bold', 'italic', 'underline', 'clear']],
+	    ['fontname', ['fontname']],
+	    ['color', ['color']],
+	    ['para', ['ul', 'ol', 'paragraph']],
+	    ['height', ['height']],
+	    ['table', ['table']]
+  	],
+  	onpaste: function (e) {
+		    var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+
+		    e.preventDefault();
+
+		    setTimeout( function(){
+		        document.execCommand( 'insertText', false, bufferText );
+		    }, 10 );
+		}
+});
+
 var type_modele = $('#type_modele').val();
 change_modele( 'modele' + type_modele );
 
@@ -52,6 +104,22 @@ function change_modele(id) {
 		$('.logo').addClass('hidden')
 		$('#type_modele').val(5)
 
+	}
+
+	if (id == 'modele6') {
+		$('.logo-gauche').removeClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').removeClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(6)
+	}
+
+	if (id == 'modele7') {
+		$('.logo-gauche').removeClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').addClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(7)
 	}
 }
 

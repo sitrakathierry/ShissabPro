@@ -32,25 +32,21 @@ class PdfAgence
     private $agence;
 
     /**
-     * @var \AppBundle\Entity\ModelePdf
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="facture", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="objet", type="integer")
      */
-    private $facture;
+    private $objet;
 
     /**
      * @var \AppBundle\Entity\ModelePdf
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="modele_pdf", referencedColumnName="id")
      * })
      */
-    private $produit;
-
+    private $modelePdf;
 
     /**
      * Get id
@@ -86,51 +82,52 @@ class PdfAgence
         return $this->agence;
     }
 
+
     /**
-     * Set facture
+     * Set objet
      *
-     * @param \AppBundle\Entity\ModelePdf $facture
+     * @param integer $objet
      *
      * @return PdfAgence
      */
-    public function setFacture(\AppBundle\Entity\ModelePdf $facture = null)
+    public function setObjet($objet)
     {
-        $this->facture = $facture;
+        $this->objet = $objet;
 
         return $this;
     }
 
     /**
-     * Get facture
+     * Get objet
      *
-     * @return \AppBundle\Entity\ModelePdf
+     * @return integer
      */
-    public function getFacture()
+    public function getObjet()
     {
-        return $this->facture;
+        return $this->objet;
     }
 
     /**
-     * Set produit
+     * Set modelePdf
      *
-     * @param \AppBundle\Entity\ModelePdf $produit
+     * @param \AppBundle\Entity\ModelePdf $modelePdf
      *
      * @return PdfAgence
      */
-    public function setProduit(\AppBundle\Entity\ModelePdf $produit = null)
+    public function setModelePdf(\AppBundle\Entity\ModelePdf $modelePdf = null)
     {
-        $this->produit = $produit;
+        $this->modelePdf = $modelePdf;
 
         return $this;
     }
 
     /**
-     * Get produit
+     * Get modelePdf
      *
      * @return \AppBundle\Entity\ModelePdf
      */
-    public function getProduit()
+    public function getModelePdf()
     {
-        return $this->produit;
+        return $this->modelePdf;
     }
 }

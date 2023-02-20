@@ -34,6 +34,20 @@ class AppKernel extends Kernel
             new ServiceBundle\ServiceBundle(),
             new ComptabiliteBundle\ComptabiliteBundle(),
             new CommercialBundle\CommercialBundle(),
+            new SitewebBundle\SitewebBundle(),
+            new Api\SitewebBundle\ApiSitewebBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new Api\ConfigBundle\ApiConfigBundle(),
+            new BonCommandeBundle\BonCommandeBundle(),
+            new MotifDechargeBundle\MotifDechargeBundle(),
+            new BonLivraisonBundle\BonLivraisonBundle(),
+            new CreditBundle\CreditBundle(),
+            new RecetteBundle\RecetteBundle(),
+            new RestaurantBundle\RestaurantBundle(),
+            new HebergementBundle\HebergementBundle(),
+            new StockInterneBundle\StockInterneBundle(),
+            new StockInterneGeneralBundle\StockInterneGeneralBundle(),
+            new TacheBundle\TacheBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

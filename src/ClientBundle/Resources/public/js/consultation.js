@@ -7,7 +7,7 @@ $(document).ready(function(){
     load_tous_list();
 
     function instance_tous_grid() {
-        var colNames = ['N° Police','Nom Agence','Nom/Société','Statut',''];
+        var colNames = ['N° client','Nom/Société','Statut','Adresse','Tél',''];
         
         var colModel = [{
                 name    : 'num_police',
@@ -17,14 +17,6 @@ $(document).ready(function(){
                 sortable: false,
                 // width   : 125,
                 classes : 'js-num_police'
-            },{
-                name    : 'agence',
-                index   : 'agence',
-                align   : 'left',
-                editable: false,
-                sortable: false,
-                // width   : 125,
-                classes : 'js-agence'
             },{
                 name    : 'nom',
                 index   : 'nom',
@@ -41,6 +33,22 @@ $(document).ready(function(){
                 sortable: false,
                 // width   : 125,
                 classes : 'js-statut'
+            },{
+                name    : 'adresse',
+                index   : 'adresse',
+                align   : 'left',
+                editable: false,
+                sortable: false,
+                // width   : 125,
+                classes : 'js-adresse'
+            },{
+                name    : 'tel',
+                index   : 'tel',
+                align   : 'left',
+                editable: false,
+                sortable: false,
+                // width   : 125,
+                classes : 'js-tel'
             },{
                 name:'x',
                 index:'x',
@@ -544,6 +552,12 @@ $(document).ready(function(){
 
         window.location.href = url;
 
+    });
+
+    $('#a_rechercher').on( "keydown", function( event ) {
+      if (event.which === 13) {
+        $('#btn_search').trigger('click');
+      }
     });
 
 

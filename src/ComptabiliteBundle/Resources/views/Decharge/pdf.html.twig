@@ -1,0 +1,226 @@
+<style type="text/css">
+    table.content-details {
+        width: 100%
+        border-collapse: collapse;
+    }
+
+    .content-details th {
+        border: solid 1px #000000; 
+        padding: 5px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .content-details td {
+        border: solid 1px #c0c0c0;
+        padding: 5px; 
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    table {
+        font-size: 12pt;
+        font-family: times;
+    }
+
+    pre {
+        font-family: times;
+    }
+
+    td p {
+        width: 20%;
+    }
+
+    h1,h2,h3,h4,p, td {
+        word-wrap: break-word !important;
+    }
+
+    td.dashed, td > b.dashed, span.dashed{
+        border-bottom: 1px dashed #999;
+        display: inline;
+    }
+
+    td.th {
+        text-align: center;
+        font-weight: bold;
+        font-size: 11pt;
+    }
+
+    div.bordered{
+        /*border: 1px solid #000000;*/
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .f18 {
+        font-size: 18pt;
+    }
+
+    .f11 {
+        font-size: 11pt;
+    }
+
+    .f12 {
+        font-size: 12pt;
+    }
+
+    .f14 {
+        font-size: 14pt;
+    }
+
+    .f10 {
+        font-size: 10pt;
+    }
+
+    .f16{
+        font-size: 16pt;
+    }
+
+    .f18{
+        font-size: 18pt;
+    }
+
+    .typo {
+        /*font-family: 'Antiquet',*/
+        font-family: 'Arial';
+        font-weight: bold;
+    }
+
+    .b {
+        font-weight: bold;
+    }
+
+    .low {
+        text-transform: lowercase;
+    }
+
+    .up {
+        text-transform: uppercase;
+    }
+
+    .cap {
+        text-transform: capitalize;
+    }
+
+    p{
+        padding: 0;
+        margin:0;
+    }
+
+</style>
+{# orientation="landscape" #}
+<page backtop="1mm" backbottom="1mm" backleft="1mm" backright="1mm" > 
+
+<div class="bordered">
+    <table style="width: 100%;">
+
+        <tr>
+            <td style="width:15%">
+                    <img src="img/gap.png" alt="Logo Html2Pdf" style="width: 100px;height:100px;margin-top:10px">
+                    <br>
+            </td>
+            <td style="width:85%;" class="text-center">
+                <span class="f16"><b>LA GENERALE D'ASSURANCE ET DE PREVOYANCE</b></span> <br>
+                <span class="f16">
+                    Compagnie d'Assurance regie par le code des Assurances <br>
+                    SA au Capital Social : 55 550 000 KMF <br>
+                    N°Compte BIC : 01 210 394 00196 KMF <br>
+                    Siège Social : Avenue Ahmed Djoumoi Route de la corniche <br>
+                    BP : 650 Moroni Tel +269 773 89 02 / 332 23 86 <br>
+                    Email : gapassurances@gmail.com
+                </span>
+            </td>
+        </tr>
+        
+    </table>
+
+    <table style="width: 100%; margin-top: 50px">
+        <tr>
+            <td style="width: 100%;border: 1px solid #000000; padding: 10px;" class="text-center b f14">
+                DECHARGE
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%; margin-top: 50px">
+
+    	<tr>
+    		<td style="width: 100%" class="f14">
+    			Je soussigné(e),
+    		</td>
+    	</tr>
+    	<tr>
+    		<td style="width: 100%" class="f14 dashed text-center">
+    			{{decharge.beneficiaire}}
+    		</td>
+    	</tr>
+    	
+    </table>
+
+    {% if decharge.modePaiement == 1 %}
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 35%" class="f14">
+                    Atteste avoir reçu un montant :
+                </td>
+                {# <td style="width: 20%" class="dashed f14">{{ decharge.cheque }}</td>
+                <td style="width: 20%" class="text-center f14">, d'un montant de</td> #}
+                <td style="width: 65%" class="dashed f14">{{ decharge.montant }} {{decharge.devise}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="width: 100%" class="dashed f14 cap">
+                    ({{decharge.lettre}}) <span class="low">par</span> <b>Chèque</b> N° {{ decharge.cheque }}
+                </td>
+            </tr>
+        </table>
+    {% else %}
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 35%" class="f14">
+                    Atteste avoir reçu un montant de
+                </td>
+                <td style="width: 65%" class="dashed f14">{{ decharge.montant }} {{decharge.devise}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="width: 100%" class="dashed f14 cap">
+                    ({{decharge.lettre}}) <span class="low">en</span> <b>Espèce</b>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+
+
+    <table style="width: 100%;margin-top: 20px">
+        <tr>
+            <td style="width: 100%" class="f14">Pour : </td>
+        </tr>
+        <tr>
+            <td style="width: 100%" class="f14 dashed">
+                {{ decharge.raison | raw }}
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;margin-top: 40px">
+    	<tr>
+    		<td style="width: 60%; height: 10mm"></td>
+    		<td style="width: 40%; height: 10mm" class="f14">Nom :</td>
+    	</tr>
+    	<tr>
+    		<td style="width: 60%; height: 10mm"></td>
+    		<td style="width: 40%; height: 10mm" class="f14">Signature :</td>
+    	</tr>
+    	<tr>
+    		<td style="width: 60%; height: 10mm"></td>
+    		<td style="width: 40%; height: 10mm" class="f14">Date : {{ decharge.date | date('d/m/Y') }}</td>
+    	</tr>
+    </table>
+
+    
+</div>
+
+</page>

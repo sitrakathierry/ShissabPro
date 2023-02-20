@@ -54,18 +54,37 @@ $(document).on('click','#btn-save',function(event) {
 		op_nom : $('#op_nom').val(),
 	};
 
-	var url = Routing.generate('comptabilite_mouvement_save')
+	if (data.type_operation == '' || data.montant == '' || data.operation == '' || data.operation == '' || data.compte_bancaire == '') {
+		show_info('Attention','Champs obligatoire','warning');
+		return;
+	}
 
-	$.ajax({
-		url: url,
-		data: data,
-		type: 'POST',
-		success: function(res) {
-			show_info('Succès','Opération enregistré!')
-			// location.reload();
-			$('#form-mouvement').trigger("reset");
-		}
-	})
+	var url = Routing.generate('comptabilite_mouvement_save');
+
+	disabled_confirm(false); 
+
+	swal({
+        title: "Enregistrer",
+        text: "Voulez-vous vraiment enregistrer ? ",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonText: "Oui",
+        cancelButtonText: "Non",
+    },
+    function () {
+      disabled_confirm(true);
+			
+			$.ajax({
+				url: url,
+				data: data,
+				type: 'POST',
+				success: function(res) {
+					show_success('Succès','Opération enregistré!')
+				}
+			})
+      
+  });
+
 })
 
 $('#banque').select2();

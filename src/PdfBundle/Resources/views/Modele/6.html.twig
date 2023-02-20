@@ -1,0 +1,18 @@
+<table style="width: 100%;">
+	<tr>
+	    <td style="width:50%" class="">
+	            <img src="{{ modelePdf.logoGauche | to_src }}" alt="Logo Html2Pdf" style="height: 100px" class="">
+	    </td>
+	    <td style="width:50%" class="text-right">
+	            <img src="{{ modelePdf.logoDroite | to_src }}" alt="Logo Html2Pdf" style="height: 100px" class="">
+	    </td>
+	</tr>
+</table>
+
+<table style="width:100%">
+	<tr>
+	    <td style="width:100%;" class="">
+	    	{{ modelePdf.texteHaut | raw }}
+	    </td>
+	</tr>
+</table>

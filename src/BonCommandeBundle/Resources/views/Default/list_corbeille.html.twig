@@ -1,0 +1,126 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>DATE</th>
+			<th>N° BON</th>
+			<th>CLIENT</th>
+			<th>DESIGNATION</th>
+			<th>QTE</th>
+			<th>PRIX UNITAIRE ({{ agence.deviseSymbole }})</th>
+			<th>REMISE</th>
+			<th>TOTAL ({{ agence.deviseSymbole }})</th>
+			<th>STATUT</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% set total = 0 %}
+		{% for commande in commandes %}
+			{% if commande.panniers %}
+				{% set i = 1 %}
+				{% for  pannier in commande.panniers %}
+					<tr>
+						{% if i == 1 %}
+							<td rowspan="{{ (commande.panniers | length) + 4 }}">{{ commande.date }}</td>
+							<td rowspan="{{ (commande.panniers | length) + 4 }}">{{ commande.recu }}</td>
+							<td rowspan="{{ (commande.panniers | length) + 4 }}">{{ commande.client }}</td>
+						{% endif %}
+						<td>
+
+							{% if pannier.type == 1 %}
+								{{ pannier.produit }} - {{ pannier.prix }} KMF
+							{% endif %}
+
+							{% if pannier.type == 2 %}
+								{{ pannier.service }}
+							{% endif %}
+
+							{% if pannier.type == 3 %}
+								{{ pannier.designation_autre | raw }}
+							{% endif %}
+
+						</td>
+						<td>
+							{% if pannier.type == 1 %}
+								{{ pannier.qte }} {{ pannier.unite }}
+							{% endif %}
+
+							{% if pannier.type == 2 %}
+								{{ pannier.periode }} 
+								{% if pannier.duree == 1 %}
+									heures
+								{% endif %}
+								{% if pannier.duree == 2 %}
+									jours
+								{% endif %}
+								{% if pannier.duree == 3 %}
+									mois
+								{% endif %}
+								{% if pannier.duree == 4 %}
+									années
+								{% endif %}
+							{% endif %}
+
+							{% if pannier.type == 3 %}
+								{{ pannier.qte }}
+							{% endif %}
+
+
+						</td>
+						<td>{{ pannier.prix }}</td>
+						<td>
+							{{ pannier.montant_remise }}
+							{% if pannier.type_remise == 0 and pannier.montant_remise %} % {% endif %}
+						</td>
+						<td>{{ pannier.montant }}</td>
+						{% if i == 1 %}
+							<td rowspan="{{ (commande.panniers | length) + 4 }}">
+								{% if commande.statut == 1 %}
+									EN COURS
+								{% else %}
+									VALIDÉ
+								{% endif %}
+							</td>
+							<td rowspan="{{ (commande.panniers | length) + 4 }}">
+								<a href="{{ path('bon_commande_show', { id : commande.id }) }}" class="btn btn-primary">
+									<i class="fa fa-edit">Afficher</i>
+								</a>
+							</td>
+						{% endif %}
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+				<tr>
+					<th colspan="4">TOTAL</th>
+					<th>{{ commande.ht }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">REMISE</th>
+					{# <th>{{ commande.remise }}%</th> #}
+					<th>{{ commande.montant_remise }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">TVA</th>
+					{# <th>{{ commande.tva }}%</th> #}
+					<th>{{ commande.montant_tva }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">TTC</th>
+					<th>{{ commande.montant_total }}</th>
+					{% set total = total + commande.montant_total %}
+				</tr>
+				<tr>
+					<th colspan="10" bgcolor="#ddd"></th>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr bgcolor="#fd9597">
+			<th colspan="7">TOTAL</th>
+			<th >{{ total }}</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</tfoot>
+</table>

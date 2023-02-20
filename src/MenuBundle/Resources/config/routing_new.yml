@@ -1,0 +1,50 @@
+menu_homepage:
+    path:     /menu
+    defaults: { _controller: MenuBundle:Default:index }
+
+menu_access:
+    path:     /menu/access
+    defaults: { _controller: MenuBundle:Menu:index }
+
+menu_access_role:
+    path:    /menu/access/{role}
+    defaults: { _controller: MenuBundle:Menu:accessRole }
+    options:
+        expose: true
+    methods: [GET]
+
+menu_access_role_save:
+    path:    /menu/access/save
+    defaults: { _controller: MenuBundle:Menu:save }
+    options:
+        expose: true
+    methods: [POST]
+
+menu_liste_complet:
+    path: /menu/liste-complet/{admin}
+    defaults: { _controller: MenuBundle:Menu:listeMenu, admin : 0 }
+    methods: [GET]
+    options:
+        expose: true
+
+menu_utilisateur_index:
+    path:     /menu/utilisateur/index
+    defaults: { _controller: MenuBundle:MenuUtilisateur:index }
+
+menu_ajout_tache:
+    path:     /menu/ajout/tache
+    defaults: { _controller: MenuBundle:Default:ajout }
+
+menu_utilisateur_list:
+    path: /menu/utilisateur/list/{user}
+    defaults: { _controller: MenuBundle:MenuUtilisateur:userMenu }
+    methods: [POST]
+    options:
+        expose: true 
+
+menu_utilisateur_save:
+    path: /menu/utilisateur/edit/{user}
+    defaults: { _controller: MenuBundle:MenuUtilisateur:userAgentMenuEdit }
+    methods: [POST]
+    options:
+        expose: true 

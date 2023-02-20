@@ -1,0 +1,29 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="id_nom">Nom</label>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Nom" class="form-control" id="id_nom" value="{{ entrepot ? entrepot.nom : '' }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="id_adresse">Adresse</label>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Adresse" class="form-control" id="id_adresse" value="{{ entrepot ? entrepot.adresse : '' }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="id_tel">Tel</label>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Tel" class="form-control" id="id_tel" value="{{ entrepot ? entrepot.tel : '' }}">
+        </div>
+    </div>
+
+    <input type="hidden" value="{{entrepot.id}}" id="id_entrepot_edit">
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_entrepot">Enregistrer</span>
+    </div>
+</div>

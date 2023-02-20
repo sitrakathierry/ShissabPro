@@ -1,0 +1,43 @@
+recette_homepage:
+    path:     /recette/index
+    defaults: { _controller: RecetteBundle:Default:index }
+
+recette_service_index:
+    path:     /recette/service/index
+    defaults: { _controller: RecetteBundle:Service:index }
+    options:
+        expose: true
+
+recette_service_list:
+    path:     /recette/service/list
+    defaults: { _controller: RecetteBundle:Service:list }
+    options:
+        expose: true
+    methods: [POST]
+
+recette_produit_index:
+    path:     /recette/produit/index
+    defaults: { _controller: RecetteBundle:Produit:index }
+    options:
+        expose: true
+
+recette_produit_list:
+    path:     /recette/produit/list
+    defaults: { _controller: RecetteBundle:Produit:list }
+    options:
+        expose: true
+    methods: [POST]
+
+recette_general_index:
+    path:     /recette/general/index
+    defaults: { _controller: RecetteBundle:General:index }
+    options:
+        expose: true
+
+recette_general_list:
+    path:     /recette/general/list
+    defaults: { _controller: RecetteBundle:General:list }
+    options:
+        expose: true
+    methods: [POST]
+    

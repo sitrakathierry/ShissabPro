@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('bundles/siteweb/js/admin.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            Liste des sites web
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <form class="form-horizontal">
+                              <div class="form-group" style="margin-bottom: 10px;">
+                                <label for="recherche_par" class="control-label col-lg-3">
+                                <span>Recherche par</span>
+                                </label>
+                                <div class="col-lg-9">
+                                  <select id="recherche_par" class="form-control">
+                                    <option value="0"></option>
+                                    <option value="1">Nom</option>
+                                    <option value="2">Lien</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="col-lg-4">
+                            <form class="form-horizontal">
+                              <div class="form-group" style="margin-bottom: 10px;">
+                                <label for="a_rechercher" class="control-label col-lg-3">
+                                <span>Nom</span>
+                                </label>
+                                <div class="col-lg-9">
+                                  <input type="text" id="a_rechercher" name="" class="form-control" placeholder="Nom à Rechercher...">
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+	                          <div class="col-lg-1">
+	                            <div class="form-group">
+	                                <div class="col-sm-12">
+	                                    <button class="btn btn-primary" id="btn_search" style="width:100%">
+	                                        <i class="fa fa-search"></i>
+	                                    </button>
+	                                </div>
+	                            </div>
+	                        </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <table id="list_siteweb"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+<input type="hidden" id="data-line-heb" value="{{line}}">
+<div class="row">
+    <div class="col-md-4">
+        <div class="widget navy-bg p-xl">
+            <h2>
+                HEBERGEMENT
+            </h2>
+            <ul class="list-unstyled m-t-md">
+                <li>
+                    Recette journalier: {{journalier}}
+                </li>
+                <li>
+                    Recette mensuelle: {{mensuelle}}
+                </li>
+                <li>
+                    Total recette année en cours: {{annuelle}}
+                </li>
+                <li>
+                    Total non confirmé: {{nonConfirmes}}
+                </li>
+                <li>
+                    Montant total remboursé: {{remboursements}}
+                </li>
+                <li>
+                    Total retenu après annulation: {{retenus}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="ibox-content text-center">
+            <div class="dash-block-heb" id="heb-line-chart"></div>
+        </div>
+    </div>
+</div>

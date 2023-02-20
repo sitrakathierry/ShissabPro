@@ -7,6 +7,7 @@
 {% block scripts %}
 {{ parent() }}
 <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('bundles/produit/js/add.js') }}"></script>
 {% endblock %}
 
@@ -31,7 +32,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Catégorie</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" id="categorie">
+                                            <select class="form-control select2" id="categorie">
                                                 <option value=""></option>
                                                 {% for categorie in categories %}
                                                     <option 
@@ -55,7 +56,7 @@
                         	<div class="row">
                         		<div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label code">Code</label>
+                                        <label class="col-sm-2 control-label">Code</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" required="" id="code">
                                         </div>
@@ -94,85 +95,185 @@
                                 </div>
                         	</div>
 
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label prix_achat">Prix achat</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" name="prix_achat" required="" id="prix_achat">
+                            <div class="lis-produit-entrepot">
+                                <div class="produit-entrepot">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Code</label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control code" readonly="">
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control indice" placeholder="Indice">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Entrepot</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control entrepot select2">
+                                                        <option></option>
+                                                        {% if is_granted('ROLE_RESPONSABLE') %}
+                                                            {% for entrepot in entrepots %}
+                                                                <option value="{{entrepot.id}}">{{entrepot.nom}}</option>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <option value="{{userEntrepot.entrepot.id}}" selected="">{{userEntrepot.entrepot.nom}}</option>
+                                                        {% endif %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Fournisseur</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control fournisseur select2" multiple="">
+                                                        <option></option>
+                                                        {% for fournisseur in fournisseurs %}
+                                                            <option value="{{ fournisseur.id }}">{{ fournisseur.nom }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Prix achat <span class="devise_symbole"></span></label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control prix_achat">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Charge <span class="devise_symbole"></span></label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control charge">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Prix de revient <span class="devise_symbole"></span></label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control prix_revient">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Calcul</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control marge_type">
+                                                        <option value="0">Montant</option>
+                                                        <option value="1">%</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Marge</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control marge_valeur">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Prix vente <span class="devise_symbole"></span></label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control prix_vente">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Stock</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control stock">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Stock d'alerte</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control stock_alerte">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Expirer le</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control expirer">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label prix_vente">Prix vente</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" name="prix_vente" required="" id="prix_vente">
-                                        </div>
+                            </div>
+
+                            {% if is_granted('ROLE_RESPONSABLE') %}
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button class="btn btn-success" id="add-produit-entrepot">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        <button class="btn btn-danger" id="remove-produit-entrepot">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
-                        	</div>
+                            {% endif %}
 
 
-                        	<div class="row">
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label stock">Stock</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" name="stock" required="" id="stock">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label stock_alerte">Stock d'alerte</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" name="stock_alerte" required="" id="stock_alerte">
-                                        </div>
-                                    </div>
-                                </div>
-                        	</div>
 
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label stock_alerte">Expirer le</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="expirer" required="" id="expirer">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
+                                {# <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label nom">Image</label>
                                         <div class="col-sm-10">
                                             <input type="file" class="form-control" id="image">
                                         </div>
                                     </div>
-                                </div>
+                                </div> #}
                             </div>
 
-                            <div class="row">
+                            {# <div class="row">
                                 <div class="col-lg-12" style="justify-content: center;align-items: center;display: flex;">
                                   <img src="" id="produit_image" class="img-thumbnail">
                                 </div>
                                 
-                            </div>
+                            </div> #}
 
 
                             <div class="hr-line-dashed"></div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <!-- <div class=""> -->
-                                        {# <button class="btn btn-white" type="reset">
-                                            <i class="fa fa-times"></i>
-                                            Annuler
-                                        </button> #}
                                         <button class="btn btn-primary pull-right" id="btn-save">
                                             <i class="fa fa-save"></i>
                                             Enregistrer
                                         </button>
-                                    <!-- </div> -->
                                 </div>
                             </div>
                             <input type="hidden" name="id" id="id" value="0">

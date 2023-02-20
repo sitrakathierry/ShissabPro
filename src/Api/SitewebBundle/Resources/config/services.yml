@@ -1,0 +1,4 @@
+services:
+#    api_siteweb.example:
+#        class: Api\SitewebBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

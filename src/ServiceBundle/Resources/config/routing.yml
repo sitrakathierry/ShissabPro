@@ -38,6 +38,20 @@ service_save_prix:
         expose: true
     methods: [POST]
 
+service_delete_prix:
+    path:     /service/delete-prix/{id}
+    defaults: { _controller: ServiceBundle:Default:deletePrix }
+    options:
+        expose: true
+    methods: [GET]
+
+service_editor_prix:
+    path:     /service/editor-prix/editor
+    defaults: { _controller: ServiceBundle:Default:editorPrix }
+    methods:  [POST]
+    options:
+        expose: true
+
 service_list_prix:
     path:     /service/list-prix
     defaults: { _controller: ServiceBundle:Default:listPrix }

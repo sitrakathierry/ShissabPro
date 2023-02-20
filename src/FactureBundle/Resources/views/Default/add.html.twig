@@ -1,6 +1,15 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
   {{ parent() }}
+<style type="text/css">
+    /*.select2-container {
+          width: 100% !important;
+      }*/
+
+      .select2-container--bootstrap4 .select2-selection--single {
+          height: calc(3rem + 3.5px) !important;
+      }
+  </style>
 {% endblock  %}
 {% block scripts %}
 {{ parent() }}
@@ -8,9 +17,14 @@
   <script src="{{ asset('bundles/facture/js/add.js') }}"></script>
   <script src="{{ asset('bundles/facture/js/facture-produit-add.js') }}"></script>
   <script src="{{ asset('bundles/facture/js/facture-service-add.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/facture-produitservice-add.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/facture-hebergement-add.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/facture-restaurant-add.js') }}"></script>
 {% endblock %}
 {% block contenu %}
 <div class="wrapper wrapper-content">
+<input type="hidden" id="devise_lettre" value="{{ deviseEntrepot.lettre  }}">
+<input type="hidden" id="devise_symbole" value="{{ deviseEntrepot.symbole  }}">
 {# {% if permissions.facture.create %} #}
 
   <div class="row">
@@ -25,30 +39,72 @@
           <form method="POST" action="{{ path('facture_save') }}" class="form-horizontal" id="form-facture">
 
             <div class="form-group">
-              <label class="col-sm-2 control-label">MODELE</label>
+              <label class="col-sm-2 control-label">MODELE *</label>
               <div class="col-sm-10">
                 <select class="form-control m-b" name="f_model" id="f_model" required="">
                   <option value=""></option>
-                  <option value="1">PRODUIT</option>
-                  <option value="2">SERVICE</option>
+                  {% if checkFactureProduit %} <option value="1">PRODUIT</option> {% endif %}
+                  {% if checkFactureService %} <option value="2">PRESTATION</option> {% endif %}
+                  {% if checkFactureProduit and checkFactureService %} <option value="3">PRODUIT & PRESTATION</option> {% endif %}
+                  {% if checkFactureHebergement %} <option value="4">HEBERGEMENT</option> {% endif %}
                 </select>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="col-sm-2 control-label">FACTURE</label>
+              <label class="col-sm-2 control-label">TYPE *</label>
               <div class="col-sm-10">
-                <select class="form-control m-b" name="f_type" required="">
-                  <option value="1">PROFORMA</option>
+                <select class="form-control m-b" name="f_type" id="f_type" required="">
+                  <option value="1">DEVIS</option>
                   <option value="2">DEFINITIVE</option>
                 </select>
               </div>
             </div>
 
-            <div class="form-group client_mac">
-              <label class="col-sm-2 control-label">Client</label>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">PAIEMENT *</label>
               <div class="col-sm-10">
-                <select class="form-control m-b" name="f_client" id="f_client">
+                <select class="form-control m-b" name="f_is_credit" id="f_is_credit" required="">
+                  <option value="0">CASH</option>
+                  <option value="1">CREDIT</option>
+                </select>
+              </div>
+            </div>
+
+            {% if checkFactureCaisse %}
+              <div class="form-group recu hidden">
+                <label class="col-sm-2 control-label">N° REÇU</label>
+                <div class="col-sm-10">
+                  <select class="form-control select2" name="f_recu" id="f_recu">
+                    <option></option>
+                    {% for commande in commandes %}
+                      <option value="{{ commande.id }}">{{ commande.recu }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if checkFactureHebergement %}
+                <div class="form-group heb hidden">
+                    <label class="col-sm-2 control-label nom">N° Réservation</label>
+                    <div class="col-sm-10">
+                        <select class="form-control select2" id="booking" name="booking">
+                            <option></option>
+                            {% for booking in bookings %}
+                                <option value="{{ booking.id }}">{{ booking.num }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endif %}
+
+
+
+            <div class="form-group client_mac">
+              <label class="col-sm-2 control-label">CLIENT *</label>
+              <div class="col-sm-10">
+                <select class="form-control select2 m-b" name="f_client" id="f_client" required="">
                   <option value=""></option>
                   {% if is_granted('ROLE_ADMIN') %}
                     {% for client in clients %}
@@ -88,34 +144,81 @@
                 </div>
             </div>
 
-            <div id="form-produit" class="hidden">
+            <div 
+              id="form-produit" 
+              class="hidden"
+              style="width: 100%;overflow: scroll;"
+            >
                 {% include('FactureBundle:FactureProduit:form.html.twig') %}
             </div>
 
-            <div id="form-service" class="hidden">
+            <div 
+              id="form-service" 
+              class="hidden"
+              style="width: 100%;overflow: scroll;"
+            >
                 {% include('FactureBundle:FactureService:form.html.twig') %}
             </div>
-            
-            
+
+            <div 
+              id="form-produitservice" 
+              class="hidden"
+              style="width: 100%;overflow: scroll;"
+            >
+                {% include('FactureBundle:FactureProduitService:form.html.twig') %}
+            </div>
+
+            <div 
+              id="form-hebergement" 
+              class="hidden"
+              style="width: 100%;overflow: scroll;"
+            >
+                <div class="hr-line-dashed"></div>
+                <h3><u>HÉBERGEMENT</u></h3>
+                {% include('FactureBundle:FactureHebergement:form.html.twig') %}
+
+                {% if checkFactureRestaurant %}
+                  <div class="hr-line-dashed"></div>
+                  <h3><u>RESTAURANT</u></h3>
+                  {% include('FactureBundle:FactureRestaurant:form.html.twig') %}
+                {% endif %}
+
+                <div class="hr-line-dashed"></div>
+                {% include('FactureBundle:FactureHebergement:total.html.twig') %}
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" >
+                  <label class="font-noraml">À</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                    <input type="text" class="form-control" name="f_lieu" value="{{ agence.region }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-lg-6 col-lg-push-6">
                 <div class="form-group" id="data_1">
-                  <label class="font-noraml">Moroni le</label>
+                  <label class="font-noraml">Le</label>
                   <div class="input-group date">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <input type="text" class="form-control" name="f_date" value="" required="">
                   </div>
                 </div>
               </div>
+              
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
-              <div class="col-sm-4 col-sm-offset-2">
-                <button class="btn btn-white" type="submit">
+              <div class="col-sm-12">
+                {# <button class="btn btn-white" type="submit">
                 <i class="fa fa-times"></i>
                 Annuler
-                </button>
-                <button class="btn btn-primary" type="submit">
+                </button> #}
+                <button class="btn btn-primary" type="submit" id="btn-save">
                 <i class="fa fa-save"></i>
                 Enregistrer
                 </button>
@@ -123,8 +226,12 @@
             </div>
             <input type="hidden" name="" id="id-row" value="0">
             <input type="hidden" name="" id="id-row-service" value="0">
+            <input type="hidden" name="" id="id-row-produitservice" value="0">
+            <input type="hidden" name="" id="id-row-hebergement" value="0">
             <input type="hidden" name="somme" id="id-somme" value="0">
-            <input type="hidden" name="somme" id="id-somme-service" value="0">
+            <input type="hidden" name="somme_service" id="id-somme-service" value="0">
+            <input type="hidden" name="somme_produitservice" id="id-somme-produitservice" value="0">
+            <input type="hidden" name="somme_hebergement" id="id-somme-hebergement" value="0">
           </form>
         </div>
       </div>

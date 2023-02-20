@@ -1,0 +1,139 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * BonLivraison
+ *
+ * @ORM\Table(name="bon_livraison")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BonLivraisonRepository")
+ */
+class BonLivraison
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statut", type="integer", nullable=true)
+     */
+    private $statut;
+
+    /**
+     * @var \AppBundle\Entity\Agence
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agence")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agence", referencedColumnName="id")
+     * })
+     */
+    private $agence;
+
+    /**
+     * @var \AppBundle\Entity\Client
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Client")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="client", referencedColumnName="num_police")
+     * })
+     */
+    private $client;
+
+    private $num;
+
+    /**
+     * @var \AppBundle\Entity\ModelePdf
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="modele_pdf", referencedColumnName="id")
+     * })
+     */
+    private $modelePdf;
+
+    /**
+     * @var \AppBundle\Entity\BonCommande
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BonCommande")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="bon_commande", referencedColumnName="id")
+     * })
+     */
+    private $bonCommande;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return BonLivraison
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return BonLivraison
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return int
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+}
+

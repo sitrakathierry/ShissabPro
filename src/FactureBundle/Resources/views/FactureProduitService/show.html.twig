@@ -1,0 +1,464 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+{% endblock  %}
+{% block scripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/facture-produitservice-add.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/show.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/show-produitservice.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/produitservice-bon-commande.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+  <input type="hidden" id="devise_lettre" value="{{ deviseEntrepot.lettre }}">
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            Facture N° <span class="badge-warning">{{facture.formattedNum}}</span>
+            {% if facture.type == 1 %}
+                {% if definitif %}
+                    <a href="{{ path('facture_produitservice_show', { id : definitif.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
+                        <i class="fa fa-file"></i>
+                        VOIR FACTURE DEFINITIF
+                    </a>
+                {% else %}
+                  {% if not factureProduitService.bonCommande %}
+                    <button class="btn btn-xs btn-outline btn-primary" id="creer-definitif">
+                        <div class="fa fa-copy"></div>
+                        CRÉER FACTURE DEFINITIF
+                    </button>
+                  {% endif %}
+                {% endif %}
+            {% else %}
+                {% if facture.proforma %}
+                     <a href="{{ path('facture_produitservice_show', { id : facture.proforma.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
+                        <i class="fa fa-file"></i>
+                        VOIR DEVIS
+                    </a>
+                {% endif %}
+            {% endif %}
+          </h5>
+          {# <div class="ibox-tools">
+	            <a href="{{ path('facture_pdf', { id : facture.id }) }}" class="btn btn-primary btn-xs btn-print" target="_blank">
+	                <i class="fa fa-print"></i> Imprimer
+	            </a>
+        	</div> #}
+        </div>
+        <div class="ibox-content">
+          <form method="POST" action="{{ path('facture_produitservice_save') }}" class="form-horizontal" id="form-facture">
+
+          	<input type="hidden" name="f_id" id="f_id" value="{{ facture.id }}">
+
+          	<div class="form-group">
+              <label class="col-sm-2 control-label">MODELE *</label>
+              <div class="col-sm-10">
+                <select class="form-control m-b" name="f_model" id="f_model" required="">
+                  <option value=""></option>
+                  <option value="1" {% if facture.modele == 1 %}selected=""{% endif %}>PRODUIT</option>
+                  <option value="2" {% if facture.modele == 2 %}selected=""{% endif %}>PRESTATION</option>
+                  <option value="3" {% if facture.modele == 3 %}selected=""{% endif %}>PRODUIT & PRESTATION</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">FACTURE</label>
+              <div class="col-sm-10">
+                <select class="form-control m-b" name="f_type" required="">
+                  <option value="1" {% if facture.type == 1 %}selected=""{% endif %}>DEVIS</option>
+                  <option value="2" {% if facture.type == 2 %}selected=""{% endif %}>DEFINITIVE</option>
+                </select>
+              </div>
+            </div>
+
+            {% if factureProduitService.commande %}
+              <div class="form-group recu">
+                <label class="col-sm-2 control-label">N° REÇU</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="f_recu" id="f_recu" value="{{ factureProduitService.commande.recu }}" readonly="">
+                </div>
+                <div class="col-sm-2">
+                  <a href="{{ path('caisse_commande_show', { id : factureProduitService.commande.id }) }}" class="btn btn-warning">
+                    <i class="fa fa-money"></i>
+                    Vente
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+
+
+            {% if facture.client.statut == 1%}
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Client *</label>
+                <div class="col-sm-10">
+                  <input class="form-control" readonly="" type="text" value="{{facture.client.idClientMorale.nomSociete}}" name="">
+                </div>
+              </div>
+              
+            {% else %}
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Client *</label>
+                <div class="col-sm-10">
+                  <input class="form-control" readonly="" type="text" value="{{facture.client.idClientPhysique.nom}}" name="">
+                </div>
+              </div>
+            {% endif %}
+            <input type="hidden" value="{{facture.client.numPolice}}" name="f_client" id="f_client">
+            <input type="hidden" value="" name="f_nom">
+
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea id="descr" name="descr">
+                      {{ facture.descr | raw }}
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+            <div
+              style="width: 100%;overflow: scroll;"
+            >
+              <table class="table table-bordered mw-1500" id="table-produitservice-add">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">TYPE DESIGNATION</th>
+                    <th scope="col">DESIGNATION</th>
+                    <th>QTÉ / DURÉE & FORMAT</th>
+                    <th scope="col">PRIX ({{ deviseEntrepot.symbole }})</th>
+                    <th scope="col">REMISE</th>
+                    <th scope="col">MONTANT TOTAL ({{ deviseEntrepot.symbole }})</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody id="principal-produitservice">
+
+                	{% set i = 0 %}
+                  {% set total = 0 %}
+                  {% set list_id = "" %}
+
+                  {% for detail in details %}
+
+                  	{% if list_id == "" %}
+                        {% set list_id = detail.id %}
+                    {% else %}
+                        {% set list_id = list_id ~ "," ~ detail.id %}
+                    {% endif %}
+
+                    {% set f_produit_class = '' %}
+                    {% set f_designation_class = '' %}
+
+  	                <tr data-id="{{i}}">
+                      <td>
+  				        <div class="form-group">
+  				          	<div class="col-sm-12">
+  				            	<select class="form-control f_ps_type_designation" name="f_ps_type_designation[]">
+  				            		<option></option>
+  				              		<option value="1" {% if detail.type == 1 %} selected="" {% endif %} >PRODUIT</option>
+  				              		<option value="2" {% if detail.type == 2 %} selected="" {% endif %} >PRESTATION</option>
+  				            	</select>
+  				          	</div>
+  				        </div>
+  			      	</td>
+  	                <td>
+  			      		<div class="form-group">
+  				          	<div class="col-sm-12">
+  				            	<select class="form-control f_ps_designation" name="f_ps_designation[]">
+  				            		<option></option>
+  				            		{% if detail.type == 1 %}
+  				            			{% for variation in variations %}
+  			                              <option
+  			                                value="{{ variation.id }}"
+  			                                data-prixvente="{{ variation.prix_vente }}"
+  			                                data-stock="{{ variation.stock }}"
+  			                                {% if detail.variationProduit.id == variation.id %}
+  			                                  selected=""
+  			                                {% endif %}
+  			                              >
+                                        {{ variation.code_produit }}/{{ variation.indice }} |
+                                        {{ variation.nom }} - {{ variation.prix_vente }} {{ deviseEntrepot.symbole }}   
+                                      </option>
+  			                            {% endfor %}
+  				            		{% else %}
+  				            			{% for service in services %}
+  			                              <option 
+  			                                value="{{service.id}}"
+
+  			                                {% if detail.service %}
+  			                                  {% if detail.service.id == service.id %}
+  			                                    selected=""
+  			                                  {% endif %} 
+  			                                {% endif %}
+
+  			                              >{{service.nom}}</option>
+  			                            {% endfor %}
+  				            		{% endif %}
+  				            	</select>
+  				          	</div>
+  				        </div>
+  			      	</td>
+          	      	
+          	      	<td class="soustable">
+          	      		{% if detail.type == 1 %}
+          	      			<div class="form-group">
+  							  <div class="col-sm-12">
+  							    <input type="number" class="form-control f_ps_qte" name="f_ps_qte[]" value="{{ detail.qte }}">
+  							  </div>
+  							</div>
+
+  							<input type="hidden" name="f_ps_periode[]">
+  							<input type="hidden" name="f_ps_duree[]">
+          	      		{% else %}
+          	      			<div class="form-group">
+  									<div class="col-sm-6">
+  									<input type="number" class="form-control f_ps_periode" name="f_ps_periode[]" value="{{ detail.periode }}">
+  									</div>
+  									<div class="col-sm-6">
+  									<select class="form-control f_ps_duree" name="f_ps_duree[]">
+  							  			<option value="0" {% if detail.duree == 0 %} selected="" {% endif %} >qté</option>
+                        <option value="1" {% if detail.duree == 1 %} selected="" {% endif %} >heure</option>
+							         	<option value="2" {% if detail.duree == 2 %} selected="" {% endif %} >jour</option>
+							         	<option value="3" {% if detail.duree == 3 %} selected="" {% endif %} >mois</option>
+							         	<option value="4" {% if detail.duree == 4 %} selected="" {% endif %} >année</option>
+  							        </select>
+  									</div>
+  							</div>
+  							<input type="hidden" name="f_ps_qte[]">
+
+          	      		{% endif %}
+          	      	</td>
+
+                      <td>
+  	                    <div class="form-group">
+  	                      <div class="col-sm-12">
+  	                        <input type="number" class="form-control f_ps_prix" name="f_ps_prix[]" value="{{detail.prix}}" required="">
+  	                      </div>
+  	                    </div>
+  	                  </td>
+                      <td>
+                        <div class="form-group">
+                          <div class="col-sm-4">
+                            <select class="form-control f_ps_remise_type_ligne" name="f_ps_remise_type_ligne[]">
+                              <option value="0" {% if detail.typeRemise == 0 %} selected="" {% endif %} >%</option>
+                              <option value="1" {% if detail.typeRemise == 1 %} selected="" {% endif %} >Montant</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-8">
+                            <input type="number" class="form-control f_ps_remise_ligne" name="f_ps_remise_ligne[]" value="{{ detail.montantRemise }}">
+                          </div>
+                        </div>
+                      </td>
+  	                  <td class="td-montant">
+  	                    <div class="form-group">
+  	                      <div class="col-sm-12">
+  	                        <input type="number" class="form-control f_ps_montant" name="f_ps_montant[]" value="{{detail.montant}}" required="">
+  	                      </div>
+  	                    </div>
+  	                  </td>
+  	                  
+  	                  <td>
+  	                  </td>
+  	                </tr>
+
+  	                {% set i = i + 1 %}
+                      
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="5">MONTANT TOTAL</th>
+                    <th>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control" name="ps_montant" id="ps_montant" readonly="" value="{{ facture.montant }}">
+                        </div>
+                      </div>
+                      
+                    </th>
+                    <th>
+                      <button class="btn btn-white btn-remove-row-produitservice btn-full-width">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                      <button class="btn btn-white btn-add-row-produitservice btn-full-width">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </th>
+                  </tr>
+                  <tr>
+                      <th colspan="5">REMISE</th>
+                      <th id="">
+                        <div class="form-group">
+                          <div class="col-sm-4">
+                            <select class="form-control" id="f_ps_remise_type" name="f_ps_remise_type">
+                              <option value="0" {% if facture.remiseType == 0 %} selected="" {% endif %} >%</option>
+                              <option value="1" {% if facture.remiseType == 1 %} selected="" {% endif %} >Montant</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-8">
+                            <input type="number" class="form-control" id="f_ps_remise" name="f_ps_remise" value="{{ facture.remisePourcentage }}">
+                          </div>
+                        </div>
+                        <input type="hidden" class="form-control" name="ps_remise" id="ps_remise" readonly="" value="{{ facture.remiseValeur }}">
+                      </th>
+                      <th>
+                      </th>
+                    </tr>
+                  <tr>
+                    <th colspan="5">MONTANT APRÈS DEDUCTION</th>
+                    <th id="">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control" name="ps_total" id="ps_total" readonly="" value="{{facture.total}}">
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                    </th>
+                  </tr>
+                  {% if devises | length > 0 %}
+                    <tr>
+                      <th >MONTANT EN</th>
+                      <th colspan="4">
+                        <div class="form-group">
+                          <div class="col-sm-4">
+                            <select class="form-control f_ps_devise" name="f_ps_devise">
+                              <option></option>
+                              {% for devise in devises %}
+                                <option 
+                                  value="{{devise.id}}"
+                                  data-montantprincipal="{{devise.montantPrincipal}}"
+                                  data-montantconversion="{{devise.montantConversion}}"
+                                  {% if facture.devise == devise %}
+                                    selected="" 
+                                  {% endif %}
+                                >{{devise.symbole}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </th>
+                      <th id="">
+                        <div class="form-group">
+                          <div class="col-sm-12">
+                            <input type="number" class="form-control f_ps_montant_converti" name="f_ps_montant_converti" readonly="" value="{{ facture.montantConverti }}">
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                      </th>
+                    </tr>
+                  {% endif %}
+                </tfoot>
+              </table>
+              <div class="hr-line-dashed"></div>
+              <p>Arrêté la présente facture à la somme de <b id="ps_somme" style="text-transform: uppercase;">{{facture.somme | replace ({ ('francs comorien') : deviseEntrepot.lettre }) }}</b> 
+              <p>
+              
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" >
+                  <label class="font-noraml">À</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                    <input type="text" class="form-control" name="f_lieu" value="{{ facture.lieu }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" id="data_1">
+                  <label class="font-noraml">Moroni le</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control" name="f_date" value="{{ facture.date | date('d/m/Y') }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <div class="col-sm-6">
+                    <button class="btn btn-primary" id="btn-save">
+                        <i class="fa fa-save"></i>
+                        Mettre à jour
+                    </button>
+                    
+                    <button class="btn btn-danger" id="btn-delete">
+                        <i class="fa fa-trash"></i>
+                        Supprimer
+                    </button>
+
+                    {% if (facture.isDelete == 1) %}
+                      <button class="btn btn-success" id="btn-rearchive">
+                        <i class="fa fa-exchange"></i>
+                        Restaurer
+                      </button>
+                    {% else %}
+                      <button class="btn btn-danger" id="btn-archive">
+                        <i class="fa fa-paste"></i>
+                        Mettre en corbeille
+                      </button>
+                    {% endif %}
+
+                    {% if print %}
+                      <button class="btn btn-info" id="btn-modal-print">
+                        <i class="fa fa-print"></i>
+                        Imprimer
+                      </button>
+                    {% else %}
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="alert alert-warning">
+                              <i class="fa fa-warning"></i>
+                              Veuillez créer un modèle pour l'impression
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                
+              </div>
+              <div class="col-sm-6">
+
+                    {% if facture.credit %}
+                        <a href="{{ path('credit_show', { id : facture.credit.id }) }}" class="btn btn-primary" target="_blank">
+                            <i class="fa fa-credit-card"></i>
+                            Vente à credit
+                        </a>
+                    {% endif %}
+
+                    {% if facture.type == 1 and checkFactureBonCommande %}
+
+                      {% if factureProduitService.bonCommande is null %}
+                        {# {% if not definitif %}
+                          <button class="btn btn-warning pull-right" id="btn-bon-commande">
+                              <i class="fa fa-shopping-cart"></i>
+                              Créer un bon de commande
+                          </button>
+                        {% endif %} #}
+                      {% else %}
+                        <a href="{{ path('bon_commande_show', { id : factureProduitService.bonCommande.id }) }}" class="btn btn-warning pull-right" target="_blank">
+                            <i class="fa fa-shopping-cart"></i>
+                            Voir le bon de commande
+                        </a>
+                      {% endif %}
+
+                    {% endif %}
+
+                    
+                </div>
+            </div>
+            <input type="hidden" name="list_id" value="{{ list_id }}">
+            <input type="hidden" name="" id="id-row-produitservice" value="{{ i - 1 }}">
+            <input type="hidden" name="somme" id="id-somme-produitservice" value="{{facture.somme | replace ({ ('francs comorien') : deviseEntrepot.lettre }) }}">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

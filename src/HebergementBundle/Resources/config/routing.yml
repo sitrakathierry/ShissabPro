@@ -1,0 +1,324 @@
+hebergement_homepage:
+    path:     /hebergement/index
+    defaults: { _controller: HebergementBundle:Default:index }
+    options:
+        expose: true
+
+hebergement_chambre_index:
+    path:     /hebergement/chambre/index
+    defaults: { _controller: HebergementBundle:Chambre:index }
+
+# type
+hebergement_type_index:
+    path:     /hebergement/type/index
+    defaults: { _controller: HebergementBundle:Type:index }
+    options:
+        expose: true
+
+hebergement_type_save:
+    path:     /hebergement/type/save
+    defaults: { _controller: HebergementBundle:Type:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_type_list:
+    path:     /hebergement/type/list
+    defaults: { _controller: HebergementBundle:Type:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_type_editor:
+    path:     /hebergement/type/editor
+    defaults: { _controller: HebergementBundle:Type:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_type_delete:
+    path:     /hebergement/type/delete/{id}
+    defaults: { _controller: HebergementBundle:Type:delete }
+    methods:  [GET]
+    options:
+        expose: true
+
+# categorie
+hebergement_categorie_index:
+    path:     /hebergement/categorie/index
+    defaults: { _controller: HebergementBundle:Categorie:index }
+    options:
+        expose: true
+
+hebergement_categorie_save:
+    path:     /hebergement/categorie/save
+    defaults: { _controller: HebergementBundle:Categorie:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_categorie_list:
+    path:     /hebergement/categorie/list
+    defaults: { _controller: HebergementBundle:Categorie:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_categorie_show:
+    path:     /hebergement/categorie/show/{id}
+    defaults: { _controller: HebergementBundle:Categorie:show }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_categorie_tarifs:
+    path:     /hebergement/categorie/tarifs/{id}
+    defaults: { _controller: HebergementBundle:Categorie:tarifs }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_categorie_editor:
+    path:     /hebergement/categorie/editor
+    defaults: { _controller: HebergementBundle:Categorie:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_categorie_delete:
+    path:     /hebergement/categorie/delete/{id}
+    defaults: { _controller: HebergementBundle:Categorie:delete }
+    methods:  [GET]
+    options:
+        expose: true
+
+# Chambre
+hebergement_chambre_add:
+    path:     /hebergement/chambre/add
+    defaults: { _controller: HebergementBundle:Chambre:add }
+    options:
+        expose: true
+
+hebergement_chambre_save:
+    path:     /hebergement/chambre/save
+    defaults: { _controller: HebergementBundle:Chambre:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_chambre_consultation:
+    path:     /hebergement/chambre/consultation
+    defaults: { _controller: HebergementBundle:Chambre:consultation }
+    options:
+        expose: true
+
+hebergement_chambre_list:
+    path:     /hebergement/chambre/list
+    defaults: { _controller: HebergementBundle:Chambre:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_chambre_show:
+    path:     /hebergement/chambre/show/{id}
+    defaults: { _controller: HebergementBundle:Chambre:show }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_chambre_tarif:
+    path:     /hebergement/chambre/tarif
+    defaults: { _controller: HebergementBundle:Chambre:tarif }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_reservation_index:
+    path:     /hebergement/reservation/index
+    defaults: { _controller: HebergementBundle:Reservation:index }
+    options:
+        expose: true
+
+hebergement_reservation_add:
+    path:     /hebergement/reservation/add
+    defaults: { _controller: HebergementBundle:Reservation:add }
+    options:
+        expose: true
+
+hebergement_chambre_search:
+    path:     /hebergement/chambre/search
+    defaults: { _controller: HebergementBundle:Chambre:search }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_reservation_save:
+    path:     /hebergement/reservation/save
+    defaults: { _controller: HebergementBundle:Reservation:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_reservation_consultation:
+    path:     /hebergement/reservation/consultation
+    defaults: { _controller: HebergementBundle:Reservation:consultation }
+    options:
+        expose: true
+
+hebergement_reservation_recette:
+    path:     /hebergement/reservation/recette
+    defaults: { _controller: HebergementBundle:Reservation:recette }
+    options:
+        expose: true
+
+hebergement_reservation_list:
+    path:     /hebergement/reservation/list
+    defaults: { _controller: HebergementBundle:Reservation:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_reservation_show:
+    path:     /hebergement/reservation/show/{id}
+    defaults: { _controller: HebergementBundle:Reservation:show }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_reservation_confirmer:
+    path:     /hebergement/reservation/confirmer/{id}
+    defaults: { _controller: HebergementBundle:Reservation:confirmer }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_reservation_start:
+    path:     /hebergement/reservation/start/{id}
+    defaults: { _controller: HebergementBundle:Reservation:start }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_reservation_terminer:
+    path:     /hebergement/reservation/terminer/{id}
+    defaults: { _controller: HebergementBundle:Reservation:terminer }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_reservation_export:
+    path:     /hebergement/reservation/export
+    defaults: { _controller: HebergementBundle:Reservation:export }
+    methods:  [POST]
+    options:
+        expose: true
+
+# caisse
+hebergement_caisse_index:
+    path:     /hebergement/caisse/index
+    defaults: { _controller: HebergementBundle:Caisse:index }
+    options:
+        expose: true
+
+hebergement_caisse_cash:
+    path:     /hebergement/caisse/cash/{id}
+    defaults: { _controller: HebergementBundle:Caisse:cash }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_caisse_payer:
+    path:     /hebergement/caisse/payer
+    defaults: { _controller: HebergementBundle:Caisse:payer }
+    methods:  [POST]
+    options:
+        expose: true
+
+# cron annulation automatique
+hebergement_cron_annulation:
+    path:     /hebergement/cron/annulation
+    defaults: { _controller: HebergementBundle:Cron:annulation }
+    options:
+        expose: true
+
+hebergement_reservation_pdf_editor:
+    path:    /hebergement/reservation/pdf/editor
+    defaults: { _controller: HebergementBundle:ModelePdf:editor }
+    options:
+        expose: true
+    methods: [POST]
+
+hebergement_reservation_modele_pdf_save:
+    path:    /hebergement/reservation/modelepdf/save
+    defaults: { _controller: HebergementBundle:ModelePdf:save }
+    options:
+        expose: true
+    methods: [POST]
+
+hebergement_reservation_pdf:
+    path:    /hebergement/reservation/pdf/{id}
+    defaults: { _controller: HebergementBundle:Reservation:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+hebergement_reservation_annuler:
+    path:     /hebergement/reservation/annuler
+    defaults: { _controller: HebergementBundle:Reservation:annuler }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_reservation_delete:
+    path:     /hebergement/reservation/delete/{id}
+    defaults: { _controller: HebergementBundle:Reservation:delete }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_reservation_notification:
+    path:     /hebergement/reservation/notification
+    defaults: { _controller: HebergementBundle:Reservation:notification }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_reservation_cancel_night_editor:
+    path:     /hebergement/reservation/cancel-night/editor/{id}
+    defaults: { _controller: HebergementBundle:Reservation:cancelNightEditor }
+    methods:  [GET]
+    options:
+        expose: true
+
+hebergement_reservation_cancel_night_save:
+    path:     /hebergement/reservation/cancel-night/save/
+    defaults: { _controller: HebergementBundle:Reservation:cancelNightSave }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_dashboard_index:
+    path:     /hebergement/dashboard/index
+    defaults: { _controller: HebergementBundle:Dashboard:index }
+    options:
+        expose: true
+
+hebergement_condition_index:
+    path:     /hebergement/condition/index
+    defaults: { _controller: HebergementBundle:Condition:index }
+    options:
+        expose: true
+
+hebergement_condition_save:
+    path:     /hebergement/condition/save
+    defaults: { _controller: HebergementBundle:Condition:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+hebergement_reservation_ticket:
+    path:     /hebergement/reservation/ticket
+    defaults: { _controller: HebergementBundle:Reservation:ticket }
+    methods:  [POST]
+    options:
+        expose: true

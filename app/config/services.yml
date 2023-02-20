@@ -7,6 +7,9 @@ services:
   app.html2pdf:
     class:  AppBundle\Service\Html2PdfService
     arguments: [%public_directory%]
+
+  app.printer_pos:
+    class:  AppBundle\Service\PrinterPosService
     
   app.logs:
     class:  AppBundle\Service\LogsService
@@ -14,6 +17,10 @@ services:
 
   app.permission_user:
     class:  AppBundle\Service\PermissionUserService
+    arguments: ['@doctrine.orm.entity_manager']
+
+  app.check_menu:
+    class:  AppBundle\Service\CheckMenuService
     arguments: ['@doctrine.orm.entity_manager']
     
   app.twig_extension:

@@ -17,7 +17,8 @@ $(document).ready(function(){
             index:'modele',
             align: 'center',
             formatter: function(v) {
-            	var src = $('#' + v).attr('src');
+
+            	var src = $('#modele' + v).attr('src');
             	return '<img src="'+ src +'" />';
             }
         },

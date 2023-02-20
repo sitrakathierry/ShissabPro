@@ -32,6 +32,19 @@ class CategorieProduitController extends Controller
 
         } else {
             $categorie = new CategorieProduit();
+
+            $exist = $this->getDoctrine()
+                ->getRepository('AppBundle:CategorieProduit')
+                ->findOneBy(array(
+                    'nom' => $nom
+                ));
+
+            if ($exist) {
+                return new JsonResponse(array(
+                    'exist' => true
+                ));
+            }
+
         }
 
         $categorie->setNom($nom);

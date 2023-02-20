@@ -1,0 +1,79 @@
+tache_homepage:
+    path:     /tache/index
+    defaults: { _controller: TacheBundle:Default:index }
+
+tache_affectation:
+    path:     /tache/affectation
+    defaults: { _controller: TacheBundle:Default:add }
+
+
+tache_consultation:  
+    path:     /tache/consultation
+    defaults: { _controller: TacheBundle:Default:consultation }
+
+personne_add:
+    path:     /personne/add 
+    defaults: { _controller: TacheBundle:Personne:add }
+    options:
+        expose: true
+    methods: [POST]
+
+tache_valid_modif:
+    path:     /tache/modifie/valid
+    defaults: { _controller: TacheBundle:Default:validModifie }
+    options:
+        expose: true
+    methods: [POST]
+
+tache_afficher_recherche:
+    path:     /tache/affiche/recherche
+    defaults: { _controller: TacheBundle:Default:rechercher}
+    options:
+        expose: true
+    methods: [POST]
+
+tache_modifie:
+    path:     /tache/modifie 
+    defaults: { _controller: TacheBundle:Default:modifie }
+    options:
+        expose: true
+    methods: [POST]
+
+type_tache_add:
+    path:     /type_tache/add 
+    defaults: { _controller: TacheBundle:TypeTache:add }
+    options:
+        expose: true
+    methods: [POST]
+
+tache_supprime: 
+    path:     /tache/supprime 
+    defaults: { _controller: TacheBundle:Default:supprime }
+    options:
+        expose: true
+    methods: [POST]
+    
+tache_termine:
+    path:     /tache/termine 
+    defaults: { _controller: TacheBundle:Default:termine }
+    options:
+        expose: true
+    methods: [POST]
+
+tache_save:
+    path:     /tache/save 
+    defaults: { _controller: TacheBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+tache_afficher_details:
+    path:     /tache/afficher/detail/{idTache}
+    defaults: { _controller: TacheBundle:Default:detail }
+
+tache_comment_add:
+    path:     /tache/comment/add 
+    defaults: { _controller: TacheBundle:Commentaire:add }
+    options:
+        expose: true
+    methods: [POST]

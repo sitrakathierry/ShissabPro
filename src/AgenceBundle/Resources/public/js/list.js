@@ -2,10 +2,88 @@ var cl_row_edited = 'r-cl-edited';
 
 $(document).ready(function(){
 
+    let timeout;
+    let password = document.getElementById('mdp_responsable');
+    let strengthBadge = document.getElementById('password-strength');
+    let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+    let mediumPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))')
+
+    $(document).on('input', '#nom', function(event) {
+        var nom = event.target.value;
+        $('#nom_responsable').val(nom.toLowerCase().replace(/\s/g, ''));
+    });
+
+    generate_password.call( $('#mdp_responsable') );
+
+    function generate_password() {
+        var length = 8
+        var numberChars = "0123456789";
+        var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var lowerChars = "abcdefghijklmnopqrstuvwxyz";
+        var specialChars = "!@-#$";
+
+        var allChars = numberChars + upperChars + lowerChars + specialChars;
+        var randPasswordArray = Array(length);
+        randPasswordArray[0] = numberChars;
+        randPasswordArray[1] = upperChars;
+        randPasswordArray[2] = lowerChars;
+        randPasswordArray[3] = specialChars;
+        randPasswordArray = randPasswordArray.fill(allChars, 4);
+        var password =  shuffle_array(randPasswordArray.map(function(x) { return x[Math.floor(Math.random() * x.length)] })).join('');
+        
+        $(this).val(password);
+        password_checker();
+    }
+
+    function shuffle_array(array) {
+      for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      return array;
+    }
+
+    
+    
+    function strength_checker(password) {
+        if(strongPassword.test(password)) {
+            strengthBadge.style.backgroundColor = "green";
+            strengthBadge.textContent = 'Forte';
+        } else if(mediumPassword.test(password)) {
+            strengthBadge.style.backgroundColor = 'orange';
+            strengthBadge.textContent = 'Moyen';
+        } else {
+            strengthBadge.style.backgroundColor = 'red';
+            strengthBadge.textContent = 'Faible';
+        }
+    }
+
+    function password_checker() {
+        strengthBadge.style.display = 'block';
+        clearTimeout(timeout);
+        timeout = setTimeout(() => strength_checker(password.value), 500);
+        if(password.value.length !== 0) {
+            strengthBadge.style.display != 'block';
+        } else {
+            strengthBadge.style.display = 'none';
+        }
+    }
+
+    $(document).on('input', '#mdp_responsable', function(event) {
+        password_checker() 
+    })
+
+
+    // password.addEventListener("input", () => {});
+
+
+
 	load_list();
 
 	function instance_grid() {
-        var colNames = ['Nom','Région', 'Nb compte', ''];
+        var colNames = ['Nom','Région', 'Nb compte autorisé', ''];
         
         var colModel = [{ 
             name:'nom',
@@ -101,8 +179,13 @@ $(document).ready(function(){
 		var data = {
 			nom : $('#nom').val(),
 			region : $('#region').val(),
-            code : $('#code').val(),
-            capacite : $('#capacite').val()
+            adresse : $('#adresse').val(),
+            tel : $('#tel').val(),
+            capacite : $('#capacite').val(),
+            nom_responsable : $('#nom_responsable').val(),
+            email_responsable : $('#email_responsable').val(),
+            mdp_responsable : $('#mdp_responsable').val(),
+            responsabilite : $('#responsabilite').val(),
 		}
 
 		var url = Routing.generate('agence_save');
@@ -113,7 +196,8 @@ $(document).ready(function(){
 			data: data,
 			success: function(res) {
 				show_info('SUCCESS','Agence enregistré enregistré');
-				load_list();
+				// load_list();
+                location.reload();
 				// body...
 			}
 		})

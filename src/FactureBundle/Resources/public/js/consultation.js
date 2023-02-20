@@ -5,15 +5,17 @@ $(document).ready(function(){
 	load_list();
 
     function instance_list_grid() {
-        var colNames = ['Agence','N° Facture','Modele','Type','Date de création','Date facture','Client',''];
-        var colModel = [{
-                name    : 'agence',
-                index   : 'agence',
-                align   : 'left',
-                editable: false,
-                sortable: false,
-                classes : 'js-agence'
-            },{
+        var colNames = ['N° Facture','Modele','Type','Date de création','Date facture','Client','Total',''];
+        var colModel = [
+            // {
+            //     name    : 'agence',
+            //     index   : 'agence',
+            //     align   : 'left',
+            //     editable: false,
+            //     sortable: false,
+            //     classes : 'js-agence'
+            // },
+            {
                 name    : 'num_fact',
                 index   : 'num_fact',
                 align   : 'left',
@@ -32,7 +34,13 @@ $(document).ready(function(){
                         return 'PRODUIT';
                     }
                     if (v == 2) {
-                        return 'SERVICE';
+                        return 'PRESTATION';
+                    }
+                    if (v == 3) {
+                        return 'PRODUIT & PRESTATION';
+                    }
+                    if (v == 4) {
+                        return 'HÉBERGEMENT';
                     }
                     return '';
                 }
@@ -65,6 +73,20 @@ $(document).ready(function(){
                 sortable: false,
                 classes : 'js-client'
             },{
+                name    : 'total',
+                index   : 'total',
+                align   : 'left',
+                editable: false,
+                sortable: false,
+                classes : 'js-total',
+                formatter: function(v,i,r) {
+                    if (r.modele == 4) {
+                        return r.montant;
+                    } else {
+                        return (v) ? v : r.montant;
+                    }
+                }
+            },{
                 name:'x',
                 index:'x',
                 align: 'center',
@@ -75,6 +97,14 @@ $(document).ready(function(){
 
                     if (r.modele == 2) {
                         return '<button class="btn btn-xs btn-outline btn-primary consulter_service " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Consulter</button>'; 
+                    }
+
+                    if (r.modele == 3) {
+                        return '<button class="btn btn-xs btn-outline btn-primary consulter_produitservice " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Consulter</button>'; 
+                    }
+
+                    if (r.modele == 4) {
+                        return '<button class="btn btn-xs btn-outline btn-primary consulter_hebergement " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Consulter</button>'; 
                     }
 
                     return '';
@@ -96,6 +126,8 @@ $(document).ready(function(){
             viewrecords: true,
             hidegrid   : true,
             forceFit:true,
+            footerrow : true,
+
         };
 
         var tableau_grid = $('#table_list');
@@ -123,6 +155,8 @@ $(document).ready(function(){
 	function load_list(){
 		var url = Routing.generate('facture_list')
 		var data = {
+            filtre_modele : $('#filtre_modele').val(),
+            filtre_type : $('#filtre_type').val(),
             recherche_par : $('#recherche_par').val(),
             a_rechercher : $('#a_rechercher').val(),
             type_date : $('#type_date').val(),
@@ -144,7 +178,11 @@ $(document).ready(function(){
                 grid.jqGrid('setGridParam', {
                     data        : $.parseJSON(res),
                     loadComplete: function() {
-                        
+                        $(this).jqGrid("footerData", "set", {
+                            agence: "Total",
+                            total : $(this).jqGrid('getCol', 'total', false, 'sum'),
+                        });
+                    
                     }
                 }).trigger('reloadGrid', [{
                     page: 1,
@@ -202,6 +240,36 @@ $(document).ready(function(){
 
         if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
         var url = Routing.generate('facture_service_show',{
+            id: id
+        });
+
+        window.location.href = url;
+        
+    });
+
+    $(document).on('click', '.consulter_produitservice', function(){
+        var id = $(this).hasClass('cl_add') ? 0 : $(this).closest('tr').attr('id'),
+            action = parseInt($(this).attr('data-type'));
+
+        $('.'+cl_row_edited).removeClass(cl_row_edited);
+
+        if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
+        var url = Routing.generate('facture_produitservice_show',{
+            id: id
+        });
+
+        window.location.href = url;
+        
+    });
+
+    $(document).on('click', '.consulter_hebergement', function(){
+        var id = $(this).hasClass('cl_add') ? 0 : $(this).closest('tr').attr('id'),
+            action = parseInt($(this).attr('data-type'));
+
+        $('.'+cl_row_edited).removeClass(cl_row_edited);
+
+        if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
+        var url = Routing.generate('facture_hebergement_show',{
             id: id
         });
 
@@ -273,7 +341,13 @@ $(document).ready(function(){
                 break;
         }    
 
-    })
+    });
+
+    $('#a_rechercher').on( "keydown", function( event ) {
+      if (event.which === 13) {
+        $('#btn_search').trigger('click');
+      }
+    });
 
 
 

@@ -10,8 +10,6 @@ return array(
     'SensioLabs\\Security' => array($vendorDir . '/sensiolabs/security-checker'),
     'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
     'JsonpCallbackValidator' => array($vendorDir . '/willdurand/jsonp-callback-validator/src'),
-    'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
-    'Google_' => array($vendorDir . '/google/apiclient/src'),
     'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
     'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),

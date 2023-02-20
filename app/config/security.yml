@@ -16,8 +16,22 @@ security:
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username
+        # api
+        in_memory:
+            memory: ~
+        webservice:
+            entity:
+                class: ApiConfigBundle:Config
+                property: apiKey
 
     firewalls:
+        webservice:
+            access_denied_handler: api_config.access_denied_handler
+            pattern: ^/api
+            provider: webservice
+            guard:
+                authenticators:
+                    - api_config.token_authenticator
         main:
             pattern: ^/
             # user_checker: fos_user.user_checker
@@ -36,8 +50,11 @@ security:
                 secret:   '%secret%'
                 lifetime: 20
 
+
+
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/menus, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/client-maladie, role: IS_AUTHENTICATED_ANONYMOUSLY }

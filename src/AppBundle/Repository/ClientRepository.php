@@ -69,19 +69,19 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 		$em = $this->getEntityManager();
 
 		if ($statut == 0) {
-			$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, IF(c.statut = 1,cm.nom_societe,cp.nom) as nom, IF(c.statut = 1,'CLIENT MORALE','CLIENT PHYSIQUE') as statut, a.code as code_agence, a.nom as agence
+			$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, IF(c.statut = 1,cm.nom_societe,cp.nom) as nom, IF(c.statut = 1,'CLIENT MORALE','CLIENT PHYSIQUE') as statut, a.code as code_agence, a.nom as agence, IF(c.statut = 1,cm.adresse,cp.adresse) as adresse, IF(c.statut = 1,cm.tel_fixe,cp.tel) as tel
 						from client c
 						inner join agence a on (c.agence = a.id)
 						left join client_morale cm on (c.id_client_morale = cm.id)
 						left join client_physique cp on (c.id_client_physique = cp.id)";
 		} else {
 			if ($statut == 1) {
-				$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, cm.nom_societe as nom, 'CLIENT MORALE' as statut, a.code as code_agence, a.nom as agence
+				$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, cm.nom_societe as nom, 'CLIENT MORALE' as statut, a.code as code_agence, a.nom as agence, cm.tel_fixe as tel, cm.adresse
 							from client c
 							inner join agence a on (c.agence = a.id)
 							inner join client_morale cm on (c.id_client_morale = cm.id)";
 			} else {
-				$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, cp.nom as nom, 'CLIENT PHYSIQUE' as statut, a.code as code_agence, a.nom as agence
+				$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, cp.nom as nom, 'CLIENT PHYSIQUE' as statut, a.code as code_agence, a.nom as agence, cp.adresse, cp.tel
 							from client c
 							inner join agence a on (c.agence = a.id)
 							inner join client_physique cp on (c.id_client_physique = cp.id)";
@@ -96,9 +96,19 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 
 		$query .= $where;
 
+		if ($statut == 0) {
+			$query .= "	order by cm.nom_societe ASC,cp.nom ASC";
+		} else {
+			if ($statut == 1) {
+			$query .= "	order by cm.nom_societe ASC";	
+		} else {
+			$query .= "	order by cp.nom ASC";
+			}
+		}
+
 		// var_dump($query);die();
 
-		$query .= "	order by c.num_police DESC";
+		
 
         $statement = $em->getConnection()->prepare($query);
         $statement->execute();
@@ -112,7 +122,7 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 		$em = $this->getEntityManager();
 
 		if ($statut == 0) {
-			$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, IF(c.statut = 1,cm.nom_societe,cp.nom) as nom, IF(c.statut = 1,'CLIENT MORALE','CLIENT PHYSIQUE') as statut, a.code as agence
+			$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, IF(c.statut = 1,cm.nom_societe,cp.nom) as nom, IF(c.statut = 1,'CLIENT MORALE','CLIENT PHYSIQUE') as statut, a.code as agence, IF(c.statut = 1,cm.adresse,cp.adresse) as adresse, IF(c.statut = 1,cm.tel_fixe,cp.tel) as tel
 						from client c
 						inner join agence a on (c.agence = a.id)
 						left join client_morale cm on (c.id_client_morale = cm.id)
@@ -127,6 +137,7 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 				}
 
 				$query .= $where;
+				$query .= "	order by cm.nom_societe ASC,cp.nom ASC";
 		} else {
 
 			if ($statut == 1) {
@@ -142,7 +153,7 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 				}
 
 				$query .= $where;
-
+				$query .= "	order by cm.nom_societe ASC";
 
 			} else {
 				$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, 'CLIENT PHYSIQUE' as statut, cp.nom as nom, a.code as code_agence, a.nom as agence
@@ -157,11 +168,9 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 				}
 
 				$query .= $where;
+				$query .= "	order by cp.nom ASC";
 			}
 		}
-
-		$query .= "	order by c.num_police DESC";
-
 
         $statement = $em->getConnection()->prepare($query);
 
@@ -177,7 +186,7 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 		$em = $this->getEntityManager();
 
 		if ($statut == 0) {
-			$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, IF(c.statut = 1,cm.nom_societe,cp.nom) as nom, IF(c.statut = 1,'CLIENT MORALE','CLIENT PHYSIQUE') as statut, a.code as code_agence, a.nom as agence
+			$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, IF(c.statut = 1,cm.nom_societe,cp.nom) as nom, IF(c.statut = 1,'CLIENT MORALE','CLIENT PHYSIQUE') as statut, a.code as code_agence, a.nom as agence, IF(c.statut = 1,cm.adresse,cp.adresse) as adresse, IF(c.statut = 1,cm.tel_fixe,cp.tel) as tel
 						from client c
 						inner join agence a on (c.agence = a.id)
 						left join client_morale cm on (c.id_client_morale = cm.id)
@@ -190,7 +199,7 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 			}
 
 			$query .= $where;
-
+			$query .= "	order by cm.nom_societe ASC,cp.nom ASC";
 
 		} else {
 
@@ -205,6 +214,7 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 					$where .= "	and a.id = " . $agence;
 				}
 				$query .= $where;
+				$query .= "	order by cm.nom_societe ASC";
 			} else {
 				$query = "	select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, 'CLIENT PHYSIQUE' as statut, cp.nom as nom, a.code as code_agence, a.nom as agence
 							from client c
@@ -217,11 +227,9 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 				}
 
 				$query .= $where;
+				$query .= "	order by cp.nom ASC";
 			}
 		}
-
-		$query .= "	order by c.num_police DESC";
-
 
         $statement = $em->getConnection()->prepare($query);
 

@@ -191,6 +191,8 @@ class DefaultController extends Controller
                                       ->getRepository('AppBundle:Menu')
                                       ->getMenuParAgence($agence);
 
+                    $this->updateMenuResponsable($menus, $agence);
+
                     $encoder = new JsonEncoder();
                     $normalizer = new ObjectNormalizer();
                     $normalizer->setCircularReferenceHandler(function ($object) {
@@ -215,6 +217,63 @@ class DefaultController extends Controller
             }
         } else {
             throw new AccessDeniedHttpException('Accès refusé.');
+        }
+    }
+
+    public function updateMenuResponsable($menus, $agence)
+    {
+
+        $userAgences = $this->getDoctrine()
+                                        ->getRepository('AppBundle:UserAgence')
+                                        ->findBy(
+                                            array('agence' => $agence)
+                                        );
+
+        foreach ($userAgences as $userAgence) {
+            $user = $userAgence->getUser();
+
+            $role = $user->getRoles()[0];
+
+            if ($role == "ROLE_RESPONSABLE") {
+
+
+                foreach ($menus as $item) {
+
+
+
+                    $exist =  $this->getDoctrine()
+                       ->getRepository('AppBundle:MenuUtilisateur')
+                       ->findOneBy(array(
+                            'menu' => $item->getMenu(),
+                            'user' => $user,
+                       ));
+
+                    if (!$exist) {
+
+                        if ($item->getMenu()->getName() == 'Facture') {
+                            // var_dump("not exist");die();
+                        }
+                        
+                        $menuUtilisateur = new MenuUtilisateur();
+
+                        $menuUtilisateur->setMenu($item->getMenu());
+                        $menuUtilisateur->setUser($user);
+
+                        $em = $this->getDoctrine()
+                                       ->getManager();
+                        $em->persist($menuUtilisateur);
+
+                        $em->flush();
+
+                    } else {
+                        if ($item->getMenu()->getName() == 'Facture') {
+                            // var_dump("exist");die();
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 

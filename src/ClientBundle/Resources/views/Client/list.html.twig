@@ -10,44 +10,44 @@
     <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
     <script src="{{ asset('bundles/client/js/consultation.js') }}"></script><script type="text/javascript">
       
-      var a_rechercher = document.getElementById('a_rechercher');
+      // var a_rechercher = document.getElementById('a_rechercher');
       
-      a_rechercher.addEventListener('keyup', makeDebounce(function(e) {
+      // a_rechercher.addEventListener('keyup', makeDebounce(function(e) {
       
-        var search_text = e.target.value.toLowerCase();
+      //   var search_text = e.target.value.toLowerCase();
       
-        var list = $('#list_client_morale');
+      //   var list = $('#list_client_morale');
       
           
-           list.find('tr').each(function(index, _td) {
-                var isFind = false;
-                $(_td).find('td').each(function(index, item) {
-                    var item_text = $(item).html().toLowerCase();
-                    if (item_text.indexOf(search_text) >= 0) {
-                        isFind = true;
-                        $(item).closest('tr').removeClass('hidden');     
-                    } 
-                    if(!isFind) {
-                        $(item).closest('tr').addClass('hidden');
-                    }
-                });            
-           });
+      //      list.find('tr').each(function(index, _td) {
+      //           var isFind = false;
+      //           $(_td).find('td').each(function(index, item) {
+      //               var item_text = $(item).html().toLowerCase();
+      //               if (item_text.indexOf(search_text) >= 0) {
+      //                   isFind = true;
+      //                   $(item).closest('tr').removeClass('hidden');     
+      //               } 
+      //               if(!isFind) {
+      //                   $(item).closest('tr').addClass('hidden');
+      //               }
+      //           });            
+      //      });
           
       
       
-      },500));
+      // },500));
       
-      function makeDebounce(callback, delay){
-       var timer;
-       return function(){
-           var args = arguments;
-           var context = this;
-           clearTimeout(timer);
-           timer = setTimeout(function(){
-               callback.apply(context, args);
-           }, delay)
-       }
-      } 
+      // function makeDebounce(callback, delay){
+      //  var timer;
+      //  return function(){
+      //      var args = arguments;
+      //      var context = this;
+      //      clearTimeout(timer);
+      //      timer = setTimeout(function(){
+      //          callback.apply(context, args);
+      //      }, delay)
+      //  }
+      // } 
       
     </script>
 {% endblock %}
@@ -62,19 +62,13 @@
                     <h5>
                         LISTE DES CLIENTS
                     </h5>
-                    {# <div class="ibox-tools">
-                        <a href="{{ path('client_add') }}" class="btn btn-primary btn-xs">
-                            <i class="fa fa-plus"></i>
-                            CREATION
-                        </a>
-                    </div> #}
                 </div>
                 <div class="ibox-content">
 
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-3 hidden">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">SOCIETE</label>
                                         <div class="col-sm-9">
@@ -89,53 +83,42 @@
                                                 {% else %}
                                                     <option value="{{userAgence.agence.id}}" selected="">{{userAgence.agence.nom}}</option>
                                                 {% endif %}
-                                                {# <option value="0">TOUS</option>
-                                                {% for agence in agences %}
-                                                    <option value="{{agence.id}}">{{agence.nom}}</option>
-                                                {% endfor %} #}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <select class="form-control m-b statut" id="statut">
-                                                <option value="0">TOUS</option>
-                                                <option value="1">PERSONNE MORALE</option>
-                                                <option value="2">PERSONNE PHYSIQUE</option>
+                                                
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label">RECHERCHE PAR</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control m-b statut" id="recherche_par">
-                                                <option value="1">N° POLICE</option>
-                                                <option value="2">NOM</option>
-                                            </select>
-                                        </div>
+                                        <label class="control-label" for="type_date">STATUT</label>
+                                        <select class="form-control m-b statut" id="statut">
+                                            <option value="0">TOUS</option>
+                                            <option value="1">PERSONNE MORALE</option>
+                                            <option value="2">PERSONNE PHYSIQUE</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="a_rechercher" placeholder="Texte à rechercher ..." style="margin-bottom:10px;">
-                                        </div>
+                                        <label class="control-label">RECHERCHE PAR</label>
+                                        <select class="form-control m-b statut" id="recherche_par">
+                                            <option value="1">N° CLIENT</option>
+                                            <option value="2">NOM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="control-label">TEXTE À RECHERCHER</label>
+                                        <input type="text" class="form-control" id="a_rechercher" placeholder="Texte à rechercher ..." style="margin-bottom:10px;">
                                     </div>
                                 </div>
 
-                                {#<div class="col-lg-1">
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <button class="btn btn-primary" id="btn_search" style="width:100%">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>#}
+                                <div class="col-sm-3">
+                                  <button class="btn btn-primary btn-full-width mt-custom" id="btn_search">
+                                      <i class="fa fa-search"></i>
+                                  </button>
+                                </div>
                             </div>
 
                         </div>

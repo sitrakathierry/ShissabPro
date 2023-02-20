@@ -1,6 +1,15 @@
 user_homepage:
     path:     /user
     defaults: { _controller: UserBundle:Default:index }
+    options:
+        expose: true
+
+user_verify:
+    path:     /user/verify
+    defaults: { _controller: UserBundle:Default:verify }
+    options:
+        expose: true
+    methods: [POST]
 
 user_add:
     path:     /user/add
@@ -36,6 +45,10 @@ user_list:
     defaults: { _controller: UserBundle:Default:listUser }
     options:
         expose: true
+
+user_active:
+    path:     /user/active/{id}
+    defaults: { _controller: UserBundle:Default:active }
 
 # user_log:
 #     path:     /user/logs

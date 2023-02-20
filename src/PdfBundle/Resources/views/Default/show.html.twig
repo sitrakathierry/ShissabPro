@@ -135,6 +135,18 @@
 					    <input type="radio" id="modele5" name="modele" {% if modelePdf.modele == 5 %} checked=""  {% endif %}/>
 					    <label class="label-modele" for="modele5"><img src="{{ asset('img/pdf/modele-5.png') }}" /></label>
 					  </li>
+
+					  <li>
+
+					    <input type="radio" id="modele6" name="modele" {% if modelePdf.modele == 6 %} checked=""  {% endif %}/>
+					    <label class="label-modele" for="modele6"><img src="{{ asset('img/pdf/modele-6.png') }}" /></label>
+					  </li>
+
+					  <li>
+
+					    <input type="radio" id="modele7" name="modele" {% if modelePdf.modele == 7 %} checked=""  {% endif %}/>
+					    <label class="label-modele" for="modele7"><img src="{{ asset('img/pdf/modele-7.png') }}" /></label>
+					  </li>
 					  
 					</ul>
 	    		</div>
@@ -191,7 +203,7 @@
         		<div class="col-lg-12">
         			<div class="form-group">
                         <div class="col-sm-12">
-                        	<textarea class="summernote" id="texte_haut">
+                        	<textarea class="" id="texte_haut">
                         		{{ modelePdf.texteHaut | raw }}
                         	</textarea>
                         </div>
@@ -205,13 +217,18 @@
                     <!-- <div class=""> -->
                         <button class="btn btn-primary" type="submit" id="btn-save-modele">
                             <i class="fa fa-save"></i>
-                            Enregistrer les modificati
+                            Mettre à jour
                         </button>
                         
                         <a href="{{ path('pdf_pdf', { id: modelePdf.id }) }}" class="btn btn-info" target="_blank">
                             <i class="fa fa-print"></i>
                             Apperçu
                         </a>
+
+                        <button class="btn btn-danger pull-right" id="btn-delete">
+                            <i class="fa fa-save"></i>
+                            Supprimer
+                        </button>
                     <!-- </div> -->
                 </div>
             </div>

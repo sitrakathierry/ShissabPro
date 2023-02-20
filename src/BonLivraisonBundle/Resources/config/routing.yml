@@ -1,0 +1,104 @@
+bon_livraison_homepage:
+    path:     /bon/livraison/index
+    defaults: { _controller: BonLivraisonBundle:Default:index }
+
+bon_livraison_add:
+    path:     /bon/livraison/add
+    defaults: { _controller: BonLivraisonBundle:Default:add }
+
+bon_livraison_save:
+    path:     /bon/livraison/save
+    defaults: { _controller: BonLivraisonBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_livraison_consultation:
+    path:     /bon/livraison/consultation
+    defaults: { _controller: BonLivraisonBundle:Default:consultation }
+    options:
+        expose: true
+
+bon_livraison_list:
+    path:     /bon/livraison/list
+    defaults: { _controller: BonLivraisonBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_livraison_show:
+    path:     /bon/livraison/show/{id}
+    defaults: { _controller: BonLivraisonBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_livraison_validation:
+    path:     /bon/livraison/validation/{id}
+    defaults: { _controller: BonLivraisonBundle:Default:validation }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_livraison_pdf_editor:
+    path:    /bon/livraison/modelepdf/editor
+    defaults: { _controller: BonLivraisonBundle:ModelePdf:editor }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_livraison_modele_pdf_save:
+    path:    /bon/livraison/modelepdf/save
+    defaults: { _controller: BonLivraisonBundle:ModelePdf:save }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_livraison_pdf:
+    path:    /bon/livraison/pdf/{id}
+    defaults: { _controller: BonLivraisonBundle:Default:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_livraison_delete:
+    path:     /bon/livraison/delete/{id}
+    defaults: { _controller: BonLivraisonBundle:Default:delete }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_livraison_bon_commande:
+    path:    /bon/livraison/bon_commande/{bonCommande}
+    defaults: { _controller: BonLivraisonBundle:Default:bonCommande }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_livraison_dashboard:
+    path:    /bon/livraison/dashboard
+    defaults: { _controller: BonLivraisonBundle:Dashboard:index }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_livraison_consultation_corbeille:
+    path:     /bon/livraison/consultation/corbeille
+    defaults: { _controller: BonLivraisonBundle:Default:consultationCorbeille }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_livraison_list_corbeille:
+    path:     /bon/livraison/list/corbeille
+    defaults: { _controller: BonLivraisonBundle:Default:listCorbeille }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_livraison_facture:
+    path:    /bon/livraison/facture/{facture}
+    defaults: { _controller: BonLivraisonBundle:Default:facture }
+    options:
+        expose: true
+    methods: [GET]

@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/light.css') }}">
+<style type="text/css">
+    .t-block
+    {
+        width: 100%;
+        height: auto;
+        background-color: white!important;
+        /* border: 2px solid black ;  */
+        overflow: hidden;
+    }
+    .t-title
+    {
+        width: 100%;
+        border-bottom: 1px solid lightgray;
+        border-top : 3px solid gray ;
+        padding-left: 20px;
+    }
+    .t-title h2
+    {
+        font-size: 1.5em !important;
+        margin: 10px 0 10px 10px !important;
+    }
+    .t-content{
+        padding: 30px ;
+    }
+    .mt-3
+    {
+        margin-top: 25px;
+    }
+    .mb-3
+    {
+        margin-bottom: 25px;
+    }
+    .mt-2
+    {
+        margin-top: 9px !important;
+    }
+    .float-right
+    {
+        float: right ;
+    }
+    .pers-ass-form
+    {
+        font-size: 1em !important;
+    }
+    .lcslt-multiple,#lc-select-dd li span
+    {
+        font-size: 1.2em !important;
+    }
+    
+    
+</style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/lc_select.js') }}"></script>
+<script src=" {{ asset('bundles/tache/js/add.js') }} "></script>
+<script>
+    new lc_select('#t-pers-assigne', {
+        wrap_width : '100%',
+    });
+    new lc_select('#t-type-tache', {
+        wrap_width : '100%',
+    });
+</script>
+{% endblock %}
+{% block contenu %}
+    <div class="t-block">
+        <div class="t-title">
+            <h2>AFFECTATION TACHE</h2>
+        </div>
+        <div class="t-content">
+            <form action="#" id="tache-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="t-nom ">Tache</label>
+                        <input type="text" name="t_nom" class="form-control mt-2 t_nom" id="t_nom" autocomplete="off" > 
+                    </div>
+                    <div class="col-md-6"> 
+                        {# <button type="button" class="btn btn-sm float-right btn-success pers_add"><i class="fa fa-plus"></i></button> #}
+                        <label for="t-pers-assigne">Personne assigné</label>
+                        <select name="t_pers_assigne[]" class="pers-ass-form t_pers_assigne" id="t-pers-assigne" multiple >
+                            {% if accessTache is empty %}
+                                {% for unePers in basePers %}
+                                    {% if unePers.user.id == user %}
+                                        <option value="{{ unePers.user.id }}" class="capitalize"> {{ unePers.user.username }} </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% for unePers in basePers %}
+                                    <option value="{{ unePers.user.id }}" class="capitalize"> {{ unePers.user.username }} </option>
+                                {% endfor %}
+                            {% endif %}
+                        </select> 
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label for="t-date-debut">Date début</label>
+                        <input type="date" name="t_date_debut" class="form-control t-date-debut" id="t-date-debut" > 
+                    </div>
+                    <div class="col-md-3">
+                        <label for="t-date-debut">Date fin</label>
+                        <input type="date" name="t_date_fin" class="form-control t-date-fin" id="t-date-fin" > 
+                    </div>
+                    <div class="col-md-3">
+                        <label for="t-date-debut">Durée</label>
+                        <input type="number" name="t_duree" class="form-control t_duree" id="t_duree" > 
+                    </div>
+                    <div class="col-md-3">
+                        <label for="t-type-duree">Type durée</label>
+                        <select name="t_type_duree" id="t-type-duree" class="form-control t-type-duree" >
+                            <option value="mn">Minute</option>
+                            <option value="h">Heure</option>
+                            <option value="j">Jour</option>
+                        </select>
+                        <!-- <input type="date" class="form-control t-date-fin" id="t-date-fin">  -->
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-sm float-right btn-success type_tache_add"><i class="fa fa-plus"></i></button>
+                        <label for="t-type-tache">Type de tâche</label>
+                        <select name="t_type_tache[]" id="t-type-tache" class="form-control t-type-tache" multiple >
+                            {% for uneTypeTache in baseTypeTache %}
+                                <option value="{{ uneTypeTache.id }}"> {{ uneTypeTache.nom_type_tache }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label for="t-description">Description</label>
+                        <textarea name="t_description" class="form-control t-description" id="" cols="30" rows="6" autocomplete="off" ></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary pull-right mt-3 mb-3" id="btn-save">
+                    <i class="fa fa-save"></i>
+                    Enregistrer
+                    </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

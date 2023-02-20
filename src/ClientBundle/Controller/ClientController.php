@@ -347,10 +347,11 @@ class ClientController extends Controller
             $client_physique->setLdn($clp_ldn);
             $client_physique->setProfession($clp_profession);
 
-            $typeSocial = $this->getDoctrine()
-                            ->getRepository('AppBundle:TypeSocial')
-                            ->find($clp_type_social);
-            $client_physique->setIdTypeSocial($typeSocial);
+            // $typeSocial = $this->getDoctrine()
+            //                 ->getRepository('AppBundle:TypeSocial')
+            //                 ->find($clp_type_social);
+            // $client_physique->setIdTypeSocial($typeSocial);
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($client_physique);
             $em->flush();
@@ -468,7 +469,7 @@ class ClientController extends Controller
          return new JsonResponse($adresse->getValeur());
     }
 
-    public function deleteAction($id, $ajax = 0)
+    public function deleteAction($id)
     {
         $client  = $this->getDoctrine()
                         ->getRepository('AppBundle:Client')
@@ -478,15 +479,11 @@ class ClientController extends Controller
         $em->remove($client);
         $em->flush();
 
-        if ($ajax == 1) {
-            return new JsonResponse('ok');
-        }
-
         $logs = $this->get('app.logs');
         $user = $this->getUser();
         $logs->setStory($user,'Suppression Fiche Client N°' . $client->getFormattedNum());        
 
-        return $this->redirectToRoute('client_dashboard');
+        return new Response(200);
         
     }
 

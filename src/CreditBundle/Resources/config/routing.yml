@@ -1,0 +1,102 @@
+credit_homepage:
+    path:     /credit/index
+    defaults: { _controller: CreditBundle:Default:index }
+
+credit_add:
+    path:     /credit/add
+    defaults: { _controller: CreditBundle:Default:add }
+
+credit_save:
+    path:     /credit/save
+    defaults: { _controller: CreditBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+credit_encours_validation:
+    path:     /credit/encours/validation
+    defaults: { _controller: CreditBundle:Default:encoursValidation }
+
+credit_consultation:
+    path:     /credit/consultation
+    defaults: { _controller: CreditBundle:Default:consultation }
+    options:
+        expose: true
+
+credit_list:
+    path:     /credit/list
+    defaults: { _controller: CreditBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
+
+credit_show:
+    path:     /credit/show/{id}
+    defaults: { _controller: CreditBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]
+
+credit_validation:
+    path:     /credit/validation/{id}
+    defaults: { _controller: CreditBundle:Default:validation }
+    options:
+        expose: true
+    methods: [GET]
+
+credit_paiement:
+    path:     /credit/paiement/{id}
+    defaults: { _controller: CreditBundle:Default:paiement }
+    options:
+        expose: true
+    methods: [GET]
+
+credit_payer:
+    path:     /credit/payer
+    defaults: { _controller: CreditBundle:Default:payer }
+    options:
+        expose: true
+    methods: [POST]
+
+credit_encours_paiement:
+    path:     /credit/encours/paiement
+    defaults: { _controller: CreditBundle:Default:encoursPaiement }
+
+credit_payes:
+    path:     /credit/encours/payes
+    defaults: { _controller: CreditBundle:Default:payes }
+
+credit_delete:
+    path:     /credit/delete/{id}
+    defaults: { _controller: CreditBundle:Default:delete }
+    options:
+        expose: true
+    methods: [GET]
+
+credit_pdf_editor:
+    path:    /credit/modelepdf/editor
+    defaults: { _controller: CreditBundle:ModelePdf:editor }
+    options:
+        expose: true
+    methods: [POST]
+
+credit_pdf_save:
+    path:    /credit/modelepdf/save
+    defaults: { _controller: CreditBundle:ModelePdf:save }
+    options:
+        expose: true
+    methods: [POST]
+
+credit_pdf:
+    path:     /credit/pdf/{id}
+    defaults: { _controller: CreditBundle:Default:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+credit_dashboard:
+    path:     /credit/dashboard
+    defaults: { _controller: CreditBundle:Dashboard:index }
+    options:
+        expose: true
+    methods: [GET]

@@ -1,0 +1,4 @@
+services:
+#    hebergement.example:
+#        class: HebergementBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

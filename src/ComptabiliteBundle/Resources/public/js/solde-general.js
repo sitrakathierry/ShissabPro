@@ -7,7 +7,7 @@ $(document).ready(function(){
 	load_list();
 
     function instance_list_grid() {
-        var colNames = ['Date','Opération','N° opération','Type d\'opération','Banque','Compte bancaire','Personne concerné','Montant'];
+        var colNames = ['Date','Opération','N° opération','Type d\'opération','Banque','Compte bancaire','Personne concerné','Montant',''];
         var colModel = [{
                 name    : 'date',
                 index   : 'date',
@@ -66,6 +66,13 @@ $(document).ready(function(){
                 classes : 'js-montant',
                 formatter: jq_number_format,
                 unformat: jq_number_unformat
+            },
+            {
+                name:'x',
+                index:'x',
+                align: 'center',
+                formatter: function(v){ 
+                    return '<i class="fa fa-pencil-square-o pointer cl_edit" data-type="0" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-trash-o pointer cl_edit" data-type="2" aria-hidden="true"></i>' }
             }
         ];
 
@@ -390,7 +397,102 @@ $(document).ready(function(){
         $('#form_export').attr('action',url).html(params);
         $('#form_export')[0].submit();
 
-    })
+    });
+
+    $(document).on('click', '.cl_edit', function(){
+        var id = $(this).hasClass('cl_add') ? 0 : $(this).closest('tr').attr('id'),
+            action = parseInt($(this).attr('data-type'));
+
+        $('.'+cl_row_edited).removeClass(cl_row_edited);
+
+        if (action === 2) {
+
+            swal({
+                title: "SUPPRIMER",
+                text: "Voulez-vous vraiment supprimer cette opération?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OUI",
+                closeOnConfirm: false
+            }, function () {
+                // swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                var url = Routing.generate('comptabilite_mouvement_delete',{
+                    id : id
+                });
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    datatype: 'json',
+                    success: function(res) {
+                        swal("Supprimé!", "Opération supprimé", "success");
+                        // show_info("Succés", 'Ré-assureur supprimé!','success');
+                        load_list();
+                    }
+                })
+            });
+
+        } else {
+            if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
+            show_editeur_mouvement(id);
+        }
+    });
+
+    function show_editeur_mouvement(id)
+    {
+        id = typeof id !== 'undefined' ? id : 0;
+
+        $.ajax({
+            data: {
+                id: id
+            },
+            type: 'POST',
+            url: Routing.generate('comptabilite_mouvement_editor'),
+            dataType: 'html',
+            success: function(data) {
+                show_modal(data,'Modification opération');
+            }
+        });
+    }
+
+    $(document).on('click','#id_save_mouvement',function(){
+        var montant = $('#id_montant').val().trim(),
+            id = $('#id_mouvement_edit').val(),
+            op_nom = $('#id_op_nom').val(),
+            num_operation = $('#id_num_operation').val();
+
+        if (montant === '')
+        {
+            show_info('Erreur','Montant vide','error');
+            return;
+        }
+
+        var data = {
+            id : id,
+            montant : montant,
+            op_nom : op_nom,
+            num_operation : num_operation,
+            ajax: true
+        }
+
+        edit_mouvement(0,data);
+    });
+
+    function edit_mouvement(act, data)
+    {
+        $.ajax({
+            data: data,
+            type: 'POST',
+            url: Routing.generate('comptabilite_mouvement_update'),
+            dataType: 'html',
+            success: function(data) {
+                show_info('Succés','Modification bien enregistrée avec succés');
+                close_modal();
+                load_list();
+            }
+        });
+    }
 
 
 });

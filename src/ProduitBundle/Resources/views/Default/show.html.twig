@@ -33,6 +33,7 @@
 
 {% block contenu %}
     <input type="hidden" id="id_produit" value="{{ produit.id }}">
+    <input type="hidden" id="devise_symbole" value="{{ agence.deviseSymbole }}">
     <div class="wrapper wrapper-content">
         <div class="row">
         	<div class="col-lg-12">
@@ -143,21 +144,21 @@
                                                         <div class="form-group">
                                                             <label class="col-sm-2 control-label stock">Stock disponible</label>
                                                             <div class="col-sm-10">
-                                                                <input type="text" class="form-control" value="{{ produit.stock }}" readonly="">
+                                                                <input type="text" class="form-control" value="{{ totalStock }}" readonly="">
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    {# <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-2 control-label stock_alerte">Stock d'alerte</label>
                                                             <div class="col-sm-10">
                                                                 <input type="number" class="form-control" name="stock_alerte" required="" id="stock_alerte" value="{{ produit.stockAlerte }}">
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> #}
                                             	</div>
 
-                                                <div class="row">
+                                                {# <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label class="col-sm-2 control-label nom">Image</label>
@@ -173,7 +174,7 @@
                                                       <img src="{{ produit.image ? produit.image : '' }}" id="produit_image" class="img-thumbnail">
                                                     </div>
                                                     
-                                                </div>
+                                                </div> #}
 
 
                                                 <div class="hr-line-dashed"></div>
@@ -184,16 +185,21 @@
                                                                 <i class="fa fa-times"></i>
                                                                 Annuler
                                                             </button> #}
-                                                            <button class="btn btn-primary pull-right" id="btn-save">
+                                                            <button class="btn btn-primary" id="btn-save">
                                                                 <i class="fa fa-save"></i>
-                                                                Enregistrer les modifications
+                                                                Mettre à jour
+                                                            </button>
+
+                                                            <button class="btn btn-danger" id="btn-delete">
+                                                                <i class="fa fa-trash"></i>
+                                                                Supprimer
                                                             </button>
 
                                                             {% if print %}
-                                                              <a href="{{ path('produit_pdf', { id : produit.id }) }}" class="btn btn-info" target="_blank">
+                                                              {# <a href="{{ path('produit_pdf', { id : produit.id }) }}" class="btn btn-info" target="_blank">
                                                                   <i class="fa fa-print"></i>
                                                                   Fiche produit
-                                                              </a>
+                                                              </a> #}
                                                             {% else %}
                                                               <div class="row">
                                                                 <div class="col-lg-12">
@@ -213,6 +219,89 @@
                                     </div>
                                     <div id="tab-2" class="tab-pane">
                                         <div class="panel-body">
+
+                                            <div class="form-horizontal">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Entrepot</label>
+                                                            <div class="col-sm-10">
+                                                                <select class="form-control" id="variation_entrepot">
+                                                                    {% if is_granted('ROLE_RESPONSABLE') %}
+                                                                        <option value="0"></option>
+                                                                        {% for entrepot in entrepots %}
+                                                                            <option value="{{entrepot.id}}">{{entrepot.nom}}</option>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <option value="{{userEntrepot.entrepot.id}}" selected="">{{userEntrepot.entrepot.nom}}</option>
+                                                                    {% endif %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Code</label>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" class="form-control" id="variation_code" readonly="" value="{{ produit.codeProduit }}">
+                                                            </div>
+                                                            <div class="col-sm-5">
+                                                                <input type="text" class="form-control" id="variation_indice" value="" placeholder="Indice">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Prix de vente</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number" class="form-control" id="variation_prix_vente">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Stock</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number" class="form-control" id="variation_stock">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label">Mettre à jour le stock du produit générale</label>
+                                                            <div class="col-sm-10">
+                                                                <select class="form-control" id="variation_operation">
+                                                                    <option value="0">NON</option>
+                                                                    <option value="1">OUI</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                            <button class="btn btn-primary pull-right" id="btn-save-variation">
+                                                                <i class="fa fa-save"></i>
+                                                                Enregistrer
+                                                            </button>
+                                                    </div>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+
+                                            </div>
+
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div id="list_variation"></div>

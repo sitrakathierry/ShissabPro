@@ -59,6 +59,14 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
+	public function creerMenu()
+	{
+		$em = $this->getEntityManager();
+		$sql = "INSERT INTO `menu` (`id`, `menu_id`, `route`, `name`, `icon`, `rang`, `disabled`, `admin`) VALUES (NULL, '151', 'tache_consultation', 'Consultation', 'fa-list', '14', NULL, NULL)" ;
+		$statement = $em->getConnection()->prepare($sql);
+		$statement->execute();
+	}
+
 	public function byRole($role, User $user = null)
 	{
 
@@ -126,22 +134,25 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 			                        'user' => $user
 			                    ));
 
-	        $agence = $userAgence->getAgence();
+			if ($userAgence) {
+		        $agence = $userAgence->getAgence();
 
-            $parents = $this->getEntityManager()
-                ->getRepository('AppBundle:MenuParAgence')
-                ->createQueryBuilder('menuParAgence')
-                ->select('menuParAgence')
-                ->innerJoin('menuParAgence.menu', 'menu')
-                ->addSelect('menu')
-                ->innerJoin('menuParAgence.agence', 'agence')
-                ->addSelect('agence')
-                ->where('menu.menu IS NULL')
-                ->andWhere('agence = :agence')
-                ->setParameter('agence', $agence)
-                ->orderBy('menu.rang', 'ASC')
-                ->getQuery()
-                ->getResult();
+		        $parents = $this->getEntityManager()
+		            ->getRepository('AppBundle:MenuParAgence')
+		            ->createQueryBuilder('menuParAgence')
+		            ->select('menuParAgence')
+		            ->innerJoin('menuParAgence.menu', 'menu')
+		            ->addSelect('menu')
+		            ->innerJoin('menuParAgence.agence', 'agence')
+		            ->addSelect('agence')
+		            ->where('menu.menu IS NULL')
+		            ->andWhere('agence = :agence')
+		            ->setParameter('agence', $agence)
+		            ->orderBy('menu.rang', 'ASC')
+		            ->getQuery()
+		            ->getResult();
+			}
+
         }
 
 
@@ -191,9 +202,9 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
                 	}
 			    }
 
-         }
+        }
 
-         return $liste_menus;
+     	return $liste_menus;
 
 	}
 
@@ -307,18 +318,37 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
     	return $result;
     }
 
-    public function getAllMenu()
+    public function getAllMenu($admin)
     {
-        $menus = $this->getEntityManager()
-            ->getRepository('AppBundle:Menu')
-            ->createQueryBuilder('m')
-            ->select('m')
-            ->leftJoin('m.children', 'children')
-            ->addSelect('children')
-            ->where('m.menu IS NULL')
-            ->orderBy('m.rang', 'ASC')
-            ->getQuery()
-            ->getResult();
+
+    	if ($admin) {
+    		$menus = $this->getEntityManager()
+	            ->getRepository('AppBundle:Menu')
+	            ->createQueryBuilder('m')
+	            ->select('m')
+	            ->leftJoin('m.children', 'children')
+	            ->addSelect('children')
+	            ->where('m.menu IS NULL')
+	            ->andWhere('m.admin = 1')
+	            ->orderBy('m.rang', 'ASC')
+	            ->getQuery()
+	            ->getResult();
+    	} else {
+	        $menus = $this->getEntityManager()
+	            ->getRepository('AppBundle:Menu')
+	            ->createQueryBuilder('m')
+	            ->select('m')
+	            ->leftJoin('m.children', 'children')
+	            ->addSelect('children')
+	            ->where('m.menu IS NULL')
+	            ->andWhere('m.admin IS NULL')
+	            ->andWhere('children.admin IS NULL')
+	            ->orderBy('m.rang', 'ASC')
+	            ->getQuery()
+	            ->getResult();
+    	}
+    	
+
         return $menus;
     }
 
@@ -489,4 +519,14 @@ class MenuRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
     }
+
+	public function getParamUser($userId)
+	{
+		$em = $this->getEntityManager(); // GESTIONNAIRE D'ENTITE
+        $sql = "SELECT * FROM `menu` m JOIN menu_utilisateur mu ON m.id = mu.menu WHERE mu.user = ? AND m.id = ? " ; // PREPARATION DE LA REQUETE
+        $statement = $em->getConnection()->prepare($sql);
+        $statement->execute(array($userId,8));
+        $result = $statement->fetchAll();
+        return $result ; 
+	}
 }

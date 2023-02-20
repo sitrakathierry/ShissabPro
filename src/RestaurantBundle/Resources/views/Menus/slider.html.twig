@@ -1,0 +1,40 @@
+<div class="form-horizontal">
+  <div class="form-group">
+     <label class="col-sm-1 control-label">Image</label>
+     <div class="col-sm-11">
+        <input type="file" class="form-control" id="slider">
+     </div>
+  </div>
+  <div class="form-group">
+     <div class="col-lg-12" style="justify-content: center;align-items: center;display: flex;">
+        <img src="{{ asset('img/picture.png') }}" id="slider_img" class="img-thumbnail">
+     </div>
+  </div>
+  <div class="form-group">
+     <label class="col-sm-1 control-label">Titre</label>
+     <div class="col-sm-11">
+        <input type="text" class="form-control" value="" id="titre">
+     </div>
+  </div>
+  <div class="form-group">
+     <label class="col-sm-1 control-label">Sous titre</label>
+     <div class="col-sm-11">
+        <input type="text" class="form-control" value="" id="sous_titre">
+     </div>
+  </div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<button class="btn btn-primary pull-right" id="btn-save-slider">
+			<i class="fa fa-save"></i>
+			ENREGISTRER
+		</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+        <table id="list_slider"></table>
+	</div>
+</div>

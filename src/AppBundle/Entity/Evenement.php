@@ -62,6 +62,23 @@ class Evenement
      */
     private $couleur;
 
+    /**
+     * @var \AppBundle\Entity\Client
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Client")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="client", referencedColumnName="num_police")
+     * })
+     */
+    private $client;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prospect", type="string", length=255, nullable=true)
+     */
+    private $prospect;
+
 
     /**
      * Get id
@@ -194,6 +211,54 @@ class Evenement
     }
 
     /**
+     * Set prospect
+     *
+     * @param string $prospect
+     *
+     * @return Evenement
+     */
+    public function setProspect($prospect)
+    {
+        $this->prospect = $prospect;
+
+        return $this;
+    }
+
+    /**
+     * Get prospect
+     *
+     * @return string
+     */
+    public function getProspect()
+    {
+        return $this->prospect;
+    }
+
+    /**
+     * Set client
+     *
+     * @param \AppBundle\Entity\Client $client
+     *
+     * @return Facture
+     */
+    public function setClient(\AppBundle\Entity\Client $client = null)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return \AppBundle\Entity\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * Set couleur
      *
      * @param string $couleur
@@ -230,4 +295,5 @@ class Evenement
 
         return $this;
     }
+
 }

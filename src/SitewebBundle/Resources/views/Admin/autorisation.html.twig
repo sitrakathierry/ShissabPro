@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+
+    <style type="text/css">
+        .control-label {
+            text-transform: uppercase;
+        }
+    </style>
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('bundles/siteweb/js/autorisation.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <input type="hidden" id="id_siteweb" value="{{ siteweb.id }}">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            Autorisations : {{ siteweb.nom }}
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        {% for module in modules %}
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        <i class="fa {{ module.icon }}"></i>
+                                        {{ module.name }}
+                                    </label>
+                                    <div class="col-sm-6">
+                                        <input 
+                                            type="checkbox" 
+                                            class="js-switch module"
+                                            data-id="{{ module.id }}"
+                                            {% for autorisation in autorisations %}
+                                                {% if autorisation.module.id == module.id %}
+                                                    checked=""
+                                                {% endif %} 
+                                            {% endfor %}
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- <div class=""> -->
+                                        {# <button class="btn btn-white" type="reset">
+                                            <i class="fa fa-times"></i>
+                                            Annuler
+                                        </button> #}
+                                        <button class="btn btn-primary pull-right" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

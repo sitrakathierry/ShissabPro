@@ -32,15 +32,21 @@ class PdfAgence
     private $agence;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="objet", type="integer")
+     */
+    private $objet;
+
+    /**
      * @var \AppBundle\Entity\ModelePdf
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="facture", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="modele_pdf", referencedColumnName="id")
      * })
      */
-    private $facture;
-
+    private $modelePdf;
 
     /**
      * Get id
@@ -51,5 +57,29 @@ class PdfAgence
     {
         return $this->id;
     }
-}
 
+    /**
+     * Set agence
+     *
+     * @param \AppBundle\Entity\Agence $agence
+     *
+     * @return PdfAgence
+     */
+    public function setAgence(\AppBundle\Entity\Agence $agence = null)
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * Get agence
+     *
+     * @return \AppBundle\Entity\Agence
+     */
+    public function getAgence()
+    {
+        return $this->agence;
+    }
+
+}

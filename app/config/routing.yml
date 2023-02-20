@@ -1,3 +1,55 @@
+tache:
+    resource: "@TacheBundle/Resources/config/routing.yml"
+    prefix:   /
+
+stock_interne_general:
+    resource: "@StockInterneGeneralBundle/Resources/config/routing.yml"
+    prefix:   /
+
+stock_interne:
+    resource: "@StockInterneBundle/Resources/config/routing.yml"
+    prefix:   /
+
+hebergement:
+    resource: "@HebergementBundle/Resources/config/routing.yml"
+    prefix:   /
+
+restaurant:
+    resource: "@RestaurantBundle/Resources/config/routing.yml"
+    prefix:   /
+
+recette:
+    resource: "@RecetteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+credit:
+    resource: "@CreditBundle/Resources/config/routing.yml"
+    prefix:   /
+
+bon_livraison:
+    resource: "@BonLivraisonBundle/Resources/config/routing.yml"
+    prefix:   /
+
+motif_decharge:
+    resource: "@MotifDechargeBundle/Resources/config/routing.yml"
+    prefix:   /
+
+bon_commande:
+    resource: "@BonCommandeBundle/Resources/config/routing.yml"
+    prefix:   /
+
+api_config:
+    resource: "@ApiConfigBundle/Resources/config/routing.yml"
+    prefix:   /
+
+api_siteweb:
+    resource: "@ApiSitewebBundle/Resources/config/routing.yml"
+    prefix:   /
+
+siteweb:
+    resource: "@SitewebBundle/Resources/config/routing.yml"
+    prefix:   /
+
 commercial:
     resource: "@CommercialBundle/Resources/config/routing.yml"
     prefix:   /

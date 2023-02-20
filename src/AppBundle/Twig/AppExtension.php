@@ -11,7 +11,22 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('json_decode', array($this, 'jsonDecode')),
             new \Twig_SimpleFilter('str_pad', array($this, 'strPad')),
             new \Twig_SimpleFilter('to_src', array($this, 'toSrc')),
+            new \Twig_SimpleFilter('column', array($this, 'column')),
+            new \Twig_SimpleFilter('array_merge', array($this, 'array_merge')),
+            new \Twig_SimpleFilter('to_float', array($this, 'toFloat')),
         );
+    }
+
+    public function array_merge($array, $key, $value)
+    {
+        $array[$key] = $value;
+
+        return $array;
+    }
+
+    public function column($array, $column_key)
+    {
+        return array_column($array, $column_key);
     }
 
     public function wordwrapFilter($text, $limit = 5)
@@ -55,5 +70,10 @@ class AppExtension extends \Twig_Extension
         file_put_contents ($path, $imageContent);
 
         return $path;
+    }
+
+    public function toFloat($str)
+    {
+        return (float)$str;
     }
 }

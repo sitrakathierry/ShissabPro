@@ -17,6 +17,17 @@ imports:
     - { resource: "@ServiceBundle/Resources/config/services.yml" }
     - { resource: "@ComptabiliteBundle/Resources/config/services.yml" }
     - { resource: "@CommercialBundle/Resources/config/services.yml" }
+    - { resource: "@SitewebBundle/Resources/config/services.yml" }
+    - { resource: "@BonCommandeBundle/Resources/config/services.yml" }
+    - { resource: "@MotifDechargeBundle/Resources/config/services.yml" }
+    - { resource: "@BonLivraisonBundle/Resources/config/services.yml" }
+    - { resource: "@CreditBundle/Resources/config/services.yml" }
+    - { resource: "@RecetteBundle/Resources/config/services.yml" }
+    - { resource: "@RestaurantBundle/Resources/config/services.yml" }
+    - { resource: "@HebergementBundle/Resources/config/services.yml" }
+    - { resource: "@StockInterneBundle/Resources/config/services.yml" }
+    - { resource: "@StockInterneGeneralBundle/Resources/config/services.yml" }
+    - { resource: "@TacheBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -91,3 +102,20 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
+
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_headers: []
+        allow_methods: []
+        expose_headers: []
+        max_age: 0
+        hosts: []
+        origin_regex: false
+    paths:
+        '^/api':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600

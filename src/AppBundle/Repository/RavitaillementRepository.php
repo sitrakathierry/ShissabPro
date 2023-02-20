@@ -10,7 +10,15 @@ namespace AppBundle\Repository;
  */
 class RavitaillementRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function consultation($agence)
+	public function consultation(
+		$agence,
+		$type_date = '', 
+        $mois = '', 
+        $annee = '', 
+        $date_specifique = '', 
+        $debut_date = '', 
+        $fin_date = ''
+	)
 	{
 		$em = $this->getEntityManager();
 		
@@ -21,6 +29,35 @@ class RavitaillementRepository extends \Doctrine\ORM\EntityRepository
 		if ($agence) {
 			$query .= "	and r.agence = " . $agence ;
 		}
+
+		if ($type_date) {
+            switch ($type_date) {
+                case '1':
+                    $now = new \DateTime();
+                    $dateNow = $now->format('d-m-Y');
+                    $query .= " and date_format(r.date,'%d-%m-%Y') = '" . $dateNow ."'";
+                    break;
+                
+                case '2':
+                    $moisAnnee = $mois . "-" . $annee;
+                    $query .= " and date_format(r.date,'%m-%Y') = '" . $moisAnnee ."'";
+                    break;
+
+                case '3':
+                    $query .= " and date_format(r.date,'%Y') = '" . $annee ."'";
+                    break;
+
+                case '4':
+                    // $date = \DateTime::createFromFormat('j/m/Y', $date_specifique);
+                    $query .= " and date_format(r.date,'%d/%m/%Y') = '" . $date_specifique ."'";
+                    break;
+
+                case '5':
+                    $query .= " and date_format(r.date,'%d/%m/%Y') >= '" . $debut_date ."'";
+                    $query .= " and date_format(r.date,'%d/%m/%Y') <= '" . $fin_date ."'";
+                    break;
+            }
+        }
 
 		$query .= "	order by r.id desc";
 

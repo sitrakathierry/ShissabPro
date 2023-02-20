@@ -31,20 +31,6 @@ class CategorieProduit
     /**
      * @var string
      *
-     * @ORM\Column(name="unite", type="text")
-     */
-    private $unite;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="stock", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $stock;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="image", type="text")
      */
     private $image;
@@ -84,50 +70,26 @@ class CategorieProduit
     }
 
     /**
-     * Set stock
+     * Set image
      *
-     * @param string $stock
+     * @param string $image
      *
      * @return CategorieProduit
      */
-    public function setStock($stock)
+    public function setImage($image)
     {
-        $this->stock = $stock;
+        $this->image = $image;
 
         return $this;
     }
 
     /**
-     * Get stock
+     * Get image
      *
      * @return string
      */
-    public function getStock()
+    public function getImage()
     {
-        return $this->stock;
-    }
-
-    /**
-     * Set unite
-     *
-     * @param string $unite
-     *
-     * @return CategorieProduit
-     */
-    public function setUnite($unite)
-    {
-        $this->unite = $unite;
-
-        return $this;
-    }
-
-    /**
-     * Get unite
-     *
-     * @return string
-     */
-    public function getUnite()
-    {
-        return $this->unite;
+        return $this->image;
     }
 }

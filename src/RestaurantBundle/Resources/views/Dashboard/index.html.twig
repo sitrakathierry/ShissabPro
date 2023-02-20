@@ -1,0 +1,38 @@
+<input type="hidden" id="data-line-resto" value="{{line}}">
+<div class="row">
+    <div class="col-md-4">
+        <div class="widget yellow-bg p-xl">
+            <h2>
+                RESTAURANT
+            </h2>
+            <ul class="list-unstyled m-t-md">
+                <li>
+                    Nombre de client par jours : {{nbClientsJournalier}}
+                </li>
+                <li>
+                    Nombre de plat servi par jour : {{nbPlatsJournalier}}
+                </li>
+                <li>
+                    Total plats sur place : {{totalPlatsReservation}}
+                </li>
+                <li>
+                    Total plats emporté : {{totalPlatsEmporte}}
+                </li>
+                <li>
+                    Total Recette journalière : {{totalJournalier}}
+                </li>
+                <li>
+                    Recette plat : {{recettePlat}}
+                </li>
+                <li>
+                    Recette boisson : {{recetteBoisson}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="ibox-content text-center">
+            <div class="dash-block-resto" id="resto-line-chart"></div>
+        </div>
+    </div>
+</div>

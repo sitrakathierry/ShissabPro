@@ -130,15 +130,30 @@ $(document).ready(function(){
 
     	var url = Routing.generate('produit_approvisionnement_save');
 
-    	$.ajax({
-    		url: url,
-    		type: 'POST',
-    		data: data,
-    		success: function(res) {
-    			show_info('Succès', 'Approvisionnement éffectué');
-    			location.reload();
-    		}
-    	})
+        disabled_confirm(false); 
+
+        swal({
+                title: "Enregistrer",
+                text: "Voulez-vous vraiment enregistrer ? ",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonText: "Oui",
+                cancelButtonText: "Non",
+            },
+            function () {
+                disabled_confirm(true);
+                    
+            	$.ajax({
+            		url: url,
+            		type: 'POST',
+            		data: data,
+            		success: function(res) {
+            			show_success('Succès', 'Approvisionnement éffectué');
+            		}
+            	})
+              
+        });
+
     })
 
 })

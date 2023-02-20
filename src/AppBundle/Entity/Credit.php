@@ -1,0 +1,657 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Credit
+ *
+ * @ORM\Table(name="credit")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CreditRepository")
+ */
+class Credit
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ht", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $ht = '0.00';
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="remise_type", type="integer", nullable=true)
+     */
+    private $remiseType = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="remise", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $remise = '0.00';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_remise", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montantRemise = '0.00';
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="tva_type", type="integer", nullable=true)
+     */
+    private $tvaType = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tva", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $tva = '0.00';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_tva", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montantTva = '0.00';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $total = '0.00';
+
+    /**
+     * @var \AppBundle\Entity\Agence
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agence")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agence", referencedColumnName="id")
+     * })
+     */
+    private $agence;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statut", type="integer", nullable=true)
+     */
+    private $statut = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statut_paiement", type="integer", nullable=true)
+     */
+    private $statutPaiement = 0;
+
+    /**
+     * @var \AppBundle\Entity\Client
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Client")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="client", referencedColumnName="num_police")
+     * })
+     */
+    private $client;
+
+    private $recu;
+
+    /**
+     * @var \AppBundle\Entity\ModelePdf
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="modele_pdf", referencedColumnName="id")
+     * })
+     */
+    private $modelePdf;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lettre", type="text", nullable=true)
+     */
+    private $lettre = '';
+
+    /**
+     * @var \AppBundle\Entity\Commande
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Commande")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="commande", referencedColumnName="id")
+     * })
+     */
+    private $commande;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lieu", type="text", nullable=true)
+     */
+    private $lieu;
+
+    /**
+     * @var \AppBundle\Entity\Devise
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Devise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="devise", referencedColumnName="id")
+     * })
+     */
+    private $devise;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_converti", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montantConverti = '0.00';
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Credit
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set ht
+     *
+     * @param string $ht
+     *
+     * @return Credit
+     */
+    public function setHt($ht)
+    {
+        $this->ht = $ht ? $ht : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get ht
+     *
+     * @return string
+     */
+    public function getHt()
+    {
+        return $this->ht;
+    }
+
+    /**
+     * Set remiseType
+     *
+     * @param integer $remiseType
+     *
+     * @return Credit
+     */
+    public function setRemiseType($remiseType)
+    {
+        $this->remiseType = $remiseType;
+
+        return $this;
+    }
+
+    /**
+     * Get remiseType
+     *
+     * @return int
+     */
+    public function getRemiseType()
+    {
+        return $this->remiseType;
+    }
+
+    /**
+     * Set remise
+     *
+     * @param string $remise
+     *
+     * @return Credit
+     */
+    public function setRemise($remise)
+    {
+        $this->remise = $remise ? $remise : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get remise
+     *
+     * @return string
+     */
+    public function getRemise()
+    {
+        return $this->remise;
+    }
+
+    /**
+     * Set montantRemise
+     *
+     * @param string $montantRemise
+     *
+     * @return Credit
+     */
+    public function setMontantRemise($montantRemise)
+    {
+        $this->montantRemise = $montantRemise ? $montantRemise : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantRemise
+     *
+     * @return string
+     */
+    public function getMontantRemise()
+    {
+        return $this->montantRemise;
+    }
+
+    /**
+     * Set tvaType
+     *
+     * @param integer $tvaType
+     *
+     * @return Credit
+     */
+    public function setTvaType($tvaType)
+    {
+        $this->tvaType = $tvaType;
+
+        return $this;
+    }
+
+    /**
+     * Get tvaType
+     *
+     * @return int
+     */
+    public function getTvaType()
+    {
+        return $this->tvaType;
+    }
+
+    /**
+     * Set tva
+     *
+     * @param string $tva
+     *
+     * @return Credit
+     */
+    public function setTva($tva)
+    {
+        $this->tva = $tva ? $tva : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get tva
+     *
+     * @return string
+     */
+    public function getTva()
+    {
+        return $this->tva;
+    }
+
+    /**
+     * Set montantTva
+     *
+     * @param string $montantTva
+     *
+     * @return Credit
+     */
+    public function setMontantTva($montantTva)
+    {
+        $this->montantTva = $montantTva;
+
+        return $this;
+    }
+
+    /**
+     * Get montantTva
+     *
+     * @return string
+     */
+    public function getMontantTva()
+    {
+        return $this->montantTva;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     *
+     * @return Credit
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return Credit
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return int
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Set lettre
+     *
+     * @param string $lettre
+     *
+     * @return Credit
+     */
+    public function setLettre($lettre)
+    {
+        $this->lettre = $lettre;
+
+        return $this;
+    }
+
+    /**
+     * Get lettre
+     *
+     * @return string
+     */
+    public function getLettre()
+    {
+        return $this->lettre;
+    }
+
+    /**
+     * Set agence
+     *
+     * @param \AppBundle\Entity\Agence $agence
+     *
+     * @return Credit
+     */
+    public function setAgence(\AppBundle\Entity\Agence $agence = null)
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * Get agence
+     *
+     * @return \AppBundle\Entity\Agence
+     */
+    public function getAgence()
+    {
+        return $this->agence;
+    }
+
+    /**
+     * Set client
+     *
+     * @param \AppBundle\Entity\Client $client
+     *
+     * @return Credit
+     */
+    public function setClient(\AppBundle\Entity\Client $client = null)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return \AppBundle\Entity\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set modelePdf
+     *
+     * @param \AppBundle\Entity\ModelePdf $modelePdf
+     *
+     * @return Credit
+     */
+    public function setModelePdf(\AppBundle\Entity\ModelePdf $modelePdf = null)
+    {
+        $this->modelePdf = $modelePdf;
+
+        return $this;
+    }
+
+    /**
+     * Get modelePdf
+     *
+     * @return \AppBundle\Entity\ModelePdf
+     */
+    public function getModelePdf()
+    {
+        return $this->modelePdf;
+    }
+
+    /**
+     * Set statutPaiement
+     *
+     * @param integer $statutPaiement
+     *
+     * @return Credit
+     */
+    public function setStatutPaiement($statutPaiement)
+    {
+        $this->statutPaiement = $statutPaiement;
+
+        return $this;
+    }
+
+    /**
+     * Get statutPaiement
+     *
+     * @return integer
+     */
+    public function getStatutPaiement()
+    {
+        return $this->statutPaiement;
+    }
+
+    /**
+     * Get recu
+     *
+     */
+    public function getRecu()
+    {
+
+        $id = $this->id;
+
+        $id = str_pad($id, 6, '0', STR_PAD_LEFT);
+
+        $this->recu = $id;
+
+        return $this->recu;
+
+    }
+
+    /**
+     * Set commande
+     *
+     * @param \AppBundle\Entity\Commande $commande
+     *
+     * @return Credit
+     */
+    public function setCommande(\AppBundle\Entity\Commande $commande = null)
+    {
+        $this->commande = $commande;
+
+        return $this;
+    }
+
+    /**
+     * Get commande
+     *
+     * @return \AppBundle\Entity\Commande
+     */
+    public function getCommande()
+    {
+        return $this->commande;
+    }
+
+    /**
+     * Set lieu
+     *
+     * @param string $lieu
+     *
+     * @return Credit
+     */
+    public function setLieu($lieu)
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    /**
+     * Get lieu
+     *
+     * @return string
+     */
+    public function getLieu()
+    {
+        return $this->lieu;
+    }
+
+    /**
+     * Set montantConverti
+     *
+     * @param string $montantConverti
+     *
+     * @return Credit
+     */
+    public function setMontantConverti($montantConverti)
+    {
+        $this->montantConverti = $montantConverti ? $montantConverti : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantConverti
+     *
+     * @return string
+     */
+    public function getMontantConverti()
+    {
+        return $this->montantConverti;
+    }
+
+    /**
+     * Set devise
+     *
+     * @param \AppBundle\Entity\Devise $devise
+     *
+     * @return Credit
+     */
+    public function setDevise(\AppBundle\Entity\Devise $devise = null)
+    {
+        $this->devise = $devise;
+
+        return $this;
+    }
+
+    /**
+     * Get devise
+     *
+     * @return \AppBundle\Entity\Devise
+     */
+    public function getDevise()
+    {
+        return $this->devise;
+    }
+}

@@ -1,0 +1,440 @@
+restaurant_homepage:
+    path:     /restaurant/index
+    defaults: { _controller: RestaurantBundle:Default:index }
+
+# Plat
+restaurant_plat_index:
+    path:     /restaurant/plat/index
+    defaults: { _controller: RestaurantBundle:Plat:index }
+
+restaurant_plat_add:
+    path:     /restaurant/plat/add
+    defaults: { _controller: RestaurantBundle:Plat:add }
+
+restaurant_plat_save:
+    path:     /restaurant/plat/save
+    defaults: { _controller: RestaurantBundle:Plat:save }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_plat_consultation:
+    path:     /restaurant/plat/consultation
+    defaults: { _controller: RestaurantBundle:Plat:consultation }
+    options:
+        expose: true
+
+restaurant_plat_list:
+    path:     /restaurant/plat/list
+    defaults: { _controller: RestaurantBundle:Plat:list }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_plat_show:
+    path:     /restaurant/plat/show/{id}
+    defaults: { _controller: RestaurantBundle:Plat:show }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_plat_delete:
+    path:     /restaurant/plat/delete/{id}
+    defaults: { _controller: RestaurantBundle:Plat:delete }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_plat_statut:
+    path:     /restaurant/plat/statut/{id}/{statut}
+    defaults: { _controller: RestaurantBundle:Plat:statut }
+    options:
+        expose: true
+    methods: [GET]
+
+# Table
+restaurant_table_index:
+    path:     /restaurant/table/index
+    defaults: { _controller: RestaurantBundle:Table:index }
+
+restaurant_table_add:
+    path:     /restaurant/table/add
+    defaults: { _controller: RestaurantBundle:Table:add }
+
+restaurant_table_save:
+    path:     /restaurant/table/save
+    defaults: { _controller: RestaurantBundle:Table:save }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_table_consultation:
+    path:     /restaurant/table/consultation
+    defaults: { _controller: RestaurantBundle:Table:consultation }
+    options:
+        expose: true
+
+restaurant_table_list:
+    path:     /restaurant/table/list
+    defaults: { _controller: RestaurantBundle:Table:list }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_table_show:
+    path:     /restaurant/table/show/{id}
+    defaults: { _controller: RestaurantBundle:Table:show }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_table_delete:
+    path:     /restaurant/table/delete/{id}
+    defaults: { _controller: RestaurantBundle:Table:delete }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_table_statut:
+    path:     /restaurant/table/statut/{id}/{statut}
+    defaults: { _controller: RestaurantBundle:Table:statut }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_table_placedisponible:
+    path:     /restaurant/table/placedisponible
+    defaults: { _controller: RestaurantBundle:Table:placeDisponible }
+    options:
+        expose: true
+
+restaurant_table_disponible:
+    path:     /restaurant/table/disponible
+    defaults: { _controller: RestaurantBundle:Table:disponible }
+    options:
+        expose: true
+
+# Réservation Table
+restaurant_reservation_index:
+    path:     /restaurant/reservation/index
+    defaults: { _controller: RestaurantBundle:Reservation:index }
+    options:
+        expose: true
+
+restaurant_reservation_add:
+    path:     /restaurant/reservation/add
+    defaults: { _controller: RestaurantBundle:Reservation:add }
+
+restaurant_resevation_table:
+    path:     /restaurant/reservation/table/{idtable}
+    defaults: { _controller: RestaurantBundle:Reservation:table }
+
+
+restaurant_reservation_save:
+    path:     /restaurant/reservation/save
+    defaults: { _controller: RestaurantBundle:Reservation:save }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_reservation_delete:
+    path:     /restaurant/reservation/delete/{id}
+    defaults: { _controller: RestaurantBundle:Reservation:delete }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_reservation_encours:
+    path:     /restaurant/reservation/encours
+    defaults: { _controller: RestaurantBundle:Reservation:encours }
+    options:
+        expose: true
+
+restaurant_reservation_list:
+    path:     /restaurant/reservation/list
+    defaults: { _controller: RestaurantBundle:Reservation:list }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_reservation_show:
+    path:     /restaurant/reservation/show/{id}
+    defaults: { _controller: RestaurantBundle:Reservation:show }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_reservation_terminer:
+    path:     /restaurant/reservation/terminer/{id}
+    defaults: { _controller: RestaurantBundle:Reservation:terminer }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_reservation_cuisine_index:
+    path:     /restaurant/reservation/cuisine/index
+    defaults: { _controller: RestaurantBundle:Cuisine:index }
+
+restaurant_reservation_cuisine_plat:
+    path:     /restaurant/reservation/cuisine/plat
+    defaults: { _controller: RestaurantBundle:Cuisine:plat }
+
+restaurant_reservation_cuisine_boisson:
+    path:     /restaurant/reservation/cuisine/boisson
+    defaults: { _controller: RestaurantBundle:Cuisine:boisson }
+
+restaurant_reservation_details_annuler:
+    path:     /restaurant/reservation/details/annuler/{id}
+    defaults: { _controller: RestaurantBundle:Reservation:annulerDetails }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_reservation_details_terminer:
+    path:     /restaurant/reservation/details/terminer/{id}
+    defaults: { _controller: RestaurantBundle:Reservation:terminerDetails }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_reservation_termines:
+    path:     /restaurant/reservation/termines
+    defaults: { _controller: RestaurantBundle:Reservation:termines }
+    options:
+        expose: true
+
+restaurant_reservation_caisse:
+    path:     /restaurant/reservation/caisse
+    defaults: { _controller: RestaurantBundle:Caisse:index }
+    options:
+        expose: true
+
+restaurant_reservation_payer:
+    path:     /restaurant/reservation/payer
+    defaults: { _controller: RestaurantBundle:Caisse:payer }
+    options:
+        expose: true
+    methods: [POST]
+
+# A Emporter
+restaurant_emporter_index:
+    path:     /restaurant/emporter/index
+    defaults: { _controller: RestaurantBundle:Emporter:index }
+    options:
+        expose: true
+
+restaurant_emporter_add:
+    path:     /restaurant/emporter/add
+    defaults: { _controller: RestaurantBundle:Emporter:add }
+
+restaurant_emporter_save:
+    path:     /restaurant/emporter/save
+    defaults: { _controller: RestaurantBundle:Emporter:save }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_emporter_delete:
+    path:     /restaurant/emporter/delete/{id}
+    defaults: { _controller: RestaurantBundle:Emporter:delete }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_emporter_encours:
+    path:     /restaurant/emporter/encours
+    defaults: { _controller: RestaurantBundle:Emporter:encours }
+    options:
+        expose: true
+
+restaurant_emporter_list:
+    path:     /restaurant/emporter/list
+    defaults: { _controller: RestaurantBundle:Emporter:list }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_emporter_show:
+    path:     /restaurant/emporter/show/{id}
+    defaults: { _controller: RestaurantBundle:Emporter:show }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_emporter_details_terminer:
+    path:     /restaurant/emporter/details/terminer/{id}
+    defaults: { _controller: RestaurantBundle:Emporter:terminerDetails }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_emporter_details_annuler:
+    path:     /restaurant/emporter/details/annuler/{id}
+    defaults: { _controller: RestaurantBundle:Emporter:annulerDetails }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_emporter_terminer:
+    path:     /restaurant/emporter/terminer/{id}
+    defaults: { _controller: RestaurantBundle:Emporter:terminer }
+    options:
+        expose: true
+    methods: [GET]
+
+restaurant_emporter_payer:
+    path:     /restaurant/emporter/payer
+    defaults: { _controller: RestaurantBundle:Emporter:payer }
+    options:
+        expose: true
+    methods: [POST]
+
+# Categorie Plat
+
+restaurant_categorie_index:
+    path:     /restaurant/categorie/index
+    defaults: { _controller: RestaurantBundle:Categorie:index }
+
+restaurant_categorie_save:
+    path:     /restaurant/categorie/save
+    defaults: { _controller: RestaurantBundle:Categorie:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_categorie_list:
+    path:     /restaurant/categorie/list
+    defaults: { _controller: RestaurantBundle:Categorie:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_categorie_editor:
+    path:     /restaurant/categorie/editor
+    defaults: { _controller: RestaurantBundle:Categorie:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_categorie_delete:
+    path:     /restaurant/categorie/delete/{id}
+    defaults: { _controller: RestaurantBundle:Categorie:delete }
+    methods:  [GET]
+    options:
+        expose: true
+
+# Menus
+restaurant_menus_qrcode_index:
+    path:     /restaurant/menus/qrcode/index
+    defaults: { _controller: RestaurantBundle:Menus:qrcode }
+    methods:  [GET]
+    options:
+        expose: true
+
+restaurant_menus_index:
+    path:     /menus/index/{id}
+    defaults: { _controller: RestaurantBundle:Menus:index }
+    methods:  [GET]
+    options:
+        expose: true
+
+restaurant_menus_list:
+    path:     /menus/list
+    defaults: { _controller: RestaurantBundle:Menus:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_slider_save:
+    path:     /restaurant/slider/save
+    defaults: { _controller: RestaurantBundle:Slider:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_slider_list:
+    path:     /restaurant/slider/list
+    defaults: { _controller: RestaurantBundle:Slider:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_slider_show:
+    path:     /restaurant/slider/show/{id}
+    defaults: { _controller: RestaurantBundle:Slider:show }
+    methods:  [GET]
+    options:
+        expose: true
+
+# FICHE DE CONSOMMATION
+restaurant_consommation_index:
+    path:     /restaurant/consommation/index
+    defaults: { _controller: RestaurantBundle:FicheConsommation:index }
+
+# CREDIT
+restaurant_credit_valider:
+    path:     /restaurant/credit/valider/{id}/{type}
+    defaults: { _controller: RestaurantBundle:Credit:valider }
+    options:
+        expose: true
+    methods: [GET]
+
+# Accompagneent
+
+restaurant_accompagnement_index:
+    path:     /restaurant/accompagnement/index
+    defaults: { _controller: RestaurantBundle:Accompagnement:index }
+
+restaurant_accompagnement_save:
+    path:     /restaurant/accompagnement/save
+    defaults: { _controller: RestaurantBundle:Accompagnement:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_accompagnement_list:
+    path:     /restaurant/accompagnement/list
+    defaults: { _controller: RestaurantBundle:Accompagnement:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_accompagnement_editor:
+    path:     /restaurant/accompagnement/editor
+    defaults: { _controller: RestaurantBundle:Accompagnement:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+restaurant_accompagnement_delete:
+    path:     /restaurant/accompagnement/delete/{id}
+    defaults: { _controller: RestaurantBundle:Accompagnement:delete }
+    methods:  [GET]
+    options:
+        expose: true
+
+restaurant_dashboard_index:
+    path:     /restaurant/dashboard/index
+    defaults: { _controller: RestaurantBundle:Dashboard:index }
+
+restaurant_emporter_ticket:
+    path:     /restaurant/emporter/ticket
+    defaults: { _controller: RestaurantBundle:Emporter:ticket }
+    options:
+        expose: true
+    methods: [POST]
+
+restaurant_reservation_ticket:
+    path:     /restaurant/reservation/ticket
+    defaults: { _controller: RestaurantBundle:Reservation:ticket }
+    options:
+        expose: true
+    methods: [POST]
+
+
+notification_reservation:
+    path: /restaurant/notification/commande
+    defaults: { _controller: RestaurantBundle:Notification:notification }
+    options:
+        expose: true
+    methods: [POST]

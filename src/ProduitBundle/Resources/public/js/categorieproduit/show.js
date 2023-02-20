@@ -6,27 +6,46 @@ $(document).on('change','#image',function(event) {
 });
 
 $(document).on('click', '#btn-save', function(event) {
+
 	event.preventDefault();
 
-	var data = {
-		id : $('#id').val(),
-		nom : $('#nom').val(),
-		stock : $('#stock').val(),
-		unite : $('#unite').val(),
-		categorie_image : $('#categorie_image').attr('src'),
-	};
+	var nom = $('#nom').val();
 
-	var url = Routing.generate('produit_categorie_save');
+	if (nom) {
+		var data = {
+			nom : nom,
+			id : $('#id').val(),
+			categorie_image : $('#categorie_image').attr('src'),
+		};
 
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: data,
-		success: function(res) {
-			show_info('Succès', 'Catégorie enregistré');
-			location.reload();
-		}
-	})
+		var url = Routing.generate('produit_categorie_save');
+
+	 	disabled_confirm(false); 
+    swal({
+        title: "Enregistrer",
+        text: "Voulez-vous vraiment enregistrer ? ",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonText: "Oui",
+        cancelButtonText: "Non",
+    },
+    function () {
+        disabled_confirm(true);
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: data,
+					success: function(res) {
+						show_success('Succès', 'Mise à jour éffectué');
+					}
+				});
+    });
+
+	} else {
+		show_info('Attention','Champs obligatoire','warning');
+	}
+
+
 });
 
 function getBase64(file) {

@@ -1,0 +1,166 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>DATE</th>
+			<th>N° </th>
+			<th>DÉSIGNATION</th>
+			<th>QTE</th>
+			<th>PRIX ({{ agence.deviseSymbole }})</th>
+			<th>CUISSON</th>
+			<th>ACCOMPAGNEMENTS</th>
+			<th>TOTAL ({{ agence.deviseSymbole }})</th>
+			<th>STATUT</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% set total = 0 %}
+		{% for emporter in emporters %}
+			{% if emporter.details %}
+				{% set i = 1 %}
+				{% set termines = 0 %}
+				{% set nb = 0 %}
+				{% for detail in emporter.details %}
+
+					{% set nb = nb + detail.qte %}
+					{% if detail.statut == 2 %}
+						{% set termines = termines + detail.qte %}
+					{% endif %}
+					<tr>
+						{% if i == 1 %}
+							<td rowspan="{{ (emporter.details | length) + 1 }}">{{ emporter.date }}</td>
+							<td rowspan="{{ (emporter.details | length) + 1 }}">
+								{{ emporter.num }}
+								{% if emporter.num_booking %}
+									<span class="label label-info">
+										<i class="fa fa-home"></i>
+										{{ emporter.num_booking }}
+									</span>
+								{% endif %}
+							</td>
+						{% endif %}
+						<td>{{ detail.plat }}</td>
+						<td>{{ detail.qte }}</td>
+						<td>{{ detail.prix }}</td>
+						<td class="text-center">
+							{% if detail.cuisson %}
+								<span class="badge badge-{{ detail.cuisson }}">{{ detail.cuisson | upper }}</span>
+							{% endif %}
+						</td>
+						<td>
+							{% if detail.accompagnements %}
+								<table class="table">
+									<tbody>
+										{% for acc_detail in detail.accompagnements %}
+											{% if acc_detail.accompagnement %}
+												<tr>
+													<td>
+														{% for accompagnement in accompagnements %}
+															{% if  acc_detail.accompagnement == accompagnement.id %}
+																{{ accompagnement.nom }}
+															{% endif %}
+														{% endfor %}
+													</td>
+													<td>
+														({{ acc_detail.qte_accompagnement == '0.5' ? '1/2' : acc_detail.qte_accompagnement }} )
+													</td>
+													<td>
+														{{ acc_detail.prix_accompagnement ? acc_detail.prix_accompagnement : 'INCLUS' }}
+													</td>
+													
+												</tr>
+											{% endif %}
+										{% endfor %}
+									</tbody>
+
+									<tfoot>
+										{% if detail.total_accompagnement != ''  %}
+											<tr>
+												<th colspan="2"></th>
+												<th>
+													{{ detail.total_accompagnement }}
+												</th>
+											</tr>
+										{% endif %}
+
+									</tfoot>
+								</table>
+								
+							{% endif %}
+						</td>
+						<td>{{ detail.total }}</td>
+						{% if i == 1 %}
+							<td rowspan="{{ (emporter.details | length) }}">
+								
+							</td>
+							<td rowspan="{{ (emporter.details | length) + 1 }}">
+								<a href="{{ path('restaurant_emporter_show', { id : emporter.id }) }}" class="btn btn-xs btn-primary btn-full-width">
+									<i class="fa fa-edit">Afficher</i>
+								</a>
+
+								{% if emporter.statut == 1 %}
+									<button 
+										class="btn btn-xs btn-warning btn-terminer btn-full-width"
+										data-id="{{ emporter.id }}" 
+									>
+										<i class="fa fa-check"></i>
+										Passer à la caisse
+									</button>
+								{% endif %}
+
+								{% if emporter.statut == 2 and caisse%}
+									<button 
+										class="btn btn-xs btn-info btn-payer btn-full-width"
+										data-id="{{ emporter.id }}" 
+									>
+										<i class="fa fa-money"></i>
+										Payer
+									</button>
+								{% endif %}
+							</td>
+						{% endif %}
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+
+				<tr>
+					<th colspan="4">TOTAL</th>
+					<th>{{ emporter.total }}</th>
+					<th>
+						{% if emporter.statut == 1 %}
+							{% if termines == nb  %}
+								LIVRÉ
+							{% else %}
+								EN COURS
+							{% endif %}
+						{% endif %}
+						{% if emporter.statut == 2 %}
+							À PAYER
+						{% endif %}
+						{% if emporter.statut == 3 %}
+							PAYÉ
+						{% endif %}
+						<br>
+						<small>{{ termines }} / {{ nb }} commandes livrés</small>
+						<div class="progress progress-mini">
+                            <div style="width: {{(termines * 100) / nb}}%;" class="progress-bar"></div>
+                        </div>
+					</th>
+				</tr>
+
+				<tr>
+					<td colspan="9" bgcolor="#ddd"></td>
+				</tr>
+			{% set total = total + emporter.total %}
+			{% endif %}
+		{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<th colspan="5">TOTAL</th>
+			<th>{{ total }}</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</tfoot>
+</table>

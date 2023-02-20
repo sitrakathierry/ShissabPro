@@ -8,6 +8,7 @@ function list_entrees_sorties() {
 	var data = {
 		produit_id : $('#id_produit').val(),
 		type : $('#type').val(),
+		id_entrepot : $('#id_entrepot').val(),
 	};
 
 	var url = Routing.generate('produit_entrees_sorties');

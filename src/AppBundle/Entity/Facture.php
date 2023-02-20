@@ -41,6 +41,13 @@ class Facture
     private $date = '';
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="lieu", type="text", nullable=true)
+     */
+    private $lieu;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="num", type="integer", nullable=true)
@@ -53,6 +60,13 @@ class Facture
      * @ORM\Column(name="montant", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $montant = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="remise_type", type="integer", nullable=true)
+     */
+    private $remiseType = 0;
 
     /**
      * @var integer
@@ -129,6 +143,58 @@ class Facture
      * })
      */
     private $proforma;
+
+    /**
+     * @var \AppBundle\Entity\ModelePdf
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="modele_pdf", referencedColumnName="id")
+     * })
+     */
+    private $modelePdf;
+
+    /**
+     * @var \AppBundle\Entity\Credit
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Credit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="credit", referencedColumnName="id")
+     * })
+     */
+    private $credit;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="is_credit", type="integer", nullable=true)
+     */
+    private $is_credit = 0;
+
+
+    /**
+     * @var \AppBundle\Entity\Devise
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Devise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="devise", referencedColumnName="id")
+     * })
+     */
+    private $devise;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_converti", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montantConverti = '0.00';
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="is_delete", type="integer", nullable=true)
+     */
+    private $is_delete;
 
     public function getFormattedNum()
     {
@@ -292,7 +358,7 @@ class Facture
      */
     public function setRemiseValeur($remiseValeur)
     {
-        $this->remiseValeur = $remiseValeur;
+        $this->remiseValeur = $remiseValeur ? $remiseValeur : '0.00';
 
         return $this;
     }
@@ -484,4 +550,197 @@ class Facture
     {
         return $this->modele;
     }
+
+    /**
+     * Set modelePdf
+     *
+     * @param \AppBundle\Entity\ModelePdf $modelePdf
+     *
+     * @return Facture
+     */
+    public function setModelePdf(\AppBundle\Entity\ModelePdf $modelePdf = null)
+    {
+        $this->modelePdf = $modelePdf;
+
+        return $this;
+    }
+
+    /**
+     * Get modelePdf
+     *
+     * @return \AppBundle\Entity\ModelePdf
+     */
+    public function getModelePdf()
+    {
+        return $this->modelePdf;
+    }
+
+    /**
+     * Set remiseType
+     *
+     * @param integer $remiseType
+     *
+     * @return Facture
+     */
+    public function setRemiseType($remiseType)
+    {
+        $this->remiseType = $remiseType;
+
+        return $this;
+    }
+
+    /**
+     * Get remiseType
+     *
+     * @return integer
+     */
+    public function getRemiseType()
+    {
+        return $this->remiseType;
+    }
+
+    /**
+     * Set credit
+     *
+     * @param \AppBundle\Entity\Credit $credit
+     *
+     * @return Facture
+     */
+    public function setCredit(\AppBundle\Entity\Credit $credit = null)
+    {
+        $this->credit = $credit;
+
+        return $this;
+    }
+
+    /**
+     * Get credit
+     *
+     * @return \AppBundle\Entity\Credit
+     */
+    public function getCredit()
+    {
+        return $this->credit;
+    }
+
+    /**
+     * Set isCredit
+     *
+     * @param integer $isCredit
+     *
+     * @return Facture
+     */
+    public function setIsCredit($isCredit)
+    {
+        $this->is_credit = $isCredit;
+
+        return $this;
+    }
+
+    /**
+     * Get isCredit
+     *
+     * @return integer
+     */
+    public function getIsCredit()
+    {
+        return $this->is_credit;
+    }
+
+    /**
+     * Set montantConverti
+     *
+     * @param string $montantConverti
+     *
+     * @return Facture
+     */
+    public function setMontantConverti($montantConverti)
+    {
+        $this->montantConverti = $montantConverti ? $montantConverti : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantConverti
+     *
+     * @return string
+     */
+    public function getMontantConverti()
+    {
+        return $this->montantConverti;
+    }
+
+    /**
+     * Set devise
+     *
+     * @param \AppBundle\Entity\Devise $devise
+     *
+     * @return Facture
+     */
+    public function setDevise(\AppBundle\Entity\Devise $devise = null)
+    {
+        $this->devise = $devise;
+
+        return $this;
+    }
+
+    /**
+     * Get devise
+     *
+     * @return \AppBundle\Entity\Devise
+     */
+    public function getDevise()
+    {
+        return $this->devise;
+    }
+
+    /**
+     * Set lieu
+     *
+     * @param string $lieu
+     *
+     * @return Facture
+     */
+    public function setLieu($lieu)
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    /**
+     * Get lieu
+     *
+     * @return string
+     */
+    public function getLieu()
+    {
+        return $this->lieu;
+    }
+
+        /**
+     * Set isDelete
+     *
+     * @param integer $isDelete
+     *
+     * @return Facture
+     */
+    public function setIsDelete($isDelete)
+    {
+        $this->is_delete = $isDelete;
+
+        return $this;
+    }
+
+    /**
+     * Get isDelete
+     *
+     * @return integer
+     */
+    public function getIsDelete()
+    {
+        return $this->is_delete;
+    }
+
 }

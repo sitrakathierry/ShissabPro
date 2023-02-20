@@ -1,0 +1,3 @@
+api_config_homepage:
+    path:     /api/config/index
+    defaults: { _controller: ApiConfigBundle:Default:index }

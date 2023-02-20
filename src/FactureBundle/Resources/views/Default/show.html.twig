@@ -200,10 +200,22 @@
             <div class="hr-line-dashed"></div>
             <p>Arrêté la présente facture à la somme de <b id="somme" style="text-transform: uppercase;">{{facture.somme}}</b> 
             <p>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" >
+                  <label class="font-noraml">À</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                    <input type="text" class="form-control" name="f_lieu" value="{{ facture.lieu }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row">
               <div class="col-lg-6 col-lg-push-6">
                 <div class="form-group" id="data_1">
-                  <label class="font-noraml">Moroni le</label>
+                  <label class="font-noraml">Le</label>
                   <div class="input-group date">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <input type="text" class="form-control" name="f_date" value="{{ facture.date | date('d/m/Y') }}" required="">

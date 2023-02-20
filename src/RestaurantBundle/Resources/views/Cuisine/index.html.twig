@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+ {% endblock  %}
+
+{% block contenu %}
+    <div class="row" id="dash-square-menu">
+    	
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+    	$('#side-menu li a').each(function(n,v){
+
+    		if ($(this).parent().data('name') == "Cuisine") {
+    			var ul = $(this).parent().children('ul');
+    			ul.children('li').each(function(a,b) {
+					var icon    = $(this).data('icon');
+					var libelle = $(this).data('name');
+					var lien    = $(this).children('a').attr('href');
+					var menu    = '<div class="col-sm-6 col-md-4">';
+			        
+			        menu += '<a href=" '+ lien +'" class="tile-link">';
+			        menu += '<div class="tile-menu">';
+			        menu += '<h2 class="tile-title">' + libelle + '</h2>';
+			        menu += '<div class="tile-icon">';
+			        menu += '<i class="fa '+ icon +'"></i>';
+			        menu += '</div>';
+			        menu += '</div>';
+			        menu += '</a>';
+			        menu += '</div>';	
+
+    				$('#dash-square-menu').append(menu);
+    			});
+    		}
+
+	    });
+    </script>
+{% endblock %}

@@ -14,14 +14,41 @@ class PannierRepository extends \Doctrine\ORM\EntityRepository
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select p.*, pr.nom as produit
+		$query = "	select p.*, pr.nom as produit, pr.id as produit_id, vp.id as variation_produit_id
+					from pannier p
+					left join variation_produit vp on (p.variation_produit = vp.id)
+					left join produit_entrepot pe on (vp.produit_entrepot = pe.id)
+					left join entrepot e on (pe.entrepot = e.id)
+					left join produit pr on (pe.produit = pr.id)
+					where p.id is not null ";
+
+		if ($commande) {
+			$query .= "	and p.commande = " . $commande ;
+		}
+
+		$query .= "	order by pr.nom asc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
+
+	public function consultationBon($bon_commande)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select p.*, pr.nom as produit, pr.id as produit_id
 					from pannier p
 					inner join variation_produit vp on (p.variation_produit = vp.id)
 					inner join produit pr on (vp.produit = pr.id)
 					where p.id is not null ";
 
-		if ($commande) {
-			$query .= "	and p.commande = " . $commande ;
+		if ($bon_commande) {
+			$query .= "	and p.bon_commande = " . $bon_commande ;
 		}
 
 		$query .= "	order by pr.nom asc";

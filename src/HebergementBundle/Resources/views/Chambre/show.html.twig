@@ -1,0 +1,230 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('bundles/hebergement/js/chambre/add.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            {{ chambre.nom }}
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+                            <input type="hidden" id="statut" value="{{ chambre.statut }}">
+                            <input type="hidden" id="id" value="{{ chambre.id }}">
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">N° Chambre</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" required="" id="nom" value="{{ chambre.nom }}">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-12">
+                        			<table class="table table-hover table-bordered">
+                        				<thead>
+                        					<tr>
+                        						<th>Catégorie</th>
+                        						<th>Caractéristiques</th>
+                        					</tr>
+                        				</thead>
+                        				<tbody>
+                        					{% for categorie in categories %}
+                        						<tr>
+                        							<td>
+                        								<div class="radio">
+		                                                    <input type="radio" class="categorie" name="categorie" value="{{ categorie.id }}" {% if chambre.categorieChambre.id == categorie.id %} checked="" {% endif %}>
+		                                                    <label for="radio2">
+		                                                        {{categorie.nom}}
+		                                                    </label>
+		                                                </div>
+                        							</td>
+                        							<td>{{ categorie.caracteristiques | replace({"," : "<br>"}) | raw }}</td>
+                        						</tr>
+                        					{% endfor %}
+                        				</tbody>
+                        			</table>
+                        		</div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Nb lit simple</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="nb_lit_simple" value="{{ chambre.nbLitSimple }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Nb lit double</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="nb_lit_double" value="{{ chambre.nbLitDouble }}">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Nb Personne</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="nb_pers" value="{{ chambre.nbPers }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Durée d'annulation automatique</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="annulation_automatique" value="{{ chambre.annulationAutomatique }}" min="0">
+                                            <span> heure sans confirmation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                            <h3 class="text-center"><u>TARIFS</u></h3>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button class="btn btn-warning pull-right" id="import-tarif-categorie">
+                                        IMPORTER LES TARIFS DE LA CATEGORIE
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered" id="table-tarif-add">
+                                        <thead>
+                                            <tr>
+                                                <th>Nb Pers</th>
+                                                <th>Tarif ({{ agence.deviseSymbole }})</th>
+                                                <th>Petit déjeuner</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for tarif in tarifs %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control nb_pers" name="nb_pers[]" required="" value="{{ tarif.nbPers }}">
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control montant" name="montant[]" required="" value="{{ tarif.montant }}">
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <select class="form-control petit_dejeuner" name="petit_dejeuner[]">
+                                                                <option value="1" {% if tarif.petitDejeuner == 1 %} selected="" {% endif %} >INCLUS</option>
+                                                                <option value="2" {% if tarif.petitDejeuner == 2 %} selected="" {% endif %} >SUPPLÉMENTAIRE</option>
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group supplementaire {% if tarif.petitDejeuner == 1 %} hidden {% endif %}">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control montant_petit_dejeuner" name="montant_petit_dejeuner[]" required="" value="{{ tarif.montantPetitDejeuner }}">
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-full-width btn-remove-tr">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="3"></td>
+                                                <td>
+                                                    <button class="btn btn-info btn-full-width btn-add-row" data-id="0">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                    <input type="hidden" id="id-row" value="0">
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            {# <h3 class="text-center"><u>CONDITIONS D'ANNULATION & DE REMBOURSEMENT</u></h3>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Période</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="periode_annulation" value="{{ chambre.periodeAnnulation }}">
+                                            <span> heure avant date d'arrivé</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Montant à rembourser</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="pourcentage_remboursement" value="{{ chambre.pourcentageRemboursement }}">
+                                            <span> % du montant de la réservation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="text-center"><u>ANNULATION AUTOMATIQUE</u></h3> #}
+                           
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                        <button class="btn btn-primary pull-right" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Mettre à jour
+                                        </button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="id" id="id" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

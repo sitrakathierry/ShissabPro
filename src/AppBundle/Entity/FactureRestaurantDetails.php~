@@ -1,0 +1,179 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * FactureRestaurantDetails
+ *
+ * @ORM\Table(name="facture_restaurant_details")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FactureRestaurantDetailsRepository")
+ */
+class FactureRestaurantDetails
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="qte", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $qte;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prix", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $prix;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $total;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statut", type="integer", nullable=true)
+     */
+    private $statut;
+
+    /**
+     * @var \AppBundle\Entity\Plat
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Plat")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="plat", referencedColumnName="id")
+     * })
+     */
+    private $plat;
+
+    /**
+     * @var \AppBundle\Entity\FactureRestaurant
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\FactureRestaurant")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="facture_restaurant", referencedColumnName="id")
+     * })
+     */
+    private $factureRestaurant;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set qte
+     *
+     * @param string $qte
+     *
+     * @return FactureRestaurantDetails
+     */
+    public function setQte($qte)
+    {
+        $this->qte = $qte;
+
+        return $this;
+    }
+
+    /**
+     * Get qte
+     *
+     * @return string
+     */
+    public function getQte()
+    {
+        return $this->qte;
+    }
+
+    /**
+     * Set prix
+     *
+     * @param string $prix
+     *
+     * @return FactureRestaurantDetails
+     */
+    public function setPrix($prix)
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    /**
+     * Get prix
+     *
+     * @return string
+     */
+    public function getPrix()
+    {
+        return $this->prix;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     *
+     * @return FactureRestaurantDetails
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return FactureRestaurantDetails
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return int
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+}
+

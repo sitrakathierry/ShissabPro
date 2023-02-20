@@ -17,13 +17,15 @@
         </style>
     {% endblock %}
 
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+
 </head>
 
 <body class="gray-bg">
     <div class="middle-box text-center loginscreen animated fadeInDown">
         <div>
             <div >
-                <img src="{{ asset('img/shissab.png') }}"  style="width: 300px !important;"/>
+                <img src="{{ asset('img/shissab-header.jpg') }}"  style="width: 300px !important;"/>
             </div>
             {% block contenu %}{% endblock %}
         </div>

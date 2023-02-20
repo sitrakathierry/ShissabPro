@@ -1,0 +1,129 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>N° </th>
+			<th>DATE</th>
+			<th>TYPE DE COMMANDE</th>
+			<th>DÉSIGNATION</th>
+			<th>QTE</th>
+			<th>PRIX ({{ agence.deviseSymbole }})</th>
+			<th>ACCOMPAGNEMENTS</th>
+			<th>TOTAL ({{ agence.deviseSymbole }})</th>
+			<th>STATUT</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for commande in commandes %}
+			{% if commande.details %}
+				{% set i = 1 %}
+				{% for detail in commande.details %}
+						<tr>
+							{% if i == 1 %}
+								<td rowspan="{{ (commande.details | length) + 1 }}">
+									{{ commande.num }}
+									{% if commande.num_booking %}
+										<span class="label label-info">
+											<i class="fa fa-home"></i>
+											{{ commande.num_booking }}
+										</span>
+									{% endif %}
+								</td>
+								<td rowspan="{{ (commande.details | length) + 1 }}">
+									{{ commande.date }}
+								</td>
+								<td rowspan="{{ (commande.details | length) + 1 }}">
+
+									{% if commande.type_commande == 'reservation' %}
+										Commande sur place
+										<span class="label label-success">{{ commande.tables | column('nom') | join(',')}}</span>
+									{% else %}
+										Commande à emporter
+									{% endif %}
+
+								</td>
+							{% endif %}
+							<td>{{ detail.plat }}</td>
+							<td>{{ detail.qte }}</td>
+							<td>{{ detail.prix }}</td>
+							<td>
+								{% if detail.accompagnements %}
+									<table class="table">
+										<tbody>
+											{% for acc_detail in detail.accompagnements %}
+												{% if acc_detail.accompagnement %}
+													<tr>
+														<td>
+															{% for accompagnement in accompagnements %}
+																{% if  acc_detail.accompagnement == accompagnement.id %}
+																	{{ accompagnement.nom }}
+																{% endif %}
+															{% endfor %}
+														</td>
+														<td>
+															({{ acc_detail.qte_accompagnement == '0.5' ? '1/2' : acc_detail.qte_accompagnement }} )
+														</td>
+														<td>
+															{{ acc_detail.prix_accompagnement ? acc_detail.prix_accompagnement : 'INCLUS' }}
+														</td>
+														
+													</tr>
+												{% endif %}
+											{% endfor %}
+										</tbody>
+										<tfoot>
+											<tr>
+												<th colspan="2"></th>
+												<th>
+													{{ detail.total_accompagnement }}
+												</th>
+											</tr>
+										</tfoot>
+									</table>
+									
+								{% endif %}
+							</td>
+							<td>{{ detail.total }}</td>
+							
+							{% if i == 1 %}
+								<td rowspan="{{ (commande.details | length) + 1 }}">
+									À PAYER
+								</td>
+								<td rowspan="{{ (commande.details | length) + 1 }}">
+									<button 
+										class="btn btn-xs btn-info btn-full-width btn-payer"
+										data-id="{{ commande.id }}" 
+										data-type="{{ commande.type_commande }}"
+										data-total="{{ commande.total }}"
+									>
+										<i class="fa fa-money"></i>
+										PAYER
+									</button>
+
+									{% if commande.num_booking %}
+										<button 
+											class="btn btn-xs btn-warning btn-full-width btn-credit-heb"
+											data-id="{{ commande.id }}" 
+											data-type="{{ commande.type_commande }}"
+										>
+											<i class="fa fa-home"></i>
+											CRÉDIT HÉBERGEMENT
+										</button>
+									{% endif %}
+								</td>
+							{% endif %}
+
+						</tr>
+						{% set i = i + 1 %}
+				{% endfor %}
+				<tr>
+					<th colspan="4">TOTAL</th>
+					<th>{{ commande.total }}</th>
+				</tr>
+				<tr>
+					<th colspan="10" bgcolor="#ddd"></th>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	</tbody>
+</table>

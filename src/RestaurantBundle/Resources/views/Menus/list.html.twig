@@ -1,0 +1,81 @@
+{% if type_menu == 1 or type_menu == 0 %}
+    {%for plat in plats %}
+    	<div class="col-md-3">
+            <div class="ibox">
+                <div class="ibox-content product-box">
+
+                    <div class="product-imitation" style="background: url({{ plat.img  }}) ;background-size: contain;">
+                    </div>
+                    <div class="product-desc">
+                        <span class="product-price">
+                            {{ plat.prixVente }} {{ agence.deviseSymbole }}
+                        </span>
+                        <small class="text-muted">{{ plat.categoriePlat ? plat.categoriePlat.nom : 'Non catégorisé' }}</small>
+                        <a href="#" class="product-name">{{ plat.nom }}</a>
+
+
+
+                        <div class="small m-t-xs plat_item_desc">
+                            {{ plat.description | raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if type_menu == 2 or type_menu == 0 %}
+    {%for accompagnement in accompagnements %}
+        <div class="col-md-3">
+            <div class="ibox">
+                <div class="ibox-content product-box">
+
+                    <div class="product-imitation">
+                        {{ accompagnement.nom }}
+                    </div>
+                    <div class="product-desc">
+                        <span class="product-price">
+                            {{ accompagnement.prix }} {{ agence.deviseSymbole }}
+                        </span>
+                        <small class="text-muted">
+                            Accompagnement
+                        </small>
+                        <a href="#" class="product-name">{{ accompagnement.nom }}</a>
+
+                        <div class="small m-t-xs plat_item_desc">
+                            {{ accompagnement.description | raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if type_menu == 3 or type_menu == 0 %}
+    {%for boisson in boissons %}
+        <div class="col-md-3">
+            <div class="ibox">
+                <div class="ibox-content product-box">
+
+                    <div class="product-imitation" style="background: url({{ boisson.img  }}) ;background-size: contain;">
+                    </div>
+                    <div class="product-desc">
+                        <span class="product-price">
+                            {{ boisson.prixVente }} {{ agence.deviseSymbole }}
+                        </span>
+                        <small class="text-muted">{{ boisson.categoriePlat ? boisson.categoriePlat.nom : 'Non catégorisé' }}</small>
+                        <a href="#" class="product-name">{{ boisson.nom }}</a>
+
+
+
+                        <div class="small m-t-xs plat_item_desc">
+                            {{ boisson.description | raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

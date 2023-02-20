@@ -1,23 +1,24 @@
 <div class="hr-line-dashed"></div>
-<table class="table table-bordered" id="table-service-add">
+<table class="table table-bordered mw-1500" id="table-service-add">
   <thead class="thead-dark">
     <tr>
       <th scope="col">TYPE DESIGNATION</th>
       <th scope="col">DESIGNATION</th>
-      <th scope="col">DUREE</th>
-      <th scope="col">TYPE DUREE</th>
-      <th scope="col">PRIX</th>
-      <th scope="col">MONTANT TOTAL</th>
+      <th scope="col">DUREE/QTÉ</th>
+      <th scope="col">FORMAT</th>
+      <th scope="col">PRIX ({{ deviseEntrepot.symbole }})</th>
+      <th scope="col">REMISE</th>
+      <th scope="col">MONTANT TOTAL ({{ deviseEntrepot.symbole }})</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody id="principal-service">
-    <tr data-id="0">
+    <tr data-id="0" class="fact-row row-0">
        <td>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <select class="form-control f_service_libre" name="f_service_libre[]">
-              <option value="0">SERVICE</option>
+              <option value="0">PRESTATION</option>
               <option value="1">AUTRE</option>
             </select>
           </div>
@@ -25,8 +26,8 @@
       </td>
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
-            <select class="form-control f_service" name="f_service[]">
+          <div class="col-sm-12">
+            <select class="form-control select2 f_service" name="f_service[]">
               <option></option>
               {% for service in services %}
                 <option value="{{service.id}}">{{service.nom}}</option>
@@ -41,34 +42,47 @@
       </td>
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control f_service_periode" name="f_service_periode[]" >
           </div>
         </div>
       </td>
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <select class="form-control f_service_duree" name="f_service_duree[]">
-              <option></option>
-              <option value="1">Heure</option>
-              <option value="2">Jour</option>
-              <option value="3">Mois</option>
-              <option value="4">Année</option>
+              <option value="0">qté</option>
+              <option value="1">heure</option>
+              <option value="2">jour</option>
+              <option value="3">mois</option>
+              <option value="4">année</option>
             </select>
           </div>
         </div>
       </td>
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control f_service_prix" name="f_service_prix[]">
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="form-group">
+          <div class="col-sm-4">
+            <select class="form-control f_service_remise_type_ligne" name="f_service_remise_type_ligne[]">
+              <option value="0">%</option>
+              <option value="1">Montant</option>
+            </select>
+          </div>
+          <div class="col-sm-8">
+            <input type="number" class="form-control f_service_remise_ligne" name="f_service_remise_ligne[]" >
           </div>
         </div>
       </td>
       <td class="td-montant">
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control f_service_montant" name="f_service_montant[]">
           </div>
         </div>
@@ -80,44 +94,48 @@
   </tbody>
   <tfoot>
     <tr>
-      <th colspan="5">Montant</th>
+      <th colspan="6">MONTANT TOTAL</th>
       <th>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control" name="service_montant" id="service_montant" readonly="" value="0">
           </div>
         </div>
         
       </th>
       <th>
-        <span class="btn-remove-row-service" data-id="0"><i class="fa fa-trash"></i></span>&nbsp;
-        <span class="btn-add-row-service" data-id="0"><i class="fa fa-plus"></i></span>
+        <button class="btn btn-white btn-remove-row-service btn-full-width">
+          <i class="fa fa-trash"></i>
+        </button>
+        <button class="btn btn-white btn-add-row-service btn-full-width">
+          <i class="fa fa-plus"></i>
+        </button>
       </th>
     </tr>
     <tr>
-      <th colspan="4">Remise (en %)</th>
-      <th>
-        <div class="form-group">
-          <div class="col-sm-10">
-            <input type="number" class="form-control" id="f_service_remise" name="f_service_remise" value="0">
-          </div>
-        </div>
-      </th>
+      <th colspan="6">REMISE</th>
       <th id="">
         <div class="form-group">
-          <div class="col-sm-10">
-            <input type="number" class="form-control" name="service_remise" id="service_remise" readonly="" value="0">
+          <div class="col-sm-4">
+            <select class="form-control" id="f_service_remise_type" name="f_service_remise_type">
+              <option value="0">%</option>
+              <option value="1">Montant</option>
+            </select>
+          </div>
+          <div class="col-sm-8">
+            <input type="number" class="form-control" id="f_service_remise" name="f_service_remise" >
           </div>
         </div>
+        <input type="hidden" class="form-control" name="service_remise" id="service_remise" readonly="" value="0">
       </th>
       <th>
       </th>
     </tr>
     <tr>
-      <th colspan="5">Total</th>
+      <th colspan="6">MONTANT APRÈS DEDUCTION</th>
       <th id="">
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control" name="service_total" id="service_total" readonly="" value="0">
           </div>
         </div>
@@ -125,6 +143,38 @@
       <th>
       </th>
     </tr>
+    {% if devises | length > 0 %}
+      <tr>
+        <th >MONTANT EN</th>
+        <th colspan="5">
+          <div class="form-group">
+            <div class="col-sm-4">
+              <select class="form-control f_service_devise" name="f_service_devise">
+                <option></option>
+                {% for devise in devises %}
+                  {% if deviseEntrepot.symbole != devise.symbole %}
+                    <option 
+                      value="{{devise.id}}"
+                      data-montantprincipal="{{devise.montantPrincipal}}"
+                      data-montantconversion="{{devise.montantConversion}}"
+                    >{{devise.symbole}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </th>
+        <th id="">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <input type="number" class="form-control f_service_montant_converti" name="f_service_montant_converti" readonly="" value="">
+            </div>
+          </div>
+        </th>
+        <th>
+        </th>
+      </tr>
+    {% endif %}
   </tfoot>
 </table>
 <div class="hr-line-dashed"></div>

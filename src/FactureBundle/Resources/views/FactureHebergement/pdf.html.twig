@@ -1,0 +1,349 @@
+<style type="text/css">
+    table.content-details {
+        width: 100%
+        border-collapse: collapse;
+    }
+
+    .content-details th {
+        border: solid 1px #000000; 
+        padding: 5px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .content-details td {
+        border: solid 1px #c0c0c0;
+        padding: 5px; 
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    table {
+        font-size: 11pt;
+        font-family: times;
+    }
+
+    pre {
+        font-family: times;
+    }
+
+    td p {
+        width: 20%;
+    }
+
+    h1,h2,h3,h4,p {
+    	word-wrap: break-word;
+    }
+
+    table {
+    	border-collapse: collapse;
+    }
+
+    .f10{
+    	font-size: 10pt;
+    }
+
+    .f14{
+    	font-size: 14pt;
+    }
+
+    .f20{
+    	font-size: 20pt;
+    }
+
+    .no-margin{
+    	margin: 0;
+    }
+
+    .no-padding{
+		padding: 0;
+    }
+
+    .b {
+    	font-weight: bold;
+    }
+
+    h2{
+    	font-size: 15pt;
+    }
+
+    p{
+    	margin: 0;
+    	padding: 0;
+    }
+
+    .bordered{
+    	border: 1px solid #000;
+    }
+
+    h3, h4 {
+    	font-size: 12pt;
+    }
+
+    .th, .tf {
+    	font-weight: bold;
+    	text-transform: uppercase;
+    	font-size: 9pt;
+    }
+
+    .th{
+    	text-align: center;
+    }
+
+    td {
+    	/*padding: 0 5px;*/
+    }
+
+</style>
+
+<page backtop="" backbottom="" backleft="5mm" backright="5mm"> 
+    {% include('PdfBundle:Default:entete.html.twig') %}
+
+    <table style="width:100%">
+	    <tr>
+	        <td class="text-center" style="width:100%">
+	        	{% set type = '' %}
+	        	{% if facture.type == 1 %}
+	        	    {% set type = 'DEVIS' %}
+	        	{% else %}
+	        	    {% set type = 'FACTURE' %}
+	        	{% endif %}
+
+	            <h3>
+	                <u>{{type}} - N° {{facture.formattedNum}}</u>
+	            </h3>
+	        </td>
+	    </tr>
+	    
+	</table>
+
+	<table style="width:100%; margin-top: 20px">
+		<tr>
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>DOIT</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+			</td>
+		</tr>
+		<tr>
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>Client</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+				
+	            {% if facture.client.statut == 1 %}
+                    : {{facture.client.idClientMorale.nomSociete}}
+                {% else %}
+                    : {{facture.client.idClientPhysique.nom}}
+                {% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>Adresse</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+				
+	            {% if facture.client.statut == 1 %}
+                    : {{facture.client.idClientMorale.adresse}}
+                {% else %}
+                    : {{facture.client.idClientPhysique.adresse}}
+                {% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>Tel</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+				
+	            {% if facture.client.statut == 1 %}
+                    : {{facture.client.idClientMorale.telFixe}}
+                {% else %}
+                    : {{facture.client.idClientPhysique.tel}}
+                {% endif %}
+			</td>
+		</tr>
+	    
+	</table>
+
+	<table style="width: 100%">
+	    <tr>
+	        <td style="width: 100%">
+	            {{ facture.descr | raw }}
+	        </td>
+	    </tr>
+	</table>
+
+	<h4><u>HÉBERGEMENT</u></h4>
+
+	<table style="width: 100%; border: solid 1px #000;">
+	    <tr>
+	        <td class="th" style="width: 10%; border: solid 1px #000000;">NB PERSONNE</td>
+	        <td class="th" style="width: 20%; border: solid 1px #000000;">DATE ENTRÉE</td>
+	        <td class="th" style="width: 20%; border: solid 1px #000000;">DATE SORTIE</td>
+	        <td class="th" style="width: 10%; border: solid 1px #000000;">NB NUIT</td>
+	        <td class="th" style="width: 20%; border: solid 1px #000000;">CHAMBRE</td>
+	        <td class="th" style="width: 10%; border: solid 1px #000000;">PETIT DEJEUNER</td>
+	        <td class="th" style="width: 10%; border: solid 1px #000000;">MONTANT ({{ deviseEntrepot.symbole }})</td>
+	    </tr>
+
+		{% for detail in details %}
+	        <tr>
+		        <td class="" style="width: 10%; border: solid 1px #000000;">
+		        	{{ detail.nbPers }}
+		        </td>
+		        <td class="" style="width: 20%; border: solid 1px #000000;">
+		        	{{ detail.dateEntree | date('d/m/Y') }}
+		        </td>
+		        <td class="" style="width: 20%; border: solid 1px #000000;">
+		        	{{ detail.dateSortie | date('d/m/Y') }}
+		        </td>
+		        <td class="" style="width: 10%; border: solid 1px #000000;">
+		        	{{ detail.nbNuit }}
+		        </td>
+		        <td class="" style="width: 20%; border: solid 1px #000000;">
+		        	{{ detail.chambre.nom }}
+		        </td>
+		        <td class="" style="width: 10%; border: solid 1px #000000;">
+		        	{% if detail.avecPetitDejeuner == 1 %}
+		        		INCLUS
+		        	{% else %}
+		        		SUPPL.
+		        	{% endif %}
+		        </td>
+		        <td class="text-right" style="width: 10%; border: solid 1px #000000;">
+		        	{{ detail.montant }}
+		        </td>
+	        </tr>
+		{% endfor %}
+
+	    <tr>
+	        <td colspan="6" class="tf" style="width: 90%; border: solid 1px #000000;">MONTANT TOTAL</td>
+	        <td class="tf text-right" style="width: 10%; border: solid 1px #000000;">{{factureHebergement.total}}</td>
+	    </tr>
+
+	    {% if facture.remiseType == 0 %}
+            {% set totalHeb = (factureHebergement.total - facture.remiseValeur) %}
+            {% set remiseValeur =  facture.remiseValeur %}
+        {% else %}
+            {% set remiseValeur = (factureHebergement.total * facture.remisePourcentage) / 100 %}
+            {% set totalHeb = (factureHebergement.total - remiseValeur) %}
+        {% endif %}
+
+	    <tr>
+	        <td colspan="6" class="tf" style="width: 90%; border: solid 1px #000000;">REMISE</td>
+	        <td class="tf text-right" style="width: 10%; border: solid 1px #000000;">{{remiseValeur}}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="6" class="tf" style="width: 90%; border: solid 1px #000000;">MONTANT APRÈS DÉDUCTION</td>
+	        <td class="tf text-right" style="width: 10%; border: solid 1px #000000;">{{totalHeb}}</td>
+	    </tr>
+	    
+	    
+
+	</table>
+
+	{% if factureRestaurant %}
+		<h4><u>RESTAURANT</u></h4>
+
+		<table style="width:100%;border: solid 1px #000;">
+			<tr>
+	        	<td class="th" style="width: 20%; border: solid 1px #000000;">PLATS</td>
+	        	<td class="th" style="width: 10%; border: solid 1px #000000;">QTÉ</td>
+	        	<td class="th" style="width: 10%; border: solid 1px #000000;">PRIX</td>
+	        	<td class="th" style="width: 40%; border: solid 1px #000000;">ACCOMPAGNEMENTS</td>
+	        	<td class="th" style="width: 20%; border: solid 1px #000000;">TOTAL ({{ deviseEntrepot.symbole }})</td>
+			</tr>
+			{% for detail in restaurantDetails %}
+				<tr>
+		        	<td style="width: 20%; border: solid 1px #000000;">{{ detail.plat.nom }}</td>
+		        	<td style="width: 10%; border: solid 1px #000000;">{{ detail.qte }}</td>
+		        	<td style="width: 10%; border: solid 1px #000000;">{{ detail.prix }}</td>
+		        	<td style="width: 40%; border: solid 1px #000000;">
+		        		<ul>
+			        		{% for acc_detail in detail.accompagnementsList %}
+			        			{% if acc_detail.qte_accompagnement %}
+				        			<li>
+				        				{{ acc_detail.qte_accompagnement }}
+				        				{% for accompagnement in accompagnements %}
+				        					{% if acc_detail.accompagnement == accompagnement.id %}
+				        						{{ accompagnement.nom }}
+				        					{% endif %}
+				        				{% endfor %}
+				        				{{ acc_detail.prix_accompagnement ? acc_detail.prix_accompagnement : '' }}
+				        			</li>
+			        			{% endif %}
+			        		{% endfor %}
+		        		</ul>
+		        	</td>
+		        	<td class="text-right" style="width: 20%; border: solid 1px #000000;">{{ detail.total }}</td>
+				</tr>
+			{% endfor %}
+			<tr>
+	        	<td class="tf" colspan="4" style="width: 80%; border: solid 1px #000000;">MONTANT TOTAL</td>
+	        	<td class="tf text-right" style="width: 20%; border: solid 1px #000000;">{{ factureRestaurant.total }}</td>
+			</tr>
+		</table>
+	{% endif %}
+
+	<table style="width:100%;border: solid 1px #000;margin-top: 25px;">
+		<tr>
+	        <td class="tf" style="width: 80%; border: solid 1px #000000;text-align: left;">
+	        	MONTANT TOTAL À PAYER ({{ deviseEntrepot.symbole }})
+	        </td>
+	        <td class="tf text-right" style="width: 20%; border: solid 1px #000000;">
+	        	{{facture.montant}}
+	        </td>
+	    </tr>
+	    {% if facture.devise %}
+		    <tr>
+		        <td class="tf" style="width: 80%; border: solid 1px #000000;text-align: left;">MONTANT EN {{ facture.devise.symbole }}</td>
+		        <td class="tf text-right" style="width: 20%; border: solid 1px #000000;">{{facture.montantConverti}}</td>
+		    </tr>
+	    {% endif %}
+		{# <tr>
+	        <td class="tf" style="width: 80%; border: solid 1px #000000;text-align: left;">
+	        	REMISE
+	        </td>
+	        <td class="tf text-right" style="width: 20%; border: solid 1px #000000;">
+	        	{{facture.remiseValeur}}
+	        </td>
+	    </tr>
+
+	    <tr>
+	        <td class="tf" style="width: 80%; border: solid 1px #000000;text-align: left;">MONTANT APRÈS DEDUCTION ({{ deviseEntrepot.symbole }})</td>
+	        <td class="tf text-right" style="width: 20%; border: solid 1px #000000;">{{facture.total}}</td>
+	    </tr>  #}
+	</table>
+
+	<table style="width:100%; margin-top: 20px">
+		<tr>
+			<td style="width:100%">
+				Arrêté la présente facture à la somme de <span id="somme" class="typo b" style="text-transform: uppercase;">{{facture.somme | replace ({ ('francs comorien') : deviseEntrepot.lettre }) }}</span> 
+			</td>
+		</tr>
+	    <tr>
+	        <td style="width: 100%" class="text-right dashed typo">
+	        	<br>
+	        	<br>
+	        	<br>
+	        	 {{ facture.lieu }}
+	             Le {{facture.date| date('d/m/Y')}}
+	        	 
+	        </td>
+	    </tr>
+	</table>
+
+	<table style="width:100%; margin-top: 20px">
+		<tr>
+			<td style="width:20%" class="text-center f10">
+				LE CLIENT
+			</td>
+			<td style="width:60%"></td>
+			<td style="width:20%" class="text-center f10">
+				POUR LA SOCIETE
+			</td>
+		</tr>
+	</table>
+</page>

@@ -45,7 +45,7 @@ class Produit
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="text")
+     * @ORM\Column(name="image", type="text", nullable=true)
      */
     private $image;
 
@@ -88,13 +88,6 @@ class Produit
     private $unite;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="stock_alerte", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $stockAlerte = 0;
-
-    /**
      * @var \AppBundle\Entity\CategorieProduit
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CategorieProduit")
@@ -104,6 +97,12 @@ class Produit
      */
     private $categorieProduit;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="is_delete", type="integer", nullable=true)
+     */
+    private $is_delete;
 
     /**
      * Get id
@@ -356,30 +355,6 @@ class Produit
     }
 
     /**
-     * Set stockAlerte
-     *
-     * @param string $stockAlerte
-     *
-     * @return Produit
-     */
-    public function setStockAlerte($stockAlerte)
-    {
-        $this->stockAlerte = $stockAlerte;
-    
-        return $this;
-    }
-
-    /**
-     * Get stockAlerte
-     *
-     * @return string
-     */
-    public function getStockAlerte()
-    {
-        return $this->stockAlerte;
-    }
-
-    /**
      * Set categorieProduit
      *
      * @param \AppBundle\Entity\CategorieProduit $categorieProduit
@@ -402,4 +377,29 @@ class Produit
     {
         return $this->categorieProduit;
     }
+
+        /**
+     * Set isDelete
+     *
+     * @param integer $isDelete
+     *
+     * @return Facture
+     */
+    public function setIsDelete($isDelete)
+    {
+        $this->is_delete = $isDelete;
+
+        return $this;
+    }
+
+    /**
+     * Get isDelete
+     *
+     * @return integer
+     */
+    public function getIsDelete()
+    {
+        return $this->is_delete;
+    }
+
 }

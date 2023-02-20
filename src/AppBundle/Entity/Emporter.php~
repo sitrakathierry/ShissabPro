@@ -1,0 +1,221 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Emporter
+ *
+ * @ORM\Table(name="emporter")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EmporterRepository")
+ */
+class Emporter
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $total;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="remise", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $remise;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statut", type="integer", nullable=true)
+     */
+    private $statut = 1;
+
+    /**
+     * @var \AppBundle\Entity\Agence
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agence")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agence", referencedColumnName="id")
+     * })
+     */
+    private $agence;
+
+    /**
+     * @var \AppBundle\Entity\Booking
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="booking", referencedColumnName="id")
+     * })
+     */
+    private $booking;
+
+    private $num;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     *
+     * @return Emporter
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Emporter
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return Emporter
+     */
+    public function setStatut($statut = 1)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return int
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Get num
+     *
+     */
+    public function getNum()
+    {
+
+        $id = $this->id;
+
+        $num = str_pad($id, 6, '0', STR_PAD_LEFT) . "/AE";
+
+        $this->num = $num;
+
+        return $this->num;
+
+    }
+
+    /**
+     * Set agence
+     *
+     * @param \AppBundle\Entity\Agence $agence
+     *
+     * @return Emporter
+     */
+    public function setAgence(\AppBundle\Entity\Agence $agence = null)
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * Get agence
+     *
+     * @return \AppBundle\Entity\Agence
+     */
+    public function getAgence()
+    {
+        return $this->agence;
+    }
+
+    /**
+     * Set booking
+     *
+     * @param \AppBundle\Entity\Booking $booking
+     *
+     * @return Emporter
+     */
+    public function setBooking(\AppBundle\Entity\Booking $booking = null)
+    {
+        $this->booking = $booking;
+
+        return $this;
+    }
+
+    /**
+     * Get booking
+     *
+     * @return \AppBundle\Entity\Booking
+     */
+    public function getBooking()
+    {
+        return $this->booking;
+    }
+}

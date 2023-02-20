@@ -1,0 +1,116 @@
+api_siteweb_homepage:
+    path:     /api/index
+    defaults: { _controller: ApiSitewebBundle:Default:index }
+
+api_siteweb_details:
+    path:     /api/siteweb/details/{key}
+    defaults: { _controller: ApiSitewebBundle:Siteweb:details }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_apropos:
+    path:     /api/siteweb/apropos/{key}
+    defaults: { _controller: ApiSitewebBundle:Siteweb:apropos }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_sections:
+    path:     /api/siteweb/sections/{key}
+    defaults: { _controller: ApiSitewebBundle:Siteweb:sections }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_slider_list:
+    path:     /api/siteweb/slider/list/{key}
+    defaults: { _controller: ApiSitewebBundle:Slider:list }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_produit_list:
+    path:     /api/siteweb/produit/list/{key}
+    defaults: { _controller: ApiSitewebBundle:Produit:list }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_produit_details:
+    path:     /api/siteweb/produit/details/{id}
+    defaults: { _controller: ApiSitewebBundle:Produit:details }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_actualite_list:
+    path:     /api/siteweb/actualite/list/{key}
+    defaults: { _controller: ApiSitewebBundle:Actualite:list }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_actualite_details:
+    path:     /api/siteweb/actualite/details/{id}
+    defaults: { _controller: ApiSitewebBundle:Actualite:details }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_membre_list:
+    path:     /api/siteweb/membre/list/{key}
+    defaults: { _controller: ApiSitewebBundle:Membre:list }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_membre_details:
+    path:     /api/siteweb/membre/details/{id}
+    defaults: { _controller: ApiSitewebBundle:Membre:details }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_formulaire_save:
+    path:     /api/siteweb/formulaire/save
+    defaults: { _controller: ApiSitewebBundle:Formulaire:save }
+    options:
+        expose: true
+    methods: [POST]
+
+api_siteweb_bureau_list:
+    path:     /api/siteweb/bureau/list/{key}
+    defaults: { _controller: ApiSitewebBundle:Bureau:list }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_bureau_details:
+    path:     /api/siteweb/bureau/details/{id}
+    defaults: { _controller: ApiSitewebBundle:Bureau:details }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_customer_list:
+    path:     /api/siteweb/customer/list/{key}
+    defaults: { _controller: ApiSitewebBundle:Customer:list }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_customer_details:
+    path:     /api/siteweb/customer/details/{id}
+    defaults: { _controller: ApiSitewebBundle:Customer:details }
+    options:
+        expose: true
+    methods: [GET]
+
+api_siteweb_video_list:
+    path:     /api/siteweb/video/list/{key}
+    defaults: { _controller: ApiSitewebBundle:Video:list }
+    options:
+        expose: true
+    methods: [GET]
+

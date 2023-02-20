@@ -17,77 +17,77 @@ class ClientMorale
      *
      * @ORM\Column(name="nom_societe", type="string", length=45, nullable=true)
      */
-    private $nomSociete = 'NULL';
+    private $nomSociete = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="nom_gerant", type="string", length=45, nullable=true)
      */
-    private $nomGerant = 'NULL';
+    private $nomGerant = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="adresse", type="string", length=45, nullable=true)
      */
-    private $adresse = 'NULL';
+    private $adresse = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="tel_fixe", type="string", length=45, nullable=true)
      */
-    private $telFixe = 'NULL';
+    private $telFixe = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="fax", type="string", length=45, nullable=true)
      */
-    private $fax = 'NULL';
+    private $fax = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=45, nullable=true)
      */
-    private $email = 'NULL';
+    private $email = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="domaine", type="string", length=45, nullable=true)
      */
-    private $domaine = 'NULL';
+    private $domaine = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="num_registre", type="string", length=45, nullable=true)
      */
-    private $numRegistre = 'NULL';
+    private $numRegistre = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="nom_pers_contact", type="string", length=45, nullable=true)
      */
-    private $nomPersContact = 'NULL';
+    private $nomPersContact = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="tel_pers_contact", type="string", length=45, nullable=true)
      */
-    private $telPersContact = 'NULL';
+    private $telPersContact = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="email_pers_contact", type="string", length=45, nullable=true)
      */
-    private $emailPersContact = 'NULL';
+    private $emailPersContact = '';
 
     /**
      * @var integer

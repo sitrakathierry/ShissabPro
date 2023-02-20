@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+        td{
+            vertical-align: middle;
+        }
+    </style>
+{% endblock  %}
+
+{% block scripts %}
+   {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/boncommande/js/consultation.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Liste des bons de commande
+                    </h5>
+                    {# <div class="ibox-tools">
+                        <a href="{{ path('client_add') }}" class="btn btn-primary btn-xs">
+                            <i class="fa fa-plus"></i>
+                            CREATION
+                        </a>
+                    </div> #}
+                    <div class="ibox-tools">
+                        <a href="{{ path('bon_commande_consultation_corbeille') }}" class="btn btn-success" type="button"><i class="fa fa-paste"></i>&nbsp;&nbsp;<span class="bold text-white">Bon de commande en corbeille</span></a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3 hidden">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">SOCIETE</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control m-b agence" id="agence">
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <option value="0">TOUS</option>
+                                                    {% for agence in agences %}
+                                                        {% if agence.id != 1 %}
+                                                            <option value="{{agence.id}}">{{agence.nom}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option value="{{userAgence.agence.id}}" selected="">{{userAgence.agence.nom}}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="type_date">DATE</label>
+                                        <select class="form-control m-b" id="type_date">
+                                            <option value="0">Tous</option>
+                                            <option value="1">Aujourd'hui</option>
+                                            <option value="2">Mois</option>
+                                            <option value="3">Année</option>
+                                            <option value="4">Date spécifique</option>
+                                            <option value="5">Fourchette</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 selector_mois hidden">
+                                    <div class="form-group">
+                                        <label class="control-label" for="mois">MOIS</label>
+                                        <select class="form-control m-b" id="mois">
+                                            <option value=""></option>
+                                            <option {% if "now" | date('m') == "01" %} selected="" {% endif %} value="01">Janvier</option>
+                                            <option {% if "now" | date('m') == "02" %} selected="" {% endif %} value="02">Fevrier</option>
+                                            <option {% if "now" | date('m') == "03" %} selected="" {% endif %} value="03">Mars</option>
+                                            <option {% if "now" | date('m') == "04" %} selected="" {% endif %} value="04">Avril</option>
+                                            <option {% if "now" | date('m') == "05" %} selected="" {% endif %} value="05">Mai</option>
+                                            <option {% if "now" | date('m') == "06" %} selected="" {% endif %} value="06">Juin</option>
+                                            <option {% if "now" | date('m') == "07" %} selected="" {% endif %} value="07">Juillet</option>
+                                            <option {% if "now" | date('m') == "08" %} selected="" {% endif %} value="08">Août</option>
+                                            <option {% if "now" | date('m') == "09" %} selected="" {% endif %} value="09">Septembre</option>
+                                            <option {% if "now" | date('m') == "10" %} selected="" {% endif %} value="10">Octobre</option>
+                                            <option {% if "now" | date('m') == "11" %} selected="" {% endif %} value="11">Novembre</option>
+                                            <option {% if "now" | date('m') == "12" %} selected="" {% endif %} value="12">Decembre</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 selector_annee hidden">
+                                    <div class="form-group">
+                                        <label class="control-label" for="annee">ANNÉE</label>
+                                        <input type="number" class="form-control" id="annee" value="{{ "now" | date('Y') }}">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-3 selector_specifique hidden">
+                                    <div class="form-group">
+                                        <label class="control-label" for="date_specifique">DATE</label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_specifique" type="text" class="form-control input-datepicker" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 selector_fourchette hidden">
+                                    <div class="form-group">
+                                        <label class="control-label" for="debut_date">DATE DÉBUT</label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="debut_date" type="text" class="form-control input-datepicker" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 selector_fourchette hidden">
+                                    <div class="form-group">
+                                        <label class="control-label" for="fin_date">DATE FIN</label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="fin_date" type="text" class="form-control input-datepicker" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                  <button class="btn btn-primary btn-full-width mt-custom" id="btn_search">
+                                      <i class="fa fa-search"></i>
+                                  </button>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="t-content">
+                                <div 
+                                    id="list_commande"
+                                    style="width: 100%;overflow: scroll;height: 400px;"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

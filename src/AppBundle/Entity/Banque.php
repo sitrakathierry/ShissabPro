@@ -28,6 +28,16 @@ class Banque
      */
     private $id;
 
+    /**
+     * @var \AppBundle\Entity\Agence
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agence")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agence", referencedColumnName="id")
+     * })
+     */
+    private $agence;
+
 
 
     /**
@@ -62,5 +72,29 @@ class Banque
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set agence
+     *
+     * @param \AppBundle\Entity\Agence $agence
+     *
+     * @return Banque
+     */
+    public function setAgence(\AppBundle\Entity\Agence $agence = null)
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * Get agence
+     *
+     * @return \AppBundle\Entity\Agence
+     */
+    public function getAgence()
+    {
+        return $this->agence;
     }
 }

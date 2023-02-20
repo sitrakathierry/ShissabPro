@@ -1,0 +1,35 @@
+{% set i = 0 %}
+{% for uneTache in baseTache %}
+    {% if uneTache.statut == 0 %}
+        {% set statut = "tache_noncommencee" %}
+    {% elseif uneTache.statut == 1 %}
+        {% set statut = "tache_encours" %}
+    {% elseif uneTache.statut == 2 %}
+        {% set statut = "tache_terminee" %}
+    {% else  %}
+        {% set statut = "tache_depassee" %}
+    {% endif %}
+    <tr>
+        <td class="text-center"><div class="content-center"><div class="statut-tache {{ statut }} "></div></div></td>
+        <td>{{ uneTache.tache }}</td>
+        <td>Du {{ uneTache.dateDebut }}  Au {{ uneTache.dateFin }}</td>
+        <td>{{ uneTache.duree }} {{ uneTache.type_duree }}</td>
+        <td>
+        {% for unePersonne in tabTachePers[i] %}
+            {% if unePersonne.idtache == uneTache.id %}
+                {{ unePersonne.username }}, 
+            {% endif %}
+        {% endfor %}
+        </td>
+        <td>
+        {% for uneType in tabTypeTache[i] %}
+            {% if uneType.idtache == uneTache.id %}
+                {{ uneType.nom_type_tache }},
+            {% endif %}
+        {% endfor %}
+        </td>
+        <td>{{ tabCommentTache[i]|length }} commentaire(s)</td>
+        <td class="text-center"><a href="{{ path('tache_afficher_details',{idTache:uneTache.id}) }}" class="btn bouton_afficher btn-success btn-sm"><i class="fa fa-info-circle"></i>&emsp;Afficher</a></td>
+    </td>
+{% set i = i + 1 %}
+{% endfor %}

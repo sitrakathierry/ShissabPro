@@ -22,35 +22,35 @@ class FactureProduitDetails
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Produit
+     * @var \AppBundle\Entity\VariationProduit
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VariationProduit")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="variation_produit", referencedColumnName="id")
      * })
      */
-    private $produit;
+    private $variationProduit;
 
     /**
      * @var string
      *
      * @ORM\Column(name="prix", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $prix = '';
+    private $prix = '0.00';
 
     /**
      * @var string
      *
      * @ORM\Column(name="qte", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $qte = '';
+    private $qte = '0.00';
 
     /**
      * @var string
      *
      * @ORM\Column(name="montant", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $montant = '';
+    private $montant = '0.00';
 
     /**
      * @var \AppBundle\Entity\FactureProduit
@@ -67,14 +67,28 @@ class FactureProduitDetails
      *
      * @ORM\Column(name="libre", type="integer", nullable=true)
      */
-    private $libre;
+    private $libre = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="designation", type="text", nullable=true)
      */
-    private $designation;
+    private $designation = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="type_remise", type="integer", nullable=true)
+     */
+    private $typeRemise = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_remise", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montantRemise = '0.00';
 
 
     /**
@@ -96,7 +110,7 @@ class FactureProduitDetails
      */
     public function setPrix($prix)
     {
-        $this->prix = $prix;
+        $this->prix = $prix ? $prix : '0.00';
     
         return $this;
     }
@@ -120,7 +134,7 @@ class FactureProduitDetails
      */
     public function setQte($qte)
     {
-        $this->qte = $qte;
+        $this->qte = $qte ? $qte : '0.00';
     
         return $this;
     }
@@ -144,7 +158,7 @@ class FactureProduitDetails
      */
     public function setMontant($montant)
     {
-        $this->montant = $montant;
+        $this->montant = $montant ? $montant : '0.00';
     
         return $this;
     }
@@ -158,31 +172,6 @@ class FactureProduitDetails
     {
         return $this->montant;
     }
-
-    /**
-     * Set produit
-     *
-     * @param \AppBundle\Entity\Produit $produit
-     *
-     * @return FactureProduitDetails
-     */
-    public function setProduit(\AppBundle\Entity\Produit $produit = null)
-    {
-        $this->produit = $produit;
-    
-        return $this;
-    }
-
-    /**
-     * Get produit
-     *
-     * @return \AppBundle\Entity\Produit
-     */
-    public function getProduit()
-    {
-        return $this->produit;
-    }
-
 
     /**
      * Set factureProduit
@@ -254,5 +243,77 @@ class FactureProduitDetails
     public function getDesignation()
     {
         return $this->designation;
+    }
+
+    /**
+     * Set variationProduit
+     *
+     * @param \AppBundle\Entity\VariationProduit $variationProduit
+     *
+     * @return FactureProduitDetails
+     */
+    public function setVariationProduit(\AppBundle\Entity\VariationProduit $variationProduit = null)
+    {
+        $this->variationProduit = $variationProduit;
+
+        return $this;
+    }
+
+    /**
+     * Get variationProduit
+     *
+     * @return \AppBundle\Entity\VariationProduit
+     */
+    public function getVariationProduit()
+    {
+        return $this->variationProduit;
+    }
+
+    /**
+     * Set typeRemise
+     *
+     * @param integer $typeRemise
+     *
+     * @return FactureProduitDetails
+     */
+    public function setTypeRemise($typeRemise)
+    {
+        $this->typeRemise = $typeRemise;
+
+        return $this;
+    }
+
+    /**
+     * Get typeRemise
+     *
+     * @return integer
+     */
+    public function getTypeRemise()
+    {
+        return $this->typeRemise;
+    }
+
+    /**
+     * Set montantRemise
+     *
+     * @param string $montantRemise
+     *
+     * @return FactureProduitDetails
+     */
+    public function setMontantRemise($montantRemise)
+    {
+        $this->montantRemise = $montantRemise ? $montantRemise : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantRemise
+     *
+     * @return string
+     */
+    public function getMontantRemise()
+    {
+        return $this->montantRemise;
     }
 }

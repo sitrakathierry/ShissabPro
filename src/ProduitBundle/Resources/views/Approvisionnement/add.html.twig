@@ -14,7 +14,7 @@
 {% block scripts %}
 {{ parent() }}
   <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
-  <script src="{{ asset('bundles/produit/js/approvisionnement-add.js') }}"></script>
+  <script src="{{ asset('bundles/produit/js/approvisionnement/add.js') }}"></script>
 {% endblock %}
 {% block contenu %}
 <div class="wrapper wrapper-content">
@@ -32,97 +32,164 @@
           <form class="form-horizontal" id="form-appro">
 
             <div class="hr-line-dashed"></div>
-            <table class="table table-bordered" id="table-appro-add">
-              <thead class="thead-dark">
-                <tr>
-                  <th class="col-sm-2">PRODUIT</th>
-                  <th class="col-sm-2">QTE</th>
-                  <th class="col-sm-2">EXPIRER LE</th>
-                  <th class="col-sm-2">PRIX VENTE</th>
-                  <th class="col-sm-2">PRIX ACHAT</th>
-                  <th class="col-sm-2">MONTANT TOTAL</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-id="0">
-                  <td>
-                    <div class="form-group">
-                      <div class="col-sm-12">
-                      	<select class="form-control select2 produit" name="produit[]">
-                      		<option></option>
-                      		{% for produit in produits %}
-                      			<option value="{{ produit.id }}"> {{ produit.nom }} </option>
-                      		{% endfor %}
-                      	</select>
+
+            <div style="width: 100%;overflow: scroll;">
+              <table class="table table-bordered mw-2000" id="table-appro-add">
+                <thead class="thead-dark">
+                  <tr>
+                    <th class="col-sm-2">ENTREPÔT</th>
+                    <th class="col-sm-2">PRODUIT</th>
+                    <th scope="col">FOURNISSEURS</th>
+                    <th scope="col">QTE</th>
+                    <th scope="col">EXPIRER LE</th>
+                    <th scope="col">PRIX ACHAT</th>
+                    <th scope="col">CHARGE</th>
+                    <th scope="col">PRIX DE REVIENT</th>
+                    <th scope="col">MARGE</th>
+                    <th scope="col">PRIX VENTE ({{ agence.deviseSymbole }})</th>
+                    <th scope="col">MONTANT TOTAL ({{ agence.deviseSymbole }})</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-id="0">
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <select class="form-control select2 entrepot" name="entrepot[]">
+                            <option></option>
+                            {% for entrepot in entrepots %}
+                              <option value="{{ entrepot.id }}"> {{ entrepot.nom }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group">
-                      <div class="col-sm-12">
-                        <input type="number" class="form-control qte" name="qte[]" required="">
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                        	<select class="form-control select2 produit" name="produit[]">
+                        		<option></option>
+                        		{% for produit in produits %}
+                        			<option value="{{ produit.id }}"> 
+                                {{ produit.codeProduit }} | {{ produit.nom }} 
+                              </option>
+                        		{% endfor %}
+                        	</select>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group">
-                      <div class="col-sm-12">
-                        <input type="text" class="form-control expirer" name="expirer[]" required="">
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <select class="form-control select2 fournisseur" name="fournisseur[]" multiple="">
+                            <option></option>
+                            {% for fournisseur in fournisseurs %}
+                              <option value="{{ fournisseur.id }}"> {{ fournisseur.nom }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td class="td-montant">
-                    <div class="form-group">
-                      <div class="col-sm-12">
-                        <input type="number" class="form-control prix_vente" name="prix_vente[]" required="">
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control qte" name="qte[]" required="">
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td class="td-montant">
-                    <div class="form-group">
-                      <div class="col-sm-12">
-                        <input type="number" class="form-control prix" name="prix[]" required="">
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="text" class="form-control expirer" name="expirer[]" required="">
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td class="td-montant">
-                    <div class="form-group">
-                      <div class="col-sm-12">
-                        <input type="number" class="form-control total" name="total[]" readonly="">
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control prix" name="prix[]" required="">
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  
-                  <td>
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th colspan="4">Total</th>
-                  <th>
-                    <div class="form-group">
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" name="montant_total" id="montant_total" readonly="" value="0">
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control charge" name="charge[]" required="">
+                        </div>
                       </div>
-                    </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control prix_revient" name="prix_revient[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-6">
+                          <select class="form-control marge_type" name="marge_type[]">
+                            <option value="0">Montant</option>
+                            <option value="1">%</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="number" class="form-control marge_valeur" name="marge_valeur[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control prix_vente" name="prix_vente[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control total" name="total[]" readonly="">
+                        </div>
+                      </div>
+                    </td>
                     
-                  </th>
-                  <th>
-                    <span class="btn-remove-row" data-id="0"><i class="fa fa-trash"></i></span>&nbsp;
-                    <span class="btn-add-row" data-id="0"><i class="fa fa-plus"></i></span>
-                  </th>
-                </tr>
-              </tfoot>
-            </table>
-            {# <div class="hr-line-dashed"></div> #}
-            {# <p>Arrêté la présente facture à la somme de <b id="somme" style="text-transform: uppercase;"></b>  #}
-            <p>
+                    <td>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="10">Total</th>
+                    <th>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control" name="montant_total" id="montant_total" readonly="" value="0">
+                        </div>
+                      </div>
+                      
+                    </th>
+                    <th>
+                      <button class="btn btn-white btn-remove-row btn-full-width">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                      <button class="btn btn-white btn-add-row btn-full-width">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+              {# <div class="hr-line-dashed"></div> #}
+              {# <p>Arrêté la présente facture à la somme de <b id="somme" style="text-transform: uppercase;"></b>  
+              <p>
+              #}
+            </div>
+
             <div class="row">
               <div class="col-lg-6 col-lg-push-6">
                 <div class="form-group" id="data_1">
-                  <label class="font-noraml">Moroni le</label>
+                  <label class="font-noraml">Le</label>
                   <div class="input-group date">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <input type="text" class="form-control" name="date" value="{{ "now" | date('d/m/Y') }}" required="">

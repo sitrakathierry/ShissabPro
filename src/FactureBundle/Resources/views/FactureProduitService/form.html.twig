@@ -1,0 +1,155 @@
+<div class="hr-line-dashed"></div>
+<table class="table table-bordered mw-1500" id="table-produitservice-add">
+	<thead class="thead-dark">
+		<tr>
+			<th>TYPE DESIGNATION</th>
+			<th>DESIGNATION</th>
+			<th>QTÉ / DURÉE & FORMAT</th>
+			<th>PRIX ({{ deviseEntrepot.symbole }})</th>
+      		<th scope="col">REMISE</th>
+	      	<th>MONTANT TOTAL ({{ deviseEntrepot.symbole }})</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody id="principal-produitservice">
+		<tr class="fact-row row-0">
+			<td>
+		        <div class="form-group">
+		          	<div class="col-sm-12">
+		            	<select class="form-control f_ps_type_designation" name="f_ps_type_designation[]">
+		            		<option></option>
+		              		<option value="1">PRODUIT</option>
+		              		<option value="2">PRESTATION</option>
+		            	</select>
+		          	</div>
+		        </div>
+	      	</td>
+	      	<td>
+	      		<div class="form-group">
+		          	<div class="col-sm-12">
+		            	<select class="form-control select2 f_ps_designation" name="f_ps_designation[]">
+		            		<option></option>
+		            	</select>
+		          	</div>
+		        </div>
+	      	</td>
+	      	<td class="soustable"></td>
+	      	<td>
+	      		<div class="form-group">
+			      <div class="col-sm-12">
+			        <input type="number" class="form-control f_ps_prix" name="f_ps_prix[]" >
+			      </div>
+			    </div>
+	      	</td>
+	      	<td>
+		        <div class="form-group">
+		          <div class="col-sm-4">
+		            <select class="form-control f_ps_remise_type_ligne" name="f_ps_remise_type_ligne[]">
+		              <option value="0">%</option>
+		              <option value="1">Montant</option>
+		            </select>
+		          </div>
+		          <div class="col-sm-8">
+		            <input type="number" class="form-control f_ps_remise_ligne" name="f_ps_remise_ligne[]" >
+		          </div>
+		        </div>
+		      </td>
+	      	<td class="td-montant">
+	      		<div class="form-group">
+			      <div class="col-sm-12">
+			        <input type="number" class="form-control f_ps_montant" name="f_ps_montant[]" >
+			      </div>
+			    </div>
+	      	</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+		  <th colspan="5">MONTANT TOTAL</th>
+		  <th>
+		    <div class="form-group">
+		      <div class="col-sm-12">
+		        <input type="number" class="form-control" name="ps_montant" id="ps_montant" readonly="" value="0">
+		      </div>
+		    </div>
+		    
+		  </th>
+		  <th>
+		    <button class="btn btn-white btn-remove-row-produitservice btn-full-width">
+			  <i class="fa fa-trash"></i>
+			</button>
+			<button class="btn btn-white btn-add-row-produitservice btn-full-width">
+			  <i class="fa fa-plus"></i>
+			</button>
+		  </th>
+		</tr>
+		<tr>
+	      <th colspan="5">REMISE</th>
+	      <th id="">
+	        <div class="form-group">
+	          <div class="col-sm-4">
+	            <select class="form-control" id="f_ps_remise_type" name="f_ps_remise_type">
+	              <option value="0">%</option>
+	              <option value="1">Montant</option>
+	            </select>
+	          </div>
+	          <div class="col-sm-8">
+	            <input type="number" class="form-control" id="f_ps_remise" name="f_ps_remise" >
+	          </div>
+	        </div>
+	        <input type="hidden" class="form-control" name="ps_remise" id="ps_remise" readonly="" value="0">
+	      </th>
+	      <th>
+	      </th>
+	    </tr>
+		<tr>
+		  <th colspan="5">MONTANT APRÈS DEDUCTION</th>
+		  <th id="">
+		    <div class="form-group">
+		      <div class="col-sm-12">
+		        <input type="number" class="form-control" name="ps_total" id="ps_total" readonly="" value="0">
+		      </div>
+		    </div>
+		  </th>
+		  <th>
+		  </th>
+		</tr>
+		{% if devises | length > 0 %}
+	      <tr>
+	        <th >MONTANT EN</th>
+	        <th colspan="4">
+	          <div class="form-group">
+	            <div class="col-sm-4">
+	              <select class="form-control f_ps_devise" name="f_ps_devise">
+	                <option></option>
+	                {% for devise in devises %}
+	                	{% if deviseEntrepot.symbole != devise.symbole %}
+		                  <option 
+		                    value="{{devise.id}}"
+		                    data-montantprincipal="{{devise.montantPrincipal}}"
+		                    data-montantconversion="{{devise.montantConversion}}"
+		                  >{{devise.symbole}}</option>
+	                	{% endif %}
+	                {% endfor %}
+	              </select>
+	            </div>
+	          </div>
+	        </th>
+	        <th id="">
+	          <div class="form-group">
+	            <div class="col-sm-12">
+	              <input type="number" class="form-control f_ps_montant_converti" name="f_ps_montant_converti" readonly="" value="">
+	            </div>
+	          </div>
+	        </th>
+	        <th>
+	        </th>
+	      </tr>
+	    {% endif %}
+	</tfoot>
+</table>
+
+<div class="hr-line-dashed"></div>
+<p>Arrêté la présente facture à la somme de <b id="ps_somme" style="text-transform: uppercase;"></b> 
+<p>

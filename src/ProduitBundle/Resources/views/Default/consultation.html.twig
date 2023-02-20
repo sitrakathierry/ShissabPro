@@ -8,6 +8,7 @@
 {% block scripts %}
    {{ parent() }}
     <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('bundles/produit/js/consultation.js') }}"></script>
 {% endblock %}
 
@@ -20,11 +21,14 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>
-                        Liste des produits
+                        Stock général
                         {% if categorieProduit %}
                             <span class="badge-warning">{{ categorieProduit.nom }}</span>
                         {% endif %}
                     </h5>
+                    <div class="ibox-tools">
+                        <a href="{{ path('produit_consultation_deduit') }}" class="btn btn-success" type="button"><span class="bold text-white">Stock déduit</span></a>
+                    </div>
                 </div>
                 <div class="ibox-content">
 
@@ -70,7 +74,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                {# <div class="col-lg-3">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">RECHERCHE PAR</label>
                                         <div class="col-sm-8">
@@ -80,11 +84,26 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
+                                </div> 
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="a_rechercher" placeholder="Texte à rechercher ..." style="margin-bottom:10px;">
+                                        </div>
+                                    </div>
+                                </div> #}
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">PRODUIT</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control m-b statut select2" id="produit_id">
+                                                <option value="0">TOUS</option>
+                                                {% for produit in produits %}
+                                                    <option value="{{ produit.id }}"> 
+                                                        {{ produit.codeProduit }} | {{ produit.nom }} 
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

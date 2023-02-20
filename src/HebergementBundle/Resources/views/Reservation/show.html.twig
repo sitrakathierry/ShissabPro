@@ -1,0 +1,647 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <link href="{{ asset('css/plugins/clockpicker/clockpicker.css') }}" rel="stylesheet">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('js/plugins/clockpicker/clockpicker.js') }}"></script>
+<script src="{{ asset('js/plugins/printerpos/cptable.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/cputils.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/JSESCPOSBuilder.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/JSPrintManager.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/zip.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/zip-ext.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/deflate.js') }}"></script>
+<script src="{{ asset('bundles/hebergement/js/reservation/show.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+	<input type="hidden" id="id" value="{{ booking.id }}">
+	<input type="hidden" id="statut" value="{{ booking.statut }}">
+	<div class="wrapper wrapper-content">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+				        <h5 style="width: 100%;">
+				            Réservation N° <span class="badge-warning">{{ booking.num }}</span> 
+				            {% if booking.statut == 0 %}
+				            	<span class="label label-warning pull-right">NON CONFIRMÉ</span>
+				            {% endif %}
+				            {% if booking.statut == 1 %}
+				            	<span class="label label-primary pull-right">CONFIRMÉ</span>
+				            {% endif %}
+				            {% if booking.statut == 5 %}
+				            	<span class="label label-danger pull-right">
+				            		ANNULÉ
+				            		{% if booking.remboursementBooking %}
+                						{% if booking.remboursementBooking.montant %}
+                							AVEC REMBOUSSEMENT
+                						{% else %}
+                							SANS REMBOUSSEMENT
+                						{% endif %}
+                					{% else %}
+                						AUTOMATIQUEMENT
+                					{% endif %}
+				            	</span>
+				            {% endif %}
+
+				            {% if print %}
+                        		<button class="btn btn-xs btn-outline btn-info" id="btn-modal-print">
+			                        <i class="fa fa-print"></i>
+			                        Fiche de réservation
+			                    </button>
+			                {% endif %}
+
+				        </h5>
+				    </div>
+					<div class="ibox-content">
+				        <div class="row">
+				            <div class="col-sm-4">
+				                <div class="form-group">
+				                    <label class="control-label" for="nb_pers">Nombre de personne</label>
+				                    <div class="input-group">
+				                    	<input type="text" id="nb_pers" name="nb_pers" placeholder="Nombre de personne" class="form-control" value="{{ booking.nbPers }}" readonly="">
+				                    	<span class="input-group-addon">
+				                    		<i class="fa fa-user"></i>
+				                    	</span>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="col-sm-4">
+				                <div class="form-group">
+				                    <label class="control-label" for="categorie">Catégorie</label>
+				                    <select class="form-control" id="categorie" disabled="">
+				                    	<option value="0">Tous</option>
+				                    	{% for categorie in categories %}
+				                    		<option 
+				                    			value="{{ categorie.id }}"
+				                    			{% if booking.chambre.categorieChambre.id == categorie.id %}
+				                    				selected=""
+				                    			{% endif %} 
+				                    		>{{ categorie.nom }}</option>
+				                    	{% endfor %}
+				                    </select>
+				                </div>
+				            </div>
+				        </div>
+				        <div class="row">
+				            <div class="col-sm-4">
+				                <div class="form-group">
+				                    <label class="control-label" for="date_entree">Date entrée</label>
+				                    <div class="input-group date">
+				                        <input id="date_entree" type="text" class="form-control input-datepicker" value="{{ booking.dateEntree | date('d/m/Y') }}" disabled="">
+				                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="col-sm-4">
+				                <div class="form-group">
+				                    <label class="control-label" for="date_sortie">Date sortie</label>
+				                    <div class="input-group date">
+				                        <input id="date_sortie" type="text" class="form-control input-datepicker" value="{{ booking.dateSortie | date('d/m/Y') }}" disabled="">
+				                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				                    </div>
+				                </div>
+				            </div>
+				            
+				        </div>
+
+				        <div class="row">
+				            <div class="col-sm-4">
+				                <div class="form-group">
+				                    <label class="control-label" for="nb_pers">Heure d'entrée</label>
+				                    <div class="input-group clockpicker" data-autoclose="true">
+				                        <input type="text" class="form-control" readonly="" id="heure_entree" value="{{ booking.heureEntree | date('h:i') }}">
+				                        <span class="input-group-addon">
+				                            <span class="fa fa-clock-o"></span>
+				                        </span>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="col-sm-4">
+				                <div class="form-group">
+				                    <label class="control-label" for="nb_pers">Heure de sortie</label>
+				                    <div class="input-group clockpicker" data-autoclose="true">
+				                        <input type="text" class="form-control" readonly="" id="heure_sortie" value="{{ booking.heureSortie | date('h:i') }}">
+				                        <span class="input-group-addon">
+				                            <span class="fa fa-clock-o"></span>
+				                        </span>
+				                    </div>
+				                </div>
+				            </div>
+				            {# <div class="col-sm-4">
+				            	<button class="btn btn-primary btn-full-width mt-custom" id="btn_search">
+				                	<i class="fa fa-refresh"></i>
+				                </button>
+				            </div> #}
+				        </div>
+				</div>
+
+			    </div>
+				
+			</div>
+		</div>
+	</div>
+
+	{% if annulations %}
+		<div class="wrapper wrapper-content">
+	        <div class="row">
+	        	<div class="col-lg-12">
+	                <div class="ibox float-e-margins">
+	                    <div class="ibox-title">
+	                        <h5 >
+	                            Historique annulation des nuits
+	                        </h5>
+	                    </div>
+	                    <div class="ibox-content">
+	                    	<div class="row">
+	                    		<div class="col-lg-12">
+	                    			<table class="table table-bordered">
+	                    				<thead>
+	                    					<tr>
+	                    						<th colspan="3" class="text-center">ANCIEN</th>
+	                    						<th colspan="5" class="text-center">NOUVEAU</th>
+	                    					</tr>
+	                    					<tr>
+	                    						<th>DATE ENTRÉE</th>
+	                    						<th>DATE SORTIE</th>
+	                    						<th>NB NUIT</th>
+
+	                    						<th>DATE ANNULATION</th>
+	                    						<th>DATE ENTRÉE</th>
+	                    						<th>DATE SORTIE</th>
+	                    						<th>NB NUIT ANNULÉ</th>
+	                    						<th>NB NUIT</th>
+	                    					</tr>
+	                    				</thead>
+	                    				<tbody>
+	                    					{% for annulation in annulations %}
+	                    						<tr>
+	                    							<td>{{ booking.dateEntree | date('d/m/Y') }}</td>
+	                    							<td>{{ annulation.ancienDateSortie | date('d/m/Y') }}</td>
+	                    							<td>{{ annulation.ancienNbNuit }}</td>
+	                    							
+	                    							<td>{{ annulation.date | date('d/m/Y') }}</td>
+	                    							<td>{{ booking.dateEntree | date('d/m/Y') }}</td>
+	                    							<td>{{ annulation.nouveauDateSortie | date('d/m/Y') }}</td>
+	                    							<td>{{ annulation.nbNuit }}</td>
+	                    							<td>{{ booking.nbNuit - annulation.nbNuit }}</td>
+	                    						</tr>
+	                    					{% endfor %}
+	                    				</tbody>
+	                    			</table>
+	                    		</div>
+	                    	</div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	{% endif %}
+
+
+    <div class="wrapper wrapper-content hidden">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Chambre reservé <span class="badge-info"></span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" id="chambres_disponibles">
+                        	<div class="col-md-2">
+						        <div class="ibox">
+						            <div class="ibox-content product-box">
+
+						            	{% set chambre = booking.chambre %}
+
+						                <div class="product-imitation">
+						                    {{ chambre.nom }}
+						                </div>
+						                <div class="product-desc">
+						                    <span class="product-price">
+						                        {# {{ chambre.tarifPers }} KMF / Personne #}
+						                        {{ chambre.nom }}
+						                    </span>
+						                    <small class="text-muted">{{ chambre.nbPers }} Personnes</small>
+						                    {# <a href="#" class="product-name"> {{ chambre.nom }}</a>
+
+						                    <div class="small m-t-xs">
+						                        {{ chambre.categorieChambre.caracteristiques }}
+						                    </div> #}
+						                    <div class="m-t text-righ">
+
+						                        {# <btn class="btn btn-xs btn-outline btn-primary btn-choisir" data-id="{{ chambre.id }}">
+						                        	<i class="fa fa-check"></i>
+						                        	Choisir
+						                        </btn> #}
+						                    </div>
+						                </div>
+						            </div>
+						        </div>
+						    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Details de la réservations
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                    	<div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="nom_client">Nom client</label>
+                                    <input type="text" id="nom_client" name="nom_client" value="{{ booking.nom }}" placeholder="Nom & prénom" class="form-control" readonly="">
+                                    <input type="hidden" id="client" value="{{ booking.client ? booking.client.numPolice : '' }}">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="tel_client">Tel</label>
+                                    <input type="text" id="tel_client" name="tel_client" value="{{ booking.tel }}" placeholder="Téléphone" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        	<div class="row">
+                        		<div class="col-lg-12">
+
+                                    <input type="hidden" id="chambre_id" value="{{ chambre.id }}">
+
+                        			<table class="table table-bordered">
+                        				<thead>
+                        					<tr>
+                        						<th>Chambre</th>
+                        						<th>Nb pers</th>
+                        						<th>
+                        							Petit dejeuner
+                        						</th>
+                        						<th>Nb nuits</th>
+                        						{# <th>Total ({{ agence.deviseSymbole }})</th> #}
+                        					</tr>
+                        				</thead>
+                        				<tbody>
+                        					<tr>
+                        						<td id="reservation_chambre_nom">{{ chambre.nom }}</td>
+                        						<td>
+                        							<div class="form-group">
+				                                        <div class="col-sm-12">
+				                                        	<input type="number" class="form-control" id="reservation_nb_pers" readonly="" value="{{ chambre.nbPers }}">
+				                                        </div>
+				                                    </div>
+                        						</td>
+                        						<td id="reservation_petit_dejeuner">
+                        							<div class="form-group">
+				                                        <div class="col-sm-6">
+				                                        	<select class="form-control" id="reservation_avec_petit_dejeuner" disabled="">
+				                                        		<option value="1" {% if booking.avecPetitDejeuner == 1 %} selected="" {% endif %} >INCLUS</option>
+				                                        		<option value="2" {% if booking.avecPetitDejeuner == 2 %} selected="" {% endif %} >SUPPLÉMENTAIRE</option>
+				                                        	</select>
+				                                        </div>
+				                                        <div class="col-sm-6">
+				                                        	<input type="number" class="form-control" id="montant_petit_dejeuner" readonly="" value="{{ booking.montantPetitDejeuner }}">
+				                                        </div>
+				                                    </div>
+                        						</td>
+                        						<td>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <input type="number" class="form-control" id="reservation_nb_nuit" readonly="" value="{{ booking.nbNuit }}">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                        						<td class="hidden">
+                        							<div class="form-group">
+				                                        <div class="col-sm-12">
+				                                        	<input type="number" class="form-control" id="reservation_total" readonly="" value="{{ booking.total }}">
+                                                            <input type="hidden" class="form-control" id="montant" readonly="" value="{{ booking.montant }}">
+				                                        </div>
+				                                    </div>
+                        						</td>
+                        					</tr>
+
+                        					<tr class="hidden">
+                        						<th colspan="4">REMISE</th>
+                        						<th>
+                        							<div class="form-group">
+                                                        <div class="col-sm-12">
+
+                                                        	{% if booking.typeRemise == 0 %}
+                                                                {% set remise = booking.remise %}
+                                                            {% else %}
+                                                                {% set remise = (booking.total * booking.remise) / 100 %}
+                                                            {% endif %}
+
+                                                            <input type="number" class="form-control" readonly="" value="{{ remise }}">
+                                                        </div>
+                                                    </div>
+                        						</th>
+                        					</tr>
+
+                        					<tr class="hidden">
+                        						<th colspan="4">MONTANT APRÈS DÉDUCTION</th>
+                        						<th>
+                        							<div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <input type="number" class="form-control" readonly="" value="{{ booking.total - booking.remise }}">
+                                                        </div>
+                                                    </div>
+                        						</th>
+                        					</tr>
+
+                        					{% if booking.remboursementBooking %}
+                        						<tr class="hidden">
+                        							<th colspan="4">REMBOURSEMENT</th>
+                        							<th>
+                        								<div class="form-group">
+	                                                        <div class="col-sm-12">
+	                                                            <input type="number" class="form-control" readonly="" value="{{ booking.remboursementBooking.montant }}">
+	                                                        </div>
+	                                                    </div>
+                        							</th>
+                        						</tr>
+                        					{% endif %}
+                        				</tbody>
+                        			</table>
+                        		</div>
+                        	</div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+                              <div class="col-lg-6 col-lg-push-6">
+                                <div class="form-group" >
+                                  <label class="font-noraml">À</label>
+                                  <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                                    <input type="text" class="form-control" name="lieu" id="lieu" value="{{ booking.lieu }}" required="">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="row">
+                              <div class="col-lg-6 col-lg-push-6">
+                                <div class="form-group" id="data_1">
+                                  <label class="font-noraml">Le</label>
+                                  <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input type="text" class="form-control" name="date" id="date" value="{{ booking.date | date('d/m/Y') }}" required="">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+
+
+
+                                	{% if booking.statut <= 1 %}
+	                                    {# <button class="btn btn-primary " id="btn-save">
+	                                        <i class="fa fa-save"></i>
+	                                        Mettre à jour
+	                                    </button> #}
+
+	                                    {% if periode != '3' %}
+		                                    {% if booking.statut == 0 %}
+			                                    <button class="btn btn-success " id="btn-confirmer">
+			                                        <i class="fa fa-check"></i>
+			                                        Confirmer
+			                                    </button>
+		                                    {% else %}
+		                                    	{% if periode == '1' %}
+			                                    	<button class="btn btn-info " id="btn-start">
+				                                        <i class="fa fa-check"></i>
+				                                        Commencer
+				                                    </button>
+		                                    	{% endif %}
+		                                    {% endif %}
+	                                    {% endif %}
+
+
+                                	{% endif %}
+
+                                	<button class="btn btn-danger pull-right" id="btn-delete">
+                                        <i class="fa fa-trash"></i>
+                                        Supprimer
+                                    </button>
+                                    
+                                    {% if checkAnnulation and booking.statut < 3 %}
+                                    	<button class="btn btn-danger pull-right" id="btn-cancel">
+	                                        <i class="fa fa-times"></i>
+	                                        Annuler
+	                                    </button>
+
+	                                    {% if periode != '3' and ("now" | date('d/m/Y') != booking.dateSortie | date('d/m/Y')) %}
+		                                    <button class="btn btn-warning pull-right" id="btn-cancel-nights">
+		                                        <i class="fa fa-times"></i>
+		                                        Annuler des nuits
+		                                    </button>
+	                                    {% endif %}
+
+	                                {% endif %}
+
+                                	{% if booking.statut >= 1 and booking.statut < 4 %}
+	                                    <button class="btn btn-warning " id="btn-terminer">
+	                                        <i class="fa fa-money"></i>
+	                                        PASSER À LA CAISSE
+	                                    </button>
+                                	{% endif %}
+
+                                	{% if booking.statut == 4 %}
+                                		<button class="btn btn-info" id="print-ticket">
+                                            <i class="fa fa-print"></i>
+                                            Imprimer le Reçu
+                                        </button>
+                                	{% endif %}
+
+                                	
+
+					                {% if factureHebergement %}
+                                		<a href="{{ path('facture_hebergement_show', { id : factureHebergement.facture.id }) }}" class="btn btn-info" target="_blank">
+                                			<i class="fa fa-file"></i>
+                                			Afficher facture
+                                		</a>
+					                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div 
+    	class="hidden" 
+    	id="modal-annulation"
+    	data-template='<div class="form-horizontal">
+		    <div class="form-group">
+		        <label class="col-lg-3 control-label">Montant à rembourser</label>
+		        <div class="col-lg-3">
+		        	<input type="number" class="form-control" placeholder="%" id="pourcentage_remboursement" min="0" max="100">
+		        </div>
+		        <div class="col-lg-6">
+		        	<input type="number" class="form-control" placeholder="Montant" id="montant_remboursement">
+		        </div>
+		    </div>
+
+		    <div class="form-group text-right">
+		        <span class="btn btn-white btn-sm js_close_modal">ANNULER</span>
+		        <span class="btn btn-primary btn-sm" id="id_save_annulationt">VALIDER</span>
+		    </div>
+		</div>'
+    >
+    	
+    </div>
+
+    {% if commandes | length > 0 %}
+	    <div class="wrapper wrapper-content">
+	    	<div class="row">
+	    		<div class="col-lg-12">
+	    			<div class="ibox float-e-margins">
+	    				<div class="ibox-title">
+	    					<h5>
+	    						Fiche de consommation
+	    					</h5>
+	    				</div>
+	    				<div class="ibox-content">
+	    					<div class="row">
+	    						<div class="col-lg-12">
+	    							<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>N° </th>
+												<th>TYPE DE COMMANDE</th>
+												<th>PLATS</th>
+												<th>QTE</th>
+												<th>PRIX</th>
+												<th>TOTAL</th>
+												<th>STATUT</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for commande in commandes %}
+												{% if commande.details %}
+													{% set i = 1 %}
+													{% for detail in commande.details %}
+															<tr>
+																{% if i == 1 %}
+																	<td rowspan="{{ (commande.details | length) + 1 }}">
+																		{{ commande.num }}
+																		{% if commande.num_booking %}
+																			<span class="label label-info">
+																				<i class="fa fa-home"></i>
+																				{{ commande.num_booking }}
+																			</span>
+																		{% endif %}
+																	</td>
+																	<td rowspan="{{ (commande.details | length) + 1 }}">
+
+																		{% if commande.type_commande == 'reservation' %}
+																			Commande sur place
+																			<span class="label label-success">{{ commande.tables | column('nom') | join(',')}}</span>
+																		{% else %}
+																			Commande à emporter
+																		{% endif %}
+
+																	</td>
+																{% endif %}
+																<td>{{ detail.plat }}</td>
+																<td>{{ detail.qte }}</td>
+																<td>{{ detail.prix }}</td>
+																<td>{{ detail.total }}</td>
+																
+																{% if i == 1 %}
+																	<td rowspan="{{ (commande.details | length) + 1 }}">
+																		{% if commande.num_booking %}
+																			CREDIT - 
+																		{% endif %}
+																		{% if commande.statut == 2 %}
+																			À PAYER
+																		{% endif %}
+																		{% if commande.statut == 3 %}
+																			PAYÉ
+																		{% endif %}
+																		{% if commande.statut == 20 %}
+																			À PAYER
+																		{% endif %}
+																	</td>
+																	<td rowspan="{{ (commande.details | length) + 1 }}">
+																		{% if commande.type_commande == 'reservation' %}
+																			<a href="{{ path('restaurant_reservation_show', { id : commande.id }) }}" class="btn btn-full-width btn-xs btn-primary">
+																				<i class="fa fa-edit">Afficher</i>
+																			</a>
+																		{% else %}
+																			<a href="{{ path('restaurant_emporter_show', { id : commande.id }) }}" class="btn btn-full-width btn-xs btn-primary">
+																				<i class="fa fa-edit">Afficher</i>
+																			</a>
+																		{% endif %}
+																	</td>
+																{% endif %}
+
+															</tr>
+															{% set i = i + 1 %}
+													{% endfor %}
+													<tr>
+														<th colspan="3">TOTAL</th>
+														<th>{{ commande.total }}</th>
+													</tr>
+													<tr>
+														<th colspan="10" bgcolor="#ddd"></th>
+													</tr>
+												{% endif %}
+											{% endfor %}
+										</tbody>
+									</table>
+	    							
+	    						</div>
+	    					</div>
+	    				</div>
+	    			</div>
+	    		</div>
+	    	</div>
+	    </div>
+   	{% endif %}
+
+   	<div 
+        class="hidden" 
+        id="print-ticket-template"
+        data-template='
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="printer">Imprimante</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="printer_name" name="printer_name"></select>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+                <span class="btn btn-primary btn-sm" id="print">Imprimer</span>
+            </div>
+        </div>
+        '
+    >
+    </div>
+
+{% endblock %}
+

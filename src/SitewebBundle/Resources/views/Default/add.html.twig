@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('bundles/siteweb/js/add.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Création site web
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Nom</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="nom" required="" id="nom">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Lien</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="lien" required="" id="lien">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">Description</label>
+                                        <div class="col-sm-11">
+                                        	<textarea class="summernote" id="description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!-- <div class=""> -->
+                                        {# <button class="btn btn-white" type="reset">
+                                            <i class="fa fa-times"></i>
+                                            Annuler
+                                        </button> #}
+                                        <button class="btn btn-primary pull-right" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                            <input type="hidden" name="id" id="id" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

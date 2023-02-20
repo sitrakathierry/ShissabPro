@@ -1,0 +1,35 @@
+<div class="slick_demo_2">
+
+    {% for chambre in chambres %}
+    	<div class="col-md-2">
+            <div class="ibox">
+                <div class="ibox-content product-box">
+
+                    <div class="product-imitation">
+                        {{ chambre.nom }}
+                    </div>
+                    <div class="product-desc">
+                        <span class="product-price">
+                            {# {{ chambre.tarif_pers }} KMF / Personne #}
+                            {{ chambre.nom }}
+                        </span>
+                        <small class="text-muted">{{ chambre.nb_pers }} Personnes</small>
+                        {# <a href="#" class="product-name"> {{ chambre.nom }}</a> #}
+
+                        <div class="small m-t-xs">
+                            {{ chambre.type }} - {{ chambre.categorie }}
+                        </div>
+                        <div class="m-t text-righ">
+
+                            <btn class="btn btn-xs btn-outline btn-primary btn-choisir" data-id="{{ chambre.id }}">
+                            	<i class="fa fa-check"></i>
+                            	Choisir
+                            </btn>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    
+</div>

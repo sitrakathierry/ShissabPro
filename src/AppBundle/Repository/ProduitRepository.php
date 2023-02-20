@@ -10,26 +10,64 @@ namespace AppBundle\Repository;
  */
 class ProduitRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getList(
-		$agence, 
-		$recherche_par, 
-		$a_rechercher,
-		$categorie = 0
-	)
+
+	public function nonAffecteEntrepot($agence)
 	{
 		$em = $this->getEntityManager();
-		
-		$query = "	select p.id, p.qrcode, p.code_produit, p.image, p.nom, p.stock, cp.nom as categorie
+
+		// $query = "	select p.id, pe.id as produit_entrepot
+		// 			from produit p
+		// 			left join produit_entrepot pe on (pe.produit = p.id)
+		// 			left join entrepot e on (pe.entrepot = e.id)
+		// 			where p.id is not null";
+
+		$query = "	select p.id, pe.id as produit_entrepot
 					from produit p
-					left join categorie_produit cp on (p.categorie_produit = cp.id)
-					where p.nom is not null ";
+					left join produit_entrepot pe on (pe.produit = p.id)
+					left join entrepot e on (pe.entrepot = e.id)
+					where (pe.id is null
+					or e.id is null)";
 
 		if ($agence) {
 			$query .= "	and p.agence = " . $agence ;
 		}
 
-		if ($recherche_par == 0) {
-			$query .= "	and p.code_produit like '%" . $a_rechercher . "%'";
+		$statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+
+	}
+
+	public function getList(
+		$agence, 
+		$recherche_par = '', 
+		$a_rechercher = '',
+		$categorie = 0,
+		$produit_id = 0
+	)
+	{
+		$em = $this->getEntityManager();
+
+		$query =
+		"	select p.code_produit, p.id, p.nom, pe.stock, cp.nom as categorie, pe.indice
+					from produit p
+					left join categorie_produit cp on (p.categorie_produit = cp.id)
+					left join produit_entrepot pe on (pe.produit = p.id)
+					left join variation_produit vp on vp.produit_entrepot = pe.id
+					where p.nom is not null and vp.is_delete is null and pe.id is not null ";
+		
+		// $query = "	SELECT DISTINCT p.*,cp.*, cp.nom as categorie FROM `produit` p JOIN produit_entrepot pe ON pe.produit = p.id JOIN variation_produit ON variation_produit.produit_entrepot = pe.id JOIN categorie_produit cp ON cp.id = p.categorie_produit WHERE variation_produit.is_delete IS NULL AND p.nom IS NOT NULL";
+
+		if ($agence) {
+			$query .= "	and p.agence = " . $agence ;
+		}
+
+		if ($recherche_par == 0) { 
+			$query .= "	and p.code_produit like '%".$a_rechercher."%'";
 		}
 
 		if ($recherche_par == 1) {
@@ -38,6 +76,41 @@ class ProduitRepository extends \Doctrine\ORM\EntityRepository
 
 		if ($categorie) {
 			$query .= "	and cp.id = " . $categorie;
+		}
+
+		if ($produit_id) {
+			$query .= "	and p.id = " . $produit_id;
+		}
+
+		$query .= "	and p.is_delete IS NULL";
+
+		$query .= "	group by p.code_produit ";
+
+		$query .= "	order by p.nom asc";
+
+        $statement = $em->getConnection()->prepare($query);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        return $result;
+	}
+
+	public function notifications(
+		$agence, 
+		$entrepot = 0
+	)
+	{
+		$em = $this->getEntityManager();
+		
+		$query = "	select *
+					from produit p 
+					inner join produit_entrepot pe on (pe.produit = p.id)
+					where pe.stock <= pe.stock_alerte";
+
+		if ($agence) {
+			$query .= "	and p.agence = " . $agence ;
 		}
 
 		$query .= "	order by p.nom asc";
@@ -51,26 +124,23 @@ class ProduitRepository extends \Doctrine\ORM\EntityRepository
         return $result;
 	}
 
-	public function notifications($agence)
+	public function getProduitInEntrepot($idAgence)
 	{
 		$em = $this->getEntityManager();
-		
-		$query = "	select *
-					from produit p 
-					where p.stock <= p.stock_alerte";
+		$sql = "SELECT produit.* FROM `produit` JOIN produit_entrepot ON produit_entrepot.produit = produit.id WHERE produit.agence = ? " ;
+		$statement = $em->getConnection()->prepare($sql);
+		$statement->execute(array($idAgence));
+		$result = $statement->fetchAll();
+		return $result;
+	}
 
-		if ($agence) {
-			$query .= "	and p.agence = " . $agence ;
-		}
-
-		$query .= "	order by p.nom asc";
-
-        $statement = $em->getConnection()->prepare($query);
-
-        $statement->execute();
-
-        $result = $statement->fetchAll();
-
-        return $result;
+	public function getAllProduit($idAgence)
+	{
+		$em = $this->getEntityManager();
+		$sql = "SELECT * FROM `produit` WHERE `agence` = ? AND `is_delete` IS NULL GROUP BY code_produit  ORDER BY code_produit ASC " ;
+		$statement = $em->getConnection()->prepare($sql);
+		$statement->execute(array($idAgence));
+		$result = $statement->fetchAll();
+		return $result;
 	}
 }

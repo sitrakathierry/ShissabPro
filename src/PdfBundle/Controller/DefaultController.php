@@ -155,47 +155,57 @@ class DefaultController extends Controller
                     'agence' => $agence
                 ));
 
-        $pdfAgence = $this->getDoctrine()
+        $data = array(
+            array(
+                'objet' => '1',
+                'libelle' => 'FACTURE',
+            ),
+            array(
+                'objet' => '2',
+                'libelle' => 'FICHE PRODUIT',
+            ),
+            array(
+                'objet' => '3',
+                'libelle' => 'BON DE COMMANDE',
+            ),
+            array(
+                'objet' => '4',
+                'libelle' => 'BON DE LIVRAISON',
+            ),
+            array(
+                'objet' => '5',
+                'libelle' => 'VENTE À CREDIT',
+            ),
+            array(
+                'objet' => '6',
+                'libelle' => 'FICHE DE RÉSERVATION HÉBERGEMENT',
+            )
+        );
+
+        $objets = array();
+
+        foreach ($data as $item) {
+            $pdfs = $this->getDoctrine()
                     ->getRepository('AppBundle:PdfAgence')
-                    ->findOneBy(array(
-                        'agence' => $agence
+                    ->findBy(array(
+                        'agence' => $agence,
+                        'objet' => $item['objet'],
                     ));
 
+            $item['pdfs'] = $pdfs;
+
+            array_push($objets, $item);
+        }
+
         return $this->render('PdfBundle:Default:attribution.html.twig',array(
+            'objets' => $objets,
             'modeles' => $modeles,
-            'pdfAgence' => $pdfAgence
         ));
     }
 
     public function saveAttributionAction(Request $request)
     {
-        $id = $request->request->get('id');
-        $facture = $request->request->get('facture');
-        $produit = $request->request->get('produit');
-
-        if ($id) {
-            $pdfAgence = $this->getDoctrine()
-                    ->getRepository('AppBundle:PdfAgence')
-                    ->find($id);
-        } else {
-            $pdfAgence = new PdfAgence();
-        }
-
-        if ($facture) {
-            $modele = $this->getDoctrine()
-                            ->getRepository('AppBundle:ModelePdf')
-                            ->find($facture);
-
-            $pdfAgence->setFacture($modele);
-        }
-
-        if ($produit) {
-            $modele = $this->getDoctrine()
-                            ->getRepository('AppBundle:ModelePdf')
-                            ->find($produit);
-
-            $pdfAgence->setProduit($modele);
-        }
+        $attributions = $request->request->get('attributions');
 
         $user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -205,15 +215,62 @@ class DefaultController extends Controller
                     ));
         $agence = $userAgence->getAgence();
 
-        $pdfAgence->setAgence($agence);
 
+        $pdfs = $this->getDoctrine()
+                    ->getRepository('AppBundle:PdfAgence')
+                    ->findBy(array(
+                        'agence' => $agence
+                    ));
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($pdfAgence);
-        $em->flush();
+
+        foreach ($pdfs as $pdf) {
+            $em->remove($pdf);
+            $em->flush();
+        }
+
+        foreach ($attributions as $attribution) {
+
+            $objet = $attribution['objet'];
+            $modele = $attribution['modele'];
+
+            if (!empty($modele)) {
+
+                foreach ($modele as $id_modele) {
+                    $modelePdf = $this->getDoctrine()
+                        ->getRepository('AppBundle:ModelePdf')
+                        ->find($id_modele);
+
+                    $pdfAgence = new PdfAgence();
+
+                    $pdfAgence->setObjet($objet);
+                    $pdfAgence->setModelePdf($modelePdf);
+                    $pdfAgence->setAgence($agence);
+
+                    $em->persist($pdfAgence);
+                    $em->flush();
+
+                }
+
+            }
+
+        }
 
         return new JsonResponse(array(
-            'id' => $pdfAgence->getId()
+            'status' => 200
         ));
+    }
+
+    public function deleteAction($id)
+    {
+        $modelePdf  = $this->getDoctrine()
+                        ->getRepository('AppBundle:ModelePdf')
+                        ->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($modelePdf);
+        $em->flush();
+
+        return new JsonResponse(200);
     }
 }

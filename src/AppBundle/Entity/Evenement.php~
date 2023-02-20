@@ -216,5 +216,18 @@ class Evenement
     {
         return $this->couleur;
     }
-}
 
+    /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return Evenement
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+}

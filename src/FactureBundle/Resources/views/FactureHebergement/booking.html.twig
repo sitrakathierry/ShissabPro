@@ -1,0 +1,60 @@
+<tr data-id="0" class="fact-row row-0">
+      
+  <td>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="text" class="form-control f_hebergement_nb_pers" name="f_hebergement_nb_pers[]" value="{{ booking.nbPers }}">
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="text" class="form-control f_hebergement_date_entree input-datepicker" name="f_hebergement_date_entree[]" value="{{ booking.dateEntree | date('d/m/Y') }}">
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="text" class="form-control f_hebergement_date_sortie input-datepicker" name="f_hebergement_date_sortie[]" value="{{ booking.dateSortie | date('d/m/Y') }}">
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="text" class="form-control f_hebergement_nb_nuit" name="f_hebergement_nb_nuit[]" readonly="" value="{{ booking.nbNuit }}">
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <select class="form-control f_hebergement_chambre select2" name="f_hebergement_chambre[]">
+          <option selected="" value="{{ booking.chambre.id }}">{{ booking.chambre.nom }}</option>
+        </select>
+      </div>
+    </div>
+  </td>
+  <td>
+    <div class="form-group">
+      <div class="col-sm-12">
+      	<select class="form-control f_hebergement_avec_petit_dejeuner" name="f_hebergement_avec_petit_dejeuner[]">
+      		<option value="1" {% if booking.avecPetitDejeuner == 1 %} selected="" {% endif %} >INCLUS</option>
+    		<option value="2" {% if booking.avecPetitDejeuner == 2 %} selected="" {% endif %} >SUPPLÉMENTAIRE</option>
+      	</select>
+      </div>
+    </div>
+  </td>
+  <td class="td-montant">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="number" class="form-control f_hebergement_montant" name="f_hebergement_montant[]" value="{{ booking.total }}">
+      </div>
+    </div>
+  </td>
+  
+  <td>
+  </td>
+</tr>

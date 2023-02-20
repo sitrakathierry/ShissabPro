@@ -60,11 +60,13 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5 >
-                            Gestion société
+                            Création société
                         </h5>
                     </div>
                     <div class="ibox-content">
                         <div class="form-horizontal">
+
+                            <h3><u>INFORMATIONS SOCIETE</u></h3>
 
                         	<div class="row">
                         		<div class="col-lg-6">
@@ -72,6 +74,14 @@
                                         <label class="col-sm-2 control-label nom">Nom</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="nom" required="" id="nom">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Adresse</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="adresse" required="" id="adresse">
                                         </div>
                                     </div>
                                 </div>
@@ -83,6 +93,14 @@
                                         <label class="col-sm-2 control-label nom">Région</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="region" required="" id="region">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Tél</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="tel" required="" id="tel">
                                         </div>
                                     </div>
                                 </div>
@@ -101,15 +119,68 @@
                                 </div>
                             {% endif %}
 
-                        	{# <div class="row">
-                        		<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label nom">Code</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" name="code" required="" id="code">
+
+                            <h3><u>COMPTE DU RESPONSABLE</u></h3>
+
+                            {% if is_granted('ROLE_ADMIN') %}                                
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label nom">Nom d'utilisateur *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="nom_responsable" required="" id="nom_responsable">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label nom">Email *</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="email_responsable" required="" id="email_responsable">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label nom">Mot de passe</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="mdp_responsable" required="" id="mdp_responsable">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span id="password-strength" class="badge badge-strength"></span>
+                                        <br>
+                                        <div class="alert alert-info">
+                                                <i class="fa fa-info-circle"></i>
+                                                Le mot de passe doit contenir au minimum 8 caractères, à savoir : <br> 
+                                                au moins une lettre minuscule, <br>
+                                                une lettre majuscule, <br>
+                                                un caractère spécial <br>
+                                                un chiffre
+                                          </div>
+                                    </div>
+                            		
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label nom">Responsabilité</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="responsabilite" required="" id="responsabilite">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% endif %}
+
+                        	{# <div class="row">
                         	</div> #}
 
 
@@ -154,7 +225,7 @@
                                 <div class="col-lg-9">
                                   <select id="recherche_par" class="form-control">
                                     <option value="0"></option>
-                                    <option value="1">Nom</option>
+                                    <option value="1">Nom *</option>
                                     <option value="2">Région</option>
                                   </select>
                                 </div>

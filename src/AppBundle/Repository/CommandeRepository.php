@@ -10,17 +10,59 @@ namespace AppBundle\Repository;
  */
 class CommandeRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function consultation($agence)
+	public function consultation(
+		$agence, 
+		$id = 0,
+		$type_date = '', 
+        $mois = '', 
+        $annee = '', 
+        $date_specifique = '', 
+        $debut_date = '', 
+        $fin_date = ''
+	)
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select c.id, date_format(c.date, '%d/%m/%Y') as date, c.total as montant_total
-					from commande c
+		$query = "	select distinct c.id, date_format(c.date, '%d/%m/%Y') as date, c.total as montant_total, LPAD(c.id, 6, '0') as recu
+					from commande c join pannier pn on pn.commande = c.id
 					where c.id is not null ";
 
 		if ($agence) {
 			$query .= "	and c.agence = " . $agence ;
 		}
+
+		if ($id) {
+			$query .= "	and c.id = " . $id ;
+		}
+
+		if ($type_date) {
+            switch ($type_date) {
+                case '1':
+                    $now = new \DateTime();
+                    $dateNow = $now->format('d-m-Y');
+                    $query .= " and date_format(c.date,'%d-%m-%Y') = '" . $dateNow ."'";
+                    break;
+                
+                case '2':
+                    $moisAnnee = $mois . "-" . $annee;
+                    $query .= " and date_format(c.date,'%m-%Y') = '" . $moisAnnee ."'";
+                    break;
+
+                case '3':
+                    $query .= " and date_format(c.date,'%Y') = '" . $annee ."'";
+                    break;
+
+                case '4':
+                    // $date = \DateTime::createFromFormat('j/m/Y', $date_specifique);
+                    $query .= " and date_format(c.date,'%d/%m/%Y') = '" . $date_specifique ."'";
+                    break;
+
+                case '5':
+                    $query .= " and date_format(c.date,'%d/%m/%Y') >= '" . $debut_date ."'";
+                    $query .= " and date_format(c.date,'%d/%m/%Y') <= '" . $fin_date ."'";
+                    break;
+            }
+        }
 
 		$query .= "	order by c.id desc";
 

@@ -1,0 +1,41 @@
+motif_decharge_homepage:
+    path:     /motif/decharge
+    defaults: { _controller: MotifDechargeBundle:Default:index }
+
+motif_decharge_motif_index:
+    path:     /motif/decharge/motif/index
+    defaults: { _controller: MotifDechargeBundle:Motif:index }
+
+motif_decharge_motif_save:
+    path:     /motif/decharge/motif/save
+    defaults: { _controller: MotifDechargeBundle:Motif:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+motif_decharge_motif_list:
+    path:     /motif/decharge/motif/list
+    defaults: { _controller: MotifDechargeBundle:Motif:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+motif_decharge_motif_delete:
+    path:     /motif/decharge/motif/delete/{id}
+    defaults: { _controller: MotifDechargeBundle:Motif:delete }
+    methods:  [GET]
+    options:
+        expose: true
+
+motif_decharge_motif_editor:
+    path:     /motif/decharge/motif/editor
+    defaults: { _controller: MotifDechargeBundle:Motif:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+motif_decharge_update_agence:
+    path:     /motif/decharge/update/agence
+    defaults: { _controller: MotifDechargeBundle:Motif:updateAgence }
+    options:
+        expose: true

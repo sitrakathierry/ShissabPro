@@ -1,0 +1,38 @@
+{% for tarif in tarifs %}
+    <tr>
+        <td>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input type="number" class="form-control nb_pers" name="nb_pers[]" required="" value="{{ tarif.nbPers }}">
+              </div>
+            </div>
+        </td>
+        <td>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input type="number" class="form-control montant" name="montant[]" required="" value="{{ tarif.montant }}">
+              </div>
+            </div>
+        </td>
+        <td>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <select class="form-control petit_dejeuner" name="petit_dejeuner[]">
+                    <option value="1" {% if tarif.petitDejeuner == 1 %} selected="" {% endif %} >INCLUS</option>
+                    <option value="2" {% if tarif.petitDejeuner == 2 %} selected="" {% endif %} >SUPPLÉMENTAIRE</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group supplementaire {% if tarif.petitDejeuner == 1 %} hidden {% endif %}">
+              <div class="col-sm-12">
+                <input type="number" class="form-control montant_petit_dejeuner" name="montant_petit_dejeuner[]" required="" value="{{ tarif.montantPetitDejeuner }}">
+              </div>
+            </div>
+        </td>
+        <td>
+            <button class="btn btn-danger btn-full-width btn-remove-tr">
+                <i class="fa fa-trash"></i>
+            </button>
+        </td>
+    </tr>
+{% endfor %}

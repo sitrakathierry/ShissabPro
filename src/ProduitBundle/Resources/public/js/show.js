@@ -1,3 +1,31 @@
+$(document).on('click','#btn-delete',function(event) {
+	event.preventDefault();
+
+	var url = Routing.generate('produit_delete', { id : $('#id_produit').val() });
+
+	disabled_confirm(false); 
+
+  swal({
+        title: "SUPPRIMER",
+        text: "Voulez-vous vraiment supprimer ? ",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonText: "Oui",
+        cancelButtonText: "Non",
+    },
+    function () {
+      disabled_confirm(true);
+			$.ajax({
+				url: url,
+				type: 'GET',
+				success: function(res) {
+					show_success('Succès', 'Suppression éffectué', Routing.generate('produit_consultation'));
+				}
+			});
+      
+  });
+})
+
 var image_src = $('#produit_image');
 
 if (image_src.attr('src') == '') {
@@ -51,15 +79,29 @@ $(document).on('click', '#btn-save', function(event) {
 
 	var url = Routing.generate('produit_save');
 
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: data,
-		success: function(res) {
-			show_info('Succès', 'Produit enregistré');
-			location.reload()
-		}
-	})
+	disabled_confirm(false); 
+
+  swal({
+        title: "Enregistrer",
+        text: "Voulez-vous vraiment enregistrer ? ",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonText: "Oui",
+        cancelButtonText: "Non",
+    },
+    function () {
+      disabled_confirm(true);
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data,
+				success: function(res) {
+					show_success('Succès', 'Produit enregistré');
+				}
+			})
+      
+  });
+  
 });
 
 function getBase64(file) {

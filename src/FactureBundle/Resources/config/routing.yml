@@ -20,6 +20,13 @@ facture_show:
         expose: true
     methods: [GET]
 
+facture_delete:
+    path:     /facture/delete/{id}
+    defaults: { _controller: FactureBundle:Default:delete }
+    options:
+        expose: true
+    methods: [GET]
+
 facture_pdf:
     path:     /facture/pdf/{id}
     defaults: { _controller: FactureBundle:Default:pdf }
@@ -30,6 +37,8 @@ facture_pdf:
 facture_consultation:
     path:     /facture/consultation
     defaults: { _controller: FactureBundle:Default:consultation }
+    options:
+        expose: true
 
 facture_list:
     path:    /facture/list
@@ -52,9 +61,30 @@ facture_produit_save:
         expose: true
     methods: [POST]
 
+facture_produit_creer_definitif:
+    path:     /facture/produit/creer-definitif/{id}
+    defaults: { _controller: FactureBundle:FactureProduit:creerDefinitif }
+    options:
+        expose: true
+    methods: [GET]
+
 facture_produit_show:
     path:     /facture/produit/show/{id}
     defaults: { _controller: FactureBundle:FactureProduit:show }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_consultation_export :
+    path:     /facture/consultation/export
+    defaults: { _controller: FactureBundle:Default:export }
+    methods:  [POST]
+    options:
+        expose: true
+
+facture_produit_recu:
+    path:     /facture/produit/recu/{recu}
+    defaults: { _controller: FactureBundle:FactureProduit:recu }
     options:
         expose: true
     methods: [GET]
@@ -65,6 +95,13 @@ facture_service_save:
     options:
         expose: true
     methods: [POST]
+
+facture_service_creer_definitif:
+    path:     /facture/service/creer-definitif/{id}
+    defaults: { _controller: FactureBundle:FactureService:creerDefinitif }
+    options:
+        expose: true
+    methods: [GET]
 
 facture_service_show:
     path:     /facture/service/show/{id}
@@ -86,3 +123,150 @@ facture_service_pdf:
     options:
         expose: true
     methods: [GET]
+
+facture_service_prix:
+    path:     /facture/service/prix
+    defaults: { _controller: FactureBundle:FactureService:prix }
+    options:
+        expose: true
+    methods: [POST]
+
+# facture prosuit service
+facture_produitservice_tpl:
+    path:     /facture/produitservice/tpl/{type}
+    defaults: { _controller: FactureBundle:FactureProduitService:tpl }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_produitservice_save:
+    path:    /facture/produitservice/save
+    defaults: { _controller: FactureBundle:FactureProduitService:save }
+    options:
+        expose: true
+    methods: [POST]
+
+facture_produitservice_creer_definitif:
+    path:     /facture/produitservice/creer-definitif/{id}
+    defaults: { _controller: FactureBundle:FactureProduitService:creerDefinitif }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_produitservice_show:
+    path:    /facture/produitservice/show/{id}
+    defaults: { _controller: FactureBundle:FactureProduitService:show }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_produitservice_pdf:
+    path:    /facture/produitservice/pdf/{id}
+    defaults: { _controller: FactureBundle:FactureProduitService:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_modele_pdf_editor:
+    path:    /facture/modelepdf/editor
+    defaults: { _controller: FactureBundle:ModelePdf:editor }
+    options:
+        expose: true
+    methods: [POST]
+
+facture_modele_pdf_save:
+    path:    /facture/modelepdf/save
+    defaults: { _controller: FactureBundle:ModelePdf:save }
+    options:
+        expose: true
+    methods: [POST]
+
+facture_produit_boncommande:
+    path:     /facture/produit/boncommande/{id}
+    defaults: { _controller: FactureBundle:FactureProduit:bonCommande }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_service_boncommande:
+    path:    /facture/service/boncommande/{id}
+    defaults: { _controller: FactureBundle:FactureService:bonCommande }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_produitservice_boncommande:
+    path:    /facture/produitservice/boncommande/{id}
+    defaults: { _controller: FactureBundle:FactureProduitService:bonCommande }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_hebergement_save:
+    path:    /facture/hebergement/save
+    defaults: { _controller: FactureBundle:FactureHebergement:save }
+    options:
+        expose: true
+    methods: [POST]
+
+facture_hebergement_creer_definitif:
+    path:     /facture/hebergement/creer-definitif/{id}
+    defaults: { _controller: FactureBundle:FactureHebergement:creerDefinitif }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_hebergement_show:
+    path:     /facture/hebergement/show/{id}
+    defaults: { _controller: FactureBundle:FactureHebergement:show }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_hebergement_pdf:
+    path:     /facture/hebergement/pdf/{id}
+    defaults: { _controller: FactureBundle:FactureHebergement:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_hebergement_booking:
+    path:     /facture/hebergement/booking/{booking}
+    defaults: { _controller: FactureBundle:FactureHebergement:booking }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_dashboard:
+    path:     /facture/dashboard
+    defaults: { _controller: FactureBundle:Dashboard:index }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_consultation_corbeille:
+    path:     /facture/corbeille/consultation
+    defaults: { _controller: FactureBundle:Default:consultationCorbeille }
+    options:
+        expose: true
+
+facture_corbeille_list:
+    path:    /facture/corbeille/list
+    defaults: { _controller: FactureBundle:Default:listCorbeille }
+    options:
+        expose: true
+    methods: [POST]
+
+facture_archive:
+    path:     /facture/archive/{id}
+    defaults: { _controller: FactureBundle:Default:archive }
+    options:
+        expose: true
+    methods: [GET]
+
+facture_rearchive:
+    path:     /facture/rearchive/{id}
+    defaults: { _controller: FactureBundle:Default:rearchive }
+    options:
+        expose: true
+    methods: [GET]    

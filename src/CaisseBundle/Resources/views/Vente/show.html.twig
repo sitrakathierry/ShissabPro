@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+        td{
+            vertical-align: middle;
+        }
+    </style>
+{% endblock  %}
+
+{% block scripts %}
+   {{ parent() }}
+    <script src="{{ asset('js/plugins/printerpos/cptable.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/cputils.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/JSESCPOSBuilder.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/JSPrintManager.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/zip.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/zip-ext.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/deflate.js') }}"></script>
+
+    <script src="{{ asset('bundles/caisse/js/vente-show.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+
+    <input type="hidden" id="commande_id" value="{{ commande.id }}">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Vente N° <span class="badge-warning">{{ commande.recu }}</span> - {{ commande.date | date('d/m/Y') }}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                	<div class="row">
+                		<div class="col-lg-12">
+                			<table class="table table-bordered">
+                				<thead>
+                					<tr>
+                						<th>PRODUIT</th>
+                						<th>QTÉ</th>
+                						<th>PRIX UNITAIRE ({{ agence.deviseSymbole }})</th>
+                						<th>TOTAL ({{ agence.deviseSymbole }})</th>
+                					</tr>
+                				</thead>
+
+                				<tbody>
+                					{% for pannier in panniers %}
+                						<tr>
+                							<td>{{ pannier.variationProduit.produitEntrepot.produit.nom }} - {{ pannier.variationProduit.prixVente }} {{ agence.deviseSymbole }}</td>
+                							<td>{{ pannier.qte }}</td>
+                							<td>{{ pannier.pu }}</td>
+                							<td>{{ pannier.total|number_format(2) }}</td>
+                						</tr>
+                					{% endfor %}
+                				</tbody>
+                			</table>
+                		</div>
+                	</div>
+
+                	<div class="row">
+                		<div class="col-lg-12">
+                			<a href="" class="btn btn-info" id="print-ticket">
+                				<i class="fa fa-print"></i>
+                				Imprimer le reçu
+                			</a>
+                		</div>
+                	</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div 
+        class="hidden" 
+        id="print-ticket-template"
+        data-template='
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="printer">Imprimante</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="printer_name" name="printer_name"></select>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+                <span class="btn btn-primary btn-sm" id="print">Imprimer</span>
+            </div>
+        </div>
+        '
+    >
+    </div>
+
+
+{% endblock %}
+

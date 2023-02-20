@@ -1,0 +1,107 @@
+stock_interne_homepage:
+    path:     /stock/interne/index
+    defaults: { _controller: StockInterneBundle:Default:index }
+
+stock_interne_add:
+    path:     /stock/interne/add
+    defaults: { _controller: StockInterneBundle:Default:add }
+
+stock_interne_save:
+    path:     /stock/interne/save
+    defaults: { _controller: StockInterneBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+stock_interne_consultation:
+    path:     /stock/interne/consultation
+    defaults: { _controller: StockInterneBundle:Default:consultation }
+    options:
+        expose: true
+
+stock_interne_list:
+    path:     /stock/interne/list
+    defaults: { _controller: StockInterneBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
+
+stock_interne_show:
+    path:     /stock/interne/show/{id}
+    defaults: { _controller: StockInterneBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]
+
+stock_interne_entree_sortie_add:
+    path:     /stock/interne/entree-sortie/add
+    defaults: { _controller: StockInterneBundle:EntreeSortie:add }
+    options:
+        expose: true
+
+stock_interne_entree_sortie_save:
+    path:     /stock/interne/entree-sortie/save
+    defaults: { _controller: StockInterneBundle:EntreeSortie:save }
+    options:
+        expose: true
+    methods: [POST]
+
+stock_interne_entree_sortie_list:
+    path:     /stock/interne/entree-sortie/list
+    defaults: { _controller: StockInterneBundle:EntreeSortie:list }
+    options:
+        expose: true
+    methods: [POST]
+
+stock_interne_entree_sortie_add_sortie:
+    path:     /stock/interne/entree-sortie/add-sortie
+    defaults: { _controller: StockInterneBundle:EntreeSortie:addSortie }
+    options:
+        expose: true
+
+stock_interne_entree_sortie_save_sortie:
+    path:     /stock/interne/entree-sortie/save-sortie
+    defaults: { _controller: StockInterneBundle:EntreeSortie:saveSortie }
+    options:
+        expose: true
+    methods: [POST]
+
+stock_interne_entree_sortie_index:
+    path:     /stock/interne/entree-sortie/index
+    defaults: { _controller: StockInterneBundle:EntreeSortie:index }
+    options:
+        expose: true
+
+# Libelle
+
+stock_interne_libelle_index:
+    path:     /stock/interne/libelle/index
+    defaults: { _controller: StockInterneBundle:Libelle:index }
+
+stock_interne_libelle_save:
+    path:     /stock/interne/libelle/save
+    defaults: { _controller: StockInterneBundle:Libelle:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+stock_interne_libelle_list:
+    path:     /stock/interne/libelle/list
+    defaults: { _controller: StockInterneBundle:Libelle:list }
+    methods:  [POST]
+    options:
+        expose: true
+
+stock_interne_libelle_editor:
+    path:     /stock/interne/libelle/editor
+    defaults: { _controller: StockInterneBundle:Libelle:editor }
+    methods:  [POST]
+    options:
+        expose: true
+
+stock_interne_libelle_delete:
+    path:     /stock/interne/libelle/delete/{id}
+    defaults: { _controller: StockInterneBundle:Libelle:delete }
+    methods:  [GET]
+    options:
+        expose: true

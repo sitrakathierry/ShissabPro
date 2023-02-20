@@ -1,0 +1,74 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="variation_entrepot_edit">Entrepôt</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Entrepôt" class="form-control" id="entrepot_edit" value="{{ produitEntrepot.entrepot.nom }}" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="variation_code_edit">Code</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Code" class="form-control" id="variation_code_edit" value="{{ produitEntrepot.produit.codeProduit }}" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="variation_indice_edit">Indice</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Indice" class="form-control" id="variation_indice_edit" value="{{ produitEntrepot.indice }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="variation_prix_vente_edit">Prix vente ({{ devise.symbole }})</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Indice" class="form-control" id="variation_prix_vente_edit" value="{{ variation.prixVente }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="variation_stock_edit">Stock</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Indice" class="form-control" id="variation_stock_edit" value="{{ variation.stock }}" readonly="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Déduire?</label>
+        <div class="col-lg-10">
+            <input type="checkbox" id="id-deduct" name="is_deduct" />
+        </div>
+    </div>
+
+    <div class="form-group kl-stock hidden">
+        <label class="col-sm-2 control-label ">Stock à déduire</label>
+        <div class="col-lg-10">
+            <input type="number" min="0" max="{{ variation.stock-1 }}" class="form-control" id="stock_deduit">
+        </div>
+    </div>
+
+    <div class="form-group kl-deduction hidden">
+        <label class="col-sm-2 control-label ">Déduction</label>
+        <div class="col-sm-10">
+            <select class="form-control kl-select" id="deduisement_type">
+                <option value="1">Par décompte</option>
+                <option value="2">Par défaut</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group kl-cause hidden">
+        <label class="col-lg-2 control-label" for="variation_stock_edit">Cause du perte</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Cause" class="form-control" id="id-cause" name="cause">
+        </div>
+    </div>
+
+    <input type="hidden" value="{{variation.id}}" id="id_variation_edit">
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_variation">Enregistrer</span>
+    </div>
+</div>

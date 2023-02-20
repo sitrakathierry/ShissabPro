@@ -1,0 +1,443 @@
+siteweb_homepage:
+    path:     /siteweb/index
+    defaults: { _controller: SitewebBundle:Default:index }
+
+siteweb_add:
+    path:     /siteweb/add
+    defaults: { _controller: SitewebBundle:Default:add }
+
+siteweb_save:
+    path:     /siteweb/save
+    defaults: { _controller: SitewebBundle:Default:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_show:
+    path:     /siteweb/show/{id}
+    defaults: { _controller: SitewebBundle:Default:show }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_consultation:
+    path:     /siteweb/consultation
+    defaults: { _controller: SitewebBundle:Default:consultation }
+
+siteweb_list:
+    path:     /siteweb/list
+    defaults: { _controller: SitewebBundle:Default:list }
+    options:
+        expose: true
+        methods: [POST]
+
+
+siteweb_apropos:
+    path:     /siteweb/apropos/{id}
+    defaults: { _controller: SitewebBundle:Default:apropos }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_apropos_save:
+    path:     /siteweb/apropos-save
+    defaults: { _controller: SitewebBundle:Default:saveAPropos }
+    options:
+        expose: true
+        methods: [POST]
+
+# slider
+siteweb_slider_index:
+    path:     /siteweb/slider/index/{id}
+    defaults: { _controller: SitewebBundle:Slider:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_slider_save:
+    path:     /siteweb/slider/save
+    defaults: { _controller: SitewebBundle:Slider:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_slider_list:
+    path:     /siteweb/slider/list
+    defaults: { _controller: SitewebBundle:Slider:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_slider_show:
+    path:     /siteweb/slider/show/{id}
+    defaults: { _controller: SitewebBundle:Slider:show }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_slider_delete:
+    path:     /siteweb/slider/delete/{id}
+    defaults: { _controller: SitewebBundle:Slider:delete }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_slider_disable:
+    path:     /siteweb/slider/disable/{id}
+    defaults: { _controller: SitewebBundle:Slider:disable }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_slider_enable:
+    path:     /siteweb/slider/enable/{id}
+    defaults: { _controller: SitewebBundle:Slider:enable }
+    options:
+        expose: true
+        methods: [GET]
+
+# produit
+siteweb_produit_index:
+    path:     /siteweb/produit/index/{id}
+    defaults: { _controller: SitewebBundle:Produit:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_produit_save:
+    path:     /siteweb/produit/save
+    defaults: { _controller: SitewebBundle:Produit:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_produit_list:
+    path:     /siteweb/produit/list
+    defaults: { _controller: SitewebBundle:Produit:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_produit_show:
+    path:     /siteweb/produit/show/{id}
+    defaults: { _controller: SitewebBundle:Produit:show }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_produit_delete:
+    path:     /siteweb/produit/delete/{id}
+    defaults: { _controller: SitewebBundle:Produit:delete }
+    options:
+        expose: true
+        methods: [GET]
+
+# actualite
+siteweb_actualite_index:
+    path:     /siteweb/actualite/index/{id}
+    defaults: { _controller: SitewebBundle:Actualite:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_actualite_save:
+    path:     /siteweb/actualite/save
+    defaults: { _controller: SitewebBundle:Actualite:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_actualite_list:
+    path:     /siteweb/actualite/list
+    defaults: { _controller: SitewebBundle:Actualite:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_actualite_show:
+    path:     /siteweb/actualite/show/{id}
+    defaults: { _controller: SitewebBundle:Actualite:show }
+    options:
+        expose: true
+        methods: [GET]
+
+# membre
+siteweb_membre_index:
+    path:     /siteweb/membre/index/{id}
+    defaults: { _controller: SitewebBundle:Membre:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_membre_save:
+    path:     /siteweb/membre/save
+    defaults: { _controller: SitewebBundle:Membre:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_membre_list:
+    path:     /siteweb/membre/list
+    defaults: { _controller: SitewebBundle:Membre:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_membre_show:
+    path:     /siteweb/membre/show/{id}
+    defaults: { _controller: SitewebBundle:Membre:show }
+    options:
+        expose: true
+        methods: [GET]
+
+
+siteweb_membre_delete:
+    path:     /siteweb/membre/delete/{id}
+    defaults: { _controller: SitewebBundle:Membre:delete }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_membre_disable:
+    path:     /siteweb/membre/disable/{id}
+    defaults: { _controller: SitewebBundle:Membre:disable }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_membre_enable:
+    path:     /siteweb/membre/enable/{id}
+    defaults: { _controller: SitewebBundle:Membre:enable }
+    options:
+        expose: true
+        methods: [GET]
+
+# paramètre
+siteweb_paramètre_index:
+    path:     /siteweb/paramètre/index/{id}
+    defaults: { _controller: SitewebBundle:Parametre:index }
+    options:
+        expose: true
+        methods: [GET]
+
+# admin
+siteweb_admin_index:
+    path:     /siteweb/admin/index
+    defaults: { _controller: SitewebBundle:Admin:index }
+
+siteweb_admin_autorisation_show:
+    path:     /siteweb/admin/autorisation/show/{id}
+    defaults: { _controller: SitewebBundle:Admin:autorisation }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_admin_autorisation_save:
+    path:     /siteweb/admin/autorisation/save
+    defaults: { _controller: SitewebBundle:Admin:save }
+    options:
+        expose: true
+        methods: [POST]
+
+
+# devis
+siteweb_devis_index:
+    path:     /siteweb/devis/index/{id}
+    defaults: { _controller: SitewebBundle:Devis:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_devis_list:
+    path:     /siteweb/devis/list
+    defaults: { _controller: SitewebBundle:Devis:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_devis_show:
+    path:     /siteweb/devis/show/{id}
+    defaults: { _controller: SitewebBundle:Devis:show }
+    options:
+        expose: true
+        methods: [GET]
+
+# formulaire
+siteweb_formulaire_index:
+    path:     /siteweb/formulaire/index/{id}
+    defaults: { _controller: SitewebBundle:Formulaire:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_formulaire_save:
+    path:     /siteweb/formulaire/save
+    defaults: { _controller: SitewebBundle:Formulaire:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_formulaire_show:
+    path:     /siteweb/formulaire/show/{id}
+    defaults: { _controller: SitewebBundle:Formulaire:show }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_formulaire_consultation:
+    path:     /siteweb/formulaire/consultation/{id}
+    defaults: { _controller: SitewebBundle:Formulaire:consultation }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_formulaire_display:
+    path:     /siteweb/formulaire/display/{id}
+    defaults: { _controller: SitewebBundle:Formulaire:display }
+    options:
+        expose: true
+        methods: [GET]
+
+# section
+siteweb_section_index:
+    path:     /siteweb/section/index/{id}
+    defaults: { _controller: SitewebBundle:Section:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_section_save:
+    path:     /siteweb/section/save
+    defaults: { _controller: SitewebBundle:Section:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_section_valeur_save:
+    path:     /siteweb/section-valeur/save
+    defaults: { _controller: SitewebBundle:Section:saveValeur }
+    options:
+        expose: true
+        methods: [POST]
+
+# bureau
+siteweb_bureau_index:
+    path:     /siteweb/bureau/index/{id}
+    defaults: { _controller: SitewebBundle:Bureau:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_bureau_save:
+    path:     /siteweb/bureau/save
+    defaults: { _controller: SitewebBundle:Bureau:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_bureau_list:
+    path:     /siteweb/bureau/list
+    defaults: { _controller: SitewebBundle:Bureau:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_bureau_show:
+    path:     /siteweb/bureau/show/{id}
+    defaults: { _controller: SitewebBundle:Bureau:show }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_bureau_delete:
+    path:     /siteweb/bureau/delete/{id}
+    defaults: { _controller: SitewebBundle:Bureau:delete }
+    options:
+        expose: true
+        methods: [GET]
+
+# customer (nos clients)
+siteweb_customer_index:
+    path:     /siteweb/customer/index/{id}
+    defaults: { _controller: SitewebBundle:Customer:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_customer_save:
+    path:     /siteweb/customer/save
+    defaults: { _controller: SitewebBundle:Customer:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_customer_list:
+    path:     /siteweb/customer/list
+    defaults: { _controller: SitewebBundle:Customer:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_customer_show:
+    path:     /siteweb/customer/show/{id}
+    defaults: { _controller: SitewebBundle:Customer:show }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_customer_delete:
+    path:     /siteweb/customer/delete/{id}
+    defaults: { _controller: SitewebBundle:Customer:delete }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_customer_disable:
+    path:     /siteweb/customer/disable/{id}
+    defaults: { _controller: SitewebBundle:Customer:disable }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_customer_enable:
+    path:     /siteweb/customer/enable/{id}
+    defaults: { _controller: SitewebBundle:Customer:enable }
+    options:
+        expose: true
+        methods: [GET]
+
+# videos
+siteweb_video_index:
+    path:     /siteweb/video/index/{id}
+    defaults: { _controller: SitewebBundle:Video:index }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_video_save:
+    path:     /siteweb/video/save
+    defaults: { _controller: SitewebBundle:Video:save }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_video_list:
+    path:     /siteweb/video/list
+    defaults: { _controller: SitewebBundle:Video:list }
+    options:
+        expose: true
+        methods: [POST]
+
+siteweb_video_show:
+    path:     /siteweb/video/show/{id}
+    defaults: { _controller: SitewebBundle:Video:show }
+    options:
+        expose: true
+        methods: [GET]
+
+siteweb_video_delete:
+    path:     /siteweb/video/delete/{id}
+    defaults: { _controller: SitewebBundle:Video:delete }
+    options:
+        expose: true
+        methods: [GET]

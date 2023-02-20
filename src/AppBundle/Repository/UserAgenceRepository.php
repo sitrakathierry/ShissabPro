@@ -26,4 +26,14 @@ class UserAgenceRepository extends \Doctrine\ORM\EntityRepository
 		            ->getResult();
 		return $userAgence;
 	}
+
+	public function getAllUserAgence($agenceId)
+	{
+		$sql = "SELECT fou.* FROM `fos_user` fou JOIN user_agence ua ON ua.user = fou.id WHERE ua.agence = ? " ;
+        $em = $this->getEntityManager();
+        $statement = $em->getConnection()->prepare($sql) ; 
+        $statement->execute(array($agenceId));
+		$result = $statement->fetchAll();
+        return $result ;
+	}
 }

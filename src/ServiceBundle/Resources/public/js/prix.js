@@ -40,7 +40,7 @@ function instance_grid_prix() {
             	if (r.duree == 3) { return 'Mois'; }
             	if (r.duree == 4) { return 'Année'; }
             } else {
-                return r.prestation
+                return 'Qté';
             }
 
         }
@@ -53,7 +53,7 @@ function instance_grid_prix() {
         index:'action',
         align: 'center',
         formatter: function(v){ 
-            return '<button class="btn btn-xs btn-outline btn-primary afficher " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Afficher'; 
+            return '<i class="fa fa-pencil-square-o pointer cl_edit_prix" data-type="0" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-trash-o pointer cl_edit_prix" data-type="2" aria-hidden="true"></i>';
         }
     }];
 
@@ -134,4 +134,101 @@ $(document).on('change', '#type_tarif', function(event) {
         $('.row_duree').addClass('hidden')
         $('.row_prestation').removeClass('hidden')
     }
-})
+});
+
+$(document).on('click', '.cl_edit_prix', function(){
+    var id = $(this).hasClass('cl_add') ? 0 : $(this).closest('tr').attr('id'),
+        action = parseInt($(this).attr('data-type'));
+
+    $('.'+cl_row_edited).removeClass(cl_row_edited);
+
+    if (action === 2) {
+
+        swal({
+            title: "SUPPRIMER",
+            text: "Voulez-vous vraiment supprimer ce tarif?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OUI",
+            closeOnConfirm: false
+        }, function () {
+            var url = Routing.generate('service_delete_prix',{
+                id : id
+            });
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                datatype: 'json',
+                success: function(res) {
+                    swal("Supprimé!", "Le tarif a été supprimé", "success");
+                    load_list_prix();
+                }
+            })
+        });
+
+    } else {
+        if (id !== 0) $(this).closest('tr').addClass(cl_row_edited);
+        show_editeur_prix(id);
+    }
+});
+
+function show_editeur_prix(id)
+{
+    id = typeof id !== 'undefined' ? id : 0;
+
+    $.ajax({
+        data: {
+            id: id
+        },
+        type: 'POST',
+        url: Routing.generate('service_editor_prix'),
+        dataType: 'html',
+        success: function(data) {
+            show_modal(data,'Modification Tarif');
+        }
+    });
+}
+
+$(document).on('click','#id_save_tarif',function(){
+        var type_tarif = $('#type_tarif_edit').val(),
+            duree = $('#duree_edit').val(),
+            prestation = $('#prestation_edit').val(),
+            prix = $('#prix_edit').val(),
+            id_service = $('#id_service').val()
+            id = $('#id_tarif_edit').val();
+
+        if (prix === '')
+        {
+            show_info('Erreur','Prix vide','error');
+            return;
+        }
+
+        var data = {
+            id : id,
+            type_tarif : type_tarif,
+            duree : duree,
+            prestation : prestation,
+            prix : prix,
+            id_service : id_service,
+            ajax: true
+        }
+
+        edit_tarif(0,data);
+    });
+
+    function edit_tarif(act, data)
+    {
+        $.ajax({
+            data: data,
+            type: 'POST',
+            url: Routing.generate('service_save_prix'),
+            dataType: 'html',
+            success: function(data) {
+                show_info('Succés','Modification bien enregistrée avec succés');
+                close_modal();
+                load_list_prix();
+            }
+        });
+    }

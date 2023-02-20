@@ -68,9 +68,22 @@ $(document).ready(function(){
         event.preventDefault();
         var stock = $(this).find('option:selected').data('stock');
         var prix = $(this).find('option:selected').data('prixvente');
+        var code = ''+$(this).find('option:selected').data('code');
         var _tr = $(this).closest('tr');
         var produitSelected = $(this).val();
         // $(_tr).find('.cl_qte').val(stock);
+
+        //Config code bar
+        var settings = {
+          output:"css",
+          bgColor: "#FFFFFF",
+          color: "#000000",
+          barWidth: "1",
+          barHeight: "20"
+        };
+        var btype = "code128";
+
+        $(_tr).find('.cl-code').html("").show().barcode(code, btype, settings);
         $(_tr).find('.cl_prix').val(Number(prix));
 
         var countPanier = $('table#table-commande-add > tbody  > tr').length;
@@ -133,16 +146,17 @@ $(document).ready(function(){
         $('#btn-save').removeClass('disabled');
 
         var id = $('#id-row').val();
-        var new_id = parseInt(id) + 1;
+        var new_id = Number(id) + 1;
         
         var produit_options = $('.cl_produit').html();
 
         var a = '<td><div class="form-group"><div class="col-sm-12"><select class="form-control select2 cl_produit" name="produit[]">'+ produit_options +'</select></div></div></td>';
+        e ='<td><div class="text-center"><div class="col-sm-12 cl-code"></div></div></td>';
         b = '<td><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control cl_qte" name="qte[]" required=""></div></div></td>';
         c = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control cl_prix" name="prix[]" required=""></div></div></td>';
         d = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control cl_total" name="total[]" readonly=""></div></div></td><td></td>'
 
-        var markup = '<tr data-id="'+ new_id +'">' + a + b + c + d + '</tr>';
+        var markup = '<tr data-id="'+ new_id +'">' + a + e +  b + c + d + '</tr>';
         $("#table-commande-add tbody").append(markup);
         $('#id-row').val(new_id);
 
@@ -158,7 +172,7 @@ $(document).ready(function(){
         var produits = [];
         var isFind = false;
 
-        var id     = parseInt($('#id-row').val());
+        var id     = Number($('#id-row').val());
         var new_id = id - 1;
         if (new_id >= 0) {
             $('#id-row').val(new_id);
@@ -185,8 +199,8 @@ $(document).ready(function(){
     $(document).on('input','.cl_qte',function (event) {
         var qte = event.target.value;
         var stock = $(this).attr('max');
-        stock = parseInt(stock);
-        qte = parseInt(qte);
+        stock = Number(stock);
+        qte = Number(qte);
         if(stock && qte){
             if(stock < qte) {
                 // $('#btn-save').addClass('disabled');

@@ -1,0 +1,301 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  {# <link rel="stylesheet" href="{{ asset("css/plugins/sweetalert/sweetalert.min.css") }}"> #}
+  <style type="text/css">
+  	.select2-container {
+          width: 100% !important;
+      }
+ 
+      .select2-container--bootstrap4 .select2-selection--single {
+          height: calc(3rem + 3.5px) !important;
+      }
+      .type_appro,.var_prix_produit
+      {
+        min-width: 120px;
+      }
+      .ref_produit,.ref_produit_new
+      {
+        min-width : 100px ;
+      }
+      .select2.select2-container.select2-container--default
+      {
+        min-width: 250px !important;
+      }
+      input[type="number"], .expirer{
+    min-width: 100px !important;
+} 
+
+.form-group {
+    margin-bottom: 0 !important; 
+}
+      {# .produit
+      {
+        min-width: 450px !important;
+      }
+
+      .select2-container--default .select2-selection--single {
+          min-width: 450px;
+      } #}
+  </style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+  {# <script src="{{ asset('js/plugins/sweetalert/sweetalert2.min.js') }}"></script> #}
+  <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('bundles/produit/js/approvisionnement/add_new.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<div class="wrapper wrapper-content">
+{# {% if permissions.facture.create %} #}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            APPROVISIONNEMENT DES PRODUITS
+          </h5>
+        </div>
+        <div class="ibox-content">
+          <form class="form-horizontal" id="form-appro">
+
+            <div class="hr-line-dashed"></div>
+
+            <div class="table-responsive">
+              <table class="table table-bordered" id="table-appro-add">
+                <thead class="thead-dark">
+                  <tr>
+                    <th class="col-sm-2">ENTREPÔT</th>
+                    <th class ="col-sm">TYPE</th>
+                    <th class="col-sm-2">PRODUIT</th>
+                    <th class="col">PRIX PRODUIT</th>
+                    <th scope="col">INDICE</th>
+                    <th scope="col" class="ajt_var_prix">FOURNISSEURS</th>
+                    <th scope="col">QTE</th>
+                    <th scope="col">EXPIRER LE</th>
+                    <th scope="col">PRIX ACHAT</th>
+                    <th scope="col">CHARGE</th>
+                    <th scope="col">PRIX DE REVIENT</th>
+                    <th scope="col" style="min-width: 150px ;">MARGE</th>
+                    <th scope="col-sm">PRIX VENTE ({{ agence.deviseSymbole }})</th>
+                    <th scope="col">MONTANT TOTAL ({{ agence.deviseSymbole }})</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody> 
+                  <tr data-id="0">
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <select class="form-control select2 entrepot entrepot_produit" name="entrepot[]">
+                            <option></option>
+                            {% for entrepot in entrepots %}
+                              <option value="{{ entrepot.id }}"> {{ entrepot.nom }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                        <input type="hidden" name="choix_nouveau[]"  class="choix_nouveau" value="0">
+                          <select name="type_appro[]" class="type_appro form-control" id="type_appro" required>
+                            <option value="" ></option>
+                            <option value="1" >Nouveau</option>
+                            <option value="2" >Existant</option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <button type="button" class="btn btn-sm btn-success btn-block"><i class="fa fa-file-text" aria-hidden="true"></i></button> -->
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                        	<select class="form-control select2 produit" name="produit[]">
+                        		<option></option>
+                        		{% for produit in produits %}
+                        			<option value="{{ produit.id }}"> 
+                                {{ produit.codeProduit }} | {{ produit.nom }} 
+                              </option>
+                        		{% endfor %}
+                        	</select>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <select name="prix_produit[]" class="prix_produit form-control" id="prix_produit" style="min-width: 100px;" required>
+                            <option value="" ></option>
+                          </select>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="ch_ref"> 
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <select type="select" name="ref_produit[]" class="ref_produit form-control" id="ref_produit"  required>
+                            <option value=""></option>
+                          </select>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <select class="form-control fournisseur select2" name="fournisseur[]" multiple="">
+                            <option></option>
+                            {% for fournisseur in fournisseurs %}
+                              <option value="{{ fournisseur.id }}"> {{ fournisseur.nom }} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control qte" name="qte[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="text" class="form-control expirer" name="expirer[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control prix" name="prix[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control charge" name="charge[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control prix_revient" name="prix_revient[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12" style="margin-bottom: 10px;">
+                          <select class="form-control marge_type" name="marge_type[]">
+                            <option value="0">Montant</option>
+                            <option value="1">%</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control marge_valeur" name="marge_valeur[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control prix_vente" name="prix_vente[]" required="">
+                        </div>
+                      </div>
+                    </td>
+                    <td class="td-montant">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control total" name="total[]" readonly="">
+                        </div>
+                      </div>
+                    </td>
+                    
+                    <td>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                  {% set colspan = 12 + 1 %}
+                    <th colspan="{{ colspan }}">Total</th>
+                    <th>
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control" name="montant_total" id="montant_total" readonly="" value="0">
+                        </div>
+                      </div>
+                      
+                    </th>
+                    <th>
+                      <button class="btn btn-white btn-remove-row btn-full-width">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                      <button class="btn btn-white btn-add-row btn-full-width">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+              {# <div class="hr-line-dashed"></div> #}
+              {# <p>Arrêté la présente facture à la somme de <b id="somme" style="text-transform: uppercase;"></b>  
+              <p>
+              #}
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" id="data_1">
+                  <label class="font-noraml">Le</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control" name="date" value="{{ "now" | date('d/m/Y') }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- <div class=""> -->
+                        {# <button class="btn btn-white" type="reset">
+                            <i class="fa fa-times"></i>
+                            Annuler
+                        </button> #}
+                        <button class="btn btn-primary pull-right" id="btn-save">
+                            <i class="fa fa-save"></i>
+                            Enregistrer
+                        </button>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <input type="hidden" name="" id="id-appro" value="0">
+            <input type="hidden" name="" id="id-row" value="0">
+            <input type="hidden" name="somme" id="id-somme" value="0">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{#   {% else %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <h1 style="text-align: center;"> 
+                        <i class="fa fa-lock"></i>
+                        ACTION NON PERMIS
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %} #}
+</div>
+{% endblock %}

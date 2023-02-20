@@ -1,0 +1,314 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+        #list_table {
+            background: #c0c0c0;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .table-title{
+            display: flex;
+            align-items: center;
+            column-gap: 4px;
+        }
+
+        .select2-container {
+          width: 150px !important;
+        }
+
+      .select2-container--bootstrap4 .select2-selection--single {
+          height: calc(3rem + 3.5px) !important;
+      }
+    </style>
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('bundles/restaurant/js/reservation/add.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <input type="hidden" id="place_disponible" value="">
+    <input type="hidden" id="id-row" value="">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Création commande sur place <span class="badge-warning" id="place_disponible_txt"></span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal hidden" id="form-reservation">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Nb place à reserver</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="nb_place">
+                                            <input type="number" class="hidden" required="" id="nb_a_placer">
+                                            <input type="number" class="hidden" required="" id="nb_assis">
+                                            <input type="number" class="hidden" required="" id="nb_non_place">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary" id="btn-list-table">
+                                        AFFICHER LES TABLES DISPONIBLES
+                                    </button>
+                                    {% if hebergementRestaurantRelation %}
+                                        <button class="btn btn-info" id="btn-client-heb">
+                                            <i class="fa fa-home"></i>
+                                            CLIENT HÉBERGÉ
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if hebergementRestaurantRelation %}
+                                <div class="row heb hidden">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label nom">N° Réservation</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control select2" id="booking">
+                                                    <option></option>
+                                                    {% for booking in bookings %}
+                                                        <option value="{{ booking.id }}">{{ booking.num }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+
+                            <div class="row" id="list_table">
+                                  
+                            </div>
+
+                            <div class="row hidden" id="table-reservation">
+                                <div class="col-lg-12">
+                                    <div style="width: 100%;overflow: scroll;">
+                                        <table class="table table-bordered mw-1500" id="table-reservation-add">
+                                            <thead>
+                                                <tr>
+                                                    <th>TABLE</th>
+                                                    <th>DÉSIGNATION</th>
+                                                    <th>QTÉ</th>
+                                                    <th>PRIX ({{ agence.deviseSymbole }})</th>
+                                                    <th>CUISSON</th>
+                                                    <th>ACCOMPAGNEMENTS</th>
+                                                    <th>TOTAL ({{ agence.deviseSymbole }})</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="principal">
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <select class="form-control select2 tables" name="tables[]" multiple="">
+                                                                <option></option>
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <select class="form-control select2 plat" name="plat[]">
+                                                                <option></option>
+                                                                {% for plat in plats %}
+                                                                    <option 
+                                                                        value="{{ plat.id }}"
+                                                                        data-prixvente="{{ plat.prixVente }}"
+                                                                    >{{ plat.nom }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control qte" name="qte[]" >
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control prix" name="prix[]" >
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <select class="form-control cuisson" name="cuisson[]">
+                                                                <option></option>
+                                                                <option value="s">S</option>
+                                                                <option value="ap">AP</option>
+                                                                <option value="ald">ALD</option>
+                                                                <option value="bc">BC</option>
+                                                                <option value="b">B</option>
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" class="accompagnement_supp" value="0">
+                                                        <table class="table table-bordered table-accompagnement">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="form-group">
+                                                                          <div class="col-sm-12">
+                                                                            <select class="form-control select2 accompagnement" name="accompagnement[]">
+                                                                                <option></option>
+                                                                                {% for accompagnement in accompagnements %}
+                                                                                    <option 
+                                                                                        value="{{ accompagnement.id }}"
+                                                                                        data-prix="{{ accompagnement.prix }}"
+                                                                                    >{{ accompagnement.nom }}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                          </div>
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <div class="form-group">
+                                                                          <div class="col-sm-12">
+                                                                            <select class="option form-control portion_accompagnement">
+                                                                                <option value="0"></option>
+                                                                                <option value="1">1 </option>
+                                                                                <option value="0.5">1/2 </option>
+                                                                            </select>
+                                                                            <input type="number" class="hidden qte_accompagnement" name="qte_accompagnement []" placeholder="">
+                                                                          </div>
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <div class="form-group">
+                                                                          <div class="col-sm-12">
+                                                                            <input type="number" class="form-control prix_accompagnement" name="prix_accompagnement[]" placeholder="Total">
+                                                                          </div>
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <button class="btn btn-white btn-full-width btn-remove-tr-accompagnement">
+                                                                            <i class="fa fa-trash"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td colspan="2"></td>
+                                                                    <td>
+                                                                        <div class="form-group">
+                                                                          <div class="col-sm-12">
+                                                                            <input type="number" class="form-control total_accompagnement" name="total_accompagnement[]" placeholder="Total" readonly="">
+                                                                          </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button class="btn btn-white btn-full-width btn-add-row-accompagnement" data-id="0">
+                                                                            <i class="fa fa-plus"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control total" name="total[]" readonly="">
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-full-width btn-remove-tr">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                        <input type="hidden" class="statut_detail" value="1"></td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="6">TOTAL</th>
+                                                    <th>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control" id="montant_total" readonly="">
+                                                          </div>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        {# <span class="btn-remove-row" data-id="0"><i class="fa fa-trash"></i></span>&nbsp;
+                                                        <span class="btn-add-row" data-id="0"><i class="fa fa-plus"></i></span> #}
+                                                        <button class="btn btn-info btn-full-width btn-add-row" data-id="0">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-lg-6 col-lg-push-6">
+                                <div class="form-group" id="data_1">
+                                  <label class="font-noraml">DATE</label>
+                                  <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input type="text" class="form-control" id="date" value="{{ "now" | date('d/m/Y') }}" readonly="">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                           
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button class="btn btn-primary pull-right hidden" id="btn-save">
+                                        <i class="fa fa-save"></i>
+                                        Enregistrer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden" id="reservation-plein">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                  <div class="alert alert-warning">
+                                      <i class="fa fa-warning"></i>
+                                      AUCUNE TABLE LIBRE
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

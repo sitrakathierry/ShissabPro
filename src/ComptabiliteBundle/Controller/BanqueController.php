@@ -29,9 +29,18 @@ class BanqueController extends Controller
     public function getListAction(Request $request)
     {
 
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+                    
+        $agence = $userAgence->getAgence();
+
         $banques = $this->getDoctrine()
                 ->getRepository('AppBundle:Banque')
-                ->list();
+                ->list($agence->getId());
 
         return new JsonResponse($banques);
     }
@@ -40,6 +49,15 @@ class BanqueController extends Controller
     {
     	$nom = $request->request->get('nom');
         $id = $request->request->get('id');
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+                    ->getRepository('AppBundle:UserAgence')
+                    ->findOneBy(array(
+                        'user' => $user
+                    ));
+                    
+        $agence = $userAgence->getAgence();
 
         if ($id) {
         	$banque = $this->getDoctrine()
@@ -50,6 +68,7 @@ class BanqueController extends Controller
         }
 
         $banque->setNom($nom);
+        $banque->setAgence($agence);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($banque);
@@ -84,5 +103,44 @@ class BanqueController extends Controller
         return $this->render('@Comptabilite/Banque/editor.html.twig',[
             'banque' => $banque,
         ]);
+    }
+
+    public function updateAgenceAction()
+    {
+        $comptes = $this->getDoctrine()
+            ->getRepository('AppBundle:CompteBancaire')
+            ->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+        
+        foreach ($comptes as $compte) {
+            $banque_compte = $compte->getBanque();
+            $agence_compte = $compte->getAgence();
+            $agence_banque = $banque_compte->getAgence();
+
+            if (!$agence_banque) {
+                $banque_compte->setAgence($agence_compte);
+                $em->persist($banque_compte);
+                $em->flush();
+            } else {
+                if ($agence_compte != $agence_banque) {
+                    $banque_agence = new Banque();
+
+                    $banque_agence->setNom( $banque_compte->getNom() );
+                    $banque_agence->setAgence( $agence_compte );
+
+                    $em->persist($banque_agence);
+                    $em->flush();
+
+                    $compte->setBanque($banque_agence);
+                    $em->persist($banque_agence);
+                    $em->flush();
+                }
+            }
+
+
+        }
+
+        echo "succes"; die();
     }
 }

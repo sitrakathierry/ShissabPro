@@ -1,0 +1,62 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>DATE</th>
+			<th>N° REÇU</th>
+			<th>PRODUIT</th>
+			<th>QTE</th>
+			<th>PRIX UNITAIRE ({{ agence.deviseSymbole }})</th>
+			<th>TOTAL ({{ agence.deviseSymbole }})</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% set total = 0 %}
+		{% for commande in commandes %}
+			{% if commande.panniers %}
+				{% set i = 1 %}
+				{% for  pannier in commande.panniers %}
+					<tr>
+						{% if i == 1 %}
+							<td rowspan="{{ (commande.panniers | length) + 1 }}">{{ commande.date }}</td>
+							<td rowspan="{{ (commande.panniers | length) + 1 }}">{{ commande.recu }}</td>
+						{% endif %}
+						<td>{{ pannier.produit }}  {{ pannier.pu }} {{ agence.deviseSymbole }}</td>
+						<td>{{ pannier.qte }}</td>
+						<td>{{ pannier.pu }}</td>
+						<td>{{ pannier.total|number_format(2) }}</td>
+						{% if i == 1 %}
+							<td rowspan="{{ (commande.panniers | length) + 1 }}">
+								<a href="{{ path('caisse_commande_show', { id : commande.id }) }}" class="btn btn-primary">
+									<i class="fa fa-edit">Afficher</i>
+								</a>
+
+								{% if is_granted('ROLE_RESPONSABLE') %}
+									<a href="" class="btn btn-danger btn-delete" data-id="{{commande.id}}">
+										<i class="fa fa-trash">Supprimer</i>
+									</a>
+								{% endif %}
+							</td>
+						{% endif %}
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+				<tr>
+					<td colspan="3">TOTAL</td>
+					<td>{{ commande.montant_total|number_format(2) }}</td>
+					{% set total = total + commande.montant_total %}
+				</tr>
+				<tr>
+					<td colspan="7" bgcolor="#ddd"></td>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr bgcolor="#fd9597">
+			<th colspan="5">TOTAL</th>
+			<th >{{ total }}</th>
+			<th></th>
+		</tr>
+	</tfoot>
+</table>

@@ -1,0 +1,28 @@
+<ul class="folder-list m-b-md" style="padding: 0">
+    <li><a href="{{ path('siteweb_show', { id : siteweb.id }) }}"> <i class="fa fa-globe"></i>Details</a></li>
+</ul>
+<ul class="folder-list m-b-md" style="padding: 0">
+    <li><a href="{{ path('siteweb_apropos', { id : siteweb.id }) }}"> <i class="fa fa-info-circle"></i>A Propos</a></li>
+</ul>
+
+<ul class="folder-list m-b-md" style="padding: 0">
+    <li><a href="{{ path('siteweb_section_index', { id : siteweb.id }) }}"> <i class="fa fa-crop"></i>Sections</a></li>
+</ul>
+
+{% for autorisation in autorisations %}
+    <ul class="folder-list m-b-md" style="padding: 0">
+        <li><a href="{{ path(autorisation.module.route, { id : siteweb.id }) }}"> <i class="fa {{ autorisation.module.icon }}"></i>{{ autorisation.module.name }}</a></li>
+    </ul>
+{% endfor %}
+
+{% for formulaire in formulaires %}
+    <ul class="folder-list m-b-md" style="padding: 0">
+        <li><a href="{{ path('siteweb_formulaire_consultation', { id : formulaire.id }) }}"> <i class="fa fa-edit"></i>{{ formulaire.nom }}</a></li>
+    </ul>
+{% endfor %}
+
+{% if is_granted('ROLE_RESPONSABLE') %}
+    <ul class="folder-list m-b-md" style="padding: 0">
+        <li><a href="{{ path('siteweb_paramètre_index', { id : siteweb.id }) }}"> <i class="fa fa-cogs"></i>Paramètres</a></li>
+    </ul>
+{% endif %}

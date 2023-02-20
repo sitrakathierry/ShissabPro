@@ -1,0 +1,81 @@
+{% for pannier in details %}
+	<tr>
+      <td>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <select class="form-control type_designation" name="type_designation[]">
+              <option></option>
+              <option value="1" {% if pannier.type == 1 %} selected="" {% endif %} >PRODUIT</option>
+              <option value="2" {% if pannier.type == 2 %} selected="" {% endif %} >SERVICE</option>
+            </select>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <select class="form-control designation {{ pannier.type == 3 ? 'hidden' : '' }}" name="designation[]">
+              <option></option>
+              {% if pannier.type == 1 %}
+              		<option
+          				value="{{ pannier.variationProduit.id }}"
+                  		selected=""
+          			>{{ pannier.variationProduit.produitEntrepot.produit.nom }} - {{ pannier.variationProduit.prixVente }} KMF</option>
+              {% endif %}
+              {% if pannier.type == 2 %}
+              		<option
+          				value="{{ pannier.service.id }}"
+          				selected=""
+          			>{{ pannier.service.nom }}</option>
+              {% endif %}
+            </select>
+            <div class="designation_autre_container {{ pannier.type != 3 ? 'hidden' : '' }}">
+              <textarea class="designation_autre" name="designation_autre[]">
+              	{% if pannier.type == 3 %}
+              		{{ pannier.designationAutre | raw }}
+              	{% endif %}
+              </textarea>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+    <div class="form-group">
+          <div class="col-sm-12">
+            <textarea class="description_detail" name="description_detail[]">
+            </textarea>
+          </div>
+        </div>
+      </td>
+      <td class="soustable">
+      	{% if pannier.type == 1 or pannier.type == 3%}
+      		<div class="form-group">
+								  <div class="col-sm-12">
+								    <input type="number" class="form-control f_ps_qte" name="f_ps_qte[]" value="{{ pannier.qte }}">
+								  </div>
+								</div>
+
+								<input type="hidden" name="f_ps_periode[]" class="f_ps_periode">
+								<input type="hidden" name="f_ps_duree[]" class="f_ps_duree">
+      	{% endif %}
+      	{% if pannier.type == 2 %}
+      		<div class="form-group">
+										<div class="col-sm-6">
+										<input type="number" class="form-control f_ps_periode" name="f_ps_periode[]" value="{{ pannier.periode }}">
+										</div>
+										<div class="col-sm-6">
+										<select class="form-control f_ps_duree" name="f_ps_duree[]">
+								  			<option></option>
+								  			<option value="1" {% if pannier.duree == 1 %} selected="" {% endif %} >Heure</option>
+								         	<option value="2" {% if pannier.duree == 2 %} selected="" {% endif %} >Jour</option>
+								         	<option value="3" {% if pannier.duree == 3 %} selected="" {% endif %} >Mois</option>
+								         	<option value="4" {% if pannier.duree == 4 %} selected="" {% endif %} >Année</option>
+								        </select>
+										</div>
+								</div>
+								<input type="hidden" name="f_ps_qte[]" class="f_ps_qte">
+
+      	{% endif %}
+      </td>
+    </tr>
+{% endfor %}

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('bundles/siteweb/js/show.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<input type="hidden" id="id" value="{{ siteweb.id }}">
+<div class="wrapper wrapper-content">
+   <div class="row">
+      <div class="col-lg-2">
+         <div class="ibox float-e-margins">
+            <div class="ibox-content mailbox-content">
+               <div class="file-manager">
+                  <a class="btn btn-block btn-primary compose-mail" href="{{ siteweb.lien }}" target="_blank">
+                  {{ siteweb.nom }} <i class="fa fa-external-link"></i>
+                  </a>
+                  <div class="space-25"></div>
+                  {{ render(controller('SitewebBundle:Default:menu', { id: siteweb.id } )) }}
+                  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-10 animated fadeInRight">
+         <div class="mail-box-header">
+            <h2>
+               Details
+            </h2>
+         </div>
+         <div class="mail-box">
+            <div class="mail-body">
+               <div class="form-horizontal">
+                  <div class="form-group">
+                     <label class="col-sm-2 control-label">Nom</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control" value="{{ siteweb.nom }}" id="nom">
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label class="col-sm-2 control-label">Lien</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control" value="{{ siteweb.lien }}" id="lien">
+                     </div>
+                  </div>
+                  <br>
+                  <div class="form-group">
+                     <label class="col-sm-2 control-label">Description</label>
+                     <div class="col-sm-10">
+                        <textarea class="summernote form-control" id="description">
+                           {{ siteweb.description }}
+                        </textarea>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="mail-body text-right tooltip-demo">
+               <button class="btn btn-primary btn-sm" id="btn-save">
+               <i class="fa fa-save"></i> Mettre à jour
+               </button>
+            </div>
+            <div class="clearfix"></div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/client/css/bootstrap-tagsinput.css') }}">
+ {% endblock  %}
+
+ {% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/client/js/bootstrap-tagsinput.js') }}"></script>
+    <script src="{{ asset('bundles/restaurant/js/accompagnement/index.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            Accompagnement des plat
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form class="form-horizontal">
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label nom">Nom</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="nom" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label nom">Prix</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" class="form-control" id="prix" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label description">Description</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="summernote" id="description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!-- <div class=""> -->
+                                       <!--  <button class="btn btn-white" type="reset">
+                                            <i class="fa fa-times"></i>
+                                            Annuler
+                                        </button> -->
+                                        <button class="btn btn-primary" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Enregistrer
+                                        </button>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                           Liste Accompagnements
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                        	<div class="col-lg-12">
+                        		<table id="list_accompagnement"></table>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

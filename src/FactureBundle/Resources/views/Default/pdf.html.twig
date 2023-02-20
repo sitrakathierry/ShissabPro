@@ -90,13 +90,13 @@
 	        <td class="text-center" style="width:100%">
 	        	{% set type = '' %}
 	        	{% if facture.type == 1 %}
-	        	    {% set type = 'PROFORMA' %}
+	        	    {% set type = 'DEVIS' %}
 	        	{% else %}
-	        	    {% set type = 'DEFINITIVE' %}
+	        	    {% set type = 'FACTURE' %}
 	        	{% endif %}
 
 	            <h3>
-	                <u>FACTURE {{type}} N° {{facture.formattedNum}}</u>
+	                <u>{{type}} - N° {{facture.formattedNum}}</u>
 	            </h3>
 	        </td>
 	    </tr>
@@ -105,13 +105,44 @@
 
 	<table style="width:100%; margin-top: 20px">
 		<tr>
-			<td style="width:20%" class="u b">CLIENT</td>
-			<td style="width:80%; text-transform: uppercase;" class="dashed typo" >
-
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>DOIT</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+			</td>
+		</tr>
+		<tr>
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>Client</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+				
 	            {% if facture.client.statut == 1 %}
                     : {{facture.client.idClientMorale.nomSociete}}
                 {% else %}
                     : {{facture.client.idClientPhysique.nom}}
+                {% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>Adresse</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+				
+	            {% if facture.client.statut == 1 %}
+                    : {{facture.client.idClientMorale.adresse}}
+                {% else %}
+                    : {{facture.client.idClientPhysique.adresse}}
+                {% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td style="width:70%"><b></b></td>
+			<td style="width:10%"><b>Tel</b></td>
+			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+				
+	            {% if facture.client.statut == 1 %}
+                    : {{facture.client.idClientMorale.telFixe}}
+                {% else %}
+                    : {{facture.client.idClientPhysique.tel}}
                 {% endif %}
 			</td>
 		</tr>

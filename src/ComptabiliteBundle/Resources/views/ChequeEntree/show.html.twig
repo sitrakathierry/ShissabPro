@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+    .wizard > .content > .body {
+    position: relative !important;
+    }
+    .wizard > .content {
+    background: #fff;
+    }
+    /*.form-control {
+    margin: 10px !important;
+    }*/
+    .txt-bottom {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid;
+    width: 100%;
+    }
+
+    /*.width-auto {
+      width: auto !important;
+    }*/
+  </style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+  <script src="{{ asset('bundles/comptabilite/js/cheque-entree-add.js') }}"></script> 
+{% endblock %}
+{% block contenu %}
+<input type="hidden" id="id" value="{{ cheque.id }}">
+<input type="hidden" id="type" value="{{ cheque.type }}">
+<input type="hidden" id="statut" value="{{ cheque.statut }}">
+<div class="wrapper wrapper-content ">
+  <div class="row">
+    <div class="col-lg-12">
+    	<div class="ibox float-e-margins">
+    		<div class="ibox-title">
+    			<h5>
+    				Chèque entrant - N° <span class="badge-warning">{{ cheque.num }}</span>
+    			</h5>
+    		</div>
+    		<div class="ibox-content">
+    			<div class="form-horizontal">
+
+			<div class="row">
+          		<div class="col-lg-6" id="div-num-cheque">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">N° Chèque</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="cheque" value="{{ cheque.num }}">
+                      </div>
+                  </div>
+
+              </div>
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                      <label class="col-sm-2 control-label">Banque</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" id="banque">
+                          <option></option>
+                          {% for banque in banques %}
+                            <option 
+                            	value="{{ banque.id }}"
+                              {% if cheque.banque %}
+                              	{% if banque.id == cheque.banque.id %}
+                              		selected=""
+                              	{% endif %}
+                              {% endif %}
+                            >{{ banque.nom }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                  </div>
+              </div>
+              
+            </div>
+
+            <div class="row">
+            	<div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Montant ({{ agence.deviseSymbole }})</label>
+                      <div class="col-sm-10">
+                          <input type="number" class="form-control" name="" id="montant" value="{{ cheque.montant }}">
+                      </div>
+                  </div>
+              </div>
+              <input type="hidden" id="devise" value="{{ agence.deviseSymbole }}">
+              {# <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Devise</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="devise" name="devise">
+                          <option value="KMF" {% if cheque.devis == 'KMF'%} selected="" {% endif %} >KMF</option>
+                          <option value="EURO" {% if cheque.devis == 'EURO'%} selected="" {% endif %} >EURO</option>
+                        </select>
+                    </div>
+                </div>
+              </div> #}
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6" id="div-date-cheque">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date Chèque</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date_cheque" value="{{ cheque.dateCheque | date('d/m/Y') }}">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date déclaration</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date" value="{{ cheque.date | date('d/m/Y') }}">
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group">
+                  <div class="col-sm-12">
+                      <input type="text" class="form-control" name="" id="lettre" readonly="" value="{{ cheque.lettre }}">
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+							<label class="col-sm-1 control-label">Description</label>
+				    	<div class="col-lg-12">
+				    		<div id="raison" class="summernote">
+				    			{{ cheque.raison | raw }}
+				    		</div>
+				    	</div>
+				    </div>
+
+				    
+
+    				<div class="hr-line-dashed"></div>
+    				<div class="row pull-rigth">
+					      <div class="col-lg-12">
+				            <button class="btn btn-primary" id="btn-save">
+				                <i class="fa fa-save"></i>
+				                Mettre à jour
+				            </button>
+                    <button class="btn btn-danger pull-right" id="btn-delete">
+                        <i class="fa fa-trash"></i>
+                        Supprimer
+                    </button>
+					      </div>
+					  </div>
+
+
+    			</div>
+    		</div>
+    	</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

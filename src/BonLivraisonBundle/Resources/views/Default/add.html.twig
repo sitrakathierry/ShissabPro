@@ -1,0 +1,245 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<style type="text/css">
+  .select2-container {
+  width: 100% !important;
+  }
+  .select2-container--bootstrap4 .select2-selection--single {
+  height: calc(3rem + 3.5px) !important;
+  }
+</style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('bundles/bonlivraison/js/add.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<div class="wrapper wrapper-content">
+  {# {% if permissions.facture.create %} #}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>
+            Création bon de livraison
+          </h5>
+        </div>
+        <div class="ibox-content">
+          <form class="form-horizontal" id="form-commande">
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">BON DE COMMANDE</label>
+                  <div class="col-sm-10">
+                    <select class="form-control m-b select2" name="bon_commande" id="bon_commande">
+                      <option></option>
+                      {% for bonCommande in bonCommandes %}
+                        <option value="{{ bonCommande.id }}">
+                          {{ bonCommande.recu }} | 
+                          
+                          {% if bonCommande.client.statut == 1 %}
+                            | {{ bonCommande.client.idClientMorale.nomSociete }}
+                          {% else %}
+                            | {{ bonCommande.client.idClientPhysique.nom }}
+                          {% endif %}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">FACTURE DÉFINITIF</label>
+                  <div class="col-sm-10">
+                    <select class="form-control m-b select2" name="facture" id="id-facture">
+                      <option></option>
+                      {% for facture in factures %}
+                        <option 
+                          value="{{ facture.id }}"
+                          data-modele="{{ facture.modele }}"
+                        >
+                          {{ facture.formattedNum }} | 
+
+                          {% if facture.modele == 1 %} FACTURE PRODUIT {% endif %}
+                          {% if facture.modele == 2 %} FACTURE SERVICE {% endif %}
+                          {% if facture.modele == 3 %} FACTURE PRODUIT & SERVICE {% endif %}
+                          
+                          {% if facture.client.statut == 1 %}
+                            | {{ facture.client.idClientMorale.nomSociete }}
+                          {% else %}
+                            | {{ facture.client.idClientPhysique.nom }}
+                          {% endif %}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group client_mac">
+                  <label class="col-sm-2 control-label">CLIENT *</label>
+                  <div class="col-sm-10">
+                    <select class="form-control m-b select2" name="client" id="client">
+                      <option value=""></option>
+                      {% if is_granted('ROLE_ADMIN') %}
+                      {% for client in clients %}
+                      {% if client.statut == 1%}
+                      <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                        {{client.idClientMorale.nomSociete}}
+                      </option>
+                      {% else %}
+                      <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                        {{client.idClientPhysique.nom}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
+                      {% else %}
+                      {% for client in clients %}
+                      {% if client.agence == userAgence.agence %}
+                      {% if client.statut == 1%}
+                      <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                        {{client.idClientMorale.nomSociete}}
+                      </option>
+                      {% else %}
+                      <option value="{{client.numPolice}}" data-police="{{client.formattedNum}}">
+                        {{client.idClientPhysique.nom}}
+                      </option>
+                      {% endif %}
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <table class="table table-bordered" id="table-commande-add">
+              <thead class="thead-dark">
+                <tr>
+                  <th>TYPE DESIGNATION</th>
+                  <th>DESIGNATION</th>
+                  <th>DESCRIPTION</th>
+                  <th>QTÉ / DURÉE & FORMAT</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="principal">
+                <tr>
+                  <td>
+                    <div class="form-group">
+                      <div class="col-sm-12">
+                        <select class="form-control type_designation" name="type_designation[]">
+                          <option></option>
+                          <option value="1">PRODUIT</option>
+                          <option value="2">PRESTATION</option>
+                          {# <option value="3">AUTRE</option> #}
+                        </select>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <div class="col-sm-12">
+                        <select class="form-control designation" name="designation[]">
+                          <option></option>
+                        </select>
+                        <div class="designation_autre_container hidden">
+                          <textarea class="designation_autre" name="designation_autre[]">
+                          </textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <div class="col-sm-12">
+                        <textarea class="description_detail" name="description_detail[]">
+                        </textarea>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="soustable"></td>
+                </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                  <th colspan="3">TOTAL</th>
+                  <th>
+                    <span class="btn-remove-row" data-id="0"><i class="fa fa-trash"></i></span>&nbsp;
+                    <span class="btn-add-row" data-id="0"><i class="fa fa-plus"></i></span>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+            <div class="hr-line-dashed"></div>
+
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" >
+                  <label class="font-noraml">À</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                    <input type="text" class="form-control" name="lieu" id="lieu" value="{{ agence.region }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" id="data_1">
+                  <label class="font-noraml">Le</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control" name="date" id="date" value="{{ "now" | date('d/m/Y') }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+              <div class="col-lg-12">
+                <!-- <div class=""> -->
+                {# <button class="btn btn-white" type="reset">
+                <i class="fa fa-times"></i>
+                Annuler
+                </button> #}
+                <button class="btn btn-primary pull-right" id="btn-save">
+                <i class="fa fa-save"></i>
+                Enregistrer
+                </button>
+                <!-- </div> -->
+              </div>
+            </div>
+            <input type="hidden" name="" id="id-row" value="0">
+            <input type="hidden" name="somme" id="id-somme" value="0">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {#   {% else %}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <h1 style="text-align: center;"> 
+            <i class="fa fa-lock"></i>
+            ACTION NON PERMIS
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %} #}
+</div>
+{% endblock %}

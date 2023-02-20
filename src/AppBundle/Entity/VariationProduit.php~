@@ -36,15 +36,28 @@ class VariationProduit
     private $stock;
 
     /**
-     * @var \AppBundle\Entity\Produit
+     * @var \AppBundle\Entity\ProduitEntrepot
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Produit")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProduitEntrepot")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="produit", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="produit_entrepot", referencedColumnName="id")
      * })
      */
-    private $produit;
+    private $produitEntrepot;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="marge_type", type="integer", nullable=true)
+     */
+    private $margeType = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marge_valeur", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $margeValeur;
 
     /**
      * Get id
@@ -103,5 +116,76 @@ class VariationProduit
     {
         return $this->stock;
     }
-}
 
+    /**
+     * Set produitEntrepot
+     *
+     * @param \AppBundle\Entity\ProduitEntrepot $produitEntrepot
+     *
+     * @return VariationProduitEntrepot
+     */
+    public function setProduitEntrepot(\AppBundle\Entity\ProduitEntrepot $produitEntrepot = null)
+    {
+        $this->produitEntrepot = $produitEntrepot;
+
+        return $this;
+    }
+
+    /**
+     * Get produitEntrepot
+     *
+     * @return \AppBundle\Entity\ProduitEntrepot
+     */
+    public function getProduitEntrepot()
+    {
+        return $this->produitEntrepot;
+    }
+
+    /**
+     * Set margeType
+     *
+     * @param integer $margeType
+     *
+     * @return VariationProduit
+     */
+    public function setMargeType($margeType)
+    {
+        $this->margeType = $margeType;
+
+        return $this;
+    }
+
+    /**
+     * Get margeType
+     *
+     * @return integer
+     */
+    public function getMargeType()
+    {
+        return $this->margeType;
+    }
+
+    /**
+     * Set margeValeur
+     *
+     * @param string $margeValeur
+     *
+     * @return VariationProduit
+     */
+    public function setMargeValeur($margeValeur)
+    {
+        $this->margeValeur = $margeValeur;
+
+        return $this;
+    }
+
+    /**
+     * Get margeValeur
+     *
+     * @return string
+     */
+    public function getMargeValeur()
+    {
+        return $this->margeValeur;
+    }
+}

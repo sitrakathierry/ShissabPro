@@ -59,3 +59,43 @@ agence_delete:
     methods:  [GET]
     options:
         expose: true
+
+# Paramètre
+agence_parametre_index:
+    path:     /agence/parametre/index
+    defaults: { _controller: AgenceBundle:Parametre:index }
+
+agence_parametre_save:
+    path:     /agence/parametre/save
+    defaults: { _controller: AgenceBundle:Parametre:save }
+    methods:  [POST]
+    options:
+        expose: true
+
+agence_devise_save:
+    path:     /agence/devise/save
+    defaults: { _controller: AgenceBundle:Parametre:saveDevise }
+    methods:  [POST]
+    options:
+        expose: true
+
+agence_devise_delete:
+    path:     /agence/devise/delete/{id}
+    defaults: { _controller: AgenceBundle:Parametre:deleteDevise }
+    methods:  [GET]
+    options:
+        expose: true
+
+agence_devise_entrepot_save:
+    path:     /agence/devise-entrepot/save
+    defaults: { _controller: AgenceBundle:Parametre:saveDeviseEntrepot }
+    methods:  [POST]
+    options:
+        expose: true
+
+agence_parametre_ticket_save:
+    path:     /agence/parametre-ticket/save
+    defaults: { _controller: AgenceBundle:Parametre:saveTicket }
+    methods:  [POST]
+    options:
+        expose: true

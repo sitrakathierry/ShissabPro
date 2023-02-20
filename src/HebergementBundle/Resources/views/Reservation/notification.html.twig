@@ -1,0 +1,67 @@
+{% if checkHebergement %}
+	{% set count = bookings | length %}
+	<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+	    <i class="fa fa-home"></i>  <span class="label label-danger">{{ count }}</span>
+	</a>
+	<ul class="dropdown-menu dropdown-alerts">
+
+		{% set i = 1 %}
+
+		{% set break = 3 %}
+
+		{% for booking in bookings %}
+
+			{% if i <= break %}
+			    <li>
+			        <a href="{{ path('hebergement_reservation_show',{ id : booking.id}) }}">
+
+			        	{% if booking.date_entree == "now" | date('d/m/Y') %}
+				            <div>
+				                <i class="fa fa-calendar fa-fw" style="color: #ed5565;"></i> 
+				                La reservation N° <span class="badge-warning">{{booking.num}}</span> dans la chambre <b>{{ booking.chambre }}</b>
+				                commence aujourd'hui à {{ booking.heure_entree }}
+				                <span class="pull-right text-muted small">{{booking.date_entree}}</span>
+				            </div>
+			        	{% endif %}
+
+			        	{% if booking.date_sortie == "now" | date('d/m/Y') %}
+			        		<div>
+				                <i class="fa fa-clock-o fa-fw" style="color: #ed5565;"></i> 
+				                La reservation N° <span class="badge-warning">{{booking.num}}</span> dans la chambre <b>{{ booking.chambre }}</b>
+				                se termine aujourd'hui à {{ booking.heure_sortie }}
+				                <span class="pull-right text-muted small">{{booking.date_sortie}}</span>
+				            </div>
+			        	{% endif %}
+
+			        </a>
+			    </li>
+			    <li class="divider"></li>
+			
+			{% else %}
+				    
+
+			{% endif %}
+
+		    {% set i = i + 1 %}
+		    
+		{% endfor %}
+
+	   {#  <li>
+	        <div class="text-center link-block">
+	            <a href="">
+	                <strong>Afficher Tous 
+
+	                	{% if (count - break) > 0 %}
+		                	<span class="label label-danger">
+		                		+ {{ count - break }} 
+		                	</span> 
+	                	{% endif %}
+
+	                </strong>
+	                <!-- <i class="fa fa-angle-right"></i> -->
+	            </a>
+	        </div>
+	    </li> #}
+	    
+	</ul>
+{% endif %}

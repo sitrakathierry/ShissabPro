@@ -1,0 +1,6 @@
+services:
+  api_config.token_authenticator:
+    class: Api\ConfigBundle\Security\TokenAuthenticator
+    
+  api_config.access_denied_handler:
+    class: Api\ConfigBundle\Security\AccessDeniedHandler

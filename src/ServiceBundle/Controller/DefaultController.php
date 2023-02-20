@@ -141,12 +141,20 @@ class DefaultController extends Controller
         $duree = $request->request->get('duree');
         $prestation = $request->request->get('prestation');
         $prix = $request->request->get('prix');
+        $id = $request->request->get('id');
 
         $service = $this->getDoctrine()
                 ->getRepository('AppBundle:Service')
                 ->find($id_service);
 
-        $tarif = new TarifService();
+        if ($id) {
+            $tarif = $this->getDoctrine()
+                ->getRepository('AppBundle:TarifService')
+                ->find($id);
+        } else {
+            $tarif = new TarifService();
+        }
+        
         $tarif->setType($type_tarif);
         $tarif->setDuree($duree);
         $tarif->setPrestation($prestation);
@@ -172,6 +180,31 @@ class DefaultController extends Controller
                 ->list($id_service);
 
         return new JsonResponse( $services );
+    }
+
+    public function deletePrixAction($id)
+    {
+        $tarif  = $this->getDoctrine()
+                        ->getRepository('AppBundle:TarifService')
+                        ->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($tarif);
+        $em->flush();
+
+        return new JsonResponse(200);
+        
+    }
+
+    public function editorPrixAction(Request $request)
+    {
+        $id = $request->request->get('id');
+        $tarif = $this->getDoctrine()->getRepository('AppBundle:TarifService')
+            ->find($id);
+
+        return $this->render('@Service/Default/editor-tarif.html.twig',[
+            'tarif' => $tarif,
+        ]);
     }
     
 }

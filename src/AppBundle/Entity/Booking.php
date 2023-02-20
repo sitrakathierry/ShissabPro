@@ -1,0 +1,798 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Booking
+ *
+ * @ORM\Table(name="booking")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BookingRepository")
+ */
+class Booking
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_pers", type="integer", nullable=true)
+     */
+    private $nbPers;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_nuit", type="integer", nullable=true)
+     */
+    private $nbNuit;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_entree", type="datetime", nullable=true)
+     */
+    private $dateEntree;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_sortie", type="datetime", nullable=true)
+     */
+    private $dateSortie;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="avec_petit_dejeuner", type="integer", nullable=true)
+     */
+    private $avecPetitDejeuner;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $total;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="remise", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $remise = '0.00';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="type_remise", type="integer", nullable=true)
+     */
+    private $type_remise = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_petit_dejeuner", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montantPetitDejeuner = '0.00';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montant;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="statut", type="integer", nullable=true)
+     */
+    private $statut = 0;
+
+    /**
+     * @var \AppBundle\Entity\Chambre
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Chambre")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="chambre", referencedColumnName="id")
+     * })
+     */
+    private $chambre;
+
+    /**
+     * @var \AppBundle\Entity\Agence
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agence")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agence", referencedColumnName="id")
+     * })
+     */
+    private $agence;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="heure_entree", type="time", nullable=true)
+     */
+    private $heureEntree = null;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="heure_sortie", type="time", nullable=true)
+     */
+    private $heureSortie = null;
+
+    /**
+     * @var \AppBundle\Entity\ModelePdf
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ModelePdf")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="modele_pdf", referencedColumnName="id")
+     * })
+     */
+    private $modelePdf;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="text", nullable=true)
+     */
+    private $nom = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tel", type="text", nullable=true)
+     */
+    private $tel = '';
+
+    /**
+     * @var \AppBundle\Entity\Client
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Client")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="client", referencedColumnName="num_police")
+     * })
+     */
+    private $client;
+
+    /**
+     * @var \AppBundle\Entity\RemboursementBooking
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RemboursementBooking")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="remboursement_booking", referencedColumnName="id")
+     * })
+     */
+    private $remboursementBooking;
+    
+    private $num;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lieu", type="text", nullable=true)
+     */
+    private $lieu;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nbPers
+     *
+     * @param integer $nbPers
+     *
+     * @return Booking
+     */
+    public function setNbPers($nbPers)
+    {
+        $this->nbPers = $nbPers;
+
+        return $this;
+    }
+
+    /**
+     * Get nbPers
+     *
+     * @return int
+     */
+    public function getNbPers()
+    {
+        return $this->nbPers;
+    }
+
+    /**
+     * Set dateEntree
+     *
+     * @param \DateTime $dateEntree
+     *
+     * @return Booking
+     */
+    public function setDateEntree($dateEntree)
+    {
+        $this->dateEntree = $dateEntree;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEntree
+     *
+     * @return \DateTime
+     */
+    public function getDateEntree()
+    {
+        return $this->dateEntree;
+    }
+
+    /**
+     * Set dateSortie
+     *
+     * @param \DateTime $dateSortie
+     *
+     * @return Booking
+     */
+    public function setDateSortie($dateSortie)
+    {
+        $this->dateSortie = $dateSortie;
+
+        return $this;
+    }
+
+    /**
+     * Get dateSortie
+     *
+     * @return \DateTime
+     */
+    public function getDateSortie()
+    {
+        return $this->dateSortie;
+    }
+
+    /**
+     * Set avecPetitDejeuner
+     *
+     * @param integer $avecPetitDejeuner
+     *
+     * @return Booking
+     */
+    public function setAvecPetitDejeuner($avecPetitDejeuner)
+    {
+        $this->avecPetitDejeuner = $avecPetitDejeuner;
+
+        return $this;
+    }
+
+    /**
+     * Get avecPetitDejeuner
+     *
+     * @return int
+     */
+    public function getAvecPetitDejeuner()
+    {
+        return $this->avecPetitDejeuner;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     *
+     * @return Booking
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set tarifPers
+     *
+     * @param string $tarifPers
+     *
+     * @return Booking
+     */
+    public function setTarifPers($tarifPers)
+    {
+        $this->tarifPers = $tarifPers;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifPers
+     *
+     * @return string
+     */
+    public function getTarifPers()
+    {
+        return $this->tarifPers;
+    }
+
+    /**
+     * Set tarifPersPetitDejeuner
+     *
+     * @param string $tarifPersPetitDejeuner
+     *
+     * @return Booking
+     */
+    public function setTarifPersPetitDejeuner($tarifPersPetitDejeuner)
+    {
+        $this->tarifPersPetitDejeuner = $tarifPersPetitDejeuner;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifPersPetitDejeuner
+     *
+     * @return string
+     */
+    public function getTarifPersPetitDejeuner()
+    {
+        return $this->tarifPersPetitDejeuner;
+    }
+
+    /**
+     * Set chambre
+     *
+     * @param \AppBundle\Entity\Chambre $chambre
+     *
+     * @return Booking
+     */
+    public function setChambre(\AppBundle\Entity\Chambre $chambre = null)
+    {
+        $this->chambre = $chambre;
+
+        return $this;
+    }
+
+    /**
+     * Get chambre
+     *
+     * @return \AppBundle\Entity\Chambre
+     */
+    public function getChambre()
+    {
+        return $this->chambre;
+    }
+
+    /**
+     * Set agence
+     *
+     * @param \AppBundle\Entity\Agence $agence
+     *
+     * @return Booking
+     */
+    public function setAgence(\AppBundle\Entity\Agence $agence = null)
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * Get agence
+     *
+     * @return \AppBundle\Entity\Agence
+     */
+    public function getAgence()
+    {
+        return $this->agence;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Booking
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set nbNuit
+     *
+     * @param integer $nbNuit
+     *
+     * @return Booking
+     */
+    public function setNbNuit($nbNuit)
+    {
+        $this->nbNuit = $nbNuit;
+
+        return $this;
+    }
+
+    /**
+     * Get nbNuit
+     *
+     * @return integer
+     */
+    public function getNbNuit()
+    {
+        return $this->nbNuit;
+    }
+
+    /**
+     * Get num
+     *
+     */
+    public function getNum()
+    {
+
+        $id = $this->id;
+
+        $num = str_pad($id, 6, '0', STR_PAD_LEFT) . "/HB";
+
+        $this->num = $num;
+
+        return $this->num;
+
+    }
+
+    /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return Booking
+     */
+    public function setStatut($statut = 0)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return integer
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Set montantPetitDejeuner
+     *
+     * @param string $montantPetitDejeuner
+     *
+     * @return Booking
+     */
+    public function setMontantPetitDejeuner($montantPetitDejeuner)
+    {
+        $this->montantPetitDejeuner = $montantPetitDejeuner ? $montantPetitDejeuner : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantPetitDejeuner
+     *
+     * @return string
+     */
+    public function getMontantPetitDejeuner()
+    {
+        return $this->montantPetitDejeuner;
+    }
+
+    /**
+     * Set montant
+     *
+     * @param string $montant
+     *
+     * @return Booking
+     */
+    public function setMontant($montant)
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    /**
+     * Get montant
+     *
+     * @return string
+     */
+    public function getMontant()
+    {
+        return $this->montant;
+    }
+
+    /**
+     * Set heureEntree
+     *
+     * @param \DateTime $heureEntree
+     *
+     * @return Booking
+     */
+    public function setHeureEntree($heureEntree)
+    {
+        $this->heureEntree = $heureEntree;
+
+        return $this;
+    }
+
+    /**
+     * Get heureEntree
+     *
+     * @return \DateTime
+     */
+    public function getHeureEntree()
+    {
+        return $this->heureEntree;
+    }
+
+    /**
+     * Set heureSortie
+     *
+     * @param \DateTime $heureSortie
+     *
+     * @return Booking
+     */
+    public function setHeureSortie($heureSortie)
+    {
+        $this->heureSortie = $heureSortie;
+
+        return $this;
+    }
+
+    /**
+     * Get heureSortie
+     *
+     * @return \DateTime
+     */
+    public function getHeureSortie()
+    {
+        return $this->heureSortie;
+    }
+
+    /**
+     * Set modelePdf
+     *
+     * @param \AppBundle\Entity\ModelePdf $modelePdf
+     *
+     * @return Booking
+     */
+    public function setModelePdf(\AppBundle\Entity\ModelePdf $modelePdf = null)
+    {
+        $this->modelePdf = $modelePdf;
+
+        return $this;
+    }
+
+    /**
+     * Get modelePdf
+     *
+     * @return \AppBundle\Entity\ModelePdf
+     */
+    public function getModelePdf()
+    {
+        return $this->modelePdf;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     *
+     * @return Booking
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set tel
+     *
+     * @param string $tel
+     *
+     * @return Booking
+     */
+    public function setTel($tel)
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
+
+    /**
+     * Get tel
+     *
+     * @return string
+     */
+    public function getTel()
+    {
+        return $this->tel;
+    }
+
+    /**
+     * Set client
+     *
+     * @param \AppBundle\Entity\Client $client
+     *
+     * @return Booking
+     */
+    public function setClient(\AppBundle\Entity\Client $client = null)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return \AppBundle\Entity\Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set remboursementBooking
+     *
+     * @param \AppBundle\Entity\RemboursementBooking $remboursementBooking
+     *
+     * @return Booking
+     */
+    public function setRemboursementBooking(\AppBundle\Entity\RemboursementBooking $remboursementBooking = null)
+    {
+        $this->remboursementBooking = $remboursementBooking;
+
+        return $this;
+    }
+
+    /**
+     * Get remboursementBooking
+     *
+     * @return \AppBundle\Entity\RemboursementBooking
+     */
+    public function getRemboursementBooking()
+    {
+        return $this->remboursementBooking;
+    }
+
+    /**
+     * Set remise
+     *
+     * @param float $remise
+     *
+     * @return Booking
+     */
+    public function setRemise($remise)
+    {
+        $this->remise = $remise ? $remise : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get remise
+     *
+     * @return float
+     */
+    public function getRemise()
+    {
+        return $this->remise;
+    }
+
+    /**
+     * Set typeRemise
+     *
+     * @param integer $typeRemise
+     *
+     * @return Booking
+     */
+    public function setTypeRemise($typeRemise)
+    {
+        $this->type_remise = $typeRemise;
+
+        return $this;
+    }
+
+    /**
+     * Get typeRemise
+     *
+     * @return integer
+     */
+    public function getTypeRemise()
+    {
+        return $this->type_remise;
+    }
+
+    /**
+     * Set lieu
+     *
+     * @param string $lieu
+     *
+     * @return Facture
+     */
+    public function setLieu($lieu)
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    /**
+     * Get lieu
+     *
+     * @return string
+     */
+    public function getLieu()
+    {
+        return $this->lieu;
+    }
+}

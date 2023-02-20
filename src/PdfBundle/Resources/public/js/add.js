@@ -1,3 +1,24 @@
+$('#texte_haut').summernote({
+  	toolbar: [
+	    ['style', ['style']],
+	    ['fontsize', ['fontsize']],
+	    ['font', ['bold', 'italic', 'underline', 'clear']],
+	    ['fontname', ['fontname']],
+	    ['color', ['color']],
+	    ['para', ['ul', 'ol', 'paragraph']],
+	    ['height', ['height']],
+	    ['table', ['table']]
+  	],
+  	onpaste: function (e) {
+		    var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+
+		    e.preventDefault();
+
+		    setTimeout( function(){
+		        document.execCommand( 'insertText', false, bufferText );
+		    }, 10 );
+		}
+});
 $('input:radio[name=modele]').change(function () {
 
 	var id = $(this).attr('id');
@@ -45,6 +66,22 @@ $('input:radio[name=modele]').change(function () {
 		$('.logo').addClass('hidden')
 		$('#type_modele').val(5)
 
+	}
+
+	if (id == 'modele6') {
+		$('.logo-gauche').removeClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').removeClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(6)
+	}
+
+	if (id == 'modele7') {
+		$('.logo-gauche').removeClass('hidden')
+		$('.logo-centre').addClass('hidden')
+		$('.logo-droite').addClass('hidden')
+		$('.logo').removeClass('hidden')
+		$('#type_modele').val(7)
 	}
 
 });
@@ -103,7 +140,10 @@ $(document).on('click', '#btn-save-modele', function(event) {
 		data: data,
 		success: function(res) {
 			show_info('Succès', 'Modèle enregistré');
-			location.reload();
+			// location.reload();
+			var show = Routing.generate('pdf_show', { id : res.id });
+
+			window.location.href = show;
 		}
 	})
 })

@@ -1,0 +1,15 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-2 control-label" for="id_libelle">Libellé</label>
+        <div class="col-lg-10">
+            <input type="text" placeholder="Libellé" class="form-control" id="id_libelle" value="{{ motif ? motif.libelle : '' }}">
+        </div>
+    </div>
+
+    <input type="hidden" value="{{motif.id}}" id="id_motif_edit">
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_motif">Enregistrer</span>
+    </div>
+</div>

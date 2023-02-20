@@ -6,10 +6,13 @@
   {{ parent() }}
   <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
   <script src="{{ asset('bundles/facture/js/facture-produit-add.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/produit-bon-commande.js') }}"></script>
   <script src="{{ asset('bundles/facture/js/show.js') }}"></script>
+  <script src="{{ asset('bundles/facture/js/show-produit.js') }}"></script>
 {% endblock %}
 {% block contenu %}
 <div class="wrapper wrapper-content">
+  <input type="hidden" id="devise_lettre" value="{{ deviseEntrepot.lettre }}">
   <div class="row">
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
@@ -18,21 +21,23 @@
             Facture N° <span class="badge-warning">{{facture.formattedNum}}</span>
             {% if facture.type == 1 %}
                 {% if definitif %}
-                    <a href="{{ path('facture_show', { id : definitif.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
+                    <a href="{{ path('facture_produit_show', { id : definitif.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
                         <i class="fa fa-file"></i>
-                        Voir Fact. DEFINITIF
+                        VOIR FACTURE DEFINITIF
                     </a>
                 {% else %}
-                    <button class="btn btn-xs btn-outline btn-primary" id="creer-definitif">
-                        <div class="fa fa-copy"></div>
-                        Créer Fact. DEFINITIF
-                    </button>
+                    {% if not factureProduit.bonCommande %}
+                      <button class="btn btn-xs btn-outline btn-primary" id="creer-definitif">
+                          <div class="fa fa-copy"></div>
+                          CRÉER FACTURE DEFINITIF
+                      </button>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 {% if facture.proforma %}
-                     <a href="{{ path('facture_show', { id : facture.proforma.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
+                     <a href="{{ path('facture_produit_show', { id : facture.proforma.id }) }}" class="btn btn-xs btn-outline btn-info" target="_blank">
                         <i class="fa fa-file"></i>
-                        Voir Fact. PROFORMA
+                        VOIR DEVIS
                     </a>
                 {% endif %}
             {% endif %}
@@ -44,17 +49,15 @@
         	</div> #}
         </div>
         <div class="ibox-content">
-          <form method="POST" action="{{ path('facture_produit_save') }}" class="form-horizontal">
+          <form method="POST" action="{{ path('facture_produit_save') }}" class="form-horizontal" id="form-facture">
 
           	<input type="hidden" name="f_id" id="f_id" value="{{ facture.id }}">
 
           	<div class="form-group">
-              <label class="col-sm-2 control-label">MODELE</label>
+              <label class="col-sm-2 control-label">MODELE *</label>
               <div class="col-sm-10">
                 <select class="form-control m-b" name="f_model" id="f_model" required="">
-                  <option value=""></option>
                   <option value="1" {% if facture.modele == 1 %}selected=""{% endif %}>PRODUIT</option>
-                  <option value="2" {% if facture.modele == 2 %}selected=""{% endif %}>SERVICE</option>
                 </select>
               </div>
             </div>
@@ -63,16 +66,51 @@
               <label class="col-sm-2 control-label">FACTURE</label>
               <div class="col-sm-10">
                 <select class="form-control m-b" name="f_type" required="">
-                  <option value="1" {% if facture.type == 1 %}selected=""{% endif %}>PROFORMA</option>
-                  <option value="2" {% if facture.type == 2 %}selected=""{% endif %}>DEFINITIVE</option>
+                  {% if facture.type == 1 %}
+                    <option value="1" {% if facture.type == 1 %}selected=""{% endif %}>DEVIS</option>
+                  {% endif %}
+                  {% if facture.type == 2 %}
+                    <option value="2" {% if facture.type == 2 %}selected=""{% endif %}>DEFINITIVE</option>
+                  {% endif %}
                 </select>
               </div>
             </div>
 
+            {% if factureProduit.commande %}
+              <div class="form-group recu">
+                <label class="col-sm-2 control-label">N° REÇU</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="f_recu" id="f_recu" value="{{ factureProduit.commande.recu }}" readonly="">
+                </div>
+                <div class="col-sm-2">
+                  <a href="{{ path('caisse_commande_show', { id : factureProduit.commande.id }) }}" class="btn btn-warning btn-full-width" target="_blank">
+                    <i class="fa fa-money"></i>
+                    Vente
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if factureProduit.bonCommande %}
+              <div class="form-group recu">
+                <label class="col-sm-2 control-label">N° BON DE COMMANDE</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="f_bon_commande" id="f_bon_commande" value="{{ factureProduit.bonCommande.recu }}" readonly="">
+                </div>
+                <div class="col-sm-2">
+                  <a href="{{ path('bon_commande_show', { id : factureProduit.bonCommande.id }) }}" class="btn btn-white">
+                    <i class="fa fa-shopping-cart"></i>
+                    Bon de commande
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+
+
 
             {% if facture.client.statut == 1%}
               <div class="form-group">
-                <label class="col-sm-2 control-label">Client</label>
+                <label class="col-sm-2 control-label">Client *</label>
                 <div class="col-sm-10">
                   <input class="form-control" readonly="" type="text" value="{{facture.client.idClientMorale.nomSociete}}" name="">
                 </div>
@@ -80,13 +118,13 @@
               
             {% else %}
               <div class="form-group">
-                <label class="col-sm-2 control-label">Client</label>
+                <label class="col-sm-2 control-label">Client *</label>
                 <div class="col-sm-10">
                   <input class="form-control" readonly="" type="text" value="{{facture.client.idClientPhysique.nom}}" name="">
                 </div>
               </div>
             {% endif %}
-            <input type="hidden" value="{{facture.client.numPolice}}" name="f_client">
+            <input type="hidden" value="{{facture.client.numPolice}}" name="f_client" id="f_client">
             <input type="hidden" value="" name="f_nom">
 
             <div class="form-group">
@@ -98,209 +136,346 @@
             </div>
 
             <div class="hr-line-dashed"></div>
-            <table class="table table-bordered" id="table-fact-add">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">TYPE DESIGNATION</th>
-                  <th scope="col">DESIGNATION</th>
-                  <th scope="col">QTE</th>
-                  <th scope="col">PRIX</th>
-                  <th scope="col">MONTANT TOTAL</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody id="principal">
+            <div
+              style="width: 100%;overflow: scroll;"
+            >
+              <table class="table table-bordered mw-1500" id="table-fact-add">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">TYPE DESIGNATION</th>
+                    <th scope="col">DESIGNATION</th>
+                    <th scope="col">QTE</th>
+                    <th scope="col">PRIX ({{ deviseEntrepot.symbole }})</th>
+                    <th scope="col">REMISE</th>
+                    <th scope="col">MONTANT TOTAL ({{ deviseEntrepot.symbole }})</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody id="principal">
 
-              	{% set i = 0 %}
-                {% set total = 0 %}
-                {% set list_id = "" %}
+                	{% set i = 0 %}
+                  {% set total = 0 %}
+                  {% set list_id = "" %}
 
-                {% for detail in details %}
+                  {% for detail in details %}
 
-                	{% if list_id == "" %}
-                      {% set list_id = detail.id %}
-                  {% else %}
-                      {% set list_id = list_id ~ "," ~ detail.id %}
-                  {% endif %}
+                  	{% if list_id == "" %}
+                        {% set list_id = detail.id %}
+                    {% else %}
+                        {% set list_id = list_id ~ "," ~ detail.id %}
+                    {% endif %}
 
-                  {% set f_produit_class = '' %}
-                  {% set f_designation_class = '' %}
+                    {% set f_produit_class = '' %}
+                    {% set f_designation_class = '' %}
 
-	                <tr data-id="{{i}}">
-                    <td>
+  	                <tr data-id="{{i}}">
+                      <td>
+                        <div class="form-group">
+                          <div class="col-sm-12">
+                            <select class="form-control f_libre" name="f_libre[]">
+                              <option 
+                                value="0" 
+                                {% if detail.libre == 0 %} 
+                                  selected="" 
+                                  {% set f_designation_class = 'hidden' %}
+                                {% endif %} 
+                              >PRODUIT</option>
+
+                              <option 
+                                value="1" 
+                                {% if detail.libre == 1 %} 
+                                  selected="" 
+                                  {% set f_produit_class = 'hidden' %}
+                                {% endif %} 
+                              >AUTRE</option>
+                            </select>
+                          </div>
+                        </div>
+                      </td>
+  	                  <td>
+  	                    <div class="form-group">
+  	                      <div class="col-sm-12">
+  	                        <select class="form-control f_produit {{ f_produit_class }}" name="f_produit[]">
+        				              {# <option></option> #}
+        				              {# {% for variation in variations %} #}
+                              {% if detail.variationProduit is not empty %}
+                                <option
+                                  value="{{ detail.variationProduit.id }}"
+                                  data-prixvente="{{ detail.prix }}"
+                                  data-stock="{{ detail.variationProduit.stock }}"
+                                  {# {% if detail.variationProduit %} #}
+                                    {# {% if detail.variationProduit.id == variation.id %} #}
+                                      selected=""
+                                    {# {% endif %} #}
+                                  {# {% endif %} #}
+                                > 
+                                  {{ detail.variationProduit.produitEntrepot.produit.codeProduit }}/{{ detail.variationProduit.produitEntrepot.indice }} |
+                                  {{ detail.variationProduit.produitEntrepot.produit.nom }} - {{ detail.prix }} {{ deviseEntrepot.symbole }}
+                                </option>
+                              {% else %}
+                                {% if produitsDetails[i] is empty %}
+                                  <option
+                                    value="{{ 0 }}"
+                                    data-prixvente="{{ detail.prix }}"
+                                    data-stock="{{ null }}"
+                                    selected=""
+                                  > 
+                                    {{ detail.designation }} - {{ detail.prix }} {{ deviseEntrepot.symbole }}
+                                  </option>
+                                {% else %}
+                                  <option
+                                    value="{{ produitsDetails[i].vpId }}"
+                                    data-prixvente="{{ produitsDetails[i].prix }}"
+                                    data-stock="{{ produitsDetails[i].stock }}"
+                                    selected=""
+                                  > 
+                                    {{ produitsDetails[i].code_produit }}/{{ produitsDetails[i].indice }} |
+                                    {{ produitsDetails[i].nom }} - {{ produitsDetails[i].prix }} {{ deviseEntrepot.symbole }}
+                                  </option>
+                                  {% endif %}
+                                {% endif %}
+                              {# {% endfor %} #}
+        				            </select>
+                            <div class="f_designation_container {{ f_designation_class }}">
+                              <textarea class="f_designation" name="f_designation[]">
+                                {{ detail.designation | raw }}
+                              </textarea>
+                            </div>
+  	                      </div>
+  	                    </div>
+  	                  </td>
+  	                  <td>
+                        <div class="form-group">
+                          <div class="col-sm-12">
+                            <input type="number" class="form-control f_qte" name="f_qte[]" value="{{detail.qte}}" >
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+  	                    <div class="form-group">
+  	                      <div class="col-sm-12">
+  	                        <input type="number" class="form-control f_prix" name="f_prix[]" value="{{detail.prix}}" required="">
+  	                      </div>
+  	                    </div>
+  	                  </td>
+                      <td>
+                        <div class="form-group">
+                          <div class="col-sm-4">
+                            <select class="form-control f_remise_type_ligne" name="f_remise_type_ligne[]">
+                              <option value="0" {% if detail.typeRemise == 0 %} selected="" {% endif %} >%</option>
+                              <option value="1" {% if detail.typeRemise == 1 %} selected="" {% endif %} >Montant</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-8">
+                            <input type="number" class="form-control f_remise_ligne" name="f_remise_ligne[]" value="{{ detail.montantRemise }}">
+                          </div>
+                        </div>
+                      </td>
+  	                  <td class="td-montant">
+  	                    <div class="form-group">
+  	                      <div class="col-sm-12">
+  	                        <input type="number" class="form-control f_montant" name="f_montant[]" value="{{detail.montant}}" required="">
+  	                      </div>
+  	                    </div>
+  	                  </td>
+  	                  
+  	                  <td>
+  	                  </td>
+  	                </tr>
+
+  	                {% set i = i + 1 %}
+                    {% set total = total + detail.montant %} 
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="5">MONTANT TOTAL</th>
+                    <th>
                       <div class="form-group">
-                        <div class="col-sm-10">
-                          <select class="form-control f_libre" name="f_libre[]">
-                            <option 
-                              value="0" 
-                              {% if detail.libre == 0 %} 
-                                selected="" 
-                                {% set f_designation_class = 'hidden' %}
-                              {% endif %} 
-                            >PRODUIT</option>
-
-                            <option 
-                              value="1" 
-                              {% if detail.libre == 1 %} 
-                                selected="" 
-                                {% set f_produit_class = 'hidden' %}
-                              {% endif %} 
-                            >AUTRE</option>
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control" name="montant" id="montant" readonly="" value="{{total}}">
+                        </div>
+                      </div>
+                      
+                    </th>
+                    <th>
+                      <button class="btn btn-white btn-remove-row btn-full-width">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                      <button class="btn btn-white btn-add-row btn-full-width">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="5">REMISE</th>
+                    <th id="">
+                      <div class="form-group">
+                        <div class="col-sm-4">
+                          <select class="form-control" id="f_remise_type" name="f_remise_type">
+                            <option value="0" {% if facture.remiseType == 0 %} selected="" {% endif %} >%</option>
+                            <option value="1" {% if facture.remiseType == 1 %} selected="" {% endif %} >Montant</option>
                           </select>
                         </div>
-                      </div>
-                    </td>
-	                  <td>
-	                    <div class="form-group">
-	                      <div class="col-sm-10">
-	                        <select class="form-control f_produit {{ f_produit_class }}" name="f_produit[]">
-      				              <option></option>
-      				              {% for produit in produits %}
-      				                <option 
-      				                	value="{{produit.id}}"
-
-                                {% if detail.produit %}
-        				                	{% if detail.produit.id == produit.id %}
-        				                		selected=""
-        				                	{% endif %} 
-                                {% endif %}
-
-      				                >{{produit.nom}}</option>
-      				              {% endfor %}
-      				            </select>
-                          <div class="f_designation_container {{ f_designation_class }}">
-                            <textarea class="f_designation" name="f_designation[]">
-                              {{ detail.designation | raw }}
-                            </textarea>
-                          </div>
-	                      </div>
-	                    </div>
-	                  </td>
-	                  <td>
-                      <div class="form-group">
-                        <div class="col-sm-10">
-                          <input type="number" class="form-control f_qte" name="f_qte[]" value="{{detail.qte}}" >
+                        <div class="col-sm-8">
+                          <input type="number" class="form-control" id="f_remise" name="f_remise" value="{{ facture.remisePourcentage }}">
                         </div>
                       </div>
-                    </td>
-                    <td>
-	                    <div class="form-group">
-	                      <div class="col-sm-10">
-	                        <input type="number" class="form-control f_prix" name="f_prix[]" value="{{detail.prix}}" required="">
-	                      </div>
-	                    </div>
-	                  </td>
-	                  <td class="td-montant">
-	                    <div class="form-group">
-	                      <div class="col-sm-10">
-	                        <input type="number" class="form-control f_montant" name="f_montant[]" value="{{detail.montant}}" required="">
-	                      </div>
-	                    </div>
-	                  </td>
-	                  
-	                  <td>
-	                  </td>
-	                </tr>
-
-	                {% set i = i + 1 %}
-                    
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th colspan="4">Montant</th>
-                  <th>
-                    <div class="form-group">
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" name="montant" id="montant" readonly="" value="{{facture.montant}}">
+                      <input type="hidden" class="form-control" name="remise" id="remise" readonly="" value="{{ facture.remiseValeur }}">
+                    </th>
+                    <th>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="5">MONTANT APRÈS DEDUCTION</th>
+                    <th id="">
+                      <div class="form-group">
+                        <div class="col-sm-12">
+                        {% set total = total - facture.remiseValeur %} 
+                          <input type="number" class="form-control" name="total" id="total" readonly="" value="{{total}}">
+                        </div>
                       </div>
-                    </div>
-                    
-                  </th>
-                  <th>
-                    <span class="btn-remove-row" data-id="0"><i class="fa fa-trash"></i></span>&nbsp;
-                    <span class="btn-add-row" data-id="0"><i class="fa fa-plus"></i></span>
-                  </th>
-                </tr>
-                <tr>
-                  <th colspan="3">Remise (en %)</th>
-                  <th>
-                    <div class="form-group">
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" id="f_remise" name="f_remise" required="" value="{{facture.remisePourcentage}}">
-                      </div>
-                    </div>
-                  </th>
-                  <th id="">
-                    <div class="form-group">
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" name="remise" id="remise" readonly="" value="{{facture.remiseValeur}}">
-                      </div>
-                    </div>
-                  </th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th colspan="4">Total</th>
-                  <th id="">
-                    <div class="form-group">
-                      <div class="col-sm-10">
-                        <input type="number" class="form-control" name="total" id="total" readonly="" value="{{facture.total}}">
-                      </div>
-                    </div>
-                  </th>
-                  <th>
-                  </th>
-                </tr>
-              </tfoot>
-            </table>
-            <div class="hr-line-dashed"></div>
-            <p>Arrêté la présente facture à la somme de <b id="somme" style="text-transform: uppercase;">{{facture.somme}}</b> 
-            <p>
+                    </th>
+                    <th>
+                    </th>
+                  </tr>
+                  {% if devises | length > 0 %}
+                    <tr>
+                      <th >MONTANT EN</th>
+                      <th colspan="4">
+                        <div class="form-group">
+                          <div class="col-sm-4">
+                            <select class="form-control f_auto_devise" name="f_auto_devise">
+                              <option></option>
+                              {% for devise in devises %}
+                                <option 
+                                  value="{{devise.id}}"
+                                  data-montantprincipal="{{devise.montantPrincipal}}"
+                                  data-montantconversion="{{devise.montantConversion}}"
+                                  {% if facture.devise == devise %}
+                                    selected="" 
+                                  {% endif %}
+                                >{{devise.symbole}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </th>
+                      <th id="">
+                        <div class="form-group">
+                          <div class="col-sm-12">
+                            <input type="number" class="form-control f_auto_montant_converti" name="f_auto_montant_converti" readonly="" value="{{ facture.montantConverti }}">
+                          </div>
+                        </div>
+                      </th>
+                      <th>
+                      </th>
+                    </tr>
+                  {% endif %}
+                </tfoot>
+              </table>
+              <div class="hr-line-dashed"></div>
+              <p>Arrêté la présente facture à la somme de <b id="somme" style="text-transform: uppercase;">
+                {{facture.somme | replace ({ ('francs comorien') : deviseEntrepot.lettre }) }}
+              </b> 
+              <p>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-lg-push-6">
+                <div class="form-group" >
+                  <label class="font-noraml">À</label>
+                  <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                    <input type="text" class="form-control" name="f_lieu" value="{{ facture.lieu }}" required="">
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row">
               <div class="col-lg-6 col-lg-push-6">
                 <div class="form-group" id="data_1">
-                  <label class="font-noraml">Moroni le</label>
+                  <label class="font-noraml">Le</label>
                   <div class="input-group date">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" class="form-control" name="f_date" value="{{ facture.date | date('d/m/Y') }}" required="">
+                    <input type="text" class="form-control f_date" name="f_date" value="{{ facture.date | date('d/m/Y') }}" required="">
                   </div>
                 </div>
               </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
-              <div class="col-sm-4 col-sm-offset-2">
-                    <button class="btn btn-primary demo3">
-                        <i class="fa fa-save"></i>
-                        Enregistrer les modifications
-                    </button>
+              <div class="col-sm-6">
+                <button class="btn btn-primary" id="btn-save">
+                    <i class="fa fa-save"></i>
+                    Mettre à jour
+                </button>
 
-                    {% if print %}
-                      <a href="{{ path('facture_produit_pdf', { id : facture.id }) }}" class="btn btn-info" target="_blank">
-                          <i class="fa fa-print"></i>
-                          Imprimer
-                      </a>
-                    {% else %}
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="alert alert-warning">
-                              <i class="fa fa-warning"></i>
-                              Veuillez créer un modèle pour l'impression
-                          </div>
-                        </div>
+                <button class="btn btn-danger" id="btn-delete">
+                    <i class="fa fa-trash"></i>
+
+                    Supprimer
+                </button>
+
+                {% if (facture.isDelete == 1) %}
+                  <button class="btn btn-success" id="btn-rearchive">
+                    <i class="fa fa-exchange"></i>
+                    Restaurer
+                  </button>
+                {% else %}
+                  <button class="btn btn-danger" id="btn-archive">
+                    <i class="fa fa-paste"></i>
+                    Mettre en corbeille
+                  </button>
+                {% endif %}
+
+                {% if print %}
+                 <button class="btn btn-info" id="btn-modal-print">
+                    <i class="fa fa-print"></i>
+                    Imprimer
+                  </button>
+                 
+                {% else %}
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="alert alert-warning">
+                          <i class="fa fa-warning"></i>
+                          Veuillez créer un modèle pour l'impression
                       </div>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="col-sm-6">
+                    {% if facture.credit %}
+                        <a href="{{ path('credit_show', { id : facture.credit.id }) }}" class="btn btn-primary" target="_blank">
+                            <i class="fa fa-credit-card"></i>
+                            Vente à credit
+                        </a>
                     {% endif %}
-                    {# <button class="btn btn-danger demo4" data-action="">
-                        <i class="fa fa-trash"></i>
 
-                        Supprimer
-                    </button> #}
-                </div>
+                    {% if facture.type == 1 and checkFactureBonCommande %}
+
+                      {% if factureProduit.bonCommande is null%}
+                        {# {% if not definitif %}
+                          <button class="btn btn-warning pull-right" id="btn-bon-commande">
+                              <i class="fa fa-shopping-cart"></i>
+                              Créer un bon de commande
+                          </button>
+                        {% endif %} #}
+                      {% else %}
+                        <a href="{{ path('bon_commande_show', { id : factureProduit.bonCommande.id }) }}" class="btn btn-warning pull-right" target="_blank">
+                            <i class="fa fa-shopping-cart"></i>
+                            Voir le bon de commande
+                        </a>
+                      {% endif %}
+
+                    {% endif %}
+                    
+              </div>
             </div>
             <input type="hidden" name="list_id" value="{{ list_id }}">
             <input type="hidden" name="" id="id-row" value="{{ i - 1 }}">
-            <input type="hidden" name="somme" id="id-somme" value="{{facture.somme}}">
+            <input type="hidden" name="somme" id="id-somme" value="{{facture.somme | replace ({ ('francs comorien') : deviseEntrepot.lettre }) }}">
           </form>
         </div>
       </div>

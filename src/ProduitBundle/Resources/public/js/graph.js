@@ -47,7 +47,7 @@ function instance_graph(series) {
     },
     yAxis: {
       title: {
-        text: 'Montant (KMF)'
+        text: 'Montant ('+ $('#devise_symbole').val() +')'
       },
       labels: {
         formatter: function () {
@@ -56,7 +56,7 @@ function instance_graph(series) {
       }
     },
     tooltip: {
-      pointFormat: '{series.name} : <b>{point.y:,.0f} KMF</b>'
+      pointFormat: '{series.name} : <b>{point.y:,.0f} '+ $('#devise_symbole').val() +'</b>'
     },
     plotOptions: {
                   series: {

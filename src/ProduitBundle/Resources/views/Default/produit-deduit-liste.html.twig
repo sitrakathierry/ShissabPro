@@ -1,0 +1,32 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th class="text-center">Code produit</th>
+			<th class="text-center">Catégorie</th>
+			<th class="text-center">Nom</th>
+			<th class="text-center">Stock</th>
+            <th class="text-center">Cause</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for key,produit in produits %}
+			<tr>
+				<td class="text-center">{{ produit.code_produit }}</td>
+				<td class="text-center">{{ produit.categorie }}</td>
+				<td class="text-center">{{ produit.nom }}</td>
+				<td class="text-center">{{ produit.stock }}</td>
+				<td class="text-center">{{ produit.cause }}</td>
+				{# <td>
+					<button 
+						class="btn btn-xs btn-success edit-variation"
+						data-id="{{ variation.id }}"
+					><i class="fa fa-edit"></i> Modifier</button>
+					<button 
+						class="btn btn-xs btn-danger delete-variation"
+						data-id="{{ variation.id }}"
+					><i class="fa fa-trash"></i> Supprimer</button>
+				</td> #}
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

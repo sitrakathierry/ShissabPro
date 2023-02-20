@@ -1,0 +1,27 @@
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="f_modele_pdf">Modèle pdf</label>
+        <div class="col-lg-9">
+        	<select class="form-control" id="f_modele_pdf">
+        		<option></option>
+	        	{% for pdf in pdfs %}
+	        		<option 
+	        			value="{{ pdf.modelePdf.id }}"
+	        			{% if credit.modelePdf %}
+		        			{% if pdf.modelePdf.id == credit.modelePdf.id %}
+		        				selected=""
+		        			{% endif %} 
+	        			{% endif %}
+	        		>
+	        			{{ pdf.modelePdf.nom }}
+	        		</option>
+	        	{% endfor %}
+        	</select>
+        </div>
+    </div>
+
+    <div class="form-group text-right">
+        <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+        <span class="btn btn-primary btn-sm" id="id_save_modele_pdf">Imprimer</span>
+    </div>
+</div>

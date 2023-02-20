@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+    .datepicker.dropdown-menu {
+        z-index: 10000 !important;
+    }
+    .ui-jqgrid tr.jqgrow {
+            height: 35px !important;
+        }
+    </style>
+ {% endblock  %}
+
+ {% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/comptabilite/js/decharge-valide.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+  <div class="wrapper wrapper-content">
+    <div class="row">
+		<div class="col-lg-12">
+        	<div class="ibox">
+                <div class="ibox-title">
+                    <h5>Liste des décharges validés</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">MOTIF</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control m-b" id="filtre_motif">
+                                                <option value="">Tous</option>
+                                                {% for motif in motifs %}
+                                                    <option value="{{ motif.id }}"> {{ motif.libelle }} </option>
+                                                {% endfor %}
+                                                {# <option value="1">Santé</option>
+                                                <option value="2">Divers</option> #}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">RECHERCHE PAR</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control m-b" id="recherche_par">
+                                                {# <option value="1">N° POLICE CLIENT</option> #}
+                                                {# <option value="2">N° CONTRAT</option> #}
+                                                <option value="3" selected="">NOM BENEFICIAIRE</option>
+                                                {# <option value="4">IMMATRICULATION</option> #}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="a_rechercher" placeholder="Texte à rechercher ..." style="margin-bottom:10px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Date déclaration</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control m-b" id="type_date">
+                                                <option value="0">Tous</option>
+                                                <option value="1">Aujourd'hui</option>
+                                                <option value="2">Mois</option>
+                                                <option value="3">Année</option>
+                                                <option value="4">Date spécifique</option>
+                                                <option value="5">Fourchette</option>
+                                                <option value="6">Mois Facture</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 selector_mois hidden">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Mois</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control m-b" id="mois">
+                                                <option value=""></option>
+                                                <option value="01">Janvier</option>
+                                                <option value="02">Fevrier</option>
+                                                <option value="03">Mars</option>
+                                                <option value="04">Avril</option>
+                                                <option value="05">Mai</option>
+                                                <option value="06">Juin</option>
+                                                <option value="07">Juillet</option>
+                                                <option value="08">Août</option>
+                                                <option value="09">Septembre</option>
+                                                <option value="10">Octobre</option>
+                                                <option value="11">Novembre</option>
+                                                <option value="12">Decembre</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 selector_annee hidden">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Année</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" class="form-control" name="" min="2020" value="{{ "now" | date('Y') }}" id="annee">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 selector_specifique hidden">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Date spécifique</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control input-datepicker" id="date_specifique">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div  class="col-md-6 selector_fourchette hidden">
+                                    <form class="form-horizontal">
+                                        <div class="input-group row date col-md-12">
+                                            <input type="text" class="input form-control input-datepicker" name="debut" id="debut_date">
+                                            <span class="input-group-addon">Au</span>
+                                            <input type="text" class="input form-control input-datepicker" name="fin" id="fin_date">
+                                        </div>
+                                    </form>
+                                </div>
+                                
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            
+                                            <div class="btn-group" style="width:100%">
+                                                <button class="btn btn-primary" id="btn_search" style="width:50%">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                                <span data-toggle="dropdown" class="btn btn-white dropdown-toggle"><i class="fa fa-download" aria-hidden="true"></i></span>
+                                                <ul class="dropdown-menu">
+                                                    <li class="cl_export" data-type="xls">
+                                                        <a href="#">
+                                                            <i class="fa fa-file-excel-o"></i>
+                                                            Exporter en Excel
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br>
+                	<div class="row">
+                		<div class="col-lg-12">
+                            <table id="table_list"></table>
+                		</div>
+                	</div>
+                    <div class="hidden">
+                        <form action="" method="POST" id="form_export"></form>
+                    </div>
+                </div>
+            </div>
+  		</div>
+    </div>
+  </div>
+{% endblock %}
+

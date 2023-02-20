@@ -1,0 +1,47 @@
+<table class="table table-bordered">
+	<thead>
+		<th>Date</th>
+		<th>Désignation</th>
+		<th>Mouvement</th>
+		<th>Produit en stock disponible</th>
+		<th>Type</th>
+	</thead>
+	<tbody>
+{% set stocks = [] %}
+			{% for detail in details %}
+				<tr class="appro-{{detail.type ? detail.type : 1}}">
+					<td>{{ detail.date  }}</td>
+					<td>{{ detail.nom }}</td>
+					<td>
+      {{ detail.portion }}
+      {# {{ detail.stockInterne.libelle ? detail.stockInterne.libelle.nom : '' }} #}
+    </td>
+					<td>
+      {% if stocks[detail.si_id] is not defined %}
+        {% set stocks = stocks|array_merge(detail.si_id, detail.portion ? detail.portion : detail.si_portion ) %}
+      {% else %}
+        {% if detail.type == 2 %}
+          {% set stocks = stocks|array_merge(detail.si_id, stocks[detail.si_id] - detail.portion) %}
+        {% else %}
+          {% set stocks = stocks|array_merge(detail.si_id, stocks[detail.si_id] + detail.portion) %}
+        {% endif %}
+
+      {% endif %}
+
+      {{ stocks[detail.si_id] }}
+    </td>
+					<td>
+						{% if detail.type is null %}
+							ENTRÉE
+						{% endif %}
+      {% if detail.type == 1 %}
+        ENTRÉE
+      {% endif %}
+      {% if detail.type == 2 %}
+        SORTIE
+      {% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+	</tbody>
+</table>

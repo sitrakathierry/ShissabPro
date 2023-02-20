@@ -1,5 +1,53 @@
 $(document).ready(function(){
 
+    $(document).on('change','.f_service',function(event) {
+        event.preventDefault();
+
+        $(this).closest('tr').find('.f_service_duree').trigger('change');
+    })
+
+
+    $(document).on('change','.f_service_duree',function(event) {
+        event.preventDefault();
+
+        var tr = $(this).closest('tr');
+        var id = tr.find('.f_service').children('option:selected').val();
+        var duree = $(this).children('option:selected').val();
+
+        var data = {
+            id : id,
+            duree : duree
+        };
+
+        var url = Routing.generate('facture_service_prix');
+
+        $.ajax({
+            url : url,
+            type : 'POST',
+            data : data,
+            success: function(res) {
+                if (res.prix) {
+                    tr.find('.f_service_prix').val(res.prix).trigger('input');
+                } else {
+                    tr.find('.f_service_prix').val('');
+                }
+            }
+        })
+    })
+
+
+    $(document).on('change','.f_service_devise',function(event) {
+        event.preventDefault();
+
+        var montantprincipal = $(this).children('option:selected').data('montantprincipal');
+        var montantconversion = $(this).children('option:selected').data('montantconversion');
+        var total = $('#service_total').val();
+
+        var montant_converti = (Number( total ) * Number( montantconversion )) / Number( montantprincipal );
+
+        $(this).closest('tr').find('.f_service_montant_converti').val( montant_converti.toFixed(2) );
+    })
+
     $('.f_service_designation').summernote();
 
     $(document).on('change','.f_service_libre',function(event) {
@@ -19,7 +67,7 @@ $(document).ready(function(){
 
     $('#descr').summernote();
 
-    $('#f_client').select2();
+    // $('#f_client').select2();
     
     $('#data_1 .input-group.date').datepicker({
         todayBtn: "linked",
@@ -34,6 +82,8 @@ $(document).ready(function(){
 
     $("#data_1 .input-group.date").datepicker('setDate', new Date());
 
+    $('.select2').select2();
+
     $(document).on('click', '.btn-add-row-service', function(event) {
         event.preventDefault();
         var id = $('#id-row-service').val();
@@ -41,16 +91,20 @@ $(document).ready(function(){
         var services = $('.f_service').html();
         var durees = $('.f_service_duree').html();
 
-        var a ='<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_libre" name="f_service_libre[]"><option value="0">SERVICE</option><option value="1">AUTRE</option></select></div></div></td>';
-        var b = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service" name="f_service[]">'+ services +'</select><div class="f_service_designation_container hidden"><textarea class="f_service_designation" name="f_service_designation[]"></textarea></div></div></div></td>';
-        var c = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_periode" name="f_service_periode[]"></div></div></td>';
-        var d = '<td><div class="form-group"><div class="col-sm-10"><select class="form-control f_service_duree" name="f_service_duree[]">'+ durees +'</select></div></div></td>';
-        var e = '<td><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_prix" name="f_service_prix[]"></div></div></td>';
-        var f = '<td class="td-montant"><div class="form-group"><div class="col-sm-10"><input type="number" class="form-control f_service_montant" name="f_service_montant[]"></div></div></td>';
-        var g = '<td></td>';
-        var markup = '<tr class="row-'+ new_id +'">' + a + b + c + d + e + f + g + '</tr>';
+        var a ='<td><div class="form-group"><div class="col-sm-12"><select class="form-control f_service_libre" name="f_service_libre[]"><option value="0">PRESTATION</option><option value="1">AUTRE</option></select></div></div></td>';
+        var b = '<td><div class="form-group"><div class="col-sm-12"><select class="form-control select2 f_service" name="f_service[]">'+ services +'</select><div class="f_service_designation_container hidden"><textarea class="f_service_designation" name="f_service_designation[]"></textarea></div></div></div></td>';
+        var c = '<td><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control f_service_periode" name="f_service_periode[]"></div></div></td>';
+        var d = '<td><div class="form-group"><div class="col-sm-12"><select class="form-control f_service_duree" name="f_service_duree[]">'+ durees +'</select></div></div></td>';
+        var e = '<td><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control f_service_prix" name="f_service_prix[]"></div></div></td>';
+        var f = '<td><div class="form-group"><div class="col-sm-4"><select class="form-control f_service_remise_type_ligne" name="f_service_remise_type_ligne[]"><option value="0">%</option><option value="1">Montant</option></select></div><div class="col-sm-8"><input type="number" class="form-control f_service_remise_ligne" name="f_service_remise_ligne[]" ></div></div></td>';
+        var g = '<td class="td-montant"><div class="form-group"><div class="col-sm-12"><input type="number" class="form-control f_service_montant" name="f_service_montant[]"></div></div></td>';
+        var h = '<td></td>';
+        var markup = '<tr class="fact-row row-'+ new_id +'">' + a + b + c + d + e + f + g + h + '</tr>';
         $("#table-service-add tbody#principal-service").append(markup);
         $('#id-row-service').val(new_id);
+
+        $('.fact-row row-'+new_id).find(".select2").select2("destroy");
+        $("select.select2").select2();
 
         $('#table-service-add tbody tr:last').find('.f_prix').val()
         
@@ -78,18 +132,27 @@ $(document).ready(function(){
         calculMontantService();
     });
 
-    
+    $(document).on('change','.f_service_remise_type_ligne',function (event) {
 
-    $(document).on('input','.f_service_prix',function (event) {
-
-        var prix = Number( event.target.value );
+        var prix = Number( $(this).closest('tr').find('.f_service_prix').val() );
         var qte = Number( $(this).closest('tr').find('.f_service_periode').val() );
+
+        var f_service_remise_type_ligne = $(this).children("option:selected").val();
+        var f_service_remise_ligne = $(this).closest('tr').find('.f_service_remise_ligne').val();
 
         var total = prix;
 
         if (qte) {
             total = qte * prix
         }
+
+        if (f_service_remise_type_ligne == '1') {
+            remise_ligne_montant = Number( f_service_remise_ligne );
+        } else {
+            remise_ligne_montant = (total * Number( f_service_remise_ligne )) / 100;
+        }
+
+        total = total - remise_ligne_montant;
 
         var montant_selector = $(this).closest('tr').find('.f_service_montant');
 
@@ -97,19 +160,94 @@ $(document).ready(function(){
 
         calculMontantService()
 
+    });
 
-    })
+    $(document).on('input','.f_service_remise_ligne',function (event) {
 
-    $(document).on('input','.f_service_periode',function (event) {
-
-        var qte = Number( event.target.value );
         var prix = Number( $(this).closest('tr').find('.f_service_prix').val() );
+        var qte = Number( $(this).closest('tr').find('.f_service_periode').val() );
+
+        var f_service_remise_type_ligne = $(this).closest('tr').find('.f_service_remise_type_ligne').val();
+        var f_service_remise_ligne = event.target.value;
 
         var total = prix;
 
         if (qte) {
             total = qte * prix
         }
+
+        if (f_service_remise_type_ligne == '1') {
+            remise_ligne_montant = Number( f_service_remise_ligne );
+        } else {
+            remise_ligne_montant = (total * Number( f_service_remise_ligne )) / 100;
+        }
+
+        total = total - remise_ligne_montant;
+
+        var montant_selector = $(this).closest('tr').find('.f_service_montant');
+
+        montant_selector.val(total);
+
+        calculMontantService()
+
+    });
+
+    
+
+    $(document).on('input','.f_service_prix',function (event) {
+
+        var prix = Number( event.target.value );
+        var qte = Number( $(this).closest('tr').find('.f_service_periode').val() );
+
+        var f_service_remise_type_ligne = $(this).closest('tr').find('.f_service_remise_type_ligne').val();
+        var f_service_remise_ligne = $(this).closest('tr').find('.f_service_remise_ligne').val();
+
+        var total = prix;
+
+        if (qte) {
+            total = qte * prix
+        }
+
+        if (f_service_remise_type_ligne == '1') {
+            remise_ligne_montant = Number( f_service_remise_ligne );
+        } else {
+            remise_ligne_montant = (total * Number( f_service_remise_ligne )) / 100;
+        }
+
+        total = total - remise_ligne_montant;
+
+        var montant_selector = $(this).closest('tr').find('.f_service_montant');
+
+        montant_selector.val(total);
+
+        calculMontantService()
+
+    });
+
+    $(document).on('input','.f_service_periode',function (event) {
+
+        var qte = Number( event.target.value );
+        var prix = Number( $(this).closest('tr').find('.f_service_prix').val() );
+
+        var f_service_remise_type_ligne = $(this).closest('tr').find('.f_service_remise_type_ligne').val();
+        var f_service_remise_ligne = $(this).closest('tr').find('.f_service_remise_ligne').val();
+
+
+        var total = prix;
+
+        if (qte) {
+            total = qte * prix
+        }
+
+        var remise_ligne_montant = 0;
+
+        if (f_service_remise_type_ligne == '1') {
+            remise_ligne_montant = Number( f_service_remise_ligne );
+        } else {
+            remise_ligne_montant = (total * Number( f_service_remise_ligne )) / 100;
+        }
+
+        total = total - remise_ligne_montant;
 
         var montant_selector = $(this).closest('tr').find('.f_service_montant');
 
@@ -145,7 +283,14 @@ $(document).ready(function(){
     }
 
     function calculRemiseService(pourcentage) {
-        remise = (montant * pourcentage) / 100;
+
+        var f_service_remise_type = $('#f_service_remise_type').val();
+
+        if (f_service_remise_type == 0) {
+            remise = (montant * pourcentage) / 100;
+        } else {
+            remise = pourcentage;
+        }
 
         $('#service_remise').val(remise);
 
@@ -155,15 +300,24 @@ $(document).ready(function(){
     $(document).on('input','#f_service_remise',function (event) {
         var value = event.target.value;
         calculRemiseService(value)
-    })
+    });
+
+    $(document).on('change','#f_service_remise_type',function(event) {
+        event.preventDefault();
+
+        calculRemiseService( Number( $('#f_service_remise').val() ) );
+
+    });
 
     function calculTotalService() {
         total = montant - remise;
-        $('#service_total').val(total);
+        var letter = NumberToLetter(total) ;
+        var devise_lettre = $('#devise_lettre').val();
 
-         var letter = NumberToLetter(total) ;
-        $('#service_somme').html(letter + " francs comorien");
-        $('#id-somme-service').val(letter + " francs comorien");
+        $('#service_total').val(total);
+        $('#service_somme').html(letter + " " + devise_lettre);
+        $('#id-somme-service').val(letter + " " + devise_lettre);
+        $('.f_service_devise').trigger('change')
     }
 
 })

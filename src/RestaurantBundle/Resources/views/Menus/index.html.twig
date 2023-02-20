@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MENU DU JOUR</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Animation CSS -->
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/plugins/select2/select2-bootstrap4.min.css') }}">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+
+    <style type="text/css">
+        .landing-page .navbar-default .navbar-brand {
+            background: transparent;
+            padding: 0;
+            width: 100px;
+            height: 100px;
+            display: flex;
+        }
+
+        .navbar-brand>img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            margin: auto;
+        }
+
+        .landing-page .navbar-default .nav li a {
+            color: #fff;
+        }
+
+        .product-name {
+             height: auto; 
+        }
+
+        .landing-page .carousel-caption {
+            width: 100%;
+            text-align: center;
+            background: rgb(0 0 0 / 30%);
+        }
+
+        .navbar-header{
+            display: flex;
+            align-items: center;
+        }
+
+        span.resto-name{
+            color: #fff;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .landing-page .navbar.navbar-scroll .resto-name {
+            color: #787878 !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: 35px;
+            border-radius: 0;
+        }
+
+        .landing-page .btn-primary {
+            padding: 7px 20px;
+        }
+    </style>
+</head>
+<body id="page-top" class="landing-page">
+
+<div class="navbar-wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        <img src="{{ agence.img }}" class="logo">
+                    </a>
+                    <span class="resto-name">{{ agence.nom }}</span>
+                </div>
+                {# <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="page-scroll" href="#plats">Menus du jour</a></li>
+                        <li><a class="page-scroll" href="#contact">Contact</a></li>
+                    </ul>
+                </div> #}
+            </div>
+        </nav>
+</div>
+
+<div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#inSlider" data-slide-to="0" class="active"></li>
+        <li data-target="#inSlider" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+
+        {% set i = 1 %}
+
+        {% for slider in sliders %}
+            <div class="item {% if i == 1 %} active {% endif %}">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>{{ slider.titre }}</h1>
+                        <p>{{ slider.sousTitre }}</p>
+                        {# <p>
+                            <a class="btn btn-lg btn-primary page-scroll" href="#plats">{{ agence.nom }}</a>
+                            <a class="caption-link" href="#" role="button">Inspinia Theme</a>
+                        </p> #}
+                    </div>
+                </div>
+                <!-- Set background for slide in css -->
+                {# <div class="header-back" style="background: url({{ slider.img  }}) 50% 0 no-repeat;background-size: cover;"></div> #}
+                <div class="header-back" style="background: url({{ slider.img  }}) ;"></div>
+
+            </div>
+            {% set i = i + 1 %}
+        {% endfor %}
+
+    </div>
+    <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<section  class="container" id="plats">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="navy-line"></div>
+            <h1>MENU DU JOUR</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label class="control-label" for="categorie">CHOISIR</label>
+                <select class="form-control" id="type_menu">
+                    <option value="0">Tous</option>
+                    <option value="1">Plats</option>
+                    <option value="2">Accompagnements</option>
+                    <option value="3">Boissons</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3 plats">
+            <div class="form-group">
+                <label class="control-label" for="categorie">CATÉGORIES</label>
+                <select class="form-control select2" id="categorie">
+                    <option value="0">Tous</option>
+                    {% for categorie in categories %}
+                        <option value="{{ categorie.id }}">{{ categorie.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <button class="btn btn-primary btn-full-width mt-custom" id="btn_search">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <input type="hidden" id="agence_id" value="{{ agence.id }}">
+    <div class="row" id="liste_plat" style="margin-top:30px">
+        
+    </div>
+</section>
+
+<section id="contact" class="gray-section contact">
+    <div class="container">
+        <div class="row m-b-lg">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>MERCI POUR VOTRE VISITE</h1>
+                {# <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p> #}
+            </div>
+        </div>
+        <div class="row m-b-lg">
+            <div class="col-lg-4 col-lg-offset-5">
+                <address>
+                    <strong>
+                        <span class="navy">{{ agence.nom }}</span>
+                    </strong>
+                    <br/>
+                    {{ agence.adresse }} {{ agence.region }}
+                    <br/>
+                    Tel : {{ agence.tel }}
+                    <br/>
+                </address>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
+                <p style="color:#fff"><strong>shissabsysteme.com &copy; <script>document.write(new Date().getFullYear())</script></strong><br/></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+<!-- Mainly scripts -->
+<script src="{{ asset('js/jquery-2.1.1.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+<script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="{{ asset('js/inspinia.js') }}"></script>
+<script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
+<script src="{{ asset('js/plugins/wow/wow.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('bundles/restaurant/js/menus/index.js') }}"></script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('body').scrollspy({
+            target: '.navbar-fixed-top',
+            offset: 80
+        });
+
+        // Page scrolling feature
+        $('a.page-scroll').bind('click', function(event) {
+            var link = $(this);
+            $('html, body').stop().animate({
+                scrollTop: $(link.attr('href')).offset().top - 50
+            }, 500);
+            event.preventDefault();
+        });
+    });
+
+    var cbpAnimatedHeader = (function() {
+        var docElem = document.documentElement,
+                header = document.querySelector( '.navbar-default' ),
+                didScroll = false,
+                changeHeaderOn = 200;
+        function init() {
+            window.addEventListener( 'scroll', function( event ) {
+                if( !didScroll ) {
+                    didScroll = true;
+                    setTimeout( scrollPage, 250 );
+                }
+            }, false );
+        }
+        function scrollPage() {
+            var sy = scrollY();
+            if ( sy >= changeHeaderOn ) {
+                $(header).addClass('navbar-scroll')
+            }
+            else {
+                $(header).removeClass('navbar-scroll')
+            }
+            didScroll = false;
+        }
+        function scrollY() {
+            return window.pageYOffset || docElem.scrollTop;
+        }
+        init();
+
+    })();
+
+    // Activate WOW.js plugin for animation on scrol
+    new WOW().init();
+
+</script>
+
+</body>
+</html>

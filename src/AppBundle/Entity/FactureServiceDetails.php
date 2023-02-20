@@ -83,6 +83,20 @@ class FactureServiceDetails
      */
     private $designation = '';
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="type_remise", type="integer", nullable=true)
+     */
+    private $typeRemise = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="montant_remise", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $montantRemise = '0.00';
+
 
     /**
      * Get id
@@ -284,5 +298,53 @@ class FactureServiceDetails
     public function getDesignation()
     {
         return $this->designation;
+    }
+
+    /**
+     * Set typeRemise
+     *
+     * @param integer $typeRemise
+     *
+     * @return FactureServiceDetails
+     */
+    public function setTypeRemise($typeRemise)
+    {
+        $this->typeRemise = $typeRemise;
+
+        return $this;
+    }
+
+    /**
+     * Get typeRemise
+     *
+     * @return integer
+     */
+    public function getTypeRemise()
+    {
+        return $this->typeRemise;
+    }
+
+    /**
+     * Set montantRemise
+     *
+     * @param string $montantRemise
+     *
+     * @return FactureServiceDetails
+     */
+    public function setMontantRemise($montantRemise)
+    {
+        $this->montantRemise = $montantRemise ? $montantRemise : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantRemise
+     *
+     * @return string
+     */
+    public function getMontantRemise()
+    {
+        return $this->montantRemise;
     }
 }

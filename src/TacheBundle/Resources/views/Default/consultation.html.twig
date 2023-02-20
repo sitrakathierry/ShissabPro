@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href=" {{ asset("bundles/tache/css/style.css") }} ">
+<style type="text/css">
+   
+</style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+{# <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script> #}
+<script src="{{ asset('bundles/tache/js/consultation.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+    {% set statut = "" %}
+    <div class="t-block">
+        <div class="t-title">
+            <h2>LISTE DES TACHES</h2>
+        </div>
+        <div class="liste-tache container ">
+        <div class="row mb-2">
+            <div class="col-sm-2 mt-3">
+                <label for="pers-assigne">Personne assigné</label>
+                <select name="pers_assigne" class="form-control pers_assigne"  >
+                    <option value=""></option>
+                            {% if accessTache is empty %}
+                                {% for unePers in basePers %}
+                                    {% if unePers.user.id == user %}
+                                        <option value="{{ unePers.user.id }}" class="capitalize"> {{ unePers.user.username }} </option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% for unePers in basePers %}
+                                    <option value="{{ unePers.user.id }}" class="capitalize"> {{ unePers.user.username }} </option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+            </div>
+            <div class="col-sm-2 mt-3"> 
+                <label for="type_tache">Type de tâche</label>
+                <select name="type_tache"  class="form-control type_tache">
+                    <option value=""></option>
+                    {% for uneTypeTache in baseTypeTache %}
+                        <option value="{{ uneTypeTache.id }}"> {{ uneTypeTache.nom_type_tache }} </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-2 mt-3">
+            <label for="date_debut">Date début</label>
+                <input type="date" class="form-control date_debut">
+            </div>
+            <div class="col-sm-2 mt-3">
+            <label for="date_fin">Date fin</label>
+                <input type="date" class="form-control date_fin">
+            </div>
+            <div class="col-sm-2 mt-3">
+            <label for="duree">Durée</label>
+                <input type="number" class="form-control duree">
+            </div>
+            <div class="col-sm-2 mt-3">
+            <label for="type_duree">Type durée</label>
+                <select name="type_duree" class="form-control type_duree" >
+                    <option value=""></option>
+                    <option value="mn">Minute</option>
+                    <option value="h">Heure</option>
+                    <option value="j">Jour</option>
+                </select>
+                <input type="hidden" class="statutTache" value="3">
+            </div>
+            <div class="col-sm-8 text-left mt-3">
+                <button statut="3" class="btn btn-sm btn_statut  mr-3 btn-success"><i class="fa fa-hand-grab-o text-white"></i></button>
+                <button statut="0" class="btn btn-sm btn_statut  mr-3 btn-default"><i class="fa fa-hand-stop-o text-white"></i></button>
+                <button statut="1" class="btn btn-sm btn_statut  mr-3 btn-warning"><i class="fa fa-hand-pointer-o text-white"></i></button>
+                <button statut="2" class="btn btn-sm btn_statut  mr-3 tachecst btn-success"><i class="fa fa-thumbs-o-up text-white"></i></button>
+                <button statut="-1" class="btn btn-sm btn_statut  btn-danger"><i class="fa fa-thumbs-o-down text-white"></i></button>
+            </div>
+            <div class="col-sm-4 mt-3 text-right">
+            <button class="btn btn-md btn-primary recherche_tache">&emsp;<i class="fa fa-search text-white"></i>&nbsp;Rechercher&emsp;</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+            <thead >
+                <tr>
+                    <th class="text-center">Statut</th>
+                    <th>Tâche</th>
+                    <th>Date d'éxecution</th>
+                    <th>Durée</th>
+                    <th>Personne(s) assigné(s)</th>
+                    <th>Type tâche</th>
+                    <th>Commentaire</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody class="t_consult_tache">
+            {% set i = 0 %}
+            {% for uneTache in baseTache %}
+                {% if uneTache.statut == 0 %}
+                    {% set statut = "tache_noncommencee" %}
+                {% elseif uneTache.statut == 1 %}
+                    {% set statut = "tache_encours" %}
+                {% elseif uneTache.statut == 2 %}
+                    {% set statut = "tache_terminee" %}
+                {% else  %}
+                    {% set statut = "tache_depassee" %}
+                {% endif %}
+                <tr>
+                    <td class="text-center"><div class="content-center"><div class="statut-tache {{ statut }} "></div></div></td>
+                    <td>{{ uneTache.tache }}</td>
+                    <td>Du {{ uneTache.dateDebut }}  Au {{ uneTache.dateFin }}</td>
+                    <td>{{ uneTache.duree }} {{ uneTache.type_duree }}</td>
+                    <td>
+                    {% for unePersonne in tabTachePers[i] %}
+                        {% if unePersonne.idtache == uneTache.id %}
+                            {{ unePersonne.username }}, 
+                        {% endif %}
+                    {% endfor %}
+                    </td>
+                    <td>
+                    {% for uneType in tabTypeTache[i] %}
+                        {% if uneType.idtache == uneTache.id %}
+                            {{ uneType.nom_type_tache }},
+                        {% endif %}
+                    {% endfor %}
+                    </td>
+                    <td>{{ tabCommentTache[i]|length }} commentaire(s)</td>
+                    <td class="text-center"><a href="{{ path('tache_afficher_details',{idTache:uneTache.id}) }}" class="btn bouton_afficher btn-success btn-sm"><i class="fa fa-info-circle"></i>&emsp;Afficher</a></td>
+                </td>
+            {% set i = i + 1 %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+bon_commande_homepage:
+    path:     /bon/commande/index
+    defaults: { _controller: BonCommandeBundle:Default:index }
+
+bon_commande_add:
+    path:     /bon/commande/add
+    defaults: { _controller: BonCommandeBundle:Default:add }
+
+bon_commande_save:
+    path:     /bon/commande/save
+    defaults: { _controller: BonCommandeBundle:Default:save }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_commande_consultation:
+    path:     /bon/commande/consultation
+    defaults: { _controller: BonCommandeBundle:Default:consultation }
+
+bon_commande_list:
+    path:     /bon/commande/list
+    defaults: { _controller: BonCommandeBundle:Default:list }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_commande_show:
+    path:     /bon/commande/show/{id}
+    defaults: { _controller: BonCommandeBundle:Default:show }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_commande_validation:
+    path:     /bon/commande/validation/{id}
+    defaults: { _controller: BonCommandeBundle:Default:validation }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_commande_pdf_editor:
+    path:    /bon/commande/modelepdf/editor
+    defaults: { _controller: BonCommandeBundle:ModelePdf:editor }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_commande_modele_pdf_save:
+    path:    /bon/commande/modelepdf/save
+    defaults: { _controller: BonCommandeBundle:ModelePdf:save }
+    options:
+        expose: true
+    methods: [POST]
+
+bon_commande_pdf:
+    path:    /bon/commande/pdf/{id}
+    defaults: { _controller: BonCommandeBundle:Default:pdf }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_commande_livraison:
+    path:     /bon/commande/livraison/{id}
+    defaults: { _controller: BonCommandeBundle:Default:livraison }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_commande_facture:
+    path:    /bon/commande/facture/{facture}
+    defaults: { _controller: BonCommandeBundle:Default:facture }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_dashboard:
+    path:    /bon/dashboard
+    defaults: { _controller: BonCommandeBundle:Dashboard:index }
+    options:
+        expose: true
+    methods: [GET]
+
+bon_commande_consultation_corbeille:
+    path:     /bon/commande/consultation/corbeille
+    defaults: { _controller: BonCommandeBundle:Default:consultationCorbeille }
+
+bon_commande_list_corbeille:
+    path:     /bon/commande/list/corbeille
+    defaults: { _controller: BonCommandeBundle:Default:listCorbeille }
+    options:
+        expose: true
+    methods: [POST]

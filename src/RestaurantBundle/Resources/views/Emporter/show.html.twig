@@ -1,0 +1,386 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <style type="text/css">
+        #list_table {
+            background: #c0c0c0;
+            margin: 0;
+            padding: 15px;
+            justify-content: center;
+            display: flex;
+        }
+
+        .table-title{
+            display: flex;
+            align-items: center;
+            column-gap: 4px;
+        }
+
+        .select2-container {
+          width: 150px !important;
+        }
+
+      .select2-container--bootstrap4 .select2-selection--single {
+          height: calc(3rem + 3.5px) !important;
+      }
+
+
+    </style>
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('js/plugins/printerpos/cptable.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/cputils.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/JSESCPOSBuilder.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/JSPrintManager.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/zip.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/zip-ext.js') }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/deflate.js') }}"></script>
+<script src="{{ asset('bundles/restaurant/js/emporter/show.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <input type="hidden" id="place_disponible" value="">
+    <input type="hidden" id="id-row" value="">
+    <input type="hidden" id="id" value="{{ emporter.id }}">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Commande à emporter N°<span class="badge-warning">{{ emporter.num }}</span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal" id="form-emporter">
+
+                            {% if emporter.booking %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label nom">Réservation</label>
+                                            <div class="col-sm-10">
+                                                <input type="hidden" id="booking" value="{{ emporter.booking.id }}">
+                                                <input type="text" class="form-control" value="{{ emporter.booking.num }}" readonly="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <a href="{{ path('hebergement_reservation_show', { id : emporter.booking.id }) }}" class="btn btn-white" target="_blank">
+                                            <i class="fa fa-home"></i>
+                                            VOIR LA RESERVATION
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="row" id="table-emporter">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered" id="table-emporter-add">
+                                        <thead>
+                                            <tr>
+                                                <th>DÉSIGNATION</th>
+                                                <th>QTÉ</th>
+                                                <th>PRIX ({{ agence.deviseSymbole }})</th>
+                                                <th>CUISSON</th>
+                                                <th>ACCOMPAGNEMENTS</th>
+                                                <th>TOTAL ({{ agence.deviseSymbole }})</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="principal">
+                                            {% for detail in details %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <select class="form-control select2 plat" name="plat[]" {% if detail.statut != 1 %} disabled="" {% endif %}>
+                                                                <option></option>
+                                                                {% for plat in plats %}
+                                                                    <option 
+                                                                        value="{{ plat.id }}"
+                                                                        data-prixvente="{{ plat.prixVente }}"
+                                                                        {% if plat.id == detail.plat.id %}
+                                                                            selected=""
+                                                                        {% endif %} 
+                                                                    >{{ plat.nom }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control qte" name="qte[]" value="{{ detail.qte }}" {% if detail.statut != 1 %} disabled="" {% endif %}>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control prix" name="prix[]" value="{{ detail.prix }}" {% if detail.statut != 1 %} disabled="" {% endif %}>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <select class="form-control cuisson" name="cuisson[]">
+                                                                <option></option>
+                                                                <option value="s" {% if detail.cuisson == "s" %} selected {% endif %} >S</option>
+                                                                <option value="ap" {% if detail.cuisson == "ap" %} selected {% endif %} >AP</option>
+                                                                <option value="ald" {% if detail.cuisson == "ald" %} selected {% endif %} >ALD</option>
+                                                                <option value="bc" {% if detail.cuisson == "bc" %} selected {% endif %} >BC</option>
+                                                                <option value="b" {% if detail.cuisson == "b" %} selected {% endif %} >B</option>
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" class="accompagnement_supp" value="{{ detail.totalAccompagnement > 0 ? '1' : '0' }}">
+                                                        <table class="table table-bordered table-accompagnement">
+                                                            <tbody>
+
+                                                                {% for acc_detail in detail.accompagnementsList %}
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="form-group">
+                                                                              <div class="col-sm-12">
+                                                                                <select class="form-control select2 accompagnement" name="accompagnement[]" {% if detail.statut != 1 %} disabled="" {% endif %}>
+                                                                                    <option></option>
+                                                                                    {% for accompagnement in accompagnements %}
+                                                                                        <option 
+                                                                                            value="{{ accompagnement.id }}"
+                                                                                            data-prix="{{ accompagnement.prix }}"
+                                                                                            {% if acc_detail.accompagnement == accompagnement.id %}
+                                                                                                selected=""
+                                                                                            {% endif %}
+                                                                                        >{{ accompagnement.nom }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <div class="form-group">
+                                                                              <div class="col-sm-12">
+                                                                                <select class="option form-control portion_accompagnement" {% if detail.statut != 1 %} disabled="" {% endif %}>
+                                                                                    <option value="0"></option>
+                                                                                    <option 
+                                                                                        value="1" 
+                                                                                        {% if acc_detail.qte_accompagnement == '1' %} 
+                                                                                            selected="" 
+                                                                                        {% endif %} 
+                                                                                    >
+                                                                                        1 
+                                                                                    </option>
+                                                                                    <option 
+                                                                                        value="0.5" 
+                                                                                            {% if acc_detail.qte_accompagnement == '0.5' %} 
+                                                                                                selected="" 
+                                                                                            {% endif %} 
+                                                                                    >
+                                                                                        1/2 
+                                                                                    </option>
+                                                                                </select>
+                                                                                <input type="number" class="hidden qte_accompagnement" name="qte_accompagnement[]" placeholder="" value="{{ acc_detail.qte_accompagnement }}">
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <div class="form-group">
+                                                                              <div class="col-sm-12">
+                                                                                <input type="number" class="form-control prix_accompagnement" name="prix_accompagnement[]" placeholder="Total" value="{{ acc_detail.prix_accompagnement }}" {% if detail.statut != 1 %} disabled="" {% endif %}>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            {% if detail.statut == 1 %}
+
+                                                                                <button class="btn btn-white btn-full-width btn-remove-tr-accompagnement">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                </button>
+                                                                            {% endif %}
+
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                            </tbody>
+
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td colspan="2"></td>
+                                                                    <td>
+                                                                        <div class="form-group">
+                                                                          <div class="col-sm-12">
+                                                                            <input type="number" class="form-control total_accompagnement" name="total_accompagnement[]" placeholder="Total" readonly="" value="{{ detail.totalAccompagnement }}">
+                                                                          </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        {% if detail.statut == 1 %}
+
+                                                                            <button class="btn btn-white btn-full-width btn-add-row-accompagnement" data-id="0">
+                                                                                <i class="fa fa-plus"></i>
+                                                                            </button>
+                                                                        {% endif %}
+
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                            <input type="number" class="form-control total" name="total[]" value="{{ detail.total }}" {% if detail.statut != 1 %} disabled="" {% endif %}>
+                                                          </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {% if detail.statut == 1 %}
+                                                            <button class="btn btn-danger btn-full-width btn-remove-tr">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        {% endif %}
+
+                                                        {% if detail.statut == 2 %}
+                                                            <span class="label label-success">TERMINÉ</span>
+                                                        {% endif %}
+                                                        <input type="hidden" class="statut_detail" value="{{ detail.statut }}">
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="5">MONTANT TOTA</th>
+                                                <th>
+                                                    <div class="form-group">
+                                                      <div class="col-sm-12">
+                                                        <input type="number" class="form-control" id="montant_a_payer" value="{{ emporter.total }}" readonly="">
+                                                      </div>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    {% if emporter.statut < 2%}
+                                                        <button class="btn btn-info btn-full-width btn-add-row" data-id="0">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    {% endif %}
+                                                    
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="5">REMISE</th>
+                                                <th>
+                                                    <div class="form-group">
+                                                      <div class="col-sm-12">
+                                                        <input type="number" class="form-control" id="montant_remise" value="{{ emporter.remise }}" readonly="">
+                                                      </div>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="5">MONTANT APRÈS DEDUCTION</th>
+                                                <th>
+                                                    <div class="form-group">
+                                                      <div class="col-sm-12">
+                                                        <input type="number" class="form-control" id="montant_total" value="{{ emporter.total - emporter.remise }}" readonly="">
+                                                      </div>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    {% if emporter.statut == 1 %}
+                                        <button class="btn btn-primary" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Mettre à jour
+                                        </button>
+                                        <button class="btn btn-warning" id="btn-terminer">
+                                            <i class="fa fa-check"></i>
+                                            Passer à la caisse
+                                        </button>
+                                        <button class="btn btn-danger pull-right" id="btn-delete">
+                                            <i class="fa fa-trash"></i>
+                                            Supprimer
+                                        </button>
+                                    {% endif %}
+
+                                    {% if emporter.statut == 2%}
+                                        {# <button class="btn btn-info" id="btn-payer">
+                                            <i class="fa fa-money"></i>
+                                            Payer
+                                        </button> #}
+
+                                        {% if emporter.booking %}
+                                            <button 
+                                                class="btn btn-warning btn-credit-heb"
+                                                data-id="{{ emporter.id }}" 
+                                                data-type="emporter"
+                                            >
+                                                <i class="fa fa-home"></i>
+                                                CRÉDIT HÉBERGEMENT
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if emporter.statut == 2 or emporter.statut == 3%}
+                                        <button class="btn btn-info" id="print-ticket">
+                                            <i class="fa fa-print"></i>
+                                            Imprimer le Reçu
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div 
+        class="hidden" 
+        id="print-ticket-template"
+        data-template='
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="printer">Imprimante</label>
+                <div class="col-lg-10">
+                    <select class="form-control" id="printer_name" name="printer_name"></select>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <span class="btn btn-white btn-sm js_close_modal">Annuler</span>
+                <span class="btn btn-primary btn-sm" id="print">Imprimer</span>
+            </div>
+        </div>
+        '
+    >
+    </div>
+{% endblock %}
+

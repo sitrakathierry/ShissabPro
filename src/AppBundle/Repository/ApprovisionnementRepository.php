@@ -10,19 +10,30 @@ namespace AppBundle\Repository;
  */
 class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function consultation($ravitaillement)
+	public function consultation(
+		$ravitaillement,
+		$entrepot = 0
+	)
 	{
 		$em = $this->getEntityManager();
 		
-		$query = "	select ap.*, p.nom as produit, vp.prix_vente, p.unite
+		$query = "	select ap.*, p.nom as produit, vp.prix_vente, p.unite, e.nom as entrepot, ap.charge, ap.prix_revient, vp.marge_type, vp.marge_valeur
 					from approvisionnement ap
-					inner join variation_produit vp on (ap.variation_produit = vp.id)
-					inner join produit p on (vp.produit = p.id)
+					left join variation_produit vp on (ap.variation_produit = vp.id)
+					left join produit_entrepot pe on (vp.produit_entrepot = pe.id)
+					left join entrepot e on (pe.entrepot = e.id)
+					left join produit p on (pe.produit = p.id)
 					where ap.id is not null ";
 
 		if ($ravitaillement) {
 			$query .= "	and ap.ravitaillement = " . $ravitaillement ;
 		}
+
+		if ($entrepot) {
+			$query .= "	and e.id = " . $entrepot ;
+		}
+
+		$query .= "	and p.is_delete IS NULL";
 
 		$query .= "	order by p.nom asc";
 
@@ -35,11 +46,34 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
         return $result;
 	}
 
-	public function entreesSorties($produit_id, $type = null, $annee = null)
+	public function entreesSorties(
+		$produit_id, 
+		$type = null, 
+		$annee = null,
+		$entrepot = 0,
+		$agence = 0,
+		$ajourdhui = '',
+		$mois = ''
+	)
 	{
-		$entrees = $this->entrees($produit_id, $annee);
 
-		$sorties = $this->sorties($produit_id, $annee);
+		$entrees = $this->entrees(
+			$produit_id, 
+			$annee, 
+			$entrepot,
+			$agence,
+			$ajourdhui,
+			$mois
+		);
+
+		$sorties = $this->sorties(
+			$produit_id, 
+			$annee, 
+			$entrepot,
+			$agence,
+			$ajourdhui,
+			$mois
+		);
 
 		if ($type == 1) {
 			return $entrees;
@@ -58,22 +92,37 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
 		return $data;
 	}
 
-	public function entrees($produit_id, $annee)
+	public function entrees($produit_id, $annee, $entrepot, $agence, $ajourdhui, $mois)
 	{
 
 		$em = $this->getEntityManager();
 		
-		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois, p.unite, p.nom, vp.prix_vente, CONCAT(p.code_produit,'/',vp.id) as code_variation
+		$query = "	select ap.id, date_format(ap.date, '%d/%m/%Y') as date, ap.qte, ap.prix_achat as prix, ap.total, 1 as type, date_format(ap.date, '%m') as mois, p.unite, p.nom, vp.prix_vente, CONCAT(p.code_produit,'/',vp.id) as code_variation, e.nom as entrepot, ap.charge
 					from approvisionnement ap
-					inner join variation_produit vp on (ap.variation_produit = vp.id)
-					inner join produit p on (vp.produit = p.id)
+					inner join ravitaillement r on (ap.ravitaillement = r.id)
+					left join variation_produit vp on (ap.variation_produit = vp.id)
+					left join produit_entrepot pe on (vp.produit_entrepot = pe.id)
+					left join entrepot e on (pe.entrepot = e.id)
+					left join produit p on (pe.produit = p.id)
 					where ap.id is not null ";
 
-		$query .= "	and p.id = " . $produit_id ;
+		if ($produit_id) {
+			$query .= "	and p.id = " . $produit_id ;
+		}
+
+		if ($agence) {
+			$query .= "	and r.agence = " . $agence ;
+		}	
 
 		if ($annee) {
 			$query .= "	and date_format(ap.date, '%Y') = " . $annee ;
 		}
+
+		if ($entrepot) {
+			$query .= "	and e.id = " . $entrepot ;
+		}
+
+		$query .= "	and p.is_delete IS NULL";
 
 		$query .= "	order by ap.date desc";
 
@@ -86,23 +135,49 @@ class ApprovisionnementRepository extends \Doctrine\ORM\EntityRepository
         return $result;
 	}
 
-	public function sorties($produit_id, $annee)
+	public function sorties($produit_id, $annee, $entrepot, $agence, $ajourdhui, $mois)
 	{
 
 		$em = $this->getEntityManager();
 		
-		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois, p.unite, p.nom, vp.prix_vente, CONCAT(p.code_produit,'/',vp.id) as code_variation
+		$query = "	select pa.id, date_format(pa.date, '%d/%m/%Y') as date, pa.qte, pa.pu as prix, pa.total, 2 as type, date_format(pa.date, '%m') as mois, p.unite, p.nom, vp.prix_vente, CONCAT(p.code_produit,'/',vp.id) as code_variation, e.nom as entrepot
 					from pannier pa
-					inner join variation_produit vp on (pa.variation_produit = vp.id)
-					inner join produit p on (vp.produit = p.id)
 					inner join commande c on (pa.commande = c.id)
+					left join variation_produit vp on (pa.variation_produit = vp.id)
+					left join produit_entrepot pe on (vp.produit_entrepot = pe.id)
+					left join entrepot e on (pe.entrepot = e.id)
+					left join produit p on (pe.produit = p.id)
 					where pa.id is not null ";
 
-		$query .= "	and p.id = " . $produit_id ;
+		if ($produit_id) {
+			$query .= "	and p.id = " . $produit_id ;
+		}
+
+		if ($agence) {
+			$query .= "	and c.agence = " . $agence ;
+
+		}	
 
 		if ($annee) {
 			$query .= "	and date_format(pa.date, '%Y') = " . $annee ;
+			if ($mois) {
+				$query .= "	and date_format(pa.date, '%m') = " . $mois ;
+			}
+			
 		}
+
+		if ($ajourdhui) {
+			$now = new \DateTime();
+        	$dateNow = $now->format('d-m-Y');
+			$query .= "	and date_format(pa.date, '%d-%m-%Y') = " . $dateNow ;
+
+		}
+
+		if ($entrepot) {
+			$query .= "	and e.id = " . $entrepot ;
+		}
+
+		$query .= "	and p.is_delete IS NULL";
 
 		$query .= "	order by pa.date desc";
 

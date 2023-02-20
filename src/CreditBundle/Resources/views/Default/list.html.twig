@@ -1,0 +1,156 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>DATE</th>
+			<th>N° VENTE</th>
+			<th>CLIENT</th>
+			<th>DESIGNATION</th>
+			<th>QTE</th>
+			<th>PRIX UNITAIRE</th>
+			<th>REMISE</th>
+			<th>TOTAL</th>
+			<th>STATUT</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% set j = 0 %}
+	{% set total_general = 0 %}
+	{% set ttc_restant = 0 %}
+		{% for credit in credits %}
+			{% if credit.details %}
+				{% set i = 1 %}
+				{% for  detail in credit.details %}
+					<tr>
+						{% if i == 1 %}
+							<td rowspan="{{ (credit.details | length) + 6 }}">{{ credit.date }}</td>
+							<td rowspan="{{ (credit.details | length) + 6 }}">{{ credit.recu }}</td>
+							<td rowspan="{{ (credit.details | length) + 6 }}">{{ credit.client }}</td>
+						{% endif %}
+						<td>
+
+							{% if detail.type == 1 %}
+								{# {{ detail.produit }}  {{ detail.prix }} KMF #}
+								{{ detail.produit }}
+							{% endif %}
+
+							{% if detail.type == 2 %}
+								{{ detail.service }}
+							{% endif %}
+
+							{% if detail.type == 3 %}
+								{{ detail.designation_autre | raw }}
+							{% endif %}
+
+						</td>
+						<td>
+							{% if detail.type == 1 %}
+								{{ detail.qte|round }} {{ detail.unite }}
+							{% endif %}
+
+							{% if detail.type == 2 %}
+								{{ detail.periode|round }} 
+								{% if detail.duree == 1 %}
+									heures
+								{% endif %}
+								{% if detail.duree == 2 %}
+									jours
+								{% endif %}
+								{% if detail.duree == 3 %}
+									mois
+								{% endif %}
+								{% if detail.duree == 4 %}
+									années
+								{% endif %}
+							{% endif %}
+
+							{% if detail.type == 3 %}
+								{{ detail.qte|round }}
+							{% endif %}
+
+
+						</td>
+						<td>{{ detail.prix|round }}</td>
+						<td>
+							{{ detail.montant_remise|round }}
+							{% if detail.type_remise == 0 and detail.montant_remise %} % {% endif %}
+						</td>
+						<td>{{ detail.montant|round }}</td>
+						{% if i == 1 %}
+							<td rowspan="{{ (credit.details | length) + 6 }}">
+								{% if credit.statut == 1 and credit.statut_paiement == 0 %}
+									EN COURS DE VALIDATION
+								{% endif %}
+
+								{% if credit.statut == 2 and credit.statut_paiement == 0 %}
+									EN COURS DE PAIEMENT
+								{% endif %}
+
+								{% if credit.statut == 2 and credit.statut_paiement == 1 %}
+									PAYÉ
+								{% endif %}
+							</td>
+
+
+							<td rowspan="{{ (credit.details | length) + 6 }}">
+								<a href="{{ path('credit_show', { id : credit.id }) }}" class="btn btn-primary">
+									<i class="fa fa-edit">Afficher</i>
+								</a>
+								{% if credit.statut == 1 and credit.statut_paiement == 0 %}
+										<button class="btn btn-warning btn-validation" data-id="{{ credit.id }}">
+											<i class="fa fa-check"></i>
+											Valider
+										</button>
+								{% else %}
+									<a href="{{ path('credit_paiement', { id : credit.id }) }}" class="btn btn-info">
+										<i class="fa fa-money"></i>
+										Paiement
+									</a>
+								{% endif %}
+							</td>
+
+						{% endif %}
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+				<tr>
+					<th colspan="4">TOTAL</th>
+					<th>{{ credit.ht|round }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">REMISE</th>
+					{# <th>{{ credit.remise }}%</th> #}
+					<th>{{ credit.montant_remise|round }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">TVA</th>
+					{# <th>{{ credit.tva }}%</th> #}
+					<th>{{ credit.montant_tva|round }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">TTC</th>
+					<th>{{ credit.montant_total|round }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">PAYEE</th>
+					<th>{{ credit_payee[j]|round }}</th>
+				</tr>
+				<tr>
+					<th colspan="4">TTC RESTANT</th>
+					{% set ttc_restant = credit.montant_total - credit_payee[j] %}
+					<th>{{ ttc_restant|round }}</th>
+				</tr>
+				<tr>
+					<th colspan="10" bgcolor="#ddd"></th>
+				</tr>
+				{% set total_general = total_general + ttc_restant %}
+			{% endif %}
+			{% set j = j + 1 %}
+			
+		{% endfor %}
+				<tr>
+					<th colspan="7" class="text-right ">TOTAL GENERAL&emsp;&emsp;&emsp;</th>
+					<th colspan="3" bgcolor="#eff">{{ total_general|round }}</th>
+				</tr>
+	</tbody>
+</table>

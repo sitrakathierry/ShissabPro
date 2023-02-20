@@ -1,0 +1,61 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>N° </th>
+			<th>DATE </th>
+			<th>TYPE DE COMMANDE</th>
+			<th>DESIGNATION</th>
+			<th>QTE</th>
+			<th>STATUT</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for commande in commandes %}
+			{% if commande.details %}
+				{% for detail in commande.details %}
+					{% if detail.statut == 1 %}
+						<tr>
+							<td>{{ commande.num }}</td>
+							<td>{{ commande.date }}</td>
+							<td>
+								{% if commande.type_commande == 'reservation' %}
+									Commande sur place
+									<span class="label label-success">{{ detail.tables | join(',')}}</span>
+								{% else %}
+									Commande à emporter
+								{% endif %}
+
+							</td>
+							<td>{{ detail.plat }}</td>
+							<td>{{ detail.qte }}</td>
+							<td>
+								{% if detail.statut == 1 %}
+									EN COURS
+								{% endif %}
+							</td>
+							<td>
+								<button 
+									class="btn btn-success btn-xs btn-terminer"
+									data-id="{{ detail.id }}"
+									data-type="{{ commande.type_commande }}"
+								>
+									<i class="fa fa-check"></i>
+									Terminer
+								</button>
+								<button 
+									class="btn btn-warning btn-xs btn-annuler"
+									data-id="{{ detail.id }}"
+									data-type="{{ commande.type_commande }}"
+								>
+									<i class="fa fa-times"></i>
+									Annuler
+								</button>
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		{% endfor %}
+	</tbody>
+</table>

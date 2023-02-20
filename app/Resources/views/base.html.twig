@@ -2,11 +2,15 @@
 <html>
 
 <head>
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+    <meta http-equiv="Expires" content="0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titre %}{% endblock %}</title>
 
     {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.css') }}">
         <link rel="stylesheet" href="{{ asset('css/plugins/toastr/toastr.min.css') }}">
@@ -35,7 +39,10 @@
 
         <link rel="stylesheet" href="{{ asset('editor/richtexteditor/rte_theme_default.css') }}" />
 
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXFL9EGDk4-d0HAFyIHEpJ_EaJyHwjo5E&libraries=places"></script>
+        <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+        <link rel="shortcut icon" href="{{ asset('css/jquery-confirm.css') }}">
+
+        {# <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXFL9EGDk4-d0HAFyIHEpJ_EaJyHwjo5E&libraries=places"></script> #}
     {% endblock %}
 </head>
 
@@ -75,6 +82,7 @@
 {% block scripts %}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/plugins/printerpos/bluebird.min.js') }}"></script>
     <script src="{{ asset('js/jquery-2.1.1.js') }}"></script>
     <script src="{{ asset('js/jquery-ui-1.10.4.min.js') }}"> </script>
     <script src="{{ asset('js/bootstrap.js') }}"></script>
@@ -90,6 +98,8 @@
     <script src="{{ asset('js/plugins/nestable/jquery.nestable.js') }}"></script>
     <script src="{{ asset('js/inspinia.js') }}"></script>
     <script src="{{ asset('js/ready.js') }}"></script>
+    <script src="{{ asset('js/jquery-confirm.js') }}"></script>
+    {# <script src="{{ asset('js/sweetalert.js') }}"></script> #}
 
     <!-- Jasny -->
     <script src="{{ asset('js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
@@ -112,8 +122,14 @@
 
     <script src="{{ asset('js/plugins/qrcode/qrcode.js') }}"></script>
     <script src="{{ asset('js/plugins/qrcode/html5-qrcode.js') }}"></script>
+
+    <script src="{{ asset('js/plugins/barcode/jquery-barcode.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/barcode/jquery-barcode.js') }}"></script>
     
     <script src="{{ asset('bundles/produit/js/notif-produit.js') }}"></script>
+    <script src="{{ asset('bundles/hebergement/js/reservation/notif-booking.js') }}"></script>
+    <script src="{{ asset('bundles/restaurant/js/reservation/notif.reservation.js') }}"></script>
+    
 
 
 

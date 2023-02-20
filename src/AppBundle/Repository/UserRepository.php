@@ -10,4 +10,31 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function disableUserInAgence($user)
+    {
+        $sql = "UPDATE `fos_user` SET `enabled`= 0 WHERE `id` = ? " ;
+        $em = $this->getEntityManager();
+        $statement = $em->getConnection()->prepare($sql) ; 
+        $statement->execute(array($user));
+        // $result = $statement->fetch();
+        // return $result ;
+    }
+
+    public function enableUserInAgence($user)
+    {
+        $sql = "UPDATE `fos_user` SET `enabled`= 1 WHERE `id` = ? " ;
+        $em = $this->getEntityManager();
+        $statement = $em->getConnection()->prepare($sql) ; 
+        $statement->execute(array($user));
+    }
+
+    public function verifyEmail($email)
+    {
+        $sql = "SELECT * FROM `fos_user` WHERE `email` = ? OR `email_canonical` = ? " ;
+        $em = $this->getEntityManager();
+        $statement = $em->getConnection()->prepare($sql) ; 
+        $statement->execute(array($email,$email));
+        $result = $statement->fetch();
+        return $result ;
+    }
 }

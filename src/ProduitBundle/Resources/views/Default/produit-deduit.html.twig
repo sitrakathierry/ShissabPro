@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock  %}
+
+{% block scripts %}
+   {{ parent() }}
+    <script src="{{ asset('bundles/produit/js/consultation-deduit.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+
+    {# <input type="hidden" id="id_categorie" value="{{ categorieProduit ? categorieProduit.id : '' }}"> #}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Stock déduit
+                        {# {% if categorieProduit %}
+                            <span class="badge-warning">{{ categorieProduit.nom }}</span>
+                        {% endif %} #}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12" id="liste_produit_deduit">
+                            {# <div class="t-content" style="width:100%;overflow:auto;">
+                                <table id="liste_produit_deduit"></table>
+                            </div> #}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

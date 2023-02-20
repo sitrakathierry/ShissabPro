@@ -21,8 +21,8 @@ menu_access_role_save:
     methods: [POST]
 
 menu_liste_complet:
-    path: /menu/liste-complet
-    defaults: { _controller: MenuBundle:Menu:listeMenu }
+    path: /menu/liste-complet/{admin}
+    defaults: { _controller: MenuBundle:Menu:listeMenu, admin : 0 }
     methods: [GET]
     options:
         expose: true

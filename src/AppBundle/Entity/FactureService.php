@@ -31,6 +31,22 @@ class FactureService
      */
     private $facture;
 
+    /**
+     * @var \AppBundle\Entity\BonCommande
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BonCommande")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="bon_commande", referencedColumnName="id")
+     * })
+     */
+    private $bonCommande;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="is_delete", type="integer", nullable=true)
+     */
+    private $is_delete;
 
     /**
      * Get id
@@ -64,5 +80,53 @@ class FactureService
     public function getFacture()
     {
         return $this->facture;
+    }
+
+    /**
+     * Set bonCommande
+     *
+     * @param \AppBundle\Entity\BonCommande $bonCommande
+     *
+     * @return FactureService
+     */
+    public function setBonCommande(\AppBundle\Entity\BonCommande $bonCommande = null)
+    {
+        $this->bonCommande = $bonCommande;
+
+        return $this;
+    }
+
+    /**
+     * Get bonCommande
+     *
+     * @return \AppBundle\Entity\BonCommande
+     */
+    public function getBonCommande()
+    {
+        return $this->bonCommande;
+    }
+
+        /**
+     * Set isDelete
+     *
+     * @param integer $isDelete
+     *
+     * @return Facture
+     */
+    public function setIsDelete($isDelete)
+    {
+        $this->is_delete = $isDelete;
+
+        return $this;
+    }
+
+    /**
+     * Get isDelete
+     *
+     * @return integer
+     */
+    public function getIsDelete()
+    {
+        return $this->is_delete;
     }
 }

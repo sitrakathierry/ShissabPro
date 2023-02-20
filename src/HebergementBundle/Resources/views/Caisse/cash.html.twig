@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('bundles/hebergement/js/caisse/cash.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+	<input type="hidden" id="id" value="{{ booking.id }}">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 >
+                            Paiement CASH - Réservation N° <span class="badge-warning">{{ booking.num }}</span>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+                        	<div class="row">
+                        		<div class="col-lg-12">
+                        			<table class="table">
+                        				<tbody>
+                        					<tr>
+                        						<th>CHAMBRE</th>
+                        						<td>
+                        							{{ booking.chambre.nom }}
+                        							<span class="label label-success">{{ booking.chambre.categorieChambre.nom }}</span>
+                        						</td>
+                        					</tr>
+
+                        					<tr>
+                        						<th>DATE</th>
+                        						<td>
+                        							Du {{ booking.dateEntree | date('d/m/Y') }} au {{ booking.dateSortie | date('d/m/Y') }} ({{ booking.nbNuit }} nuits)
+                        						</td>
+                        					</tr>
+
+                                            <tr>
+                                                <th>NUITÉ ({{ agence.deviseSymbole }})</th>
+                                                <td>{{ booking.montant / booking.nbNuit }}</td>
+                                            </tr>
+
+                        					<tr>
+                        						<th>NB PERSONNE</th>
+                        						<td>{{ booking.nbPers }}</td>
+                        					</tr>
+
+                        					<tr>
+                        						<th>MONTANT HÉBERGEMENT ({{ agence.deviseSymbole }})</th>
+                        						<td>
+                                                    <div class="form-group">
+                                                        <div class="col-lg-9">
+                                                            <input type="number" class="form-control" id="montant_heb" readonly="" value="{{ booking.total }}">
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                        					</tr>
+
+                                            <tr>
+                                                <th>REMISE HÉBERGEMENT</th>
+                                                <th>
+                                                    <div class="form-group">
+                                                        <div class="col-lg-4">
+                                                            <select class="form-control" id="type_remise">
+                                                                <option value="0" {% if booking.typeRemise == 0 %} selected="" {% endif %} >Montant</option>
+                                                                <option value="1" {% if booking.typeRemise == 1 %} selected="" {% endif %} >%</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <input type="number" class="form-control" id="montant_remise" value="{{ booking.remise }}">
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            </tr>
+
+                                            <tr>
+                                                <th>MONTANT HÉBERGEMENT APRÈS DÉDUCTION ({{ agence.deviseSymbole }})</th>
+                                                <th>
+                                                    <div class="form-group">
+                                                        <div class="col-lg-9">
+
+                                                            {% set total = booking.total %}
+                                                            {% if booking.typeRemise == 0 %}
+                                                                {% set total = (total - booking.remise) %}
+                                                            {% else %}
+                                                                {% set total = (total - (total * booking.remise) / 100) %}
+                                                            {% endif %}
+
+                                                            <input type="number" class="form-control" id="montant_total" readonly="" value="{{ total  }}">
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            </tr>
+
+                        					{% if totalConsommation %}
+                        						<tr>
+                        							<th>TOTAL CONSOMMATION RESTAURANT ({{ agence.deviseSymbole }})</th>
+                        							<td>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-9">
+                                                                <input type="number" class="form-control" id="montant_resto" readonly="" value="{{ totalConsommation }}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+	                        					</tr>
+	                        				{% endif %}
+
+                        				</tbody>
+
+                        				<tfoot>
+                        					<tr>
+                        						<th>MONTANT TOTAL À PAYER ({{ agence.deviseSymbole }})</th>
+                        						<th>
+                                                    <div class="form-group">
+                                                        <div class="col-lg-9">
+                                                            <input type="number" class="form-control" id="montant_a_payer" readonly="" value="{{ total + totalConsommation }}">
+                                                        </div>
+                                                    </div>
+                                                </th>
+                        					</tr>
+                                            
+                                            
+                        				</tfoot>
+                        			</table>
+                        		</div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-12">
+                                    {% if booking.statut == 3 %}
+                            			<button class="btn btn-primary" id="btn-payer">
+                            				<i class="fa fa-check"></i>
+                            				PAYER
+                            			</button>
+                                    {% endif %}
+
+                                    {% if booking.statut == 4 %}
+                                        <button class="btn btn-info" id="">
+                                            <i class="fa fa-print"></i>
+                                            REÇU
+                                        </button>
+                                    {% endif %}
+                        		</div>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -45,6 +45,20 @@ class Approvisionnement
     /**
      * @var float
      *
+     * @ORM\Column(name="charge", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $charge;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix_revient", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $prixRevient;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
      */
     private $total;
@@ -96,6 +110,13 @@ class Approvisionnement
      * })
      */
     private $variationProduit;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fournisseurs", type="text", nullable=true)
+     */
+    private $fournisseurs;
 
     /**
      * Get id
@@ -348,5 +369,77 @@ class Approvisionnement
     public function getVariationProduit()
     {
         return $this->variationProduit;
+    }
+
+    /**
+     * Set charge
+     *
+     * @param float $charge
+     *
+     * @return Approvisionnement
+     */
+    public function setCharge($charge)
+    {
+        $this->charge = $charge;
+
+        return $this;
+    }
+
+    /**
+     * Get charge
+     *
+     * @return float
+     */
+    public function getCharge()
+    {
+        return $this->charge;
+    }
+
+    /**
+     * Set prixRevient
+     *
+     * @param float $prixRevient
+     *
+     * @return Approvisionnement
+     */
+    public function setPrixRevient($prixRevient)
+    {
+        $this->prixRevient = $prixRevient;
+
+        return $this;
+    }
+
+    /**
+     * Get prixRevient
+     *
+     * @return float
+     */
+    public function getPrixRevient()
+    {
+        return $this->prixRevient;
+    }
+
+    /**
+     * Set fournisseurs
+     *
+     * @param string $fournisseurs
+     *
+     * @return Approvisionnement
+     */
+    public function setFournisseurs($fournisseurs)
+    {
+        $this->fournisseurs = $fournisseurs;
+
+        return $this;
+    }
+
+    /**
+     * Get fournisseurs
+     *
+     * @return string
+     */
+    public function getFournisseurs()
+    {
+        return $this->fournisseurs;
     }
 }

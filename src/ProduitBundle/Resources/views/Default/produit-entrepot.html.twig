@@ -1,0 +1,131 @@
+<div class="produit-entrepot">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Code</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control code" readonly="">
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control indice" value="Indice">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Entrepot</label>
+                <div class="col-sm-10">
+                    <select class="form-control entrepot select2">
+                        <option></option>
+                        {% for entrepot in entrepots %}
+                            <option value="{{ entrepot.id }}">{{ entrepot.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+			<div class="form-group">
+			    <label class="col-sm-2 control-label">Fournisseur</label>
+			    <div class="col-sm-10">
+			        <select class="form-control fournisseur select2" multiple="">
+			            <option></option>
+			            {% for fournisseur in fournisseurs %}
+			                <option value="{{ fournisseur.id }}">{{ fournisseur.nom }}</option>
+			            {% endfor %}
+			        </select>
+			    </div>
+			</div>
+		</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Prix achat <span class="devise_symbole"></span></label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control prix_achat">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Charge <span class="devise_symbole"></span></label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control charge">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Prix de revient <span class="devise_symbole"></span></label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control prix_revient">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Calcul</label>
+                <div class="col-sm-10">
+                    <select class="form-control marge_type">
+                        <option value="0">Montant</option>
+                        <option value="1">%</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Marge</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control marge_valeur">
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="row">
+		
+		<div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Prix vente <span class="devise_symbole"></span></label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control prix_vente">
+                </div>
+            </div>
+        </div>
+		<div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Stock</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control stock">
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Stock d'alerte</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control stock_alerte">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Expirer le</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control expirer">
+                </div>
+            </div>
+        </div>
+	</div>
+</div>

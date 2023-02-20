@@ -1,0 +1,370 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Reservation
+ *
+ * @ORM\Table(name="reservation")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ReservationRepository")
+ */
+class Reservation
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_place", type="integer", nullable=true)
+     */
+    private $nbPlace;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="selected_tables", type="text", nullable=true)
+     */
+    private $selectedTables;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $total;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="remise", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $remise = '0.00';
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="statut", type="integer", nullable=true)
+     */
+    private $statut = 1;
+
+    /**
+     * @var \AppBundle\Entity\Agence
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Agence")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agence", referencedColumnName="id")
+     * })
+     */
+    private $agence;
+
+    /**
+     * @var \AppBundle\Entity\Booking
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="booking", referencedColumnName="id")
+     * })
+     */
+    private $booking;
+
+    private $num;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="montant_recu", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $montantRecu;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="montant_rendu", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $montantRendu;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nbPlace
+     *
+     * @param integer $nbPlace
+     *
+     * @return Reservation
+     */
+    public function setNbPlace($nbPlace)
+    {
+        $this->nbPlace = $nbPlace;
+
+        return $this;
+    }
+
+    /**
+     * Get nbPlace
+     *
+     * @return int
+     */
+    public function getNbPlace()
+    {
+        return $this->nbPlace;
+    }
+
+    /**
+     * Set selectedTables
+     *
+     * @param string $selectedTables
+     *
+     * @return Reservation
+     */
+    public function setSelectedTables($selectedTables)
+    {
+        $this->selectedTables = $selectedTables;
+
+        return $this;
+    }
+
+    /**
+     * Get selectedTables
+     *
+     * @return string
+     */
+    public function getSelectedTables()
+    {
+        return $this->selectedTables;
+    }
+
+    /**
+     * Set total
+     *
+     * @param float $total
+     *
+     * @return Reservation
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return float
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Reservation
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set statut
+     *
+     * @param integer $statut
+     *
+     * @return Reservation
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return integer
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Set agence
+     *
+     * @param \AppBundle\Entity\Agence $agence
+     *
+     * @return Reservation
+     */
+    public function setAgence(\AppBundle\Entity\Agence $agence = null)
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * Get agence
+     *
+     * @return \AppBundle\Entity\Agence
+     */
+    public function getAgence()
+    {
+        return $this->agence;
+    }
+
+    /**
+     * Get num
+     *
+     */
+    public function getNum()
+    {
+
+        $id = $this->id;
+
+        $num = str_pad($id, 6, '0', STR_PAD_LEFT) . "/SP";
+
+        $this->num = $num;
+
+        return $this->num;
+
+    }
+
+    /**
+     * Set booking
+     *
+     * @param \AppBundle\Entity\Booking $booking
+     *
+     * @return Reservation
+     */
+    public function setBooking(\AppBundle\Entity\Booking $booking = null)
+    {
+        $this->booking = $booking;
+
+        return $this;
+    }
+
+    /**
+     * Get booking
+     *
+     * @return \AppBundle\Entity\Booking
+     */
+    public function getBooking()
+    {
+        return $this->booking;
+    }
+
+    /**
+     * Set remise
+     *
+     * @param float $remise
+     *
+     * @return Reservation
+     */
+    public function setRemise($remise)
+    {
+        $this->remise = $remise ? $remise : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get remise
+     *
+     * @return float
+     */
+    public function getRemise()
+    {
+        return $this->remise;
+    }
+
+    /**
+     * Set montantRecu
+     *
+     * @param float $montantRecu
+     *
+     * @return Reservation
+     */
+    public function setMontantRecu($montantRecu)
+    {
+        $this->montantRecu = $montantRecu ? $montantRecu : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantRecu
+     *
+     * @return float
+     */
+    public function getMontantRecu()
+    {
+        return $this->montantRecu;
+    }
+
+    /**
+     * Set montantRendu
+     *
+     * @param float $montantRendu
+     *
+     * @return Reservation
+     */
+    public function setMontantRendu($montantRendu)
+    {
+        $this->montantRendu = $montantRendu ? $montantRendu : '0.00';
+
+        return $this;
+    }
+
+    /**
+     * Get montantRendu
+     *
+     * @return float
+     */
+    public function getMontantRendu()
+    {
+        return $this->montantRendu;
+    }
+}

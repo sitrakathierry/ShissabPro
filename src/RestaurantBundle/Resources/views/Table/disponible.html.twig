@@ -1,0 +1,32 @@
+{% for table in tables %}
+	<div class="col-sm-3 item-table">
+	    <div class="ibox float-e-margins">
+	        <div class="ibox-title table-title">
+	            {# <span class="label label-success pull-right">Monthly</span> #}
+	            
+	            <div class="checkbox checkbox-success checkbox-circle">
+	                <input 
+	                	class="table_selected" 
+	                	type="checkbox"
+	                	data-id="{{ table.id }}"
+	                	data-nom="{{ table.nom }}"
+	                	data-libre="{{ table.disponible }}"
+	                	data-occupe="{{ table.place - table.disponible }}"
+	                	data-assis=""
+	                >
+	                <label for="checkbox8">
+	                    <h5>{{ table.nom }}</h5>
+	                </label>
+	                <span class="label label-success pull-right assis"></span>
+	            </div>
+	        </div>
+	        <div class="ibox-content">
+	            <h2 class="no-margins text-center">{{ table.disponible }} places libres</h2>
+	            <div class="stat-percent font-bold ">
+	            	<span class="label label-danger">{{ table.place - table.disponible }}</span>
+	            </div>
+	            <small>Places occupé par d'autre client</small>
+	        </div>
+	    </div>
+	</div> 
+{% endfor %}

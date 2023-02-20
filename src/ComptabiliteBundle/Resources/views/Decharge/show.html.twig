@@ -1,0 +1,230 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+  <link rel="stylesheet" href="{{ asset('bundles/comptabilite/js/MonthPicker.css') }}">
+  
+  <style type="text/css">
+    .wizard > .content > .body {
+    position: relative !important;
+    }
+    .wizard > .content {
+    background: #fff;
+    }
+    /*.form-control {
+    margin: 10px !important;
+    }*/
+    .txt-bottom {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid;
+    width: 100%;
+    }
+
+    /*.width-auto {
+      width: auto !important;
+    }*/
+  </style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+  <script src="{{ asset('bundles/comptabilite/js/decharge-show.js') }}"></script> 
+  <script src="{{ asset('bundles/comptabilite/js/MonthPicker.js') }}"></script> 
+{% endblock %}
+{% block contenu %}
+<input type="hidden" id="id" value="{{decharge.id}}">
+<input type="hidden" id="statut" value="{{ decharge.statut }}">
+<div class="wrapper wrapper-content ">
+  <div class="row">
+    <div class="col-lg-12">
+    	<div class="ibox float-e-margins">
+    		<div class="ibox-title">
+    			<h5>Décharge </h5>
+    		</div>
+    		<div class="ibox-content">
+    			<div class="form-horizontal">
+    				<div class="row">
+    					<div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Je soussigne *</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="beneficiaire" value="{{decharge.beneficiaire}}">
+                      </div>
+                  </div>
+              </div>
+    				</div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Mode de paiement</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="mode-paiement">
+                      <option value="1" {% if decharge.modePaiement == 1 %} selected="" {% endif %} >Chèque</option>
+                      <option value="2" {% if decharge.modePaiement == 2 %} selected="" {% endif %} >Espèce</option>
+                      <option value="3" {% if decharge.modePaiement == 3 %} selected="" {% endif %} >Virement</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Montant ({{ agence.deviseSymbole }})</label>
+                      <div class="col-sm-10">
+                          <input type="number" class="form-control" name="" id="montant" value="{{decharge.montant}}">
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Motif</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" id="motif">
+                          <option></option>
+                          {% for motif in motifs %}
+                            <option 
+                              value="{{ motif.id }}"
+                              {% if decharge.motifDecharge %}
+                                {% if decharge.motifDecharge == motif %} selected="" {% endif %} 
+                              {% endif %}
+                            >{{ motif.libelle }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+
+    				<div class="row">
+          		<div class="col-lg-6" id="div-num-cheque">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">N° Chèque</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="cheque" value="{{decharge.cheque}}">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6" id="div-num-virement">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">N° Virement</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="virement" value="{{decharge.virement}}">
+                      </div>
+                  </div>
+              </div>
+              <input type="hidden" id="devise" value="{{ agence.deviseSymbole }}">
+              {# <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Devise</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="devise" name="devise">
+                          <option value="KMF" {% if decharge.devise == 'KMF' %} selected="" {% endif %} >KMF</option>
+                          <option value="EURO" {% if decharge.devise == 'EURO' %} selected="" {% endif %} >EURO</option>
+                        </select>
+                    </div>
+                </div>
+              </div> #}
+              
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6" id="div-date-cheque">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date Chèque</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date_cheque" value="{{ decharge.dateCheque ? decharge.dateCheque | date('d/m/Y') : '' }}">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6" id="div-date-virement">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date virement</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date_virement" value="{{ decharge.dateVirement ? decharge.dateVirement | date('d/m/Y') : '' }}">
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6" id="div-date-cheque">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Mois Facture</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="mois_facture" value="{{ decharge.moisFacture ? decharge.moisFacture | date('m/Y') : '' }}">
+                      </div>
+                  </div>
+              </div>
+              {% if decharge.statut == 2 %}
+                <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date de validation</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date_validation" value="{{ decharge.dateValidation ? decharge.dateValidation | date('d/m/Y') : '' }}">
+                      </div>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date déclaration</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date" value="{{ decharge.date | date('d/m/Y') }}">
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group">
+                  <div class="col-sm-12">
+                      <input type="text" class="form-control" name="" id="lettre" readonly="" value="{{decharge.lettre}}">
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+							<label class="col-sm-1 control-label">Description</label>
+				    	<div class="col-lg-12">
+				    		<div id="raison" class="summernote">
+				    			{{ decharge.raison | raw }}
+				    		</div>
+				    	</div>
+				    </div>
+
+				    
+
+    				<div class="hr-line-dashed"></div>
+    				<div class="row pull-rigth">
+				      <div class="col-lg-12">
+			            {# <a href="{{ path('comptabilite_decharge_pdf',{id : decharge.id}) }}" class="btn btn-info" target="_blank">
+                              <i class="fa fa-print"></i>
+                              Imprimer
+                      	</a> #}
+			            <button class="btn btn-primary" id="btn-save">
+			                <i class="fa fa-save"></i>
+			                Mettre à jour
+			            </button>
+                  <button class="btn btn-danger pull-right" id="btn-delete">
+                      <i class="fa fa-trash"></i>
+                      Supprimer
+                  </button>
+				      </div>
+				  	</div>
+
+
+    			</div>
+    		</div>
+    	</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

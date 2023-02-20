@@ -1,0 +1,272 @@
+<style type="text/css">
+    table.content-details {
+        width: 100%
+        border-collapse: collapse;
+    }
+
+    .content-details th {
+        border: solid 1px #000000; 
+        padding: 5px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .content-details td {
+        border: solid 1px #c0c0c0;
+        padding: 5px; 
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    table {
+        font-size: 12pt;
+        font-family: times;
+    }
+
+    pre {
+        font-family: times;
+    }
+
+    td p {
+        width: 20%;
+    }
+
+    h1,h2,h3,h4,p {
+    	word-wrap: break-word;
+    }
+
+    table {
+    	border-collapse: collapse;
+    }
+
+    .f10{
+    	font-size: 10pt;
+    }
+
+    .f14{
+    	font-size: 14pt;
+    }
+
+    .f20{
+    	font-size: 20pt;
+    }
+
+    .no-margin{
+    	margin: 0;
+    }
+
+    .no-padding{
+		padding: 0;
+    }
+
+    .b {
+    	font-weight: bold;
+    }
+
+    h2{
+    	font-size: 15pt;
+    }
+
+    p{
+    	margin: 0;
+    	padding: 0;
+    }
+
+    .bordered{
+    	border: 1px solid #000;
+    }
+
+    h3 {
+    	font-size: 14pt;
+    }
+
+    .th, .tf {
+    	font-weight: bold;
+    	text-transform: uppercase;
+    }
+
+    .th{
+    	text-align: center;
+    	background-color: #c0c0c0;
+    }
+	.tableCom
+	{
+		/* display: grid; */
+		/* border-collapse: collapse; */
+		/* width: 500px ; */
+		margin-bottom: 1rem;
+		color: #212529;
+	}
+	/* .tableCom tr
+	{
+		width: 50%;
+	} */
+	.table-bordered {
+		border: 1px solid #212529;
+	}
+
+	.table-bordered th,
+	.table-bordered td {
+		border: 1px solid #212529;
+		/* word-wrap: break-word; */
+	}
+
+.design div
+{
+	width: auto;
+}
+.descri div
+{
+	width: auto;
+}
+.quantite div
+{
+	width: auto;
+}
+/* .content-center
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+} */
+
+</style>
+
+<!-- <link rel="stylesheet" href=" {{ asset('css/bootstrap4.css') }} "> -->
+<page backtop="" backbottom="" backleft="5mm" backright="5mm"> 
+    {% include('PdfBundle:Default:entete.html.twig') %}
+
+    <table style="width:100%">
+	    <tr>
+	        <td class="text-center" style="width:100%">
+
+	            <h3>
+	                <u>
+	                	Bon de livraison N° {{ bonLivraison.num }}
+	                </u>
+	            </h3>
+	        </td>
+	    </tr>
+	    
+	</table>
+
+	<table style="width:100%; margin-top: 20px">
+		<tr>
+			<td style="width:60%"><b></b></td>
+			<td style="width:10%"><b>Client</b></td>
+			<td style="width:30%; text-transform: uppercase;" class="dashed typo" >
+				
+	            {% if bonLivraison.client.statut == 1 %}
+                    : {{bonLivraison.client.idClientMorale.nomSociete}}
+                {% else %}
+                    : {{bonLivraison.client.idClientPhysique.nom}}
+                {% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td style="width:60%"><b></b></td>
+			<td style="width:10%"><b>Adresse</b></td>
+			<td style="width:30%; text-transform: uppercase;" class="dashed typo" >
+				
+	            {% if bonLivraison.client.statut == 1 %}
+                    : {{bonLivraison.client.idClientMorale.adresse}}
+                {% else %}
+                    : {{bonLivraison.client.idClientPhysique.adresse}}
+                {% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td style="width:60%"><b></b></td>
+			<td style="width:10%"><b>Tel</b></td>
+			<td style="width:30%; text-transform: uppercase;" class="dashed typo" >
+				
+	            {% if bonLivraison.client.statut == 1 %}
+                    : {{bonLivraison.client.idClientMorale.telFixe}}
+                {% else %}
+                    : {{bonLivraison.client.idClientPhysique.tel}}
+                {% endif %}
+			</td>
+		</tr>
+	    
+	</table>
+
+		<table style="margin-top:25px" class="tableCom table-bordered">
+			<tr>
+				<td class="th">DESIGNATION</td>
+				<td class="th">DESCRIPTION</td>
+				<td class="th">QTE</td>
+			</tr>
+	
+			{% for detail in details %}
+				<tr>
+					<td style="width: 150px;" class="design">
+						{% if detail.type == 1%}
+							{{ detail.variationProduit.produitEntrepot.produit.nom }}
+						{% endif %}
+						{% if detail.type == 2%}
+							{{ detail.service.nom }}
+						{% endif %}
+						{% if detail.type == 3%}
+							{{ detail.designationAutre | raw }}
+						{% endif %}
+					</td>
+					<td style="width : 400px;" class="descri">
+						{{ detail.description | raw }}
+					</td>
+					<td class="text-center quantite" style="width : 150px ;">
+	
+						{% if detail.type == 1 or detail.type == 3 %}
+							{{detail.qte | to_float}}
+						{% else %}
+							{{ detail.periode | to_float }} 
+							{% if detail.duree == 1 %}
+								/ H
+							{% endif %}
+							{% if detail.duree == 2 %}
+								/ J
+							{% endif %}
+							{% if detail.duree == 3 %}
+								/ Mois
+							{% endif %}
+							{% if detail.duree == 4 %}
+								/ An
+							{% endif %}
+						{% endif %}
+	
+					</td>
+				</tr>
+			{% endfor %}
+	
+		</table>
+	<table style="width:100%; margin-top: 50px">
+	    <tr>
+	        <td style="width: 100%" class="text-right dashed typo">
+	        	<br>
+	        	<br>
+	        	<br>
+	        	{{ bonLivraison.lieu }}
+	             Le {{bonLivraison.date| date('d/m/Y')}}
+	        </td>
+	    </tr>
+	</table>
+
+	<table style="width:100%; margin-top: 20px">
+		<tr>
+			<td style="width:20%" class="text-center f10">
+				LE CLIENT
+			</td>
+			<td style="width:60%"></td>
+			<td style="width:20%" class="text-center f10">
+				POUR LA SOCIETE
+			</td>
+		</tr>
+	</table>
+
+	
+</page>

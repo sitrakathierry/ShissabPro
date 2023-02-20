@@ -33,6 +33,13 @@ pdf_show:
         expose: true
     methods: [GET]
 
+pdf_delete:
+    path:     /pdf/delete/{id}
+    defaults: { _controller: PdfBundle:Default:delete }
+    options:
+        expose: true
+    methods: [GET]
+
 pdf_pdf:
     path:     /pdf/pdf/{id}
     defaults: { _controller: PdfBundle:Default:pdf }

@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+ {% endblock  %}
+{% block scripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('bundles/restaurant/js/plat/show.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+
+	<input type="hidden" id="id" value="{{ plat.id }}">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <h5 >
+                                    {{ plat.nom }}
+                                </h5>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">
+                                        {% if plat.statut == 1 %} 
+                                            ACTIVÉ 
+                                        {% else %}
+                                            DÉSACTIVÉ
+                                        {% endif %}
+                                    </label>
+                                    <div class="col-sm-6">
+                                        <input type="checkbox" id="statut" {% if plat.statut == 1 %} checked {% endif %} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Nom *</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" required="" id="nom" value="{{ plat.nom }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Catégorie *</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="categorie">
+                                                <option></option>
+                                                {% for categorie in categories %}
+                                                    <option 
+                                                        value="{{ categorie.id }}"
+                                                        {% if plat.categoriePlat %}
+                                                            {% if plat.categoriePlat.id == categorie.id %}
+                                                                selected=""
+                                                            {% endif %} 
+                                                        {% endif %}
+                                                    >{{ categorie.nom }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Type *</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="type">
+                                                <option></option>
+                                                <option value="1" {% if plat.type == 1 %} selected="" {% endif %} >DÉSIGNATION</option>
+                                                <option value="2" {% if plat.type == 2 %} selected="" {% endif %} >BOISSON</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        	<div class="row">
+                        		<div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label description">Description</label>
+                                        <div class="col-sm-11">
+                                            <textarea id="description" class="summernote">
+                                            	{{ plat.description | raw }}
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                        	<div class="row">
+                        		<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Prix ({{ agence.deviseSymbole }})</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="prix" value="{{ plat.prix }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Prix vente ({{ agence.deviseSymbole }}) *</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control" required="" id="prix_vente" value="{{ plat.prixVente }}">
+                                        </div>
+                                    </div>
+                                </div>
+                        	</div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label nom">Image</label>
+                                        <div class="col-sm-10">
+                                            <input type="file" class="form-control" id="image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6" style="justify-content: center;align-items: center;display: flex;">
+                                  <img src="{{ plat.img }}" id="plat_image" class="img-thumbnail">
+                                </div>
+                                
+                            </div>
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                        <button class="btn btn-primary" id="btn-save">
+                                            <i class="fa fa-save"></i>
+                                            Mettre à jour
+                                        </button>
+                                        <button class="btn btn-danger" id="btn-delete">
+                                            <i class="fa fa-trash"></i>
+                                            Supprimer
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

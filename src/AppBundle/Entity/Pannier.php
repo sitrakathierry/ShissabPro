@@ -69,6 +69,16 @@ class Pannier
      */
     private $commande;
 
+    /**
+     * @var \AppBundle\Entity\BonCommande
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BonCommande")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="bon_commande", referencedColumnName="id")
+     * })
+     */
+    private $bonCommande;
+
 
     /**
      * Get id
@@ -222,5 +232,29 @@ class Pannier
     public function getVariationProduit()
     {
         return $this->variationProduit;
+    }
+
+    /**
+     * Set bonCommande
+     *
+     * @param \AppBundle\Entity\BonCommande $bonCommande
+     *
+     * @return Pannier
+     */
+    public function setBonCommande(\AppBundle\Entity\BonCommande $bonCommande = null)
+    {
+        $this->bonCommande = $bonCommande;
+
+        return $this;
+    }
+
+    /**
+     * Get bonCommande
+     *
+     * @return \AppBundle\Entity\BonCommande
+     */
+    public function getBonCommande()
+    {
+        return $this->bonCommande;
     }
 }

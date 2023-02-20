@@ -1,17 +1,21 @@
-<table class="table table-bordered">
+<table class="table table-bordered mw-2000">
 	<thead>
 		<tr>
 			<th>DATE</th>
+			<th>ENTREPOT</th>
 			<th>PRODUIT</th>
 			<th>QTE</th>
           	<th>EXPIRER LE</th>
-          	<th>PRIX VENTE (KMF)</th>
-			<th>PRIX UNITAIRE (KMF)</th>
-			<th>TOTAL (KMF)</th>
+			<th>PRIX D'ACHAT ({{ agence.deviseSymbole }})</th>
+			<th>CHARGE</th>
+            <th>PRIX DE REVIENT</th>
+          	<th>PRIX VENTE ({{ agence.deviseSymbole }})</th>
+			<th>TOTAL ({{ agence.deviseSymbole }})</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
+		{% set total = 0 %}
 		{% for ravitaillement in ravitaillements %}
 			{% if ravitaillement.approvisionnements %}
 				{% set i = 1 %}
@@ -20,13 +24,16 @@
 						<tr data-appro-id="{{ approvisionnement.id }}" data-ravitaillement-id="{{ravitaillement.id}}">
 							{% if i == 1 %}
 								<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">{{ ravitaillement.date }}</td>
+								<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">{{ approvisionnement.entrepot }}</td>
 							{% endif %}
 							<td>{{ approvisionnement.produit }}</td>
 							<td>{{ approvisionnement.qte }} {{ approvisionnement.unite }}</td>
 							<td>{{ (approvisionnement.date_expiration) ? approvisionnement.date_expiration|date("d/m/Y") : '' }}</td>
-							<td>{{ approvisionnement.prix_vente }}</td>
-							<td>{{ approvisionnement.prix_achat }}</td>
-							<td>{{ approvisionnement.total }}</td>
+							<td>{{ approvisionnement.prix_achat|round }}</td>
+							<td>{{ approvisionnement.charge|round }}</td>
+							<td>{{ approvisionnement.prix_revient|round }}</td>
+							<td>{{ approvisionnement.prix_vente|round }}</td>
+							<td>{{ approvisionnement.total|round }}</td>
 							{% if i == 1 %}
 								<td rowspan="{{ (ravitaillement.approvisionnements | length) + 1 }}">
 									<!-- <button class="btn btn-primary cl_show_appro">
@@ -39,13 +46,21 @@
 					{% endif %}
 				{% endfor %}
 				<tr>
-					<td colspan="5">TOTAL</td>
-					<td><b>{{ ravitaillement.montant_total }}</b></td>
+					<td colspan="7">TOTAL</td>
+					<td><b>{{ ravitaillement.montant_total|round }}</b></td>
+					{% set total = total + ravitaillement.montant_total %}
 				</tr>
 				<tr>
-					<td colspan="8" bgcolor="#ddd"></td>
+					<td colspan="10" bgcolor="#ddd"></td>
 				</tr>
 			{% endif %}
 		{% endfor %}
 	</tbody>
+	<tfoot>
+		<tr bgcolor="#fd9597">
+			<th colspan="9">TOTAL</th>
+			<th >{{ total|round }}</th>
+			<th></th>
+		</tr>
+	</tfoot>
 </table>

@@ -1,0 +1,272 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+  	.select2-container {
+          width: 100% !important;
+      }
+
+      .select2-container--bootstrap4 .select2-selection--single {
+          height: calc(3rem + 3.5px) !important;
+      }
+      .ibox-title
+      {
+        overflow: hidden;
+      }
+      .float-right
+      {
+        float: right ;
+      }
+      .history_back
+      {
+        padding: 5px 30px ;
+      }
+  </style>
+{% endblock  %}
+{% block scripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/plugins/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('bundles/credit/js/paiement.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<div class="wrapper wrapper-content">
+{# {% if permissions.facture.create %} #}
+<input type="hidden" id="statut" value="{{ credit.statut }}">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+        <button type="button" class="float-right history_back btn btn-success" onclick="history.back()"><b><i class="fa fa-arrow-left" aria-hidden="true"></i></b></button>
+          <h5>
+            Paiement Vente à crédit N° <span class="badge-warning">{{ credit.recu }}</span>
+          </h5>
+        </div>
+        <div class="ibox-content">
+          <div class="form-horizontal" id="form-commande">
+
+          	<input type="hidden" name="id" id="id" value="{{ credit.id }}">
+          	<div class="row">
+          		<div class="col-lg-6">
+		          	<div class="form-group client_mac">
+		              <label class="col-sm-2 control-label">CLIENT</label>
+		              <div class="col-sm-10">
+
+		              	{% if credit.client.statut == 1%}
+                      		<input type="text" class="form-control" value="{{credit.client.idClientMorale.nomSociete}}" disabled="">
+                    	{% else %}
+                      		<input type="text" class="form-control" value="{{credit.client.idClientPhysique.nom}}" disabled="">
+                   		 {% endif %}
+
+		              </div>
+		            </div>
+          			
+          		</div>
+          	</div>
+
+
+            <div class="hr-line-dashed"></div>
+            <table class="table table-bordered" id="table-commande-add">
+              <thead class="thead-dark">
+                <tr>
+                  <th>TYPE DESIGNATION</th>
+                  <th>DESIGNATION</th>
+                  <th>QTÉ</th>
+                  <th>PRIX</th>
+                  <th scope="col">REMISE</th>
+                  <th>MONTANT TOTAL</th>
+                </tr>
+              </thead>
+              <tbody id="principal">
+              	{% set i = 0 %}
+              	{% for detail in details %}
+	                <tr>
+	                  <td>
+	                    <div class="form-group">
+	                      <div class="col-sm-12">
+	                          {% if detail.type == 1 %} PRODUIT {% endif %}
+	                          {% if detail.type == 2 %} SERVICE {% endif %}
+	                      </div>
+	                    </div>
+	                  </td> 
+	                  <td>
+	                    <div class="form-group">
+	                      <div class="col-sm-12">
+	                          {% if detail.type == 1 %}
+                            {% if detail.variationProduit is empty %}
+                            {% if myVariationProduit is empty  %}
+                               - {{ detail.prix }} KMF
+                            {% else %}
+                                {{ myVariationProduit[i].designation }} - {{ detail.prix }} KMF
+                            {% endif %}
+                            {% else %}
+	                          	{{ detail.variationProduit.produitEntrepot.produit.nom }} - {{ detail.variationProduit.prixVente }} KMF
+	                          {% endif %}
+                            {% endif %}
+	                          {% if detail.type == 2 %}
+	                          		{{ detail.service.nom }}
+	                          {% endif %}
+	                      </div>
+	                    </div>
+	                  </td>
+	                  <td class="soustable">
+	                  	{% if detail.type == 1 or detail.type == 3%}
+	                  		{{ detail.qte }}
+	                  	{% endif %}
+	                  	{% if detail.type == 2 %}
+	                  		{{ detail.periode }}
+	                  		{% if detail.duree == 1 %} Heures {% endif %}
+				         	{% if detail.duree == 2 %} Jours {% endif %}
+				         	{% if detail.duree == 3 %} Moiss {% endif %}
+				         	{% if detail.duree == 4 %} Années {% endif %}
+
+	                  	{% endif %}
+	                  </td>
+	                  <td>
+	                    {{ detail.prix }}
+	                  </td>
+	                  <td>
+	                  	{{detail.montantRemise }}
+	                    {% if detail.typeRemise == 0 %} % {% endif %}
+                      	{% if detail.typeRemise == 1 %} KMF {% endif %}
+	                  </td>
+	                  <td class="td-montant">
+	                    {{ detail.montant }}
+	                  </td>
+	                </tr>
+              		 {% set i = i + 1 %}
+              	{% endfor %}
+              </tbody>
+              <tfoot>
+              <tr>
+                  <th colspan="5">TOTAL</th>
+                  <th>
+                    {{ credit.ht }}
+                  </th>
+                </tr>
+                <tr>
+                  <th colspan="5">REMISE</th>
+                  <th>
+                    {{ credit.montantRemise }}
+                  </th>
+                </tr>
+                <tr>
+                	<th colspan="5">REMISE</th>
+                  	<th>{{ credit.montantTva }}</th>
+                </tr>
+                <tr>
+                  <th colspan="5">TTC</th>
+                  <th>
+                    {{ credit.total }}
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+            <div class="hr-line-dashed"></div>
+            <p>Arrêté la présente facture à la somme de <b id="lettre" style="text-transform: uppercase;">{{ credit.lettre }}</b>
+            <p>
+            <div class="hr-line-dashed"></div>
+          </div>
+
+          <div class="row">
+          	<div class="col-lg-12">
+          		<table class="table table-bordered">
+          			<thead>
+    					<tr>
+    						<th>Date de paiement</th>
+    						<th>Montant Payé</th>
+    						<th></th>
+    					</tr>
+    				</thead>
+
+    				<tbody>
+              {% set total_paye = 0 %}
+              {% for paiement in paiements %}
+                <tr>
+                  <td>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" value="{{ paiement.date | date('d/m/Y') }}" disabled="">
+                        </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                          <input type="number" class="form-control" value="{{ paiement.montant }}" disabled="">
+                        </div>
+                    </div>
+                  </td>
+                  <td>
+                    {# <button class="btn btn-primary btn-full-width" id="btn-valider">
+                      <i class="fa fa-check"></i>
+                      VALIDER
+                    </button> #}
+                  </td>
+                </tr>
+                {% set total_paye = total_paye + paiement.montant %}
+
+              {% endfor %}
+
+              {% if credit.statutPaiement != 1 %}
+      					<tr>
+      						<td>
+      							<div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control input-datepicker" id="date_paiement" value="{{ "now" | date('d/m/Y') }}">
+                        </div>
+                    </div>
+      						</td>
+      						<td>
+      							<div class="form-group">
+                      	<div class="col-sm-12">
+                      		<input type="number" class="form-control" id="montant">
+                      	</div>
+                  	</div>
+      						</td>
+      						<td>
+      							<button class="btn btn-primary btn-full-width" id="btn-valider">
+      								<i class="fa fa-check"></i>
+      								VALIDER
+      							</button>
+      						</td>
+      					</tr>
+              {% endif %}
+
+    				</tbody>
+
+            <tfoot>
+              <tr>
+                <th>TOTAL PAYÉ</th>
+                <th>{{ total_paye }}</th>
+              </tr>
+              <tr>
+                <th>TOTAL RESTANT</th>
+                <th>{{ credit.total - total_paye }}</th>
+              </tr>
+            </tfoot>
+
+          		</table>
+          	</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{#   {% else %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <h1 style="text-align: center;"> 
+                        <i class="fa fa-lock"></i>
+                        ACTION NON PERMIS
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %} #}
+</div>
+{% endblock %}

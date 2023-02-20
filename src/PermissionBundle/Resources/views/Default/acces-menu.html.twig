@@ -85,8 +85,8 @@
                                     </button>
                                 </div>
                             </h4>
-                            <div id="menu-list" class="hidden" style="overflow-y: auto;">
-                                {{ render(controller('MenuBundle:Menu:listeMenu')) }}
+                            <div id="menu-list" class="" style="overflow-y: auto;">
+                                {{ render(controller('MenuBundle:Menu:listeMenu', { admin : 0 })) }}
                             </div>
                         </div>
                     </div>

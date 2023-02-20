@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+  <link rel="stylesheet" href="{{ asset('bundles/comptabilite/js/MonthPicker.css') }}">
+  <style type="text/css">
+    .wizard > .content > .body {
+    position: relative !important;
+    }
+    .wizard > .content {
+    background: #fff;
+    }
+    /*.form-control {
+    margin: 10px !important;
+    }*/
+    .txt-bottom {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid;
+    width: 100%;
+    }
+
+    /*.width-auto {
+      width: auto !important;
+    }*/
+  </style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+  <script src="{{ asset('bundles/comptabilite/js/decharge-add.js') }}"></script> 
+  <script src="{{ asset('bundles/comptabilite/js/MonthPicker.js') }}"></script> 
+{% endblock %}
+{% block contenu %}
+<input type="hidden" id="sinistre_id" value="">
+<div class="wrapper wrapper-content ">
+  <div class="row">
+    <div class="col-lg-12">
+    	<div class="ibox float-e-margins">
+    		<div class="ibox-title">
+    			<h5>Déclaration de dépense</h5>
+    		</div>
+    		<div class="ibox-content">
+    			<div class="form-horizontal">
+    				<div class="row">
+    					<div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Nom concerné *</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="beneficiaire">
+                      </div>
+                  </div>
+              </div>
+    				</div>
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Mode de paiement</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="mode-paiement">
+                      <option value="1">Chèque</option>
+                      <option value="2">Espèce</option>
+                      <option value="3">Virement</option>
+                      <option value="4">Carte Bancaire</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Montant ({{ agence.deviseSymbole }}) *</label>
+                      <div class="col-sm-10">
+                          <input type="number" class="form-control" name="" id="montant">
+                      </div>
+                  </div>
+              </div>
+            </div>
+          
+            <div class="row">
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Service</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" id="service">
+                          <option></option>
+                          {% for motif in motifs %}
+                            <option value="{{ motif.id }}">{{ motif.libelle }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Motif</label>
+                      <div class="col-sm-10">
+                        <select class="form-control" id="motif">
+                          <option value="" ></option>
+                          <option value="Achat" >Achat</option>
+                          <option value="Dépense" >Dépense</option>
+                          <option value="Autre" >Autre</option>
+                        </select>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+
+    				<div class="row">
+          		<div class="col-lg-6" id="div-num-cheque">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">N° Chèque</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="cheque">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6 hidden" id="div-num-virement">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">N° virement</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="virement">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6 hidden" id="div-num-carte">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Ref CB</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="carte_bancaire">
+                      </div>
+                  </div>
+              </div> 
+              <input type="hidden" id="devise" value="{{ agence.deviseSymbole }}">
+              {# <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Devise</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="devise" name="devise">
+                          <option value="KMF">KMF</option>
+                          <option value="EURO">EURO</option>
+                        </select>
+                    </div>
+                </div>
+              </div> #}
+              
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6" id="div-date-cheque">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date Chèque</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date_cheque">
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 hidden" id="div-date-virement">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date virement</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date_virement">
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 hidden" id="div-num-facture">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Num Facture</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="" id="num_facture">
+                        </div>
+                    </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Mois Facture</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="" id="mois_facture" value="{{ "now" | date('m/Y') }}">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Date déclaration</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control input-datepicker" name="" id="date" value="{{ "now" | date('d/m/Y') }}">
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group">
+                  <div class="col-sm-12">
+                      <input type="text" class="form-control" name="" id="lettre" readonly="">
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+							<label class="col-sm-1 control-label">Description</label>
+				    	<div class="col-lg-12">
+				    		<div id="raison" class="summernote"></div>
+				    	</div>
+				    </div>
+
+				    
+
+    				<div class="hr-line-dashed"></div>
+    				<div class="row pull-rigth">
+					      <div class="col-lg-12">
+				            <button class="btn btn-primary pull-right" id="btn-save">
+				                <i class="fa fa-save"></i>
+				                Enregistrer
+				            </button>
+					      </div>
+					  </div>
+
+
+    			</div>
+    		</div>
+    	</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

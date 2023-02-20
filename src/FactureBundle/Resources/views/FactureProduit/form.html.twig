@@ -1,12 +1,13 @@
 <div class="hr-line-dashed"></div>
-<table class="table table-bordered" id="table-fact-add">
+<table class="table table-bordered mw-1500" id="table-fact-add">
   <thead class="thead-dark">
     <tr>
       <th scope="col">TYPE DESIGNATION</th>
       <th scope="col">DESIGNATION</th>
-      <th scope="col">QTE</th>
-      <th scope="col">PRIX</th>
-      <th scope="col">MONTANT TOTAL</th>
+      <th scope="col-sm-1">QTE</th>
+      <th scope="col">PRIX ({{ deviseEntrepot.symbole }}) </th>
+      <th scope="col">REMISE</th>
+      <th scope="col">MONTANT TOTAL ({{ deviseEntrepot.symbole }}) </th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -14,7 +15,7 @@
     <tr data-id="0" class="fact-row row-0">
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <select class="form-control f_libre" name="f_libre[]">
               <option value="0">PRODUIT</option>
               <option value="1">AUTRE</option>
@@ -24,12 +25,19 @@
       </td>
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             {# <input type="text" class="form-control" name="f_designation[]" > #}
-            <select class="form-control f_produit" name="f_produit[]">
+            <select class="form-control select2 f_produit" name="f_produit[]">
               <option></option>
-              {% for produit in produits %}
-                <option value="{{produit.id}}">{{produit.nom}}</option>
+              {% for variation in variations %}
+                <option
+                  value="{{ variation.id }}"
+                  data-prixvente="{{ variation.prix_vente }}"
+                  data-stock="{{ variation.stock }}"
+                >
+                  {{ variation.code_produit }}/{{ variation.indice }} |
+                  {{ variation.nom }} - {{ variation.prix_vente }} {{ deviseEntrepot.symbole }}
+                </option>
               {% endfor %}
             </select>
             <div class="f_designation_container hidden">
@@ -41,21 +49,34 @@
       </td>
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control f_qte" name="f_qte[]" >
           </div>
         </div>
       </td>
       <td>
         <div class="form-group">
-          <div class="col-sm-10">
-            <input type="number" class="form-control f_prix" name="f_prix[]" >
+          <div class="col-sm-12">
+            <input type="number" class="form-control f_prix" name="f_prix[]" readonly>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="form-group">
+          <div class="col-sm-4">
+            <select class="form-control f_remise_type_ligne" name="f_remise_type_ligne[]">
+              <option value="0">%</option>
+              <option value="1">Montant</option>
+            </select>
+          </div>
+          <div class="col-sm-8">
+            <input type="number" class="form-control f_remise_ligne" name="f_remise_ligne[]" >
           </div>
         </div>
       </td>
       <td class="td-montant">
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control f_montant" name="f_montant[]" >
           </div>
         </div>
@@ -67,51 +88,87 @@
   </tbody>
   <tfoot>
     <tr>
-      <th colspan="4">Montant</th>
+      <th colspan="5">MONTANT TOTAL</th>
       <th>
         <div class="form-group">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
             <input type="number" class="form-control" name="montant" id="montant" readonly="" value="0">
           </div>
         </div>
         
       </th>
       <th>
-        <span class="btn-remove-row" data-id="0"><i class="fa fa-trash"></i></span>&nbsp;
-        <span class="btn-add-row" data-id="0"><i class="fa fa-plus"></i></span>
+        <button class="btn btn-white btn-remove-row btn-full-width">
+          <i class="fa fa-trash"></i>
+        </button>
+        <button class="btn btn-white btn-add-row btn-full-width">
+          <i class="fa fa-plus"></i>
+        </button>
       </th>
     </tr>
     <tr>
-      <th colspan="3">Remise (en %)</th>
-      <th>
-        <div class="form-group">
-          <div class="col-sm-10">
-            <input type="number" class="form-control" id="f_remise" name="f_remise"  value="0">
-          </div>
-        </div>
-      </th>
+      <th colspan="5">REMISE</th>
       <th id="">
         <div class="form-group">
-          <div class="col-sm-10">
-            <input type="number" class="form-control" name="remise" id="remise" readonly="" value="0">
+          <div class="col-sm-4">
+            <select class="form-control" id="f_remise_type" name="f_remise_type">
+              <option value="0">%</option>
+              <option value="1">Montant</option>
+            </select>
+          </div>
+          <div class="col-sm-8">
+            <input type="number" class="form-control" id="f_remise" name="f_remise" >
           </div>
         </div>
+        <input type="hidden" class="form-control" name="remise" id="remise" readonly="" value="0">
       </th>
       <th>
       </th>
     </tr>
     <tr>
-      <th colspan="4">Total</th>
+      <th colspan="5">MONTANT APRÈS DEDUCTION</th>
       <th id="">
         <div class="form-group">
-          <div class="col-sm-10">
-            <input type="number" class="form-control" name="total" id="total" readonly="" value="0">
+          <div class="col-sm-12">
+            <input type="number" class="form-control" name="p_total" id="total" readonly="" value="0">
           </div>
         </div>
       </th>
       <th>
       </th>
     </tr>
+    {% if devises | length > 0 %}
+      <tr>
+        <th >MONTANT EN</th>
+        <th colspan="4">
+          <div class="form-group">
+            <div class="col-sm-4">
+              <select class="form-control f_auto_devise" name="f_auto_devise">
+                <option></option>
+                {% for devise in devises %}
+                  {% if deviseEntrepot.symbole != devise.symbole %}
+                    <option 
+                      value="{{devise.id}}"
+                      data-montantprincipal="{{devise.montantPrincipal}}"
+                      data-montantconversion="{{devise.montantConversion}}"
+                    >{{devise.symbole}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </th>
+        <th id="">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <input type="number" class="form-control f_auto_montant_converti" name="f_auto_montant_converti" readonly="" value="">
+            </div>
+          </div>
+        </th>
+        <th>
+        </th>
+      </tr>
+    {% endif %}
   </tfoot>
 </table>
 <div class="hr-line-dashed"></div>

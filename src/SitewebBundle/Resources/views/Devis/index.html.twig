@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+   {{ parent() }}
+   <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+
+{% endblock  %}
+{% block scripts %}
+   {{ parent() }}
+   <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+   <script src="{{ asset('bundles/siteweb/js/devis.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<input type="hidden" id="id_siteweb" value="{{ siteweb.id }}">
+<div class="wrapper wrapper-content">
+   <div class="row">
+      <div class="col-lg-2">
+         <div class="ibox float-e-margins">
+            <div class="ibox-content mailbox-content">
+               <div class="file-manager">
+                  <a class="btn btn-block btn-primary compose-mail" href="{{ siteweb.lien }}" target="_blank">
+                  {{ siteweb.nom }} <i class="fa fa-external-link"></i>
+                  </a>
+                  <div class="space-25"></div>
+                  {{ render(controller('SitewebBundle:Default:menu', { id: siteweb.id } )) }}
+                  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-10 animated fadeInRight">
+         <div class="mail-box-header">
+         	<form method="get" action="index.html" class="pull-right mail-search">
+                <div class="input-group">
+                    <input type="text" class="form-control input-sm" name="search" placeholder="Rechercher">
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <h2>
+               Demandes de devis ( {{ devisList | length }} )
+            </h2>
+            <div class="mail-tools tooltip-demo m-t-md">
+                <div class="btn-group pull-right">
+                    <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                    <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+
+                </div>
+                <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh</button>
+                <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
+                <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i> </button>
+                <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
+
+            </div>
+         </div>
+         <div class="mail-box">
+
+                <table class="table table-hover table-mail table-responsive">
+                <tbody>
+                {% for devis in devisList %}
+	                <tr class="{{ devis.statut ? 'read' : 'unread' }}">
+	                    <td class="check-mail">
+	                        <input type="checkbox" class="i-checks">
+	                    </td>
+	                    <td class="mail-ontact">
+	                    	<a href="{{ path('siteweb_devis_show', { id : devis.id }) }}">{{ devis.email }}</a>
+	                    </td>
+	                    <td>
+	                		<span class="label {{ devis.statut ? 'label-info' : 'label-warning' }} pull-right">
+	                			{{ devis.nom }}
+	                		</span> 
+	                    </td>
+	                    <td class="mail-subject">
+	                    	<a href="{{ path('siteweb_devis_show', { id : devis.id }) }}">
+	                    		{{ devis.objet ~ ' : ' ~ devis.message | striptags | slice(0, 30) }} ...
+	                    	</a>
+	                    </td>
+	                    <td class="text-right mail-date">{{ devis.date | date('d/m/Y h:i') }}</td>
+	                </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+
+
+                </div>
+            </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

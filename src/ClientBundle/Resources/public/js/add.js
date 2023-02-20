@@ -34,10 +34,23 @@ $(document).ready(function(){
 			let clm_tel_fixe = $('input[name=clm_tel_fixe]').val();
 			let clm_email = $('input[name=clm_email]').val();
 			let clm_tel_contact = $('input[name=clm_tel_contact]').val();
-			if (clm_nom_societe != '' && clm_tel_fixe != '' && clm_tel_contact != '') {
+			if (clm_nom_societe != '' && clm_tel_fixe != '') {
 				// form.submit();
 				var data = form.serializeArray();
-				save_client(data, form.data('action'));
+		    	disabled_confirm(false); 
+				swal({
+			        title: "Enregistrer",
+			        text: "Voulez-vous vraiment enregistrer ? ",
+			        type: "info",
+			        showCancelButton: true,
+			        confirmButtonText: "Oui",
+			        cancelButtonText: "Non",
+			    },
+			    function () {
+			    	disabled_confirm(true);
+					save_client(data, form.data('action'));
+			    });
+
 			} else {
 				show_info('Erreur','Champs obligatoires','error');
 			}
@@ -47,10 +60,26 @@ $(document).ready(function(){
 			let clp_adresse = $('input[name=clp_adresse]').val();
 			let clp_tel = $('input[name=clp_tel]').val();
 			let clp_sexe = $('select[name=clp_sexe]').val();
-			if (clp_nom != '' && clp_adresse != '' && clp_tel != '' && clp_sexe != '') {
+			if (clp_nom != '' && clp_tel != '' && clp_sexe != '') {
 				// form.submit();
 				var data = form.serializeArray();
-				save_client(data, form.data('action'));
+
+		    	disabled_confirm(false); 
+
+				swal({
+			        title: "Enregistrer",
+			        text: "Voulez-vous vraiment enregistrer ? ",
+			        type: "info",
+			        showCancelButton: true,
+			        confirmButtonText: "Oui",
+			        cancelButtonText: "Non",
+			    },
+			    function () {
+			    	// $(".confirm").attr('disabled', 'disabled'); 
+		    		disabled_confirm(true); 
+					save_client(data, form.data('action'));
+			    });
+
 			} else {
 				show_info('Erreur','Champs obligatoires','error');
 			}
@@ -64,10 +93,11 @@ $(document).ready(function(){
 			data: data,
 			success: function(res) {
 				if (res.success == true) {
-					show_info('Succés','Client enregistré');
-					location.reload();
+					// show_info('Succés','Client enregistré');
+					// location.reload();
+					show_success('Succès','Enregistrement éffectué');
 				} else {
-					// console.log('existant');
+	    		    disabled_confirm(false);
 					swal({
 		                title: "Le Client existant déjà",
 		                text: "Voulez-vous consulter les informations du client",
@@ -78,7 +108,7 @@ $(document).ready(function(){
 		                closeOnConfirm: false
 		            }, function () {
 		            	var url = Routing.generate('client_show', { id : res.id });
-		            	window.location.href = url
+		            	window.location.href = url;
 		            });
 				}
 			}

@@ -45,7 +45,7 @@ class Produit
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="text")
+     * @ORM\Column(name="image", type="text", nullable=true)
      */
     private $image;
 
@@ -62,13 +62,6 @@ class Produit
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix_vente", type="float", precision=10, scale=0, nullable=true)
-     */
-    private $prixVente;
 
     /**
      * @var float
@@ -93,13 +86,6 @@ class Produit
      * @ORM\Column(name="unite", type="text")
      */
     private $unite;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="stock_alerte", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $stockAlerte = 0;
 
     /**
      * @var \AppBundle\Entity\CategorieProduit
@@ -192,30 +178,6 @@ class Produit
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set prixVente
-     *
-     * @param string $prixVente
-     *
-     * @return Produit
-     */
-    public function setPrixVente($prixVente)
-    {
-        $this->prixVente = $prixVente;
-    
-        return $this;
-    }
-
-    /**
-     * Get prixVente
-     *
-     * @return string
-     */
-    public function getPrixVente()
-    {
-        return $this->prixVente;
     }
 
     /**
@@ -387,26 +349,26 @@ class Produit
     }
 
     /**
-     * Set stockAlerte
+     * Set categorieProduit
      *
-     * @param string $stockAlerte
+     * @param \AppBundle\Entity\CategorieProduit $categorieProduit
      *
      * @return Produit
      */
-    public function setStockAlerte($stockAlerte)
+    public function setCategorieProduit(\AppBundle\Entity\CategorieProduit $categorieProduit = null)
     {
-        $this->stockAlerte = $stockAlerte;
-    
+        $this->categorieProduit = $categorieProduit;
+
         return $this;
     }
 
     /**
-     * Get stockAlerte
+     * Get categorieProduit
      *
-     * @return string
+     * @return \AppBundle\Entity\CategorieProduit
      */
-    public function getStockAlerte()
+    public function getCategorieProduit()
     {
-        return $this->stockAlerte;
+        return $this->categorieProduit;
     }
 }

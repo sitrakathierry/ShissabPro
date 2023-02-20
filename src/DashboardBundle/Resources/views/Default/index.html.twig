@@ -2,56 +2,75 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link href="{{ asset('css/plugins/morris/morris-0.4.3.min.css') }}" rel="stylesheet">
     <style type="text/css">
-    	
+    	/*.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    		border-top: 0 !important;
+    	}
 
+    	tbody > tr > th,
+    	tbody > tr > td
+    	{
+    		font-style: italic !important;
+    		font-size: 10px !important;
+    	}*/
+
+    	.text-upper {
+    		text-transform: uppercase;
+    	}
     </style>
  {% endblock  %}
 
 {% block contenu %}
+
+	{% if checkClient %}
+		{{ render(controller('ClientBundle:Dashboard:index')) }}
+	{% endif %}
+	
+	{% if checkFacture %}
+		{{ render(controller('FactureBundle:Dashboard:index')) }}
+	{% endif %}
+	
+	{% if checkProduit %}
+		{{ render(controller('ProduitBundle:Dashboard:index')) }}
+	{% endif %}
+	
+	{% if checkCaisse %}
+		{{ render(controller('CaisseBundle:Dashboard:index')) }}
+	{% endif %}
+	
+	{% if checkBonCommande %}
+		{{ render(controller('BonCommandeBundle:Dashboard:index')) }}
+	{% endif %}
+	
+	{% if checkCredit %}
+		{{ render(controller('CreditBundle:Dashboard:index')) }}
+	{% endif %}
+	
+	{% if checkHeb %}
+		{{ render(controller('HebergementBundle:Dashboard:index')) }}
+	{% endif %}
+	
+	{% if checkResto %}
+		{{ render(controller('RestaurantBundle:Dashboard:index')) }}
+	{% endif %}
+	
     <div class="row" id="dash-square-menu">
     </div>
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript">
-    	$('#side-menu li a').each(function(n,v){
+    {# flot chart #}
+	<script src="{{ asset('js/plugins/flot/jquery.flot.js') }}"></script>
+    <script src="{{ asset('js/plugins/flot/jquery.flot.tooltip.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/flot/jquery.flot.resize.js') }}"></script>
+    <script src="{{ asset('js/plugins/flot/jquery.flot.pie.js') }}"></script>
+    <script src="{{ asset('js/plugins/flot/jquery.flot.time.js') }}"></script>
 
-    		if ($(this).parent().hasClass('item-menu')) {
-		        var icon = $(this).children('i').attr('class') ;
-		        var libelle = $(this).children('span').html() ;
-		        var lien = $(this).attr('href');
+    {# morris chart #}
+    <script src="{{ asset('js/plugins/morris/raphael-2.1.0.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/morris/morris.js') }}"></script>
 
-		        var menu = '<div class="col-sm-6 col-md-4">';
-		        menu += '<a href=" '+ lien +'" class="tile-link">';
-		        menu += '<div class="tile-menu">';
-		        menu += '<h2 class="tile-title">' + libelle + '</h2>';
-		        menu += '<div class="tile-icon">';
-		        menu += '<i class="'+ icon +'"></i>';
-		        menu += '</div>';
-		        menu += '</div>';
-		        menu += '</a>';
-		        menu += '</div>';
-
-		        $('#dash-square-menu').append(menu);
-    		}
-
-	    });
-    </script>
-
-    <script type="text/javascript">
-
-    
-
-    	// var url = Routing.generate('dashboard_test');
-
-    	// $.ajax({
-    	// 	url: url,
-    	// 	success: function() {
-    	// 		console.log('test');
-    	// 	}
-    	// });
-
-    </script>
+    <script src="{{ asset('bundles/dashboard/js/index.js') }}"></script>
 {% endblock %}

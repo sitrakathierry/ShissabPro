@@ -138,13 +138,13 @@ class MenuController extends Controller
 
     }
 
-    public function listeMenuAction()
+    public function listeMenuAction($admin = 0)
     {
         $menus_id = [];
 
         $menus_complet = $this->getDoctrine()
             ->getRepository('AppBundle:Menu')
-            ->getAllMenu();
+            ->getAllMenu($admin);
 
         if ($this->isGranted('ROLE_ADMIN')) {
             $menus = $this->getDoctrine()

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+   {{ parent() }}
+   <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+
+{% endblock  %}
+{% block scripts %}
+   {{ parent() }}
+   <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+   <script src="{{ asset('bundles/siteweb/js/slider.js') }}"></script>
+{% endblock %}
+{% block contenu %}
+<input type="hidden" id="id_siteweb" value="{{ siteweb.id }}">
+<div class="wrapper wrapper-content">
+   <div class="row">
+      <div class="col-lg-2">
+         <div class="ibox float-e-margins">
+            <div class="ibox-content mailbox-content">
+               <div class="file-manager">
+                  <a class="btn btn-block btn-primary compose-mail" href="{{ siteweb.lien }}" target="_blank">
+                  {{ siteweb.nom }} <i class="fa fa-external-link"></i>
+                  </a>
+                  <div class="space-25"></div>
+                  {{ render(controller('SitewebBundle:Default:menu', { id: siteweb.id } )) }}
+                  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-10 animated fadeInRight">
+         <div class="mail-box-header">
+            <h2>
+               Sliders
+            </h2>
+         </div>
+         <div class="mail-box">
+            <div class="mail-body">
+               <div class="form-horizontal">
+                  <div class="form-group">
+                     <label class="col-sm-2 control-label">Image</label>
+                     <div class="col-sm-10">
+                        <input type="file" class="form-control" id="slider">
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <div class="col-lg-12" style="justify-content: center;align-items: center;display: flex;">
+                        <img src="{{ asset('img/picture.png') }}" id="slider_img" class="img-thumbnail">
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label class="col-sm-2 control-label">Titre</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control" value="" id="titre">
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label class="col-sm-2 control-label">Sous titre</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control" value="" id="sous_titre">
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="mail-body text-right tooltip-demo">
+               <button class="btn btn-primary btn-sm" id="btn-save-slider">
+               <i class="fa fa-save"></i> Enregistrer
+               </button>
+            </div>
+            <div class="clearfix"></div>
+            <div class="hr-line-dashed"></div>
+            <table id="list_slider"></table>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

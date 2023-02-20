@@ -1,0 +1,90 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>DATE</th>
+			<th>N° BON</th>
+			<th>CLIENT</th>
+			<th>DESIGNATION</th>
+			<th>QTE</th>
+			<th>STATUT</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for livraison in livraisons %}
+			{% if livraison.details %}
+				{% set i = 1 %}
+				{% for  detail in livraison.details %}
+					<tr>
+						{% if i == 1 %}
+							<td rowspan="{{ (livraison.details | length) }}">{{ livraison.date }}</td>
+							<td rowspan="{{ (livraison.details | length) }}">{{ livraison.num }}</td>
+							<td rowspan="{{ (livraison.details | length) }}">{{ livraison.client }}</td>
+						{% endif %}
+						<td>
+
+							{% if detail.type == 1 %}
+								{{ detail.produit }}
+							{% endif %}
+
+							{% if detail.type == 2 %}
+								{{ detail.service }}
+							{% endif %}
+
+							{% if detail.type == 3 %}
+								{{ detail.designation_autre | raw }}
+							{% endif %}
+
+						</td>
+						<td>
+							{% if detail.type == 1 %}
+								{{ detail.qte }} {{ detail.unite }}
+							{% endif %}
+
+							{% if detail.type == 2 %}
+								{{ detail.periode }} 
+								{% if detail.duree == 1 %}
+									heures
+								{% endif %}
+								{% if detail.duree == 2 %}
+									jours
+								{% endif %}
+								{% if detail.duree == 3 %}
+									mois
+								{% endif %}
+								{% if detail.duree == 4 %}
+									années
+								{% endif %}
+							{% endif %}
+
+							{% if detail.type == 3 %}
+								{{ detail.qte }}
+							{% endif %}
+
+
+						</td>
+						
+						{% if i == 1 %}
+							<td rowspan="{{ (livraison.details | length) }}">
+								{% if livraison.statut == 1 %}
+									EN COURS
+								{% else %}
+									VALIDÉ
+								{% endif %}
+							</td>
+							<td rowspan="{{ (livraison.details | length) }}">
+								<a href="{{ path('bon_livraison_show', { id : livraison.id }) }}" class="btn btn-primary">
+									<i class="fa fa-edit">Afficher</i>
+								</a>
+							</td>
+						{% endif %}
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+				<tr>
+					<th colspan="10" bgcolor="#ddd"></th>
+				</tr>
+			{% endif %}
+		{% endfor %}
+	</tbody>
+</table>

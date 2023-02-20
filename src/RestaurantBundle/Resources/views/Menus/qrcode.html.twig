@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/client/css/bootstrap-tagsinput.css') }}">
+ {% endblock  %}
+
+ {% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script src="{{ asset('bundles/client/js/bootstrap-tagsinput.js') }}"></script>
+    <script src="{{ asset('bundles/restaurant/js/menus/qrcode.js') }}"></script>
+    <script src="{{ asset('bundles/restaurant/js/menus/slider.js') }}"></script>
+{% endblock %}
+
+{% block contenu %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+        	<div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            MENU DU JOUR
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                              <li class="active">
+                                <a data-toggle="tab" href="#tab-1">LIEN & QRCODE</a>
+                              </li>
+                              <li>
+                                <a data-toggle="tab" href="#tab-2">SLIDER</a>
+                              </li>
+
+                            </ul>
+                        </div>
+
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="panel-body">
+                                	<table class="table">
+                                		<thead>
+                                			<tr>
+                                				<th class="text-center">Lien</th>
+                                				<th class="text-center">QR CODE</th>
+                                				<th></th>
+                                			</tr>
+                                		</thead>
+                                		<tbody>
+                                			<tr>
+                                				<td>
+                                					<div class="row">
+            					                        <div class="col-lg-12">
+            					                          <div class="alert alert-info">
+            					                            <a id="lien_menu" href="{{ path('restaurant_menus_index', { id : agence.id }) }}" target="_blank">
+            					                              {{ url('restaurant_menus_index', { id : agence.id }) }}
+            					                            </a>
+            					                          </div>
+            					                        </div>
+            				                        </div>
+                                				</td>
+                                				<td>
+                                                    <div id="qrcode" style="width:100%;display: flex;justify-content: center;"></div>
+                                                </td>
+                                				<td>
+
+                                                    <button class="btn btn-info" id="btn-download">
+                                                        <i class="fa fa-download"></i>
+                                                        TÉLÉCHARGER
+                                                    </button>
+
+                                				</td>
+                                			</tr>
+                                		</tbody>
+                                	</table>
+                                </div>
+                            </div>
+                            <div id="tab-2" class="tab-pane">
+                                <div class="panel-body">
+                                    {% include('RestaurantBundle:Menus:slider.html.twig') %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
