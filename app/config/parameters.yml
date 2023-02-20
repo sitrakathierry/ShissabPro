@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: localhost
+    database_port: null
+    database_name: shissab
+    database_user: debian
+    database_password: yQYRQqe9zFuB
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: andriramananarivo@gmail.com
+    mailer_password: null
+    secret: ShissabSecretToken
