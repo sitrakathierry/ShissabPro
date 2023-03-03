@@ -51,7 +51,7 @@ class VariationProduitRepository extends \Doctrine\ORM\EntityRepository
 
 
 
-        $query .= " and p.is_delete IS NULL";
+        $query .= " and p.is_delete IS NULL and vp.is_delete IS NULL";
 
         // $query .= " order by p.nom ASC";
 
@@ -60,7 +60,7 @@ class VariationProduitRepository extends \Doctrine\ORM\EntityRepository
         $statement->execute();
 
         $result = $statement->fetchAll();
-
+ 
         return $result;
     }
 

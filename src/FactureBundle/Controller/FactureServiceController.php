@@ -13,6 +13,8 @@ use AppBundle\Entity\Credit;
 use AppBundle\Entity\CreditDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FactureBundle\Controller\BaseController;
+use TCPDF;
+use TCPDF_FONTS;
 
 class FactureServiceController extends BaseController
 {
@@ -403,7 +405,7 @@ class FactureServiceController extends BaseController
         $modelePdf = $facture->getModelePdf(); 
 
         $deviseEntrepot = $this->getDevise();
-
+        $fontname = TCPDF_FONTS::addTTFfont('web//OpenSans.ttf', '', '', 32);
         $template = $this->renderView('FactureBundle:FactureService:pdf.html.twig', array(
             'agence' => $agence,
             'deviseEntrepot' => $deviseEntrepot,
@@ -412,9 +414,16 @@ class FactureServiceController extends BaseController
             'details' => $details,
             'services' => $services,
             'modelePdf' => $modelePdf,
+            'fontname' => $fontname 
         ));
-
+        
         $html2pdf = $this->get('app.html2pdf');
+        // $html2pdf->setDefaultFont('vendor/tecnickcom/tcpdf/fonts/sansserif/sansserif.ttf');
+        // $fontname = TCPDF_FONTS::addTTFfont('vendor/tecnickcom/tcpdf/fonts/sansserif/sansserif.ttf', 'TrueTypeUnicode', '', 96);
+
+        // $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        // $html2pdf->pdf()->setFont($fontname, '', 14, '', false);
 
         $html2pdf->create();
 

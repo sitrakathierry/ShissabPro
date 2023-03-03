@@ -4,6 +4,7 @@
   <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="{{ asset('css/plugins/jqGrid/ui.jqgrid.css') }}">
   <link rel="stylesheet" href="{{ asset('bundles/comptabilite/js/MonthPicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/light.css') }}">
   <style type="text/css">
     .wizard > .content > .body {
     position: relative !important;
@@ -24,12 +25,39 @@
     /*.width-auto {
       width: auto !important;
     }*/
+
+        .pers-ass-form
+    {
+        font-size: 1em !important;
+    }
+    .lcslt,#lc-select-dd li span
+    {
+        font-size: 1.2em !important;
+    }
+    .content_achat
+    {
+      display: flex ;
+      flex-direction : row ;
+      align-items : center ;
+      justify-content : center ;
+    }
+    .ident_achat
+    {
+      margin-top : 12px !important ;
+      margin-left : 8px ;
+    }
   </style>
 {% endblock  %}
 {% block scripts %}
 {{ parent() }}
+<script src="{{ asset('js/lc_select.js') }}"></script>
   <script src="{{ asset('bundles/comptabilite/js/decharge-add.js') }}"></script> 
   <script src="{{ asset('bundles/comptabilite/js/MonthPicker.js') }}"></script> 
+  <script>
+    new lc_select('.detls_designation', {
+        wrap_width : '100%',
+    });
+</script>
 {% endblock %}
 {% block contenu %}
 <input type="hidden" id="sinistre_id" value="">
@@ -84,19 +112,19 @@
                       <div class="col-sm-10">
                         <select class="form-control" id="service">
                           <option></option>
-                          {% for motif in motifs %}
-                            <option value="{{ motif.id }}">{{ motif.libelle }}</option>
-                          {% endfor %}
+                            {% for motif in motifs %}
+                              <option value="{{ motif.id }}">{{ motif.libelle }}</option>
+                            {% endfor %}
                         </select>
                       </div>
                   </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6" id="div-motif">
                   <div class="form-group">
                       <label class="col-sm-2 control-label">Motif</label>
                       <div class="col-sm-10">
                         <select class="form-control" id="motif">
-                          <option value="" ></option>
+                          <option value="" selected></option>
                           <option value="Achat" >Achat</option>
                           <option value="Dépense" >Dépense</option>
                           <option value="Autre" >Autre</option>
@@ -105,8 +133,6 @@
                   </div>
               </div>
             </div>
-
-
     				<div class="row">
           		<div class="col-lg-6" id="div-num-cheque">
                   <div class="form-group">
@@ -169,7 +195,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-6 hidden" id="div-num-facture">
+              <div class="col-lg-6" id="div-num-facture">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Num Facture</label>
                         <div class="col-sm-10">
@@ -201,6 +227,42 @@
               <div class="form-group">
                   <div class="col-sm-12">
                       <input type="text" class="form-control" name="" id="lettre" readonly="">
+                      <table class="table table-bordered" style="margin-top : 15px">
+                        <thead>
+                          <tr>
+                              <th>Designation</th>
+                              <th style="width: 200px!important;">Quantité</th>
+                              <th style="width: 250px!important;">Prix Unitaire</th>
+                          </tr>
+                        </thead>
+                        <tbody class="mytbody" >
+                          <tr>
+                            <td>
+                            <select name="designation" id="" class="detls_designation pers-ass-form">
+                              {% for designation in designations %}
+                                <option value="{{designation.id}}">{{designation.nom}}</option>
+                              {% endfor %}
+                            </select>
+                            
+                            </td>
+                            <td>
+                              <input type="number" class="form-control detls_quantite " style="width: 200px!important;" placeholder="Quantité" required>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control detls_prix_unitaire" style="width: 250px!important;" placeholder="Prix unitaire" required>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                              <td colspan="3" class="text-right text-white" >
+                                <a href="{{path('creation_design_depense')}}" class="btn btn-primary btn-sm btn_ajout_design"><i class="fa fa-cube" ></i></a>
+                                <button class="btn btn-success btn-sm btn_plus_details"><i class="fa fa-plus" ></i></button>
+                                <button class="btn btn-danger btn-sm btn_trash_details"><i class="fa fa-trash" ></i></button>
+                              </td>
+                            </tr>
+                        </tfoot>
+                      </table>
                   </div>
               </div>
             </div>

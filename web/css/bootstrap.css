@@ -3056,20 +3056,20 @@ fieldset[disabled] a.btn {
   pointer-events: none;
 }
 .btn-default {
-  color: #333;
-  background-color: #fff;
-  border-color: #ccc;
+  color: #333 !important;
+  background-color: #fff!important;
+  border-color: #ccc!important;
 }
 .btn-default:focus,
 .btn-default.focus {
-  color: #333;
-  background-color: #e6e6e6;
-  border-color: #8c8c8c;
+  color: #333!important;
+  background-color: #e6e6e6!important;
+  border-color: #8c8c8c!important;
 }
 .btn-default:hover {
-  color: #333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
+  color: #333!important;
+  background-color: #e6e6e6!important;
+  border-color: #adadad!important;
 }
 .btn-default:active,
 .btn-default.active,

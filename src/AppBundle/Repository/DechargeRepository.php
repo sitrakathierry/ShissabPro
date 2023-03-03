@@ -13,37 +13,38 @@ class DechargeRepository extends \Doctrine\ORM\EntityRepository
 
     public function consultation(
         $agence,
-        $statut, 
-        $recherche_par, 
-        $a_rechercher, 
-        $type_date, 
-        $mois, 
-        $annee, 
-        $date_specifique, 
-        $debut_date, 
-        $fin_date,
-        $filtre_motif
+        $statut = null,
+        $recherche_par = false,
+        $a_rechercher = false,
+        $type_date = false,
+        $mois = false,
+        $annee = false,
+        $date_specifique = false,
+        $debut_date = false,
+        $fin_date = false,
+        $filtre_motif = false
     )
     {
 
         $em = $this->getEntityManager();
 
-        $query = "  select d.id, d.beneficiaire, d.cheque, d.montant, date_format(d.date,'%d/%m/%Y') as date, d.mode_paiement as mode_paiement, m.libelle as service, d.type_motif as motif, date_format(d.mois_facture,'%m/%Y') as mois, date_format(d.date_validation,'%d/%m/%Y') as date_validation, 1 as depense_type, d.virement
+        $query = "  select d.id, d.beneficiaire, d.cheque, d.montant, date_format(d.date,'%d/%m/%Y') as date, mp.nom as mode_paiement, m.libelle as service, d.type_motif as motif, date_format(d.mois_facture,'%m/%Y') as mois, date_format(d.date_validation,'%d/%m/%Y') as date_validation, 1 as depense_type, d.virement, d.num_facture, d.type_payement
                     from decharge d
+                    join mode_payement mp on (d.mode_paiement = mp.id)
                     left join motif_decharge m on (d.motif_decharge = m.id)";
 
-        $where = "  where d.statut = " . $statut;
+        $where = "  where d.statut = 1 ";
         $where .= "  and d.agence = " . $agence;
 
         if($recherche_par == 3){
             $where .= " and d.beneficiaire LIKE '%" . $a_rechercher . "%'";
         }
 
-        if ($filtre_motif) {
+        if ($filtre_motif !== false) {
             $where .= " and m.id = " . $filtre_motif;
         }
 
-        if ($type_date) {
+        if ($type_date != false) {
             switch ($type_date) {
                 case '1':
                     $now = new \DateTime();
@@ -77,20 +78,33 @@ class DechargeRepository extends \Doctrine\ORM\EntityRepository
             }
         }
 
-        $where .= " group by d.id";
+        $where .= " group by d.id ";
 
         $query .= $where;
 
-        $query .= " order by d.id DESC";
+        $query .= " ORDER BY d.id DESC";
 
         $statement = $em->getConnection()->prepare($query);
 
-        $statement->execute();
+        $statement->execute([]);
 
         $result = $statement->fetchAll();
 
         return $result;
 
+    }
+
+    public function getOneDepense($id)
+    {
+        $em = $this->getEntityManager();
+        $sql = " select d.id, d.beneficiaire, d.cheque, d.montant, date_format(d.date,'%d/%m/%Y') as date, mp.nom as mode_paiement, m.libelle as service, d.type_motif as motif, date_format(d.mois_facture,'%m/%Y') as mois, date_format(d.date_validation,'%d/%m/%Y') as date_validation, 1 as depense_type, d.virement, d.num_facture, d.type_payement
+                    from decharge d
+                    join mode_payement mp on (d.mode_paiement = mp.id)
+                    left join motif_decharge m on (d.motif_decharge = m.id)  where d.id = ? ";
+        $statement = $em->getConnection()->prepare($sql);
+        $statement->execute(array($id));
+        $result = $statement->fetch();
+        return $result;
     }
 
 }

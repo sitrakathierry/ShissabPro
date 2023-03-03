@@ -141,6 +141,17 @@ comptabilite_decharge_add:
     options:
         expose: true
 
+creation_design_depense:
+    path:     /comptabilite/creation/desingation
+    defaults: { _controller: ComptabiliteBundle:Decharge:creationDesignation }
+
+comptabilite_enregitre_designation:
+    path:     /comptabilite/designation/save
+    defaults: { _controller: ComptabiliteBundle:Decharge:saveDesignation }
+    methods:  [POST]
+    # options:
+    #     expose: true
+
 comptabilite_decharge_save:
     path:     /comptabilite/decharge/save
     defaults: { _controller: ComptabiliteBundle:Decharge:save }
@@ -202,10 +213,29 @@ comptabilite_decharge_declare_export:
     options:
         expose: true
 
+comptabilite_depense_achat_paiement:
+    path:     /comptabilite/decharge/achat/payement
+    defaults: { _controller: ComptabiliteBundle:Decharge:payementAchat }
+    methods:  [POST]
+    options:
+        expose: true
+
+comptabilite_depense_achat_valider:
+    path:     /comptabilite/decharge/achat/valider
+    defaults: { _controller: ComptabiliteBundle:Decharge:validerPayementAchat }
+    methods:  [POST]
+    options:
+        expose: true
 comptabilite_decharge_valide_export:
     path:     /comptabilite/decharge/valide/export
     defaults: { _controller: ComptabiliteBundle:Decharge:exportValide }
     methods:  [POST]
+    options:
+        expose: true 
+
+comptabilite_charger_fournisseur:
+    path:     /comptabilite/charger/fournisseur
+    defaults: { _controller: ComptabiliteBundle:Depense:chargerFournisseur }
     options:
         expose: true
 
@@ -303,11 +333,6 @@ comptabilite_cheque_sortant_encours:
     options:
         expose: true
 
-comptabilite_cheque_sortant_encours:
-    path:     /comptabilite/cheque/sortant/encours
-    defaults: { _controller: ComptabiliteBundle:ChequeSortant:encours }
-    options:
-        expose: true
 
 comptabilite_cheque_sortant_list:
     path:     /comptabilite/cheque/sortant/list

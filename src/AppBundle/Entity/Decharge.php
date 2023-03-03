@@ -107,6 +107,13 @@ class Decharge
     private $motif = 2;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="type_payement", type="integer", nullable=true)
+     */
+    private $typePayement;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="type_motif", type="string", length=255, nullable=true)
@@ -136,6 +143,20 @@ class Decharge
      * @ORM\Column(name="mois_facture", type="date", nullable=true)
      */
     private $moisFacture;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="num_facture", type="string", length=250, nullable=true)
+     */
+    private $numFacture;
+
+    /**
+     * @var json_array
+     *
+     * @ORM\Column(name="fournisseur", type="json_array", nullable=true)
+     */
+    private $fournisseur;
 
     /**
      * @var \AppBundle\Entity\Agence
@@ -437,6 +458,30 @@ class Decharge
     }
 
     /**
+     * Set typePayement
+     *
+     * @param integer $typePayement
+     *
+     * @return Decharge
+     */
+    public function setTypePayement($typePayement)
+    {
+        $this->typePayement = $typePayement;
+
+        return $this;
+    }
+
+    /**
+     * Get typePayement
+     *
+     * @return integer
+     */
+    public function getTypePayement()
+    {
+        return $this->typePayement;
+    }
+
+    /**
      * Set typeMotif
      *
      * @param string $typeMotif
@@ -530,6 +575,54 @@ class Decharge
     public function getMoisFacture()
     {
         return $this->moisFacture;
+    }
+
+    /**
+     * Set numFacture
+     *
+     * @param string $numFacture
+     *
+     * @return Decharge
+     */
+    public function setNumFacture($numFacture)
+    {
+        $this->numFacture = $numFacture;
+
+        return $this;
+    }
+
+    /**
+     * Get numFacture
+     *
+     * @return string
+     */
+    public function getNumFacture()
+    {
+        return $this->numFacture;
+    }
+
+    /**
+     * Set fournisseur
+     *
+     * @param json_array $fournisseur
+     *
+     * @return Decharge
+     */
+    public function setFournisseur($fournisseur)
+    {
+        $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    /**
+     * Get fournisseur
+     *
+     * @return json_array
+     */
+    public function getFournisseur()
+    {
+        return $this->fournisseur;
     }
 
     /**

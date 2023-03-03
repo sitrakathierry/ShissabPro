@@ -24,11 +24,7 @@
 
     table {
         font-size: 11pt;
-        font-family: times;
-    }
 
-    pre {
-        font-family: times;
     }
 
     td p {
@@ -122,15 +118,15 @@
 
 	<table style="width:100%; margin-top: 20px">
 		<tr>
-			<td style="width:70%"><b></b></td>
+			<td style="width:50%"><b></b></td>
 			<td style="width:10%"><b>DOIT</b></td>
-			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+			<td style="width:40%; text-transform: uppercase;" class="dashed typo">
 			</td>
 		</tr>
 		<tr>
-			<td style="width:70%"><b></b></td>
+			<td style="width:50%"><b></b></td>
 			<td style="width:10%"><b>Client</b></td>
-			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+			<td style="width:40%; text-transform: uppercase;" class="dashed typo">
 				
 	            {% if facture.client.statut == 1 %}
                     : {{facture.client.idClientMorale.nomSociete}}
@@ -140,9 +136,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:70%"><b></b></td>
+			<td style="width:50%"><b></b></td>
 			<td style="width:10%"><b>Adresse</b></td>
-			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+			<td style="width:40%; text-transform: uppercase;" class="dashed typo">
 				
 	            {% if facture.client.statut == 1 %}
                     : {{facture.client.idClientMorale.adresse}}
@@ -152,9 +148,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:70%"><b></b></td>
+			<td style="width:50%"><b></b></td>
 			<td style="width:10%"><b>Tel</b></td>
-			<td style="width:20%; text-transform: uppercase;" class="dashed typo">
+			<td style="width:40%; text-transform: uppercase;" class="dashed typo">
 				
 	            {% if facture.client.statut == 1 %}
                     : {{facture.client.idClientMorale.telFixe}}

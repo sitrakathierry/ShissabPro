@@ -186,7 +186,7 @@ class ClientController extends Controller
         return new Response(1);
     }
 
-    public function addAction(Request $request)
+    public function addAction($fact)
     {
         $typeSocieteList = $this->getDoctrine()
                     ->getRepository('AppBundle:TypeSociete')
@@ -219,6 +219,7 @@ class ClientController extends Controller
             'typeSocialList' => $typeSocialList,
             'agences' => $agences,
             'userAgence' => $userAgence,
+            'fact' => $fact
         ]);
     }
 
@@ -226,6 +227,7 @@ class ClientController extends Controller
     {
 
 
+        $si_facture = $request->request->get('si_facture');
         $statut = $request->request->get('statut');
         $agence = $request->request->get('agence');
         $num_police = $request->request->get('num_police');
@@ -280,6 +282,8 @@ class ClientController extends Controller
                     'id' => $exist
                 ));
             }
+
+            
 
         }
 
@@ -378,7 +382,8 @@ class ClientController extends Controller
 
         return new JsonResponse(array(
             'success' => true,
-            'id' => $num_police
+            'id' => $num_police,
+            'si_facture' => $si_facture
         ));
 
     }
@@ -471,11 +476,61 @@ class ClientController extends Controller
 
     public function deleteAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $bondCommande = $this->getDoctrine()
+            ->getRepository('AppBundle:BonCommande')
+            ->findBy(array(
+                'client' => $id
+            ));
+        foreach ($bondCommande as $bondCommande) {
+            $em->remove($bondCommande);
+            $em->flush();
+        }
+
+        $bondLivraison = $this->getDoctrine()
+            ->getRepository('AppBundle:BonLivraison')
+            ->findBy(array(
+                'client' => $id
+            ));
+        foreach ($bondLivraison as $bondLivraison) {
+            $em->remove($bondLivraison);
+            $em->flush();
+        }
+
+        $booking = $this->getDoctrine()
+            ->getRepository('AppBundle:Booking')
+            ->findBy(array(
+                'client' => $id
+            ));
+        foreach ($booking as $booking) {
+            $em->remove($booking);
+            $em->flush();
+        }
+
+        $facture = $this->getDoctrine()
+            ->getRepository('AppBundle:Facture')
+            ->findBy(array(
+                'client' => $id
+            ));
+        foreach ($facture as $facture) {
+            $em->remove($facture);
+            $em->flush();
+        }
+
+        $credit = $this->getDoctrine()
+            ->getRepository('AppBundle:Credit')
+            ->findBy(array(
+                'client' => $id
+            ));
+        foreach ($credit as $credit) {
+            $em->remove($credit);
+            $em->flush();
+        }
+
         $client  = $this->getDoctrine()
                         ->getRepository('AppBundle:Client')
                         ->find($id);
 
-        $em = $this->getDoctrine()->getManager();
         $em->remove($client);
         $em->flush();
 

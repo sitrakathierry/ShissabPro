@@ -1,10 +1,10 @@
-facture_homepage:
+facture_homepage: 
     path:     /facture/index
     defaults: { _controller: FactureBundle:Default:index }
 
 facture_add:
-    path:     /facture/add
-    defaults: { _controller: FactureBundle:Default:add }
+    path:     /facture/add/{idclient}
+    defaults: { _controller: FactureBundle:Default:add, idclient : '' }
 
 facture_save:
     path:    /facture/save

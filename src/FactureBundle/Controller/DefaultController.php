@@ -18,9 +18,8 @@ class DefaultController extends BaseController
         return $this->render('FactureBundle:Default:index.html.twig');
     }
 
-    public function addAction()
+    public function addAction($idclient)
     {
-
     	$permission_user = $this->get('app.permission_user');
 
         $user = $this->getUser();
@@ -40,10 +39,30 @@ class DefaultController extends BaseController
             ->findBy(array(
                 'agence' => $agence
             ));
-
+ 
         $variations = $this->getDoctrine()
                 ->getRepository('AppBundle:VariationProduit')
                 ->list($agence->getId());
+
+
+        $produits  = $this->getDoctrine()
+            ->getRepository('AppBundle:Produit')
+            ->getList($agence->getId(),'','',0);
+
+        // $variations = $this->getDoctrine()
+        // 		->getRepository('AppBundle:VariationProduit')
+        //         ->list($agence->getId());
+        for ($i = 0; $i < count($produits); $i++) {
+            $totalStock = $this->getDoctrine()
+                ->getRepository('AppBundle:VariationProduit')
+                ->getTotalVariationProduit($agence->getId(), $produits[$i]["id"]);
+            $produits[$i]["stock"] = number_format($totalStock["stockG"], 0, ".", " ");
+
+            if (empty($produits[$i]["stock"])) {
+                $produits[$i]["stock"] = 0;
+            }
+        }
+        $variations = $produits ;
 
         $services = $this->getDoctrine()
             ->getRepository('AppBundle:Service')
@@ -90,16 +109,22 @@ class DefaultController extends BaseController
                     ));
 
         $deviseEntrepot = $this->getDevise();
-
+ 
         $checkFactureProduit = $this->checkFactureProduit();
         $checkFactureService = $this->checkFactureService();
         $checkFactureCaisse = $this->checkFactureCaisse();
         $checkFactureHebergement = $this->checkFactureHebergement();
         $checkFactureRestaurant = $this->checkFactureRestaurant();
 
+        $lastclient = '';
+        if ($idclient !== '')
+            $lastclient = $clients = $this->getDoctrine()
+                ->getRepository('AppBundle:Client')
+                ->getLastClient($agence->getId());
+
         return $this->render('FactureBundle:Default:add.html.twig',array(
-        	'deviseEntrepot' => $deviseEntrepot,
-            'agence' => $agence,
+            'deviseEntrepot' => $deviseEntrepot, 
+            'agence' => $agence, 
             'devises' => $devises,
             'clients' => $clients,
             'variations' => $variations,
@@ -112,15 +137,21 @@ class DefaultController extends BaseController
             'accompagnements' => $accompagnements,
             'bookings' => $bookings,
             'checkFactureProduit' => $checkFactureProduit,
-            'checkFactureService' => $checkFactureService,
+            'checkFactureService' => $checkFactureService,  
             'checkFactureCaisse' => $checkFactureCaisse,
             'checkFactureHebergement' => $checkFactureHebergement,
             'checkFactureRestaurant' => $checkFactureRestaurant,
+            'lastclient' => $lastclient
         ));
     }
 
     public function saveAction(Request $request)
     {
+        $f_libre = $request->request->get('f_libre');
+
+        var_dump($f_libre);
+        die();
+
         $f_type = $request->request->get('f_type');
         $f_client = $request->request->get('f_client');
         $f_date = $request->request->get('f_date');
@@ -366,6 +397,7 @@ class DefaultController extends BaseController
         $facture  = $this->getDoctrine()
                         ->getRepository('AppBundle:Facture')
                         ->find($id);
+                        
         $definitif = $this->getDoctrine()
                         ->getRepository('AppBundle:Facture')
                         ->findOneBy(array(

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+
 class DefaultController extends Controller
 {
     public function indexAction()
@@ -66,8 +67,9 @@ class DefaultController extends Controller
                         ->getRepository('AppBundle:User')
                         ->verifyEmail($u_email);
 
+        
         // VERIFICATION DE L'EMAIL
-        if(!empty($verif_email))
+        if(!empty($verif_email) && !$u_id)
         {
             return new Response(-2);
         }
@@ -141,7 +143,8 @@ class DefaultController extends Controller
             $userAgence->setResponsable($u_responsable);
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($userAgence);
+            if (!$u_id)
+                $em->persist($userAgence);
             $em->flush();
 
 
@@ -162,15 +165,15 @@ class DefaultController extends Controller
 
                 $userEntrepot->setEntrepot($entrepot);
                 $userEntrepot->setUser($user);
-
-                $em->persist($userEntrepot);
+                if (!$userEntrepot)
+                    $em->persist($userEntrepot);
                 $em->flush();
             }
-            
-            
+
+
             // return ($isNew) ? $this->redirectToRoute('user_add') : $this->redirectToRoute('user_list');
 
-            return new Response( $user->getId() );
+            return new Response($user->getId());
 
         }
         
@@ -179,7 +182,6 @@ class DefaultController extends Controller
 
     public function listUserAgenceAction($agence_id)
     {
-
         $agence = $this->getDoctrine()
                 ->getRepository('AppBundle:Agence')
                 ->find($agence_id);
@@ -232,7 +234,7 @@ class DefaultController extends Controller
             'userEntrepot' => $userEntrepot,
             'agences' => $agences,
             'entrepots' => $entrepots,
-            'checkEntrepot' => $checkEntrepot,
+            'checkEntrepot' => $checkEntrepot
         ));
     }
 
@@ -275,20 +277,22 @@ class DefaultController extends Controller
 
     public function deleteAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
 
-       $this->getDoctrine()
-                ->getRepository('AppBundle:User')
-                ->disableUserInAgence($id);
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+        ->find($id);
 
-        // if($user){
-        //     $user->setEnabled(0);
-        // }
+        $agent = $this->getDoctrine()
+            ->getRepository('AppBundle:UserAgence')
+            ->findOneBy(array(
+                'user' => $user
+            ));
+        $em->remove($agent);
+        $em->flush();
 
-        // $em = $this->getDoctrine()->getManager();
-        // $em->remove($user);
-        // $em->flush();
-
-        // return $this->redirectToRoute('user_list');
+        $em->remove($user);
+        $em->flush();
 
         return new Response(200);
 

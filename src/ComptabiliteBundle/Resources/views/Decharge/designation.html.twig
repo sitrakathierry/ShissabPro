@@ -1,0 +1,64 @@
+ 
+ {% extends 'base.html.twig' %}
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    .mt-3
+    {
+        margin-top : 30px ;
+    }
+  </style>
+{% endblock  %}
+{% block scripts %}
+{{ parent() }}
+{% endblock %}
+ {% block contenu %}
+  <div class="wrapper wrapper-content">
+    <div class="row">
+		<div class="col-lg-12">
+        	<div class="ibox">
+                <div class="ibox-title">
+                    <h5>Desigantion de dépense</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <form action="{{path('comptabilite_enregitre_designation')}}" method="POST">
+                                <label for="designation">Designation</label>
+                                <input type="text" name="designation" class="form-control" placeholder="Nouveau">
+                                <button type="submit" class="btn btn-primary btn-sm mt-3" >Enregistrer</button>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="table-responsive mt-3">
+                                <table class="table-bordered table">
+                                    <thead>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Designation</th>
+                                            <th class="text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% set i = 1 %}
+                                    {% for design in listDesign %}
+                                        <tr>
+                                            <td>{{ i }}</td>
+                                            <td>{{ design.nom }}</td>
+                                            <td class="text-right"><button class="btn btn-sm btn-danger text-white"><i class="fa fa-trash" ></i></button></td>
+                                        </tr>
+                                        {% set i = i + 1 %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                
+    </div>
+</div>
+{% endblock %}

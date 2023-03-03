@@ -47,7 +47,7 @@
     				<div class="row">
     					<div class="col-lg-6">
                   <div class="form-group">
-                      <label class="col-sm-2 control-label">Je soussigne *</label>
+                      <label class="col-sm-2 control-label">Nom concerné *</label>
                       <div class="col-sm-10">
                           <input type="text" class="form-control" name="" id="beneficiaire" value="{{decharge.beneficiaire}}">
                       </div>
@@ -98,8 +98,6 @@
                   </div>
               </div>
             </div>
-
-
     				<div class="row">
           		<div class="col-lg-6" id="div-num-cheque">
                   <div class="form-group">
@@ -187,6 +185,39 @@
               <div class="form-group">
                   <div class="col-sm-12">
                       <input type="text" class="form-control" name="" id="lettre" readonly="" value="{{decharge.lettre}}">
+                       <table class="table table-bordered" style="margin-top : 15px">
+                        <thead>
+                          <tr>
+                              <th>Designation</th>
+                              <th>Quantité</th>
+                              <th>Prix Unitaire</th>
+                          </tr>
+                        </thead>
+                        <tbody class="mytbody" >
+                        {% for dtdp in detailsDepense %}
+                          <tr>
+                            <td>
+                              <input type="hidden" value="{{dtdp.id}}" class="id_dtls_dep">
+                              <input type="text" class="form-control detls_designation" value="{{dtdp.description}}">
+                            </td>
+                            <td>
+                              <input type="number" class="form-control detls_quantite" value="{{dtdp.quantite}}">
+                            </td>
+                            <td>
+                              <input type="number" class="form-control detls_prix_unitaire" value="{{dtdp.prixUnitaire}}">
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                              <td colspan="3" class="text-right text-white" >
+                                <button class="btn btn-success btn-sm btn_plus_details"><i class="fa fa-plus" ></i></button>
+                                <button class="btn btn-danger btn-sm btn_trash_details"><i class="fa fa-trash" ></i></button>
+                              </td>
+                            </tr>
+                        </tfoot>
+                      </table>
                   </div>
               </div>
             </div>

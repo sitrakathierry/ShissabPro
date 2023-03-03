@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Decharge;
+use AppBundle\Entity\DesignationDepense;
+use AppBundle\Entity\DetailsDepense;
+use AppBundle\Entity\EcheanceAchatDepense;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class DechargeController extends Controller
@@ -34,10 +37,14 @@ class DechargeController extends Controller
                         'agence' => $agence
                     ));
 
+        $designations = $this->getDoctrine()
+            ->getRepository('AppBundle:DesignationDepense')
+            ->findAll();
 
         return $this->render('ComptabiliteBundle:Decharge:add.html.twig',array(
             'agence' => $agence,
             'motifs' => $motifs,
+            "designations" => $designations
         ));
     }
 
@@ -62,6 +69,11 @@ class DechargeController extends Controller
         $date_virement = $request->request->get('date_virement');
         $carte_bancaire = $request->request->get('carte_bancaire');
         $num_facture = $request->request->get('num_facture');
+        $montant_echeance_paye = $request->request->get('montant_echeance_paye');
+        $type_payment = $request->request->get('type_payment');
+        $fournisseur = $request->request->get('fournisseur'); 
+
+        $datadetails = $request->request->get('datadetails');
 
         $user = $this->getUser();
         $userAgence = $this->getDoctrine()
@@ -86,16 +98,12 @@ class DechargeController extends Controller
             $decharge->setCheque($carte_bancaire);
         }
 
-        // LE VIREMENT DEVIENT NUM FACTURE SI LE MODE DE PAYEMENT EST DE TYPE ESPECE OU CARTE BANCAIRE
-        if ($mode_paiement == 2 || $mode_paiement == 4) {
-            $decharge->setVirement($num_facture);
-        } else {
-            $decharge->setVirement($virement);
-        }
-
+  
         $decharge->setMontant($montant);
         $decharge->setRaison($raison);
-
+        $decharge->setNumFacture($num_facture);
+        $decharge->setTypePayement($type_payment);
+        $decharge->setFournisseur($fournisseur);
         if ($mois_facture) {
             $decharge->setMoisFacture(\DateTime::createFromFormat('j/m/Y', '01/' . $mois_facture));
         } else {
@@ -110,8 +118,10 @@ class DechargeController extends Controller
         }
 
         if ($date_virement) {
+            $decharge->setVirement($virement);
             $decharge->setDateVirement(\DateTime::createFromFormat('j/m/Y', $date_virement));
         } else {
+            $decharge->setVirement($virement);
             $decharge->setDateVirement(null);
         } 
 
@@ -151,12 +161,108 @@ class DechargeController extends Controller
             $user = $this->getUser();
             $logs->setStory($user,'Création Décharge' . $decharge->getId());
         }
+
+        if ($type_payment == 2) {
+            $ech_achat_dep = new EcheanceAchatDepense();
+
+            $ech_achat_dep->setIdDepense($decharge->getId());
+            $ech_achat_dep->setMontant($montant_echeance_paye);
+            $ech_achat_dep->setDateEch(new \DateTime);
+            $ech_achat_dep->setCreatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+            $ech_achat_dep->setUpdatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+
+            $em->persist($ech_achat_dep);
+            $em->flush();
+        }
+
+        $arr_id_dep = [];
+
+        for ($i = 0; $i < count($datadetails); $i++) {
+            $elem = $datadetails[$i];
+            if ($id) {
+                if ($elem[0] == 0) {
+                    $detailsDepense = new DetailsDepense();
+                    $detailsDepense->setIdDesignation($elem[1]);
+                    $detailsDepense->setIdDecharge($decharge->getId());
+                    $detailsDepense->setCreatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+                } else
+                    $detailsDepense = $this->getDoctrine()
+                        ->getRepository('AppBundle:DetailsDepense')
+                        ->findOneBy(array(
+                            "idDecharge" => $id,
+                            "id" => $elem[0]
+                        ));
+                array_push($arr_id_dep, $elem[0]);
+            } else {
+                $detailsDepense = new DetailsDepense();
+                $detailsDepense->setIdDesignation($elem[1]);
+                $detailsDepense->setIdDecharge($decharge->getId());
+                $detailsDepense->setCreatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+            }
+
+            $detailsDepense->setDescription('');
+            $detailsDepense->setQuantite($elem[2]);
+            $detailsDepense->setPrixUnitaire($elem[3]);
+            $detailsDepense->setUpdatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+            if ($elem[0] == 0)
+                $em->persist($detailsDepense);
+            $em->flush();
+        }
+
+        // if ($id) {
+        //     $detailsDepense = $this->getDoctrine()
+        //         ->getRepository('AppBundle:DetailsDepense')
+        //         ->findBy(array(
+        //             "idDecharge" => $id,
+        //         ));
+
+        //     foreach ($detailsDepense as $detailDep) {
+        //         if (!in_array($detailDep->getId(), $arr_id_dep)) {
+        //             $em->remove($detailDep);
+        //             $em->flush();
+        //         }
+        //     }
+        // }
         
 
         return new JsonResponse(array(
             'id' => $decharge->getId()
         ));
         
+    }
+
+    public function saveDesignationAction(Request $request)
+    {
+
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+            ->getRepository('AppBundle:UserAgence')
+            ->findOneBy(array(
+                'user' => $user
+            ));
+        $agence = $userAgence->getAgence();
+        $agenceId = $agence->getId();
+
+        $em = $this->getDoctrine()->getManager();
+        $designation = $request->request->get('designation');
+
+        $table_design = new DesignationDepense();
+
+        $table_design->setNom($designation);
+        $table_design->setAgence($agenceId);
+        $table_design->setCreatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+        $table_design->setUpdatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+
+        $em->persist($table_design);
+        $em->flush();
+
+        $listDesign = $this->getDoctrine()
+            ->getRepository('AppBundle:DesignationDepense')
+            ->findAll();
+
+        return $this->render('ComptabiliteBundle:Decharge:designation.html.twig', array(
+            "listDesign" => $listDesign
+        ));
     }
 
     public function declareAction()
@@ -177,18 +283,51 @@ class DechargeController extends Controller
                         'agence' => $agence
                     ));
 
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+            ->getRepository('AppBundle:UserAgence')
+            ->findOneBy(array(
+                'user' => $user
+            ));
+        $agence = $userAgence->getAgence();
+
+        $decharges = $this->getDoctrine()
+            ->getRepository('AppBundle:Decharge')
+            ->consultation($agence->getId());
 
         return $this->render('ComptabiliteBundle:Decharge:declare.html.twig',array(
-            'motifs' => $motifs
+            'motifs' => $motifs,
+            'decharges' => $decharges
         ));
+    }
+
+    public function payementAchatAction(Request $request)
+    {
+        $id = $request->request->get('id');
+
+        $decharges = $this->getDoctrine()
+            ->getRepository('AppBundle:Decharge')
+            ->getOneDepense($id);
+
+        $allInfo["decharges"] = [];
+        $allInfo["echeances"] = [];
+        array_push($allInfo["decharges"], $decharges);
+
+        $echeances = $this->getDoctrine()
+            ->getRepository('AppBundle:EcheanceAchatDepense')
+            ->getAllEcheanceByDep($id);
+
+        array_push($allInfo["echeances"], $echeances);
+
+        return new JsonResponse($allInfo);
     }
 
     public function listAction(Request $request)
     {
-        
-        $decharges = $this->listDecharge($request);
 
-        return new JsonResponse( array_merge( $decharges ) );
+        // $decharges = $this->listDecharge($request);
+
+        return new JsonResponse(array_merge($decharges));
     }
 
     public function listDecharge(Request $request)
@@ -231,6 +370,27 @@ class DechargeController extends Controller
         return $decharges;
     }
 
+    public function creationDesignationAction()
+    {
+        $user = $this->getUser();
+        $userAgence = $this->getDoctrine()
+            ->getRepository('AppBundle:UserAgence')
+            ->findOneBy(array(
+                'user' => $user
+            ));
+        $agence = $userAgence->getAgence();
+        $agenceId = $agence->getId();
+
+        $listDesign = $this->getDoctrine()
+            ->getRepository('AppBundle:DesignationDepense')
+            ->findBy(array(
+                'agence' => $agenceId
+            ));
+
+        return $this->render('ComptabiliteBundle:Decharge:designation.html.twig', array(
+            "listDesign" => $listDesign
+        ));
+    }
 
     public function showAction($id)
     {
@@ -245,11 +405,18 @@ class DechargeController extends Controller
                         'agence' => $agence
                     ));
 
-
+        $detailsDepense = $this->getDoctrine()
+            ->getRepository('AppBundle:DetailsDepense')
+            ->findBy(array(
+                "idDecharge" => $id
+            ));
+        
         return $this->render('ComptabiliteBundle:Decharge:show.html.twig',array(
             'agence' => $agence,
             'decharge' => $decharge,
             'motifs' => $motifs,
+            "detailsDepense" => $detailsDepense,
+           
         ));
     }
 
@@ -505,6 +672,39 @@ class DechargeController extends Controller
         $em->flush();
 
         return new JsonResponse(200);
+    }
+
+    public function validerPayementAchatAction(Request $request)
+    {
+        $idDepense = $request->request->get('idDepense');
+        $date_paiement = $request->request->get('date_paiement');
+        $montant = $request->request->get('montant');
+        $montantTotalDep = $request->request->get('montantTotalDep');
+        $ech_achat_dep = new EcheanceAchatDepense();
+
+        if ($date_paiement == '')
+            $date = new \DateTime;
+        else
+            $date = new \DateTimeImmutable($date_paiement);
+
+        $ech_achat_dep->setIdDepense($idDepense);
+        $ech_achat_dep->setMontant($montant);
+        $ech_achat_dep->setDateEch($date);
+        $ech_achat_dep->setCreatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+        $ech_achat_dep->setUpdatedAt(new \DateTime('now', new \DateTimeZone("+3")));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($ech_achat_dep);
+        $em->flush();
+        $result = [];
+        $echeances = $this->getDoctrine()
+            ->getRepository('AppBundle:EcheanceAchatDepense')
+            ->getAllEcheanceByDep($idDepense);
+
+        $result["echeances"] = $echeances;
+        $result["totalDepense"] = $montantTotalDep;
+
+        return new JsonResponse($result);
     }
 
 }

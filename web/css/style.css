@@ -187,6 +187,8 @@ h5 {
   margin: 14px 5px 5px 20px;
   font-size: 14px;
   float: left;
+  margin-left: 18px!important;
+  margin-top: 14px!important;
 }
 .navbar-form-custom {
   float: left;
@@ -728,47 +730,7 @@ fieldset[disabled] .btn-info.active {
   background-color: #26d7d9;
   border-color: #26d7d9;
 }
-.btn-default {
-  background-color: #c2c2c2;
-  border-color: #c2c2c2;
-  color: #FFFFFF;
-}
-.btn-default:hover,
-.btn-default:focus,
-.btn-default:active,
-.btn-default.active,
-.open .dropdown-toggle.btn-default,
-.btn-default:active:focus,
-.btn-default:active:hover,
-.btn-default.active:hover,
-.btn-default.active:focus {
-  background-color: #bababa;
-  border-color: #bababa;
-  color: #FFFFFF;
-}
-.btn-default:active,
-.btn-default.active,
-.open .dropdown-toggle.btn-default {
-  background-image: none;
-}
-.btn-default.disabled,
-.btn-default.disabled:hover,
-.btn-default.disabled:focus,
-.btn-default.disabled:active,
-.btn-default.disabled.active,
-.btn-default[disabled],
-.btn-default[disabled]:hover,
-.btn-default[disabled]:focus,
-.btn-default[disabled]:active,
-.btn-default.active[disabled],
-fieldset[disabled] .btn-default,
-fieldset[disabled] .btn-default:hover,
-fieldset[disabled] .btn-default:focus,
-fieldset[disabled] .btn-default:active,
-fieldset[disabled] .btn-default.active {
-  background-color: #cccccc;
-  border-color: #cccccc;
-}
+
 .btn-warning {
   background-color: #f8ac59;
   border-color: #f8ac59;
@@ -8445,4 +8407,29 @@ table.mw-2000 {
   min-height: 100%;
   height: 231px !important;
   width: 100%;
+}
+
+.badge-s {
+  background-color: #e91e63;
+  color: #ffffff;
+}
+
+.badge-ap {
+  background-color: #9c27b0;
+  color: #ffffff;
+}
+
+.badge-ald {
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+
+.badge-bc {
+  background-color: #00bcd4;
+  color: #ffffff;
+}
+
+.badge-b {
+  background-color: #009688;
+  color: #ffffff;
 }

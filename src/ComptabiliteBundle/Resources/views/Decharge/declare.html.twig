@@ -10,6 +10,22 @@
     .ui-jqgrid tr.jqgrow {
             height: 35px !important;
         }
+    .mt-3
+    {
+        margin-top : 20px ;
+    }
+    .mt-2
+    {
+        margin-top : 10px ;
+    }
+    .tabl-sm
+    {
+        font-size : 0.95em!important ;
+    }
+    .top,.top td,.top th
+    {
+        border-top : none !important ;
+    }
     </style>
  {% endblock  %}
 
@@ -25,10 +41,17 @@
 		<div class="col-lg-12">
         	<div class="ibox">
                 <div class="ibox-title">
-                    <h5>Liste des décharges en cours</h5>
+                    <h5>Liste des déclarations en cours</h5>
                 </div>
                 <div class="ibox-content">
-                    <div class="row">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#home">Tous les dépenses</a></li>
+                    <li><a data-toggle="tab" href="#menu1" id="menu_achat">Dépense Achat</a></li>
+                </ul>
+
+                    <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="row mt-3">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label class="control-label">SERVICE</label>
@@ -162,15 +185,140 @@
                                     </div>
                                 </div>
                     </div>
-                    <br>
-                	<div class="row">
-                		<div class="col-lg-12">
-                            <table id="table_list"></table>
-                		</div>
-                	</div>
                     <div class="hidden">
                         <form action="" method="POST" id="form_export"></form>
                     </div>
+                        <div class="table table-responsive mt-2">
+                            <table class="table tabl-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Beneficiaire</th>
+                                        <th>Num Facture</th>
+                                        <th>Mode payement</th>
+                                        <th>Type payement</th>
+                                        <th>Service</th>
+                                        <th>Motif</th>
+                                        <th>Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for decharge in decharges %}
+                                        <tr id="{{decharge.id}}">
+                                            <td>{{decharge.beneficiaire}}</td>
+                                            <td>{{decharge.num_facture}}</td>
+                                            <td>{{decharge.mode_paiement}}</td>
+                                            <td>{{(decharge.type_payement == 1) ? "Total" : (decharge.type_payement == 2) ? "Echeance" : "Aucun"}}</td>
+                                            <td>{{decharge.service}}</td>
+                                            <td>{{decharge.motif}}</td>
+                                            <td>{{decharge.date}}</td>
+                                            <td class="text-right">
+                                            {% if decharge.motif == 'Achat' and decharge.type_payement == 2 %}
+                                            <button class="btn btn-xs btn-outline btn-info payement " data-type="0" style="width:100px"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Payement</button>&emsp;
+                                            {% else %}
+                                            <button class="btn btn-xs btn-outline btn-info consulter " data-type="0" style="width:100px"><i class="fa fa-pencil-square-o "></i>&nbsp;&nbsp;Consulter</button>&emsp;
+                                            {% endif %}
+                                            <button class="btn btn-xs btn-outline btn-primary valider " data-type="0"><i class="fa fa-pencil-square-o "></i>&nbsp;Valider</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <table class="table">
+                                    <tr class="top">
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Nom concerné</th>
+                                        <td class="achat_nom"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Mode de payement</th>
+                                        <td class="achat_mode_payement"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Type de payement</th>
+                                        <td class="achat_type_payement"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Service</th>
+                                        <td class="achat_service"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Motif</th>
+                                        <td class="achat_motif"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Numero Facture</th>
+                                        <td class="achat_num_facture"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Date déclaration</th>
+                                        <td class="achat_date"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Mois Facture</th>
+                                        <td class="achat_mois"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"><i class="fa fa-user"></i></th>
+                                        <th>Montant</th>
+                                        <td class="achat_montant"></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                            <p>Arrêté la présente facture à la somme de <b id="lettre" style="text-transform: uppercase;"></b>
+                            <p>
+                        <div class="hr-line-dashed"></div>
+                        <div class="row">
+          	<div class="col-lg-12">
+          		<table class="table table-bordered">
+          			<thead>
+    					<tr>
+    						<th>Date de paiement</th>
+    						<th>Montant Payé</th>
+    						<th></th>
+    					</tr>
+    				</thead>
+
+    				<tbody class="body_achat">
+      					
+    				</tbody>
+
+            <tfoot>
+              <tr>
+                <th>TOTAL PAYÉ</th>
+                <th class="totalPayee"></th>
+              </tr>
+              <tr>
+                <th>TOTAL RESTANT</th>
+                <th class="totalRestant"></th>
+              </tr>
+            </tfoot>
+
+          		</table>
+          	</div>
+          </div>
+                    </div>
+                    </div>        
+                	{# <div class="row">
+                		<div class="col-lg-12">
+                            <table id="table_list"></table>
+                		</div>
+                	</div> #}
                 </div>
             </div>
   		</div>

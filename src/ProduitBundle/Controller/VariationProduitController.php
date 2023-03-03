@@ -87,7 +87,6 @@ class VariationProduitController extends Controller
 
     public function listAction(Request $request)
     {
-
         $user = $this->getUser();
 
         $userAgence = $this->getDoctrine() 
@@ -186,15 +185,20 @@ class VariationProduitController extends Controller
             ->find($id_variation);
         $entrepot = ($variation->getProduitEntrepot()) ? $variation->getProduitEntrepot() : null;
         $produit  = ($entrepot) ? $variation->getProduitEntrepot()->getProduit() : null;
-    //var_dump($variation->getStock(),$variation->getProduitEntrepot()->getStock(),$variation->getProduitEntrepot()->getProduit()->getStock());die;
+        //var_dump($variation->getStock(),$variation->getProduitEntrepot()->getStock(),$variation->getProduitEntrepot()->getProduit()->getStock());die;
 
         $stock_variation = $variation->getStock();
         $stock_entrepot  = ($variation->getProduitEntrepot()) ? $variation->getProduitEntrepot()->getStock() : null;
         $stock_produit   = ($variation->getProduitEntrepot()->getProduit()) ? $variation->getProduitEntrepot()->getProduit()->getStock() : null;
 
-        $stock_deduit_v = ($is_deduct) ? ($stock_variation - $stock) : $stock_variation; 
-        $stock_deduit_e = ($is_deduct) ? ($stock_entrepot - $stock) : $stock_entrepot; 
-        $stock_deduit_p = ($is_deduct) ? ($stock_produit - $stock) : $stock_produit; 
+        $stock_deduit_v = ($is_deduct) ? ($stock_variation - $stock) : $stock_variation;
+        $stock_deduit_e = ($is_deduct) ? ($stock_entrepot - $stock) : $stock_entrepot;
+        $stock_deduit_p = ($is_deduct) ? ($stock_produit - $stock) : $stock_produit;
+
+        $stock_deduit_v = ($stock_variation < 0) ? 0 : $stock_deduit_v;
+        $stock_deduit_e = ($stock_entrepot < 0) ? 0 : $stock_deduit_e;
+        $stock_deduit_p = ($stock_produit < 0) ? 0 : $stock_deduit_p;
+
 
         $variation->setStock($stock_deduit_v);
         $variation->setPrixVente($prix_vente);

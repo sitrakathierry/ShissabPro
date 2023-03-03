@@ -257,6 +257,26 @@ class ClientRepository extends \Doctrine\ORM\EntityRepository
 
         $result = $statement->fetchAll();
 
-        return $result[0];
+		return $result[0];
+	}
+
+	public function getLastClient($agence)
+	{
+		$em = $this->getEntityManager();
+
+		$query = "select c.num_police as id, LPAD(c.num_police, 6, '0') as num_police, IF(c.statut = 1,cm.nom_societe,cp.nom) as nom, IF(c.statut = 1,'CLIENT MORALE','CLIENT PHYSIQUE') as statut, a.code as code_agence, a.nom as agence, IF(c.statut = 1, cm.adresse, cp.adresse) as adresse, cp.profession, IF(c.statut = 2, format(cp.ddn,'%d/%m/%Y'),'') as ddn, cp.ldn
+					from client c
+					inner join agence a on (c.agence = a.id)
+					left join client_morale cm on (c.id_client_morale = cm.id)
+					left join client_physique cp on (c.id_client_physique = cp.id)
+					where c.agence = ? order by c.num_police desc limit 1 ";
+
+		$statement = $em->getConnection()->prepare($query);
+
+		$statement->execute(array($agence));
+
+		$result = $statement->fetch();
+
+		return $result;
 	}
 }
